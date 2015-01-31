@@ -7,135 +7,117 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.MasterFiles._ProductGroup {
+namespace AceSoft.RetailPlus.MasterFiles._Product {
     
     
-    public partial class @__Details {
+    public partial class @__ChangeOSPrinter {
         
         /// <summary>
-        /// imgBack control.
+        /// imgPrint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgBack;
+        protected global::System.Web.UI.WebControls.ImageButton imgPrint;
         
         /// <summary>
-        /// cmdBack control.
+        /// cmdPrint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdBack;
+        protected global::System.Web.UI.WebControls.LinkButton cmdPrint;
         
         /// <summary>
-        /// lblReferrer control.
+        /// lblDataCount1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblReferrer;
+        protected global::System.Web.UI.WebControls.Label lblDataCount1;
         
         /// <summary>
-        /// lblProductGroupID control.
+        /// cboCurrentPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblProductGroupID;
+        protected global::System.Web.UI.WebControls.DropDownList cboCurrentPage;
         
         /// <summary>
-        /// txtProductGroupCode control.
+        /// lblDataCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProductGroupCode;
+        protected global::System.Web.UI.WebControls.Label lblDataCount;
         
         /// <summary>
-        /// txtProductGroupName control.
+        /// cboBranch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProductGroupName;
+        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
         
         /// <summary>
-        /// cboProductGroupUnit control.
+        /// UpdatePanel3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboProductGroupUnit;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
         
         /// <summary>
-        /// imgAdd control.
+        /// cboProductGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgAdd;
+        protected global::System.Web.UI.WebControls.DropDownList cboProductGroup;
         
         /// <summary>
-        /// txtPurchasePrice control.
+        /// txtProductGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPurchasePrice;
+        protected global::System.Web.UI.WebControls.TextBox txtProductGroup;
         
         /// <summary>
-        /// txtProductPrice control.
+        /// imgProductGroupSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProductPrice;
+        protected global::System.Web.UI.WebControls.ImageButton imgProductGroupSearch;
         
         /// <summary>
-        /// chkIncludeInSubtotalDiscount control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkIncludeInSubtotalDiscount;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// txtVAT control.
+        /// lstItem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVAT;
-        
-        /// <summary>
-        /// txtEVAT control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEVAT;
-        
-        /// <summary>
-        /// txtLocalTax control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLocalTax;
+        protected global::System.Web.UI.WebControls.DataList lstItem;
     }
 }

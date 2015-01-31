@@ -1393,7 +1393,6 @@ create procedure procSaveProductGroup(
 	IN decVAT decimal(18,2),
 	IN decEVAT decimal(18,2),
 	IN decLocalTax decimal(18,2),
-	IN intOrderSlipPrinter tinyint(1),
 	IN intChartOfAccountIDPurchase int(4),
 	IN intChartOfAccountIDTaxPurchase int(4),
 	IN intChartOfAccountIDSold int(4),
@@ -1429,7 +1428,6 @@ BEGIN
 			VAT						= decVAT,
 			EVAT					= decEVAT,
 			LocalTax				= decLocalTax,
-			OrderSlipPrinter		= intOrderSlipPrinter,
 			ChartOfAccountIDPurchase	= intChartOfAccountIDPurchase,
 			ChartOfAccountIDTaxPurchase = intChartOfAccountIDTaxPurchase,
 			ChartOfAccountIDSold		= intChartOfAccountIDSold,
@@ -1448,7 +1446,7 @@ BEGIN
 	ELSE
 		INSERT INTO tblProductGroup(ProductGroupID, ProductGroupCode, ProductGroupName, BaseUnitID,
 								Price, PurchasePrice, IncludeInSubtotalDiscount, VAT, EVAT,
-								LocalTax, OrderSlipPrinter, ChartOfAccountIDPurchase, ChartOfAccountIDTaxPurchase,
+								LocalTax, ChartOfAccountIDPurchase, ChartOfAccountIDTaxPurchase,
 								ChartOfAccountIDSold, ChartOfAccountIDTaxSold, ChartOfAccountIDInventory,
 								SequenceNo, isLock, ChartOfAccountIDTransferIn, ChartOfAccountIDTaxTransferIn,
 								ChartOfAccountIDTransferOut, ChartOfAccountIDTaxTransferOut, 
@@ -1456,7 +1454,7 @@ BEGIN
 								CreatedOn, LastModified)
 			VALUES(intProductGroupID, strProductGroupCode, strProductGroupName, intBaseUnitID,
 								decPrice, decPurchasePrice, boIncludeInSubtotalDiscount, decVAT, decEVAT,
-								decLocalTax, intOrderSlipPrinter, intChartOfAccountIDPurchase, intChartOfAccountIDTaxPurchase,
+								decLocalTax, intChartOfAccountIDPurchase, intChartOfAccountIDTaxPurchase,
 								intChartOfAccountIDSold, intChartOfAccountIDTaxSold, intChartOfAccountIDInventory,
 								intSequenceNo, boisLock, intChartOfAccountIDTransferIn, intChartOfAccountIDTaxTransferIn,
 								intChartOfAccountIDTransferOut, intChartOfAccountIDTaxTransferOut, 

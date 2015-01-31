@@ -109,12 +109,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 			{
 				cboProductGroupUnit.Enabled = true;
 			}
-
-            cboOrderSlipPrinter.Items.Add(new ListItem(OrderSlipPrinter.RetailPlusOSPrinter1.ToString("G"),OrderSlipPrinter.RetailPlusOSPrinter1.ToString("d")));
-            cboOrderSlipPrinter.Items.Add(new ListItem(OrderSlipPrinter.RetailPlusOSPrinter2.ToString("G"),OrderSlipPrinter.RetailPlusOSPrinter2.ToString("d")));
-            cboOrderSlipPrinter.Items.Add(new ListItem(OrderSlipPrinter.RetailPlusOSPrinter3.ToString("G"),OrderSlipPrinter.RetailPlusOSPrinter3.ToString("d")));
-            cboOrderSlipPrinter.Items.Add(new ListItem(OrderSlipPrinter.RetailPlusOSPrinter4.ToString("G"),OrderSlipPrinter.RetailPlusOSPrinter4.ToString("d")));
-            cboOrderSlipPrinter.Items.Add(new ListItem(OrderSlipPrinter.RetailPlusOSPrinter5.ToString("G"),OrderSlipPrinter.RetailPlusOSPrinter5.ToString("d")));
 		}
 		private void LoadRecord()
 		{
@@ -133,7 +127,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 			txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
 			txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");
-            cboOrderSlipPrinter.SelectedIndex = cboOrderSlipPrinter.Items.IndexOf(cboOrderSlipPrinter.Items.FindByValue(clsDetails.OrderSlipPrinter.ToString("d")));
 		}
 		private void SaveRecord()
 		{
@@ -152,7 +145,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 			clsDetails.VAT = Convert.ToDecimal(txtVAT.Text);
 			clsDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
 			clsDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);
-            clsDetails.OrderSlipPrinter = (OrderSlipPrinter) Enum.Parse(typeof(OrderSlipPrinter), cboOrderSlipPrinter.SelectedItem.Value);
 
 			ProductGroup clsProductGroup = new ProductGroup();
 			clsProductGroup.Update(clsDetails);

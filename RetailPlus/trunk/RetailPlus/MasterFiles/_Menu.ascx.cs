@@ -23,6 +23,7 @@ namespace AceSoft.RetailPlus.MasterFiles
                 lnkAddvariationType.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("addproductvariation", Session.SessionID);
                 lnkChangeRewardPoints.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changerewardpoints", Session.SessionID);
                 lnkChangeProductPrice.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changeprice", Session.SessionID);
+                lnkChangeOSPrinter.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changeosprinter", Session.SessionID);
                 lnkChangeTax.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changetax", Session.SessionID);
 
                 lnkSynchronize.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("synchronize", Session.SessionID);
@@ -86,7 +87,7 @@ namespace AceSoft.RetailPlus.MasterFiles
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ChangeProductPrices);
             lnkChangeProductPrice.Visible = clsDetails.Write;
             lnkChangeTax.Visible = clsDetails.Write;
-
+            lnkChangeOSPrinter.Visible = clsDetails.Write;
 			
             // Contacts
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ContactGroups);

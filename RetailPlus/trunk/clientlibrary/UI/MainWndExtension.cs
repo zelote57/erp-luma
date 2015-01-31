@@ -170,7 +170,6 @@ namespace AceSoft.RetailPlus.Client.UI
                 ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails,
                 ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails)
         {
-
             mclsSalesTransactionDetails.AmountPaid = AmountPaid;
             mclsSalesTransactionDetails.ChangeAmount = ChangeAmount;
             mclsSalesTransactionDetails.CashPayment = CashPayment;
@@ -2674,6 +2673,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else
                 {
+                    Cursor.Show();
+                    Cursor.Current = Cursors.WaitCursor;
+
                     /*************************
                      * Check if will reprint all items for ALT + S
                      * December 18, 2008
@@ -2703,8 +2705,8 @@ namespace AceSoft.RetailPlus.Client.UI
                          * 05Dec2014 remove the WillReprintAll
                          * it's only tagged as printed if success print
                          * ***/
-                        //if (!OrderSlipPrinted || WillReprintAll)
-                        if (!OrderSlipPrinted)
+                        if (!OrderSlipPrinted || WillReprintAll)
+                        //if (!OrderSlipPrinted)
                         {
                             /****************************************
                              * Update items that are already printed
@@ -2725,18 +2727,24 @@ namespace AceSoft.RetailPlus.Client.UI
                                 string stProductCode = "" + dr["ProductCode"].ToString();
                                 string stProductUnitCode = "" + dr["ProductUnitCode"].ToString();
                                 decimal decQuantity = Convert.ToDecimal(dr["Quantity"]);
+                                string strItemRemarks = "" + dr["ItemRemarks"].ToString();
 
-                                AceSoft.RetailPlus.OrderSlipPrinter orderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+                                bool orderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                                bool orderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                                bool orderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                                bool orderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                                bool orderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
 
-                                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1 && !bolRetailPlusOSPrinter1HeaderPrinted)
+                                // print the headers
+                                if (orderSlipPrinter1 &&  !bolRetailPlusOSPrinter1HeaderPrinted)
                                 { bolRetailPlusOSPrinter1HeaderPrinted = true; PrintOrderSlipHeader(AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1, WillReprintAll); }
-                                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2 && !bolRetailPlusOSPrinter2HeaderPrinted)
+                                if (orderSlipPrinter2 && !bolRetailPlusOSPrinter2HeaderPrinted)
                                 { bolRetailPlusOSPrinter2HeaderPrinted = true; PrintOrderSlipHeader(AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2, WillReprintAll); }
-                                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3 && !bolRetailPlusOSPrinter3HeaderPrinted)
+                                if (orderSlipPrinter3 && !bolRetailPlusOSPrinter3HeaderPrinted)
                                 { bolRetailPlusOSPrinter3HeaderPrinted = true; PrintOrderSlipHeader(AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3, WillReprintAll); }
-                                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4 && !bolRetailPlusOSPrinter4HeaderPrinted)
+                                if (orderSlipPrinter4 && !bolRetailPlusOSPrinter4HeaderPrinted)
                                 { bolRetailPlusOSPrinter4HeaderPrinted = true; PrintOrderSlipHeader(AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4, WillReprintAll); }
-                                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5 && !bolRetailPlusOSPrinter5HeaderPrinted)
+                                if (orderSlipPrinter5 && !bolRetailPlusOSPrinter5HeaderPrinted)
                                 { bolRetailPlusOSPrinter5HeaderPrinted = true; PrintOrderSlipHeader(AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5, WillReprintAll); }
 
                                 // print product composition first: 
@@ -2748,14 +2756,22 @@ namespace AceSoft.RetailPlus.Client.UI
                                     {
                                         // if there are no product composition
                                         // print the product only
-                                        PrintItemForKitchen(stProductCode, stProductUnitCode, decQuantity, orderSlipPrinter, true);
+                                        if (orderSlipPrinter1) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter1, true, strItemRemarks); }
+                                        if (orderSlipPrinter2) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter2, true, strItemRemarks); }
+                                        if (orderSlipPrinter3) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter3, true, strItemRemarks); }
+                                        if (orderSlipPrinter4) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter4, true, strItemRemarks); }
+                                        if (orderSlipPrinter5) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter5, true, strItemRemarks); }
                                     }
                                 }
                                 else
                                 {
                                     // if there are no product composition
                                     // print the product only
-                                    PrintItemForKitchen(stProductCode, stProductUnitCode, decQuantity, orderSlipPrinter, true);
+                                    if (orderSlipPrinter1) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter1, true, strItemRemarks); }
+                                    if (orderSlipPrinter2) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter2, true, strItemRemarks); }
+                                    if (orderSlipPrinter3) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter3, true, strItemRemarks); }
+                                    if (orderSlipPrinter4) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter4, true, strItemRemarks); }
+                                    if (orderSlipPrinter5) { PrintItemToOSPrinter(stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter5, true, strItemRemarks); }
                                 }
                             }
 
@@ -2867,6 +2883,8 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
                     }
 
+                    Cursor.Current = Cursors.Default;
+                    Cursor.Hide();
                     // show message only if boRetValue=true
                     // no need to message if boRetValue=false, coz it has already shown error message
                     if (boRetValue && !isFromSuspendTransaction)
@@ -2905,8 +2923,13 @@ namespace AceSoft.RetailPlus.Client.UI
             mConnection = clsSalesTransactionItems.Connection; mTransaction = clsSalesTransactionItems.Transaction;
             foreach (System.Data.DataRow dr in ItemDataTable.Rows)
             {
-                AceSoft.RetailPlus.OrderSlipPrinter orderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
-                if (orderSlipPrinter == OrderSlipPrinter)
+                bool orderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                bool orderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                bool orderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                bool orderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                bool orderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
+
+                if (orderSlipPrinter1 || orderSlipPrinter2 || orderSlipPrinter3 || orderSlipPrinter4 || orderSlipPrinter5)
                 {
                     /****************************************
                     * 05Dec2014 put this here, should only set to true if success printing
@@ -2931,15 +2954,17 @@ namespace AceSoft.RetailPlus.Client.UI
             System.Data.DataTable dt = clsProductComposition.ListAsDataTable(ProductID);
             foreach (System.Data.DataRow dr in dt.Rows)
             {
-                AceSoft.RetailPlus.OrderSlipPrinter orderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
-                switch (orderSlipPrinter)
-                {
-                    case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1: { iRetailPlusOSPrinter1Ctr++; break; }
-                    case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2: { iRetailPlusOSPrinter2Ctr++; break; }
-                    case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3: { iRetailPlusOSPrinter3Ctr++; break; }
-                    case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4: { iRetailPlusOSPrinter4Ctr++; break; }
-                    case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5: { iRetailPlusOSPrinter5Ctr++; break; }
-                }
+                bool orderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                bool orderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                bool orderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                bool orderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                bool orderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
+
+                if (orderSlipPrinter1) { iRetailPlusOSPrinter1Ctr++; }
+                if (orderSlipPrinter2) { iRetailPlusOSPrinter2Ctr++; }
+                if (orderSlipPrinter3) { iRetailPlusOSPrinter3Ctr++; }
+                if (orderSlipPrinter4) { iRetailPlusOSPrinter4Ctr++; }
+                if (orderSlipPrinter5) { iRetailPlusOSPrinter5Ctr++; }
 
                 long lProductID = Convert.ToInt64(dr["ProductID"]);
                 PrintOrderSlipCountCompositionHeader(lProductID, iRetailPlusOSPrinter1Ctr, iRetailPlusOSPrinter2Ctr, iRetailPlusOSPrinter3Ctr, iRetailPlusOSPrinter4Ctr, iRetailPlusOSPrinter5Ctr, out RetailPlusOSPrinter1Ctr, out RetailPlusOSPrinter2Ctr, out RetailPlusOSPrinter3Ctr, out RetailPlusOSPrinter4Ctr, out RetailPlusOSPrinter5Ctr);
@@ -2973,29 +2998,39 @@ namespace AceSoft.RetailPlus.Client.UI
 
             foreach (System.Data.DataRow dr in dt.Rows)
             {
-                AceSoft.RetailPlus.OrderSlipPrinter orderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+                bool orderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                bool orderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                bool orderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                bool orderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                bool orderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
 
                 long lProductID = Convert.ToInt64(dr["ProductID"]);
                 string stProductCode = "" + dr["ProductCode"].ToString();
                 string stProductUnitCode = "" + dr["UnitCode"].ToString();
                 decimal decQuantity = Convert.ToDecimal(dr["Quantity"]);
+                string strItemRemarks = "" + dr["ItemRemarks"].ToString();
 
-                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1 && !bolRetailPlusOSPrinter1ItemHeaderPrinted)
-                { bolRetailPlusOSPrinter1ItemHeaderPrinted = true; PrintItemForKitchen(ProductCode, ProductUnitCode, Quantity, orderSlipPrinter, bolWillPrintProductComposition); }
-                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2 && !bolRetailPlusOSPrinter2ItemHeaderPrinted)
-                { bolRetailPlusOSPrinter2ItemHeaderPrinted = true; PrintItemForKitchen(ProductCode, ProductUnitCode, Quantity, orderSlipPrinter, bolWillPrintProductComposition); }
-                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3 && !bolRetailPlusOSPrinter3ItemHeaderPrinted)
-                { bolRetailPlusOSPrinter3ItemHeaderPrinted = true; PrintItemForKitchen(ProductCode, ProductUnitCode, Quantity, orderSlipPrinter, bolWillPrintProductComposition); }
-                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4 && !bolRetailPlusOSPrinter4ItemHeaderPrinted)
-                { bolRetailPlusOSPrinter4ItemHeaderPrinted = true; PrintItemForKitchen(ProductCode, ProductUnitCode, Quantity, orderSlipPrinter, bolWillPrintProductComposition); }
-                if (orderSlipPrinter == AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5 && !bolRetailPlusOSPrinter5ItemHeaderPrinted)
-                { bolRetailPlusOSPrinter5ItemHeaderPrinted = true; PrintItemForKitchen(ProductCode, ProductUnitCode, Quantity, orderSlipPrinter, bolWillPrintProductComposition); }
+                if (orderSlipPrinter1 && !bolRetailPlusOSPrinter1ItemHeaderPrinted)
+                { bolRetailPlusOSPrinter1ItemHeaderPrinted = true; PrintItemToOSPrinter(ProductCode, ProductUnitCode, Quantity, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1, bolWillPrintProductComposition, strItemRemarks); }
+                if (orderSlipPrinter2 && !bolRetailPlusOSPrinter2ItemHeaderPrinted)
+                { bolRetailPlusOSPrinter2ItemHeaderPrinted = true; PrintItemToOSPrinter(ProductCode, ProductUnitCode, Quantity, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2, bolWillPrintProductComposition, strItemRemarks); }
+                if (orderSlipPrinter3 && !bolRetailPlusOSPrinter3ItemHeaderPrinted)
+                { bolRetailPlusOSPrinter3ItemHeaderPrinted = true; PrintItemToOSPrinter(ProductCode, ProductUnitCode, Quantity, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3, bolWillPrintProductComposition, strItemRemarks); }
+                if (orderSlipPrinter4 && !bolRetailPlusOSPrinter4ItemHeaderPrinted)
+                { bolRetailPlusOSPrinter4ItemHeaderPrinted = true; PrintItemToOSPrinter(ProductCode, ProductUnitCode, Quantity, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4, bolWillPrintProductComposition, strItemRemarks); }
+                if (orderSlipPrinter5 && !bolRetailPlusOSPrinter5ItemHeaderPrinted)
+                { bolRetailPlusOSPrinter5ItemHeaderPrinted = true; PrintItemToOSPrinter(ProductCode, ProductUnitCode, Quantity, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5, bolWillPrintProductComposition, strItemRemarks); }
 
                 if (!PrintOrderSlipComposition(lProductID, stProductCode, stProductUnitCode, decQuantity, bolWillPrintProductComposition))
                 {
                     // if there are no product composition
                     // print the product only
-                    PrintItemForKitchen("   " + stProductCode, stProductUnitCode, decQuantity, orderSlipPrinter);
+
+                    if (orderSlipPrinter1) { PrintItemCompositionToOSPrinter("   " + stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter1); }
+                    if (orderSlipPrinter2) { PrintItemCompositionToOSPrinter("   " + stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter2); }
+                    if (orderSlipPrinter3) { PrintItemCompositionToOSPrinter("   " + stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter3); }
+                    if (orderSlipPrinter4) { PrintItemCompositionToOSPrinter("   " + stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter4); }
+                    if (orderSlipPrinter5) { PrintItemCompositionToOSPrinter("   " + stProductCode, stProductUnitCode, decQuantity, OrderSlipPrinter.RetailPlusOSPrinter5); }
                 }
 
                 boRetValue = true;
@@ -3005,6 +3040,9 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         public void PrintOrderSlipHeader(OrderSlipPrinter OrderSlipPrinter, bool WillReprintAll)
         {
+            // no need if it's a non-applicable
+            if (OrderSlipPrinter == RetailPlus.OrderSlipPrinter.NotApplicable) return;
+
             switch (OrderSlipPrinter)
             {
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1:
@@ -3015,7 +3053,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo) || mclsSalesTransactionDetails.TransactionNo == "READY..." || mclsSalesTransactionDetails.TransactionNo == mclsFPRetailPlusOSPrinter1.FileName)
                             mclsFPRetailPlusOSPrinter1.FileName = DateTime.Now.ToString("yyyyMMddhhmmss");
                     else
-                        mclsFPRetailPlusOSPrinter1.FileName = mclsSalesTransactionDetails.TransactionNo;
+                        mclsFPRetailPlusOSPrinter1.FileName = mclsSalesTransactionDetails.TransactionNo + "OS1";
                     
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2:
@@ -3026,7 +3064,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo) || mclsSalesTransactionDetails.TransactionNo == "READY..." || mclsSalesTransactionDetails.TransactionNo == mclsFPRetailPlusOSPrinter2.FileName)
                         mclsFPRetailPlusOSPrinter2.FileName = DateTime.Now.ToString("yyyyMMddhhmmss");
                     else
-                        mclsFPRetailPlusOSPrinter2.FileName = mclsSalesTransactionDetails.TransactionNo;
+                        mclsFPRetailPlusOSPrinter2.FileName = mclsSalesTransactionDetails.TransactionNo + "OS2";
 
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3:
@@ -3037,7 +3075,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo) || mclsSalesTransactionDetails.TransactionNo == "READY..." || mclsSalesTransactionDetails.TransactionNo == mclsFPRetailPlusOSPrinter3.FileName)
                         mclsFPRetailPlusOSPrinter3.FileName = DateTime.Now.ToString("yyyyMMddhhmmss");
                     else
-                        mclsFPRetailPlusOSPrinter3.FileName = mclsSalesTransactionDetails.TransactionNo;
+                        mclsFPRetailPlusOSPrinter3.FileName = mclsSalesTransactionDetails.TransactionNo + "OS3";
 
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4:
@@ -3048,7 +3086,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo) || mclsSalesTransactionDetails.TransactionNo == "READY..." || mclsSalesTransactionDetails.TransactionNo == mclsFPRetailPlusOSPrinter4.FileName)
                         mclsFPRetailPlusOSPrinter4.FileName = DateTime.Now.ToString("yyyyMMddhhmmss");
                     else
-                        mclsFPRetailPlusOSPrinter4.FileName = mclsSalesTransactionDetails.TransactionNo;
+                        mclsFPRetailPlusOSPrinter4.FileName = mclsSalesTransactionDetails.TransactionNo + "OS4";
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5:
                     mclsFPRetailPlusOSPrinter5 = new FilePrinter();
@@ -3059,7 +3097,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo) || mclsSalesTransactionDetails.TransactionNo == "READY..." || mclsSalesTransactionDetails.TransactionNo == mclsFPRetailPlusOSPrinter5.FileName)
                             mclsFPRetailPlusOSPrinter5.FileName = DateTime.Now.ToString("yyyyMMddhhmmss");
                     else
-                        mclsFPRetailPlusOSPrinter5.FileName = mclsSalesTransactionDetails.TransactionNo;
+                        mclsFPRetailPlusOSPrinter5.FileName = mclsSalesTransactionDetails.TransactionNo + "OS5";
                     break;
             }
 
@@ -3093,6 +3131,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
         public bool PrintOrderSlipFooter(OrderSlipPrinter orderSlipPrinter)
         {
+            // no need if it's a non-applicable
+            if (orderSlipPrinter == RetailPlus.OrderSlipPrinter.NotApplicable) return false;
+
             bool boSuccess = false;
 
             SendOrderSlipToPrinter("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine, orderSlipPrinter);
@@ -3108,27 +3149,27 @@ namespace AceSoft.RetailPlus.Client.UI
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1:
                     mclsFPRetailPlusOSPrinter1.Write(msbToPrintFP1);
                     boSuccess = RawPrinterHelper.SendFileToPrinter(orderSlipPrinter.ToString("G"), mclsFPRetailPlusOSPrinter1.FileName, "RetailPlus " + mclsFPRetailPlusOSPrinter1.FileName);
-                    mclsFPRetailPlusOSPrinter1.DeleteFile();
+                    //mclsFPRetailPlusOSPrinter1.DeleteFile();
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2:
                     mclsFPRetailPlusOSPrinter2.Write(msbToPrintFP2);
                     boSuccess = RawPrinterHelper.SendFileToPrinter(orderSlipPrinter.ToString("G"), mclsFPRetailPlusOSPrinter2.FileName, "RetailPlus " + mclsFPRetailPlusOSPrinter2.FileName);
-                    mclsFPRetailPlusOSPrinter2.DeleteFile();
+                    //mclsFPRetailPlusOSPrinter2.DeleteFile();
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3:
                     mclsFPRetailPlusOSPrinter3.Write(msbToPrintFP3);
                     boSuccess = RawPrinterHelper.SendFileToPrinter(orderSlipPrinter.ToString("G"), mclsFPRetailPlusOSPrinter3.FileName, "RetailPlus " + mclsFPRetailPlusOSPrinter3.FileName);
-                    mclsFPRetailPlusOSPrinter3.DeleteFile();
+                    //mclsFPRetailPlusOSPrinter3.DeleteFile();
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4:
                     mclsFPRetailPlusOSPrinter4.Write(msbToPrintFP4);
                     boSuccess = RawPrinterHelper.SendFileToPrinter(orderSlipPrinter.ToString("G"), mclsFPRetailPlusOSPrinter4.FileName, "RetailPlus " + mclsFPRetailPlusOSPrinter4.FileName);
-                    mclsFPRetailPlusOSPrinter4.DeleteFile();
+                    //mclsFPRetailPlusOSPrinter4.DeleteFile();
                     break;
                 case RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5:
                     mclsFPRetailPlusOSPrinter5.Write(msbToPrintFP5);
                     boSuccess = RawPrinterHelper.SendFileToPrinter(orderSlipPrinter.ToString("G"), mclsFPRetailPlusOSPrinter2.FileName, "RetailPlus " + mclsFPRetailPlusOSPrinter5.FileName);
-                    mclsFPRetailPlusOSPrinter5.DeleteFile();
+                    //mclsFPRetailPlusOSPrinter5.DeleteFile();
                     break;
             }
             if (mclsTerminalDetails.IsPrinterAutoCutter) CutPrinterPaper(orderSlipPrinter.ToString("G"));
@@ -3167,7 +3208,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 msbToPrint.Append("Payment Ref No.".PadRight(15) + ":" + Int32.Parse(mclsSalesTransactionDetails.TransactionNo).ToString().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                 msbToPrint.Append("Payee".PadRight(7) + ":" + mclsSalesTransactionDetails.CustomerDetails.ContactName.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 8) + Environment.NewLine);
-                msbToPrint.Append("Card No".PadRight(7) + ":" + mclsSalesTransactionDetails.CustomerDetails.CreditDetails.CreditCardNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 8) + Environment.NewLine);
+                msbToPrint.Append("Card No".PadRight(7) + ":" + ("************" + mclsSalesTransactionDetails.CustomerDetails.CreditDetails.CreditCardNo.Substring(0,4)).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 8) + Environment.NewLine);
                 msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                 msbToPrint.Append(Environment.NewLine);
                 msbToPrint.Append(Environment.NewLine);
@@ -4130,8 +4171,12 @@ namespace AceSoft.RetailPlus.Client.UI
             msbToPrint.Append(Environment.NewLine);
             msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
         }
-        public void PrintItemForKitchen(string Description, string stProductUnitCode, decimal Quantity, OrderSlipPrinter OrderSlipPrinter)
+
+        public void PrintItemCompositionToOSPrinter(string Description, string stProductUnitCode, decimal Quantity, OrderSlipPrinter OrderSlipPrinter)
         {
+            // return if no OrderSlipPrinter
+            if (OrderSlipPrinter == RetailPlus.OrderSlipPrinter.NotApplicable) return;
+
             // description
             string stDescription = Description;
             try
@@ -4153,16 +4198,27 @@ namespace AceSoft.RetailPlus.Client.UI
             SendOrderSlipToPrinter(stQuantity.PadLeft(6), OrderSlipPrinter);
             SendOrderSlipToPrinter(Environment.NewLine, OrderSlipPrinter);
         }
-        public void PrintItemForKitchen(string Description, string stProductUnitCode, decimal Quantity, OrderSlipPrinter OrderSlipPrinter, bool bolBIG)
+
+        public void PrintItemToOSPrinter(string Description, string stProductUnitCode, decimal Quantity, OrderSlipPrinter OrderSlipPrinter, bool bolBIG, string Remarks)
         {
+            // return if no OrderSlipPrinter
+            if (OrderSlipPrinter == RetailPlus.OrderSlipPrinter.NotApplicable) return;
+
             // description
             string stDescription = Description;
-            try
-            { stDescription = Description.Split(Convert.ToChar(Environment.NewLine)).GetValue(0).ToString(); }
-            catch { }
-            try
-            { stDescription = stDescription.Substring(0, mclsTerminalDetails.MaxReceiptWidth); }
-            catch { }
+            if (stDescription.IndexOf(Environment.NewLine) > -1)
+            {
+                try
+                { stDescription = Description.Split(Convert.ToChar(Environment.NewLine)).GetValue(0).ToString(); }
+                catch { }
+            }
+
+            if (stDescription.Length > mclsTerminalDetails.MaxReceiptWidth)
+            {
+                try
+                { stDescription = stDescription.Substring(0, mclsTerminalDetails.MaxReceiptWidth); }
+                catch { }
+            }
 
             string stQuantity = Quantity.ToString("#,##0.#0");
             if (Quantity == 1 || Quantity == -1)
@@ -4183,6 +4239,9 @@ namespace AceSoft.RetailPlus.Client.UI
             }
 
             SendOrderSlipToPrinter(Environment.NewLine, OrderSlipPrinter);
+
+            if (!string.IsNullOrEmpty(Remarks))
+                SendOrderSlipToPrinter(" * " + Remarks + Environment.NewLine, OrderSlipPrinter);
         }
 
         public delegate void PrintItemDelegate(string ItemNo, string Description, string stProductUnitCode, decimal Quantity, decimal Price, decimal Discount, decimal PromoApplied, decimal Amount, decimal VAT, decimal EVAT, string DiscountCode, DiscountTypes DiscountType);
@@ -4603,7 +4662,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             //print credit card details
                             msbToPrint.Append("Card Type".PadRight(15) + ":" + cardpaymentdet.CardTypeCode.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
-                            msbToPrint.Append("Card No.".PadRight(15) + ":" + cardpaymentdet.CardNo.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                            msbToPrint.Append("Card No.".PadRight(15) + ":" + ("xxxxxxxxxxxx" + cardpaymentdet.CardNo.Trim().Substring(0,4)).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             if (cardpaymentdet.CardHolder.Trim() != mclsSalesTransactionDetails.RewardsCustomerName.Trim()) msbToPrint.Append("Member Name".PadRight(15) + ":" + cardpaymentdet.CardHolder.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             if (cardpaymentdet.Amount != mclsSalesTransactionDetails.AmountPaid) msbToPrint.Append("Amount".PadRight(15) + ":" + cardpaymentdet.Amount.ToString("#,##0.#0").Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             if (cardpaymentdet.CardHolder != mclsSalesTransactionDetails.RewardsCustomerName
@@ -6462,26 +6521,28 @@ namespace AceSoft.RetailPlus.Client.UI
             if (result == DialogResult.OK)
             {
                 // put variables in which printer to print
-                int RetailPlusOSPrinter1Ctr = 0; int RetailPlusOSPrinter2Ctr = 0; int RetailPlusOSPrinter3Ctr = 0; int RetailPlusOSPrinter4Ctr = 0; int RetailPlusOSPrinter5Ctr = 0;
+                int iRetailPlusOSPrinter1Ctr = 0; int iRetailPlusOSPrinter2Ctr = 0; int iRetailPlusOSPrinter3Ctr = 0; int iRetailPlusOSPrinter4Ctr = 0; int iRetailPlusOSPrinter5Ctr = 0;
 
                 foreach (System.Data.DataRow dr in dtpluReport.Rows)
                 {
-                    AceSoft.RetailPlus.OrderSlipPrinter locOrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
-                    switch (locOrderSlipPrinter)
-                    {
-                        case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1: { RetailPlusOSPrinter1Ctr++; break; }
-                        case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2: { RetailPlusOSPrinter2Ctr++; break; }
-                        case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3: { RetailPlusOSPrinter3Ctr++; break; }
-                        case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4: { RetailPlusOSPrinter4Ctr++; break; }
-                        case AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5: { RetailPlusOSPrinter5Ctr++; break; }
-                    }
+                    bool orderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                    bool orderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                    bool orderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                    bool orderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                    bool orderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
+
+                    if (orderSlipPrinter1) { iRetailPlusOSPrinter1Ctr++; }
+                    if (orderSlipPrinter2) { iRetailPlusOSPrinter2Ctr++; }
+                    if (orderSlipPrinter3) { iRetailPlusOSPrinter3Ctr++; }
+                    if (orderSlipPrinter4) { iRetailPlusOSPrinter4Ctr++; }
+                    if (orderSlipPrinter5) { iRetailPlusOSPrinter5Ctr++; }
                 }
 
-                if (RetailPlusOSPrinter1Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1);
-                if (RetailPlusOSPrinter2Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2);
-                if (RetailPlusOSPrinter3Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3);
-                if (RetailPlusOSPrinter4Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4);
-                if (RetailPlusOSPrinter5Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5);
+                if (iRetailPlusOSPrinter1Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter1);
+                if (iRetailPlusOSPrinter2Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter2);
+                if (iRetailPlusOSPrinter3Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter3);
+                if (iRetailPlusOSPrinter4Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter4);
+                if (iRetailPlusOSPrinter5Ctr > 0) PrintPLUReportPerOrderSlipPrinter(dtpluReport, clsCashierReportDetails, StartDate, EndDate, AceSoft.RetailPlus.OrderSlipPrinter.RetailPlusOSPrinter5);
             }
         }
 

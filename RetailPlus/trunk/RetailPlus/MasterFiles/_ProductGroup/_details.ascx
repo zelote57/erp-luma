@@ -108,7 +108,7 @@
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Local Tax<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Printer for printing orders of this group<font color="red">*</font></label></td>
+                                    </td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -128,7 +128,6 @@
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboOrderSlipPrinter" runat="server" CssClass="ms-short-disabled" Enabled="False"></asp:dropdownlist>
                                 </td>
                             </tr>
                             <tr>

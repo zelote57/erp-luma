@@ -231,6 +231,13 @@
 								<li>Change VAT, EVAT, LocalTax</li></asp:HyperLink>
 						</td>
 					</tr>
+                    <tr>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
+						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
+							<asp:HyperLink id="lnkChangeOSPrinter" runat="server" title="Change products order slip printer">
+								<li>Change OS Printer</li></asp:HyperLink>
+						</td>
+					</tr>
 					<tr>
 						<td colspan="2" class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 					</tr>

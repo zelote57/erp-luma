@@ -163,8 +163,8 @@ BEGIN
 			WHERE CBH.CreditBillID = lngCreditBillID 
 				AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess
 				AND CRP.TerminalNo <> '00'	-- do not include the previous late charges
-				AND TransactionStatus <> 7	-- do not include the creditpayment
-				AND CreditReasonID <> 8		-- do not include deposits
+				-- AND TransactionStatus <> 7	-- do not include the creditpayment
+				AND CRP.CreditReasonID <> 8		-- do not include deposits
 				-- AND CRP.TransactionID NOT IN (SELECT DISTINCT TransactionRefID FROM tblCreditBillDetail 
 				--														 WHERE TransactionTypeID = 1
 				--															AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess)
@@ -808,8 +808,8 @@ BEGIN
 			WHERE CBH.CreditBillID = lngCreditBillID 
 				AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess
 				AND CRP.TerminalNo <> '00'	-- do not include the previous late charges
-				AND TransactionStatus <> 7	-- do not include creditPaymentStatus
-				AND CreditReasonID <> 8		-- do not include deposits
+				-- AND TransactionStatus <> 7	-- do not include creditPaymentStatus
+				AND CRP.CreditReasonID <> 8		-- do not include deposits
 				-- AND CRP.TransactionID NOT IN (SELECT TransactionRefID FROM tblCreditBillDetail 
 				-- 														 WHERE TransactionTypeID = 1
 				-- 															AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess)

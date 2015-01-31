@@ -148,6 +148,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::AceSoft.RetailPlus.MasterFiles._Product.@__Update ctrlUpdate;
         
         /// <summary>
+        /// ctrlChangeOSPrinter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.MasterFiles._Product.@__ChangeOSPrinter ctrlChangeOSPrinter;
+        
+        /// <summary>
         /// ctrlChangeTax control.
         /// </summary>
         /// <remarks>

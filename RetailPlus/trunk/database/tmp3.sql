@@ -1,56 +1,35 @@
 ﻿
-SELECT CreditBillHeaderID, CreditBillID, ContactID, GuarantorID,
-	CreditLimit, RunningCreditAmt, CurrMonthCreditAmt, CurrMonthAmountPaid,
-	BillingDate, BillingFile, TotalBillCharges, CurrentDueAmount, MinimumAmountDue,
-	Prev1MoCurrentDueAmount, Prev1MoMinimumAmountDue, Prev1MoCurrMonthAmountPaid, 
-	Prev2MoCurrentDueAmount, CurrentPurchaseAmt, BeginningBalance, EndingBalance,
-	CreatedOn, CreatedByID, CreatedByName, IsBillPrinted
-FROM tblCreditBillHeader
-WHERE BillingDate = '2014-12-20' 
-LIMIT 10;
 
-SELECT CreditBillHeaderID, CreditBillID, ContactID, GuarantorID,
-	CreditLimit, RunningCreditAmt, CurrMonthCreditAmt, CurrMonthAmountPaid,
-	BillingDate, BillingFile, TotalBillCharges, CurrentDueAmount, MinimumAmountDue,
-	Prev1MoCurrentDueAmount, Prev1MoMinimumAmountDue, Prev1MoCurrMonthAmountPaid, 
-	Prev2MoCurrentDueAmount, CurrentPurchaseAmt, BeginningBalance, EndingBalance,
-	CreatedOn, CreatedByID, CreatedByName, IsBillPrinted
-FROM tblCreditBillHeader
-WHERE BillingDate = '2015-01-06' 
-LIMIT 10;
 
-update tblterminal set TerminalName = 'SOS: 22' where terminalno = '18';
-update tblterminal set branchid=9 where terminalno = '22';
-update tblterminalreport set branchid=9 where terminalno = '22';
-update tblterminalreporthistory set branchid=9 where terminalno = '22';
-update tblcashierreport set branchid=9 where terminalno = '22';
-update tblcashierreporthistory set branchid=9 where terminalno = '22';
-update tbltransactions set branchid=9 where terminalno = '22';
-update tblcreditpaymentcash set branchid=9 where terminalno = '22';
-update tblcreditcardpayment set branchid=9 where terminalno = '22';
-update tblchequepayment set branchid=9 where terminalno = '22';
-update tblcashpayment set branchid=9 where terminalno = '22';
-update tblcashierlogs set branchid=9 where terminalno = '22';
-update tblcashcount set branchid=9 where terminalno = '22';
-update tblwithhold set branchid=9 where terminalno = '22';
-update tblDisburse set branchid=9 where terminalno = '22';
-update tblDeposit set branchid=9 where terminalno = '22';
-update tblPaidOut set branchid=9 where terminalno = '22';
-update tblplureport set branchid=9 where terminalno = '22';
-update tblCreditPaymentCash set branchid=9 where terminalno = '22';
-update tblCreditPaymentCheque set branchid=9 where terminalno = '22';
-update tblDebitPayment set branchid=9 where terminalno = '22';
-update tblCreditPayment set branchid=9 where terminalno = '22';
-select * from tblbranch;
 
-update tblCreditPayment set branchid=7 where terminalno = '80';
-update tblCreditPayment set branchid=7 where terminalno = '81';
-update tblCreditPayment set branchid=7 where terminalno = '82';
-update tblCreditPayment set branchid=7 where terminalno = '83';
-update tblCreditPayment set branchid=7 where terminalno = '84';
+-- check how many rows per partition
+SELECT PARTITION_NAME, SUBPARTITION_NAME, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME = 'tblTransactions' AND TABLE_SCHEMA = 'posbooze';
 
--- sa gabi ito
--- update sysaudittrail set branchid=5 where terminalno = '02';
--- update sysaudittrail set branchid=4 where terminalno = '01';
--- update sysaudittrail set branchid=6 where terminalno = '90';
+-- check create tabke 
+SHOW CREATE TABLE tblTransactions;
+
+-- create a table with the same schema as the original
+CREATE TABLE e2 LIKE tblTransactions;
+
+
+-- check indexes
+SHOW INDEX FROM tblTransactions;
+
+
+-- backup table
+CREATE DATABASE posback;
+CREATE TABLE IF NOT EXISTS posback.bktblTransactions LIKE tblTransactions;
+CREATE TABLE IF NOT EXISTS posback.bktblTransactionItems LIKE tblTransactionItems;
+
+INSERT INTO posback.bktblTransactions SELECT * FROM tblTransactions WHERE YEAR(TransactionDate) <= '2013';
+INSERT INTO posback.bktblTransactionItems SELECT a.* FROM tblTransactionItems a INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID WHERE YEAR(TransactionDate) <= '2013';
+
+SELECT COUNT(*) FROM tblTransactions WHERE YEAR(TransactionDate) <= '2013';
+SELECT COUNT(*) FROM posback.bktblTransactions WHERE YEAR(TransactionDate) <= '2013';
+
+DELETE a FROM tblTransactionItems a INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID WHERE YEAR(TransactionDate) <= '2013';
+DELETE FROM tblTransactions WHERE YEAR(TransactionDate) <= '2013';
+
+SELECT PARTITION_NAME, SUBPARTITION_NAME, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME = 'tblTransactions' AND TABLE_SCHEMA = 'pos';
+SELECT PARTITION_NAME, SUBPARTITION_NAME, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME = 'bktblTransactions' AND TABLE_SCHEMA = 'posback';
 

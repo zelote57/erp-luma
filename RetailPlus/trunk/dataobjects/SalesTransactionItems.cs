@@ -56,7 +56,11 @@ namespace AceSoft.RetailPlus.Data
         public PromoTypes PromoType; //34
         public bool IncludeInSubtotalDiscount;
         public bool IsCreditChargeExcluded;
-        public OrderSlipPrinter OrderSlipPrinter;
+        public bool OrderSlipPrinter1;
+        public bool OrderSlipPrinter2;
+        public bool OrderSlipPrinter3;
+        public bool OrderSlipPrinter4;
+        public bool OrderSlipPrinter5;
         public bool OrderSlipPrinted;
         public decimal PercentageCommision;
         public decimal Commision;
@@ -70,6 +74,8 @@ namespace AceSoft.RetailPlus.Data
         public decimal VatableAmount;
         public decimal NonVatableAmount; 
         public decimal VATExempt;
+
+        public string ItemRemarks;
     }
 
     public struct SalesTransactionItemColumns
@@ -114,7 +120,6 @@ namespace AceSoft.RetailPlus.Data
         public bool PromoType; //34
         public bool IncludeInSubtotalDiscount;
         public bool IsCreditChargeExcluded;
-        public bool OrderSlipPrinter;
         public bool OrderSlipPrinted;
         public bool PercentageCommision;
         public bool Commision;
@@ -169,7 +174,6 @@ namespace AceSoft.RetailPlus.Data
         public const string PromoType = "PromoType";
         public const string IncludeInSubtotalDiscount = "IncludeInSubtotalDiscount";
         public const string IsCreditChargeExcluded = "IsCreditChargeExcluded";
-        public const string OrderSlipPrinter = "OrderSlipPrinter";
         public const string OrderSlipPrinted = "OrderSlipPrinted";
         public const string PercentageCommision = "PercentageCommision";
         public const string Commision = "Commision";
@@ -255,10 +259,14 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchaseAmount," +
                                 "IncludeInSubtotalDiscount," +
                                 "IsCreditChargeExcluded," +
-                                "OrderSlipPrinter," +
+                                "OrderSlipPrinter1," +
+                                "OrderSlipPrinter2," +
+                                "OrderSlipPrinter3," +
+                                "OrderSlipPrinter4," +
+                                "OrderSlipPrinter5," +
                                 "OrderSlipPrinted," +
                                 "PercentageCommision," +
-                                "Commision, RewardPoints, PaxNo, CreatedOn" +
+                                "Commision, RewardPoints, ItemRemarks, PaxNo, CreatedOn" +
                             ")VALUES(" +
                                 "@TransactionID, " +
                                 "@ProductID, " +
@@ -300,10 +308,14 @@ namespace AceSoft.RetailPlus.Data
                                 "@PurchaseAmount," +
                                 "@IncludeInSubtotalDiscount," +
                                 "@IsCreditChargeExcluded," +
-                                "@OrderSlipPrinter," +
+                                "@OrderSlipPrinter1," +
+                                "@OrderSlipPrinter2," +
+                                "@OrderSlipPrinter3," +
+                                "@OrderSlipPrinter4," +
+                                "@OrderSlipPrinter5," +
                                 "@OrderSlipPrinted," +
                                 "@PercentageCommision," +
-                                "@Commision, @RewardPoints, @PaxNo, NOW());";
+                                "@Commision, @RewardPoints, @ItemRemarks, @PaxNo, NOW());";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -351,11 +363,16 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@PurchaseAmount", Details.PurchaseAmount);
                 cmd.Parameters.AddWithValue("@IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
                 cmd.Parameters.AddWithValue("@IsCreditChargeExcluded", Details.IsCreditChargeExcluded);
-                cmd.Parameters.AddWithValue("@OrderSlipPrinter", Convert.ToInt16(Details.OrderSlipPrinter));
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter1", Details.OrderSlipPrinter1);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter2", Details.OrderSlipPrinter2);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter3", Details.OrderSlipPrinter3);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter4", Details.OrderSlipPrinter4);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter5", Details.OrderSlipPrinter5);
                 cmd.Parameters.AddWithValue("@OrderSlipPrinted", Convert.ToInt16(Details.OrderSlipPrinted));
                 cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
                 cmd.Parameters.AddWithValue("@Commision", Details.Commision);
                 cmd.Parameters.AddWithValue("@RewardPoints", Details.RewardPoints);
+                cmd.Parameters.AddWithValue("@ItemRemarks", Details.ItemRemarks);
                 cmd.Parameters.AddWithValue("@PaxNo", Details.PaxNo);
 
                 base.ExecuteNonQuery(cmd);
@@ -419,10 +436,15 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchaseAmount				=	@PurchaseAmount, " +
                                 "IncludeInSubtotalDiscount	=	@IncludeInSubtotalDiscount, " +
                                 "IsCreditChargeExcluded	    =	@IsCreditChargeExcluded, " +
-                                "OrderSlipPrinter           =   @OrderSlipPrinter, " +
+                                "OrderSlipPrinter1          =   @OrderSlipPrinter1, " +
+                                "OrderSlipPrinter2          =   @OrderSlipPrinter2, " +
+                                "OrderSlipPrinter3          =   @OrderSlipPrinter3, " +
+                                "OrderSlipPrinter4          =   @OrderSlipPrinter4, " +
+                                "OrderSlipPrinter5          =   @OrderSlipPrinter5, " +
                                 "PercentageCommision        =   @PercentageCommision, " +
                                 "Commision                  =   @Commision, " +
                                 "RewardPoints               =   @RewardPoints, " +
+                                "ItemRemarks                =   @ItemRemarks, " +
                                 "LastModified		        =	NOW() " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID; ";
 
@@ -472,11 +494,16 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@PurchaseAmount", Details.PurchaseAmount);
                 cmd.Parameters.AddWithValue("@IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
                 cmd.Parameters.AddWithValue("@IsCreditChargeExcluded", Details.IsCreditChargeExcluded);
-                cmd.Parameters.AddWithValue("@OrderSlipPrinter", Convert.ToInt16(Details.OrderSlipPrinter.ToString("d")));
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter1", Details.OrderSlipPrinter1);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter2", Details.OrderSlipPrinter2);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter3", Details.OrderSlipPrinter3);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter4", Details.OrderSlipPrinter4);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter5", Details.OrderSlipPrinter5);
                 cmd.Parameters.AddWithValue("@OrderSlipPrinted", Convert.ToInt16(Details.OrderSlipPrinted));
                 cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
                 cmd.Parameters.AddWithValue("@Commision", Details.Commision);
                 cmd.Parameters.AddWithValue("@RewardPoints", Details.RewardPoints);
+                cmd.Parameters.AddWithValue("@ItemRemarks", Details.ItemRemarks);
                 cmd.Parameters.AddWithValue("@TransactionItemsID", Details.TransactionItemsID);
 
                 base.ExecuteNonQuery(cmd);
@@ -595,12 +622,17 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.PurchaseAmount = decimal.Parse(dr["PurchaseAmount"].ToString());
                     itemDetails.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
                     itemDetails.IsCreditChargeExcluded = bool.Parse(dr["IsCreditChargeExcluded"].ToString());
-                    itemDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+                    itemDetails.OrderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                    itemDetails.OrderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                    itemDetails.OrderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                    itemDetails.OrderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                    itemDetails.OrderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
                     itemDetails.OrderSlipPrinted = Convert.ToBoolean(dr["OrderSlipPrinted"]);
                     itemDetails.PercentageCommision = decimal.Parse(dr["PercentageCommision"].ToString());
                     itemDetails.Commision = decimal.Parse(dr["Commision"].ToString());
                     itemDetails.RewardPoints = decimal.Parse(dr["RewardPoints"].ToString());
                     itemDetails.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
+                    itemDetails.ItemRemarks = "" + dr["ItemRemarks"].ToString();
 
                     if (itemDetails.TransactionItemStatus == TransactionItemStatus.Return)
                     {
@@ -837,11 +869,16 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchaseAmount, " +
                                 "IncludeInSubtotalDiscount, " +
                                 "IsCreditChargeExcluded, " +
-                                "OrderSlipPrinter, " +
+                                "OrderSlipPrinter1, " +
+                                "OrderSlipPrinter2, " +
+                                "OrderSlipPrinter3, " +
+                                "OrderSlipPrinter4, " +
+                                "OrderSlipPrinter5, " +
                                 "OrderSlipPrinted, " +
                                 "PercentageCommision, " +
                                 "Commision, " +
                                 "RewardPoints, " +
+                                "ItemRemarks, " +
                                 "PaxNo " +
                             "FROM tblTransactionItems " +
                             "WHERE TransactionID = @TransactionID AND TransactionItemStatus <> @TransactionItemStatus ORDER BY " + SortField;
@@ -912,11 +949,16 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchaseAmount, " +
                                 "IncludeInSubtotalDiscount, " +
                                 "IsCreditChargeExcluded, " +
-                                "OrderSlipPrinter, " +
+                                "OrderSlipPrinter1, " +
+                                "OrderSlipPrinter2, " +
+                                "OrderSlipPrinter3, " +
+                                "OrderSlipPrinter4, " +
+                                "OrderSlipPrinter5, " +
                                 "OrderSlipPrinted, " +
                                 "PercentageCommision, " +
                                 "Commision, " +
                                 "RewardPoints, " +
+                                "ItemRemarks, " +
                                 "PaxNo " +
                             "FROM tblTransactionItems " +
                             "WHERE TransactionID IN (" + TransactionIDs + ") AND TransactionItemStatus <> @TransactionItemStatusTrash " +

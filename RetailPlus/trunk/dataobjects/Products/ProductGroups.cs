@@ -25,7 +25,6 @@ namespace AceSoft.RetailPlus.Data
 		public decimal VAT;
 		public decimal EVAT;
 		public decimal LocalTax;
-        public OrderSlipPrinter OrderSlipPrinter;
         public Int32 ChartOfAccountIDPurchase;
         public Int32 ChartOfAccountIDSold;
         public Int32 ChartOfAccountIDInventory;
@@ -399,7 +398,7 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procSaveProductGroup(@ProductGroupID, @ProductGroupCode, @ProductGroupName, @BaseUnitID," +
                                         "@Price, @PurchasePrice, @IncludeInSubtotalDiscount, @VAT, @EVAT," +
-                                        "@LocalTax, @OrderSlipPrinter, @ChartOfAccountIDPurchase, @ChartOfAccountIDTaxPurchase," +
+                                        "@LocalTax, @ChartOfAccountIDPurchase, @ChartOfAccountIDTaxPurchase," +
                                         "@ChartOfAccountIDSold, @ChartOfAccountIDTaxSold, @ChartOfAccountIDInventory," +
                                         "@SequenceNo, @isLock, @ChartOfAccountIDTransferIn, @ChartOfAccountIDTaxTransferIn," +
                                         "@ChartOfAccountIDTransferOut, @ChartOfAccountIDTaxTransferOut," +
@@ -416,7 +415,6 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
                 cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
-                cmd.Parameters.AddWithValue("OrderSlipPrinter", Details.OrderSlipPrinter.ToString("d"));
                 cmd.Parameters.AddWithValue("ChartOfAccountIDPurchase", Details.ChartOfAccountIDPurchase);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDTaxPurchase", Details.ChartOfAccountIDTaxPurchase);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDSold", Details.ChartOfAccountIDSold);
@@ -525,7 +523,6 @@ namespace AceSoft.RetailPlus.Data
                                 "a.VAT, " +
                                 "a.EVAT, " +
                                 "a.LocalTax, " +
-                                "OrderSlipPrinter, " +
                                 "a.ChartOfAccountIDPurchase, " +
                                 "a.ChartOfAccountIDSold, " +
                                 "a.ChartOfAccountIDInventory, " +
@@ -577,7 +574,6 @@ namespace AceSoft.RetailPlus.Data
                     Details.VAT = decimal.Parse(dr["VAT"].ToString());
                     Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
                     Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
                     /*** Added for Financial Information  ***/
                     /*** March 07, 2009 ***/
                     Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
@@ -626,7 +622,6 @@ namespace AceSoft.RetailPlus.Data
                     Details.VAT = decimal.Parse(dr["VAT"].ToString());
                     Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
                     Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
                     /*** Added for Financial Information  ***/
                     /*** March 07, 2009 ***/
                     Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());

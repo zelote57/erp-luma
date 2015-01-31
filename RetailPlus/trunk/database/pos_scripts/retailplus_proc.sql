@@ -5729,7 +5729,7 @@ BEGIN
 							,prdsg.ProductGroupID
 							,prdg.ProductGroupCode
 							,prdg.ProductGroupName
-							,prdg.OrderSlipPrinter
+							,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
 							,prd.ProductSubGroupID
 							,prdsg.ProductSubGroupCode
@@ -5839,7 +5839,7 @@ BEGIN
                             ,prdsg.ProductGroupID
                             ,prdg.ProductGroupCode
                             ,prdg.ProductGroupName
-                            ,prdg.OrderSlipPrinter
+                            ,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
                             ,prd.ProductSubGroupID
                             ,prdsg.ProductSubGroupCode
@@ -6004,7 +6004,7 @@ BEGIN
 							,prdsg.ProductGroupID
 							,prdg.ProductGroupCode
 							,prdg.ProductGroupName
-							,prdg.OrderSlipPrinter
+							,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
 							,prd.ProductSubGroupID
 							,prdsg.ProductSubGroupCode
@@ -6114,7 +6114,7 @@ BEGIN
                             ,prdsg.ProductGroupID
                             ,prdg.ProductGroupCode
                             ,prdg.ProductGroupName
-                            ,prdg.OrderSlipPrinter
+                            ,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
                             ,prd.ProductSubGroupID
                             ,prdsg.ProductSubGroupCode
@@ -6589,11 +6589,11 @@ BEGIN
 							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
-							
+														
 							,prdsg.ProductGroupID
 							,prdg.ProductGroupCode
 							,prdg.ProductGroupName
-							,prdg.OrderSlipPrinter
+							,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
 							,prd.ProductSubGroupID
 							,prdsg.ProductSubGroupCode
@@ -6720,11 +6720,11 @@ BEGIN
 						   ,prd.BarCode4
 						   ,prd.ProductCode
 						   ,prd.ProductDesc
-
+						   
 						   ,prdsg.ProductGroupID
 						   ,prdg.ProductGroupCode
 						   ,prdg.ProductGroupName
-						   ,prdg.OrderSlipPrinter
+						   ,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
 						   ,prd.ProductSubGroupID
 						   ,prdsg.ProductSubGroupCode
@@ -6867,7 +6867,7 @@ BEGIN
 							,prdsg.ProductGroupID
 							,prdg.ProductGroupCode
 							,prdg.ProductGroupName
-							,prdg.OrderSlipPrinter
+							,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
 							,prd.ProductSubGroupID
 							,prdsg.ProductSubGroupCode
@@ -6982,7 +6982,7 @@ BEGIN
 							,prdsg.ProductGroupID
 							,prdg.ProductGroupCode
 							,prdg.ProductGroupName
-							,prdg.OrderSlipPrinter
+							,prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5
 
 							,prd.ProductSubGroupID
 							,prdsg.ProductSubGroupCode
@@ -8933,7 +8933,7 @@ BEGIN
 		,Amount, VAT, vatableAmount, EVAT, EVATableAmount, LocalTax, VariationsMatrixID, MatrixDescription, ProductGroup, ProductSubGroup
 		,TransactionItemStatus, DiscountCode, DiscountRemarks, ProductPackageID, MatrixPackageID, PackageQuantity
 		,PromoQuantity, PromoValue, PromoType, PromoApplied, PurchasePrice, PurchaseAmount
-		,IncludeInSubtotalDiscount, OrderSlipPrinter, orderslipprinted, PercentageCommision, Commision, PaxNo, TransactionDiscount, Datasource
+		,IncludeInSubtotalDiscount, OrderSlipPrinter1, orderslipprinted, PercentageCommision, Commision, PaxNo, TransactionDiscount, Datasource
 	)
 	SELECT trx.TransactionID, CONCAT(999,det.fk_mi_def) ProductID, prd.ProductCode, pkg.Barcode1, prd.ProductDesc Description
 		,pkg.UnitID ProductUnitID, unt.UnitCode ProductUnitCode
@@ -8946,7 +8946,7 @@ BEGIN
 		 end TransactionItemStatus
 		,'' DiscountCode, '' DiscountRemarks, pkg.PackageID ProductPackageID, 0 MatrixPackageID, 1 PackageQuantity
 		,0 PromoQuantity, 0 PromoValue, 0 PromoType, 0 PromoApplied, 0 PurchasePrice, 0 PurchaseAmount
-		,prd.IncludeInSubtotalDiscount, grp.OrderSlipPrinter, 0 orderslipprinted, 0 PercentageCommision, 0 Commision, 1 PaxNo, 0 TransactionDiscount
+		,prd.IncludeInSubtotalDiscount, prd.OrderSlipPrinter1, 0 orderslipprinted, 0 PercentageCommision, 0 Commision, 1 PaxNo, 0 TransactionDiscount
 		,det.BatchID
 	FROM tblTransactions trx
 	INNER JOIN tblgla_f_dtl_chk_mi det ON det.fk_chk_headers = trx.TransactionID
@@ -8965,7 +8965,7 @@ BEGIN
 			  when Status_Flag = 'MI_RTN' then 4
 			  else 0
 		 end
-		,prd.IncludeInSubtotalDiscount, grp.OrderSlipPrinter
+		,prd.IncludeInSubtotalDiscount, prd.OrderSlipPrinter1
 	ORDER BY det.fk_chk_headers, det.Dtl_Num;
 
 END;

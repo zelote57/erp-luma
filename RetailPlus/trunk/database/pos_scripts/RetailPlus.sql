@@ -8734,6 +8734,49 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.26'; -- update the BranchWnd.cs CTRL +
 UPDATE tblTerminal SET DBVersion = '4.0.1.27'; -- update the BranchWnd.cs and Program.cs automatic update MachineSerialNo and AccreditationNo in config file
 UPDATE tblTerminal SET DBVersion = '4.0.1.28'; -- update the CreditVerification F8
 
+/*********************************  v_4.0.1.28.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.29';
+
+ALTER TABLE tblProducts DROP `OrderSlipPrinter1`;
+ALTER TABLE tblProducts DROP `OrderSlipPrinter2`;
+ALTER TABLE tblProducts DROP `OrderSlipPrinter3`;
+ALTER TABLE tblProducts DROP `OrderSlipPrinter4`;
+ALTER TABLE tblProducts DROP `OrderSlipPrinter5`;
+
+ALTER TABLE tblProducts ADD `OrderSlipPrinter1` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblProducts ADD `OrderSlipPrinter2` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblProducts ADD `OrderSlipPrinter3` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblProducts ADD `OrderSlipPrinter4` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblProducts ADD `OrderSlipPrinter5` TINYINT(1) NOT NULL DEFAULT 0;
+
+UPDATE tblProducts 
+INNER JOIN tblProductSubGroup ON tblProductSubGroup.ProductSubGroupID = tblProducts.ProductSubGroupID
+INNER JOIN tblProductGroup ON tblProductGroup.ProductGroupID = tblProductSubGroup.ProductGroupID
+SET OrderSlipPrinter1 = CASE OrderSlipPrinter WHEN 0 THEN 1 ELSE 0 END,
+    OrderSlipPrinter2 = CASE OrderSlipPrinter WHEN 1 THEN 1 ELSE 0 END,
+	OrderSlipPrinter3 = CASE OrderSlipPrinter WHEN 2 THEN 1 ELSE 0 END,
+	OrderSlipPrinter4 = CASE OrderSlipPrinter WHEN 3 THEN 1 ELSE 0 END,
+	OrderSlipPrinter5 = CASE OrderSlipPrinter WHEN 4 THEN 1 ELSE 0 END;
+
+ALTER TABLE tblTransactionItems ADD `OrderSlipPrinter1` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactionItems ADD `OrderSlipPrinter2` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactionItems ADD `OrderSlipPrinter3` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactionItems ADD `OrderSlipPrinter4` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactionItems ADD `OrderSlipPrinter5` TINYINT(1) NOT NULL DEFAULT 0;
+
+UPDATE tblTransactionItems SET OrderSlipPrinter1 = OrderSlipPrinter;
+ALTER TABLE tblTransactionItems DROP OrderSlipPrinter;
+ALTER TABLE tblProductGroup DROP OrderSlipPrinter;
+
+
+/*********************************  v_4.0.1.29.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.30';
+
+ALTER TABLE tblTransactionItems ADD `ItemRemarks` VARCHAR(80);
+
+
 -- Notes: Please read
 -- run the retailplus_proc.sql
 -- run this to fixed the previous reports.

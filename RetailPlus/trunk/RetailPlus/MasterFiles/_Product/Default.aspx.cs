@@ -104,6 +104,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         SearchIndex = SearchCategoryID.Products;
                         ctrlChangePrice.Visible = true;
                         break;
+                    case "changeosprinter":
+                        stHeading = "Change the OS Printers of specific product.";
+                        SearchIndex = SearchCategoryID.Products;
+                        ctrlChangeOSPrinter.Visible = true;
+                        break;
                     case "synchronize":
                         stHeading = "Synchronize branch database to this master database.";
                         SearchIndex = SearchCategoryID.NotApplicable;

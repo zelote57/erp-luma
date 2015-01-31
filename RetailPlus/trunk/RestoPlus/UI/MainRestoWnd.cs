@@ -78,9 +78,14 @@ namespace AceSoft.RetailPlus.Client.UI
 		private DataGrid dgItems;
 		private DataGridTextBoxColumn Commision;
         private DataGridTextBoxColumn RewardPoints;
+        private DataGridTextBoxColumn ItemRemarks;
 		private DataGridTextBoxColumn PercentageCommision;
 		private DataGridTextBoxColumn OrderSlipPrinted;
-		private DataGridTextBoxColumn OrderSlipPrinter;
+        private DataGridTextBoxColumn OrderSlipPrinter1;
+        private DataGridTextBoxColumn OrderSlipPrinter2;
+        private DataGridTextBoxColumn OrderSlipPrinter3;
+        private DataGridTextBoxColumn OrderSlipPrinter4;
+        private DataGridTextBoxColumn OrderSlipPrinter5;
 		private DataGridTextBoxColumn IncludeInSubtotalDiscount;
         private DataGridTextBoxColumn IsCreditChargeExcluded;
 		private DataGridTextBoxColumn PurchaseAmount;
@@ -252,9 +257,14 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgItems = new System.Windows.Forms.DataGrid();
             this.Commision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.RewardPoints = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ItemRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PercentageCommision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.OrderSlipPrinted = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.OrderSlipPrinter = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinter1 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinter2 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinter3 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinter4 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinter5 = new System.Windows.Forms.DataGridTextBoxColumn();
             this.IncludeInSubtotalDiscount = new System.Windows.Forms.DataGridTextBoxColumn();
             this.IsCreditChargeExcluded = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PurchaseAmount = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -537,7 +547,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblTerminalNoName.Size = new System.Drawing.Size(105, 22);
             this.lblTerminalNoName.TabIndex = 66;
             this.lblTerminalNoName.Text = "  Terminal No.:";
-            this.lblTerminalNoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTerminalNoName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCashierName
             // 
@@ -880,6 +890,15 @@ namespace AceSoft.RetailPlus.Client.UI
             this.RewardPoints.ReadOnly = true;
             this.RewardPoints.Width = 0;
             // 
+            // ItemRemarks
+            // 
+            this.ItemRemarks.Format = "";
+            this.ItemRemarks.FormatInfo = null;
+            this.ItemRemarks.MappingName = "ItemRemarks";
+            this.ItemRemarks.NullText = "";
+            this.ItemRemarks.ReadOnly = true;
+            this.ItemRemarks.Width = 0;
+            // 
             // PercentageCommision
             // 
             this.PercentageCommision.Format = "";
@@ -898,14 +917,50 @@ namespace AceSoft.RetailPlus.Client.UI
             this.OrderSlipPrinted.ReadOnly = true;
             this.OrderSlipPrinted.Width = 0;
             // 
-            // OrderSlipPrinter
+            // OrderSlipPrinter1
             // 
-            this.OrderSlipPrinter.Format = "";
-            this.OrderSlipPrinter.FormatInfo = null;
-            this.OrderSlipPrinter.MappingName = "OrderSlipPrinter";
-            this.OrderSlipPrinter.NullText = "";
-            this.OrderSlipPrinter.ReadOnly = true;
-            this.OrderSlipPrinter.Width = 0;
+            this.OrderSlipPrinter1.Format = "";
+            this.OrderSlipPrinter1.FormatInfo = null;
+            this.OrderSlipPrinter1.MappingName = "OrderSlipPrinter1";
+            this.OrderSlipPrinter1.NullText = "";
+            this.OrderSlipPrinter1.ReadOnly = true;
+            this.OrderSlipPrinter1.Width = 0;
+            // 
+            // OrderSlipPrinter2
+            // 
+            this.OrderSlipPrinter2.Format = "";
+            this.OrderSlipPrinter2.FormatInfo = null;
+            this.OrderSlipPrinter2.MappingName = "OrderSlipPrinter2";
+            this.OrderSlipPrinter2.NullText = "";
+            this.OrderSlipPrinter2.ReadOnly = true;
+            this.OrderSlipPrinter2.Width = 0;
+            // 
+            // OrderSlipPrinter3
+            // 
+            this.OrderSlipPrinter3.Format = "";
+            this.OrderSlipPrinter3.FormatInfo = null;
+            this.OrderSlipPrinter3.MappingName = "OrderSlipPrinter3";
+            this.OrderSlipPrinter3.NullText = "";
+            this.OrderSlipPrinter3.ReadOnly = true;
+            this.OrderSlipPrinter3.Width = 0;
+            // 
+            // OrderSlipPrinter4
+            // 
+            this.OrderSlipPrinter4.Format = "";
+            this.OrderSlipPrinter4.FormatInfo = null;
+            this.OrderSlipPrinter4.MappingName = "OrderSlipPrinter4";
+            this.OrderSlipPrinter4.NullText = "";
+            this.OrderSlipPrinter4.ReadOnly = true;
+            this.OrderSlipPrinter4.Width = 0;
+            // 
+            // OrderSlipPrinter5
+            // 
+            this.OrderSlipPrinter5.Format = "";
+            this.OrderSlipPrinter5.FormatInfo = null;
+            this.OrderSlipPrinter5.MappingName = "OrderSlipPrinter5";
+            this.OrderSlipPrinter5.NullText = "";
+            this.OrderSlipPrinter5.ReadOnly = true;
+            this.OrderSlipPrinter5.Width = 0;
             // 
             // IncludeInSubtotalDiscount
             // 
@@ -2578,6 +2633,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mConnection = clsTerminal.Connection; mTransaction = clsTerminal.Transaction;
 
                 mclsTerminalDetails = clsTerminal.Details(Constants.TerminalBranchID, CompanyDetails.TerminalNo);
+                lblTerminalNoName.Text = mclsTerminalDetails.BranchDetails.BranchName;
 
                 Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
                 mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
@@ -2668,12 +2724,18 @@ namespace AceSoft.RetailPlus.Client.UI
             ItemDataTable.Columns.Add("PurchaseAmount");
             ItemDataTable.Columns.Add("IncludeInSubtotalDiscount");
             ItemDataTable.Columns.Add("IsCreditChargeExcluded");
-            ItemDataTable.Columns.Add("OrderSlipPrinter");
+            ItemDataTable.Columns.Add("OrderSlipPrinter1");
+            ItemDataTable.Columns.Add("OrderSlipPrinter2");
+            ItemDataTable.Columns.Add("OrderSlipPrinter3");
+            ItemDataTable.Columns.Add("OrderSlipPrinter4");
+            ItemDataTable.Columns.Add("OrderSlipPrinter5");
             ItemDataTable.Columns.Add("OrderSlipPrinted");
             ItemDataTable.Columns.Add("PercentageCommision");
             ItemDataTable.Columns.Add("Commision");
             ItemDataTable.Columns.Add("RewardPoints");
+            ItemDataTable.Columns.Add("ItemRemarks");
             ItemDataTable.Columns.Add("PaxNo");
+            
 
             this.dgStyle.MappingName = ItemDataTable.TableName;
             dgItems.DataSource = ItemDataTable;
@@ -2771,6 +2833,76 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch { }
 		}
+        private void ChangeItemRemarks()
+        {
+
+            int iOldRow = dgItems.CurrentRowIndex;
+            int iRow = dgItems.CurrentRowIndex;
+
+            if (iRow >= 0)
+            {
+                if (dgItems[iRow, 8].ToString() != "VOID")
+                {
+                    if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
+                    {
+                        MessageBox.Show("Sorry you cannot change quantity if Auto-print is ON.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    DialogResult loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.ChangeQuantity);
+
+                    if (loginresult == DialogResult.OK)
+                    {
+                        Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
+
+                        string oldItemRemarks = Details.ItemRemarks;
+                        ChangeItemRemarksWnd clsChangeItemRemarksWnd = new ChangeItemRemarksWnd();
+                        clsChangeItemRemarksWnd.Details = Details;
+                        clsChangeItemRemarksWnd.TerminalDetails = mclsTerminalDetails;
+                        clsChangeItemRemarksWnd.ShowDialog(this);
+                        DialogResult result = clsChangeItemRemarksWnd.Result;
+                        Details = clsChangeItemRemarksWnd.Details;
+
+                        clsChangeItemRemarksWnd.Close();
+                        clsChangeItemRemarksWnd.Dispose();
+
+                        if (result == DialogResult.OK && oldItemRemarks != Details.ProductCode)
+                        {
+                            Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
+                            mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
+
+                            mbodgItemRowClick = true;
+
+                            clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + "".PadRight(15) + " remarks from:" + oldItemRemarks + " to " + Details.ItemRemarks, true);
+
+                            System.Data.DataRow dr = (System.Data.DataRow)ItemDataTable.Rows[iRow];
+
+                            dr = setCurrentRowItemDetails(dr, Details);
+
+                            ComputeSubTotal(); setTotalDetails();
+
+                            Details.TransactionID = Convert.ToInt64(lblTransNo.Tag);
+
+                            Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
+                            mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
+
+                            clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
+                            clsSalesTransactions.CommitAndDispose();
+
+                            clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + " : done", true);
+
+                            clsProduct.CommitAndDispose();
+
+                            mbodgItemRowClick = false;
+
+                            DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
+                            DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                        }
+                    }
+                }
+            }
+
+        }
         private void ChangeProductCode()
         {
 
@@ -4073,6 +4205,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         if (addresult == DialogResult.OK)
                         {
+                            Cursor.Current = Cursors.WaitCursor;
+
                             LoadContact(Data.ContactGroupCategory.CUSTOMER, details);
 
                             lblCustomer.Text = details.ContactName;
@@ -4111,6 +4245,8 @@ namespace AceSoft.RetailPlus.Client.UI
                             this.LoadOptions();
 
                             boRetValue = true;
+
+                            Cursor.Current = Cursors.Default;
                         }
                         else { clsEvent.AddEventLn("Cancelled!"); }
 					}
@@ -5375,11 +5511,16 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
                         clsItemDetails.IncludeInSubtotalDiscount = clsProductDetails.IncludeInSubtotalDiscount;
                         clsItemDetails.IsCreditChargeExcluded = clsProductDetails.IsCreditChargeExcluded;
-                        clsItemDetails.OrderSlipPrinter = clsProductDetails.OrderSlipPrinter;
+                        clsItemDetails.OrderSlipPrinter1 = clsProductDetails.OrderSlipPrinter1;
+                        clsItemDetails.OrderSlipPrinter2 = clsProductDetails.OrderSlipPrinter2;
+                        clsItemDetails.OrderSlipPrinter3 = clsProductDetails.OrderSlipPrinter3;
+                        clsItemDetails.OrderSlipPrinter4 = clsProductDetails.OrderSlipPrinter4;
+                        clsItemDetails.OrderSlipPrinter5 = clsProductDetails.OrderSlipPrinter5;
                         clsItemDetails.OrderSlipPrinted = false;
                         clsItemDetails.PercentageCommision = clsProductDetails.PercentageCommision;
                         clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
                         clsItemDetails.RewardPoints = clsProductDetails.RewardPoints;
+                        clsItemDetails.ItemRemarks = "";
 
                         clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
                         clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
@@ -6966,6 +7107,12 @@ namespace AceSoft.RetailPlus.Client.UI
                             //UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
                             UpdateCashierReport(TransactionStatus.CreditPayment, 0, 0, AmountPaid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, PaymentType);
 
+                            // Sep 24, 2014 : update back the LastCheckInDate to min date
+                            Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
+                            mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
+
+                            clsContact.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, Constants.C_DATE_MIN_VALUE);
+
                             //// 3Nov2014 : automatically deposit the change if credit payment
                             //#region Auto deposit for creditpayment
                             //if (mclsSysConfigDetails.WillDepositChangeOfCreditPayment)
@@ -8117,7 +8264,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 bool HasPendingTransaction = clsSalesTransactions.HasPendingTransaction(UID, mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, out stTransactionNo);
 
                 if (HasPendingTransaction)
-                { clsEvent.AddEventLn(stTransactionNo + " found pending."); LoadTransaction(stTransactionNo, mclsTerminalDetails.TerminalNo); }
+                {   clsEvent.AddEventLn(stTransactionNo + " found pending.");  LoadTransaction(stTransactionNo, mclsTerminalDetails.TerminalNo); }
                 else
                 { clsEvent.AddEventLn("None."); if (WillLoadOptions) this.LoadOptions(); }
                 clsSalesTransactions.CommitAndDispose();
@@ -8259,12 +8406,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 Details.PurchaseAmount = Convert.ToDecimal(dgItems[iRow, 33].ToString());
                 Details.IncludeInSubtotalDiscount = Convert.ToBoolean(dgItems[iRow, 34].ToString());
                 Details.IsCreditChargeExcluded = Convert.ToBoolean(dgItems[iRow, 35].ToString());
-                Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dgItems[iRow, 36].ToString());
-                Details.OrderSlipPrinted = Convert.ToBoolean(dgItems[iRow, 37].ToString());
-                Details.PercentageCommision = Convert.ToDecimal(dgItems[iRow, 38].ToString());
-                Details.Commision = Convert.ToDecimal(dgItems[iRow, 39].ToString());
-                Details.RewardPoints = Convert.ToDecimal(dgItems[iRow, 40].ToString());
-                Details.PaxNo = Convert.ToInt32(dgItems[iRow, 41].ToString());
+                Details.OrderSlipPrinter1 = bool.Parse(dgItems[iRow, 36].ToString());
+                Details.OrderSlipPrinter2 = bool.Parse(dgItems[iRow, 37].ToString());
+                Details.OrderSlipPrinter3 = bool.Parse(dgItems[iRow, 38].ToString());
+                Details.OrderSlipPrinter4 = bool.Parse(dgItems[iRow, 39].ToString());
+                Details.OrderSlipPrinter5 = bool.Parse(dgItems[iRow, 40].ToString());
+                Details.OrderSlipPrinted = Convert.ToBoolean(dgItems[iRow, 41].ToString());
+                Details.PercentageCommision = Convert.ToDecimal(dgItems[iRow, 42].ToString());
+                Details.Commision = Convert.ToDecimal(dgItems[iRow, 43].ToString());
+                Details.RewardPoints = Convert.ToDecimal(dgItems[iRow, 44].ToString());
+                Details.ItemRemarks = dgItems[iRow, 45].ToString();
+                Details.PaxNo = Convert.ToInt32(dgItems[iRow, 46].ToString());
 
                 return Details;
             }
@@ -8330,11 +8482,16 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["PurchaseAmount"] = Details.PurchaseAmount;
                 dr["IncludeInSubtotalDiscount"] = Details.IncludeInSubtotalDiscount;
                 dr["IsCreditChargeExcluded"] = Details.IsCreditChargeExcluded;
-                dr["OrderSlipPrinter"] = Details.OrderSlipPrinter;
+                dr["OrderSlipPrinter1"] = Details.OrderSlipPrinter1;
+                dr["OrderSlipPrinter2"] = Details.OrderSlipPrinter2;
+                dr["OrderSlipPrinter3"] = Details.OrderSlipPrinter3;
+                dr["OrderSlipPrinter4"] = Details.OrderSlipPrinter4;
+                dr["OrderSlipPrinter5"] = Details.OrderSlipPrinter5;
                 dr["OrderSlipPrinted"] = Details.OrderSlipPrinted.ToString();
                 dr["PercentageCommision"] = Details.PercentageCommision;
                 dr["Commision"] = Details.Amount * (Details.PercentageCommision / 100);
                 dr["RewardPoints"] = Details.RewardPoints;
+                dr["ItemRemarks"] = Details.ItemRemarks;
                 dr["PaxNo"] = Details.PaxNo;
 
                 if (Details.TransactionItemStatus == TransactionItemStatus.Void)
@@ -8585,7 +8742,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
                     LoadTransaction(strTransactionNo, strTerminalNo);
-
+                    
                     AddToReprintedTransaction(strTransactionNo, strTerminalNo);
 
                     clsSalesTransactions.CommitAndDispose();
@@ -9471,6 +9628,16 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 mclsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, pstrTerminalNo, mclsTerminalDetails.BranchID);
 
+                if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Open ||
+                    mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Suspended)
+                {
+                    // Aug 6, 2011 : Lemu
+                    // overwrite to change cashierid and name
+                    try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
+                    catch { }
+                    mclsSalesTransactionDetails.CashierName = lblCashier.Text;
+                }
+
                 Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
                 Data.ContactDetails clsContactDetails = clsContact.Details(mclsSalesTransactionDetails.CustomerID);
                 LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
@@ -9479,7 +9646,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 //mclsSalesTransactionDetails.RewardCardExpiry = clsContactDetails.RewardDetails.ExpiryDate;
                 //mclsSalesTransactionDetails.RewardPreviousPoints = clsContactDetails.RewardDetails.RewardPoints;
 
-                if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund)
+                if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund || mclsSalesTransactionDetails.TransactionType == TransactionTypes.POSRefund)
                 {
                     mboIsRefund = true;
                     lblSubtotalName.Text = "SUBTOTAL: REFUND";
@@ -10080,7 +10247,10 @@ namespace AceSoft.RetailPlus.Client.UI
 					case 32: { break; }
 				}
 			}
-			catch { }
+			catch (Exception ex)
+            {
+                clsEvent.AddErrorEventLn(ex);
+            }
 			finally
 			{
 				txtBarCode.Focus();
@@ -10157,8 +10327,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					if (dgCell.ColumnNumber == 5) this.ApplyItemDiscount();
 					if (dgCell.ColumnNumber == 8) this.ChangeQuantity();
 					if (dgCell.ColumnNumber == 9) this.ChangePrice();
-					if (dgCell.ColumnNumber == 13) this.ChangeAmount();
-					if (dgCell.ColumnNumber == 40) this.ChangePaxNo();
+					if (dgCell.ColumnNumber == 13) this.ChangeItemRemarks();
+					if (dgCell.ColumnNumber == 46) this.ChangePaxNo();
 
 					try { dgItems.Select(iRow); }
 					catch { }
@@ -10448,19 +10618,26 @@ namespace AceSoft.RetailPlus.Client.UI
 					{
 						string strTempProductCode = "";
 						string[] strCodes = strProductCode.Split(' ');
+                        int ixCtr = 0;
 						foreach (string strCode in strCodes)
 						{
-							if ((strTempProductCode.Length + strCode.Length) < 12)
-							{
-								strTempProductCode += (strTempProductCode.Length == 0) ? strCode : " " + strCode;
-							}
-							else
-							{
-								cmdProduct.Text += (cmdProduct.Text.Length == 0) ? strTempProductCode : "\r\n" + strTempProductCode;
-								strTempProductCode = strCode;
-							}
-							if ((strProductCode.LastIndexOf(strCode) + strCode.Length) == strProductCode.Length) //mean this is the last
-								cmdProduct.Text += "\r\n" + strTempProductCode;
+                            if (ixCtr == 0)
+                                cmdProduct.Text = strCode;
+                            else
+                                cmdProduct.Text += "\r\n" + strCode;
+
+                            ixCtr++;
+                            //if ((strTempProductCode.Length + strCode.Length) < 12)
+                            //{
+                            //    strTempProductCode += (strTempProductCode.Length == 0) ? strCode : " " + strCode;
+                            //}
+                            //else
+                            //{
+                            //    cmdProduct.Text += (cmdProduct.Text.Length == 0) ? strTempProductCode : "\r\n" + strTempProductCode;
+                            //    strTempProductCode = strCode;
+                            //}
+                            //if ((strProductCode.LastIndexOf(strCode) + strCode.Length) == strProductCode.Length) //mean this is the last
+                            //    cmdProduct.Text += "\r\n" + strTempProductCode;
 						}
 						
 					}

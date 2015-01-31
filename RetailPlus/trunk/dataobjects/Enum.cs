@@ -37,6 +37,7 @@ namespace AceSoft.RetailPlus
         OrderSlip           =   10,
         ParkingTicket       =   11,
         CancelledCreditPayment = 12,
+        SuspendedOpen       =   13
 	}
 	
 	public enum TransactionItemStatus

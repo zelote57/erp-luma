@@ -488,6 +488,23 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("      Credit", ":", mclsDetails.RefundCredit.ToString("#,##0.00"));
             dt.Rows.Add("      Debit", ":", mclsDetails.RefundDebit.ToString("#,##0.00"));
 
+            Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsReceipt.Connection, clsReceipt.Transaction);
+            // CashierID = 0 ALL
+
+            Data.TerminalReport clsTerminalReport = new Data.TerminalReport(clsReceipt.Connection, clsReceipt.Transaction);
+            System.Data.DataTable dtCreditCards = clsSalesTransactions.SalesPerCreditCard(mclsDetails.BranchID, mclsDetails.TerminalNo, mclsDetails.CashierID, clsTerminalReportDetails.DateLastInitialized, clsTerminalReportDetails.NEXTDateLastInitialized);
+
+            if (dtCreditCards.Rows.Count > 0)
+            {
+                dt.Rows.Add("-", "-", "-");
+                dt.Rows.Add("Credit Card Breakdown", "", "");
+                dt.Rows.Add("-", "-", "-");
+                foreach (System.Data.DataRow dr in dtCreditCards.Rows)
+                {
+                    dt.Rows.Add(dr["CardTypeCode"].ToString(), ":", decimal.Parse(dr["Amount"].ToString()).ToString("#,##0.00"));
+                }
+            }
+
             dt.Rows.Add("Discounts", "", "");
             dt.Rows.Add("Items Discount", ":", mclsDetails.ItemsDiscount.ToString("#,##0.00"));
             dt.Rows.Add("Subtotal Discount", ":", mclsDetails.SubTotalDiscount.ToString("#,##0.00"));
@@ -496,10 +513,10 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("     Others", ":", mclsDetails.OtherDiscount.ToString("#,##0.00"));
             dt.Rows.Add("Total Discounts", ":", mclsDetails.TotalDiscount.ToString("#,##0.00"));
 
-            Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsReceipt.Connection, clsReceipt.Transaction);
+            clsSalesTransactions = new Data.SalesTransactions(clsReceipt.Connection, clsReceipt.Transaction);
 
             System.Data.DataTable dtDiscounts = clsSalesTransactions.Discounts(mclsDetails.BranchID, mclsDetails.TerminalNo, clsTerminalReportDetails.BeginningTransactionNo, clsTerminalReportDetails.EndingTransactionNo);
-            if (dt.Rows.Count > 0)
+            if (dtDiscounts.Rows.Count > 0)
             {
                 dt.Rows.Add("-", "-", "-");
                 dt.Rows.Add("Subtotal Discounts Breakdown", "", "");

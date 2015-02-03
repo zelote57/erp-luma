@@ -121,7 +121,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 System.Data.DataTable dt = ListAsDataTable(BranchID, TerminalNo, DateFrom, DateTo, DateLastInitialized, WithTF, LastInitializationDetails, NextDetails);
 
-                return TerminalReport.SetDetails(dt);
+                return new TerminalReport(base.Connection, base.Transaction).SetDetails(dt);
             }
             catch (Exception ex)
             {
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 System.Data.DataTable dt = ListAsDataTable(0, string.Empty, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, false, false, false);
 
-                return TerminalReport.SetDetailsList(dt);
+                return new TerminalReport(base.Connection, base.Transaction).SetDetailsList(dt);
 			}
 			catch (Exception ex)
 			{
@@ -303,7 +303,7 @@ namespace AceSoft.RetailPlus.Data
 					        "FROM tblTerminalReportHistory " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
-				  
+  
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
                 cmd.Parameters.AddWithValue("@ProcessingDate", ProcessingDate);
@@ -351,7 +351,8 @@ namespace AceSoft.RetailPlus.Data
                 DateTime dteRetValue = DateTime.MinValue;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                    if (!string.IsNullOrEmpty(dr["DateLastInitialized"].ToString()))
+                        dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
@@ -383,10 +384,47 @@ namespace AceSoft.RetailPlus.Data
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                DateTime dteRetValue = DateTime.MinValue;
+                DateTime dteRetValue = Constants.C_DATE_MIN_VALUE; // always use constants DateTime.MinValue;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                    if (!string.IsNullOrEmpty(dr["DateLastInitialized"].ToString()))
+                        dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                }
+
+                return dteRetValue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public DateTime PREVDateLastInitialized(Int32 BranchID, string TerminalNo, DateTime ProcessingDate)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT " +
+                                "MAX(DateLastInitialized) AS DateLastInitialized " +
+                            "FROM tblTerminalReportHistory " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                            "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') < DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@ProcessingDate", ProcessingDate);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                DateTime dteRetValue = Constants.C_DATE_MIN_VALUE; // always use constants DateTime.MinValue;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    if (!string.IsNullOrEmpty(dr["DateLastInitialized"].ToString()))
+                        dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
@@ -419,7 +457,8 @@ namespace AceSoft.RetailPlus.Data
                 DateTime dteRetValue = DateTime.MinValue;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                    if (!string.IsNullOrEmpty(dr["DateLastInitialized"].ToString()))
+                        dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;

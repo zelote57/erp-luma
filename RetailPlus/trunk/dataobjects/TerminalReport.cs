@@ -134,6 +134,9 @@ namespace AceSoft.RetailPlus.Data
 		 * */
         public Int32 NoOfReprintedTransaction;
         public decimal TotalReprintedTransaction;
+
+        public DateTime PREVDateLastInitialized;
+        public DateTime NEXTDateLastInitialized;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -335,7 +338,7 @@ namespace AceSoft.RetailPlus.Data
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                TerminalReportDetails Details = SetDetails(dt);
+                TerminalReportDetails Details = SetDetails(dt, true);
 
 				return Details;
 			}
@@ -344,114 +347,134 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-        public static TerminalReportDetails SetDetails(System.Data.DataTable dt)
+        public TerminalReportDetails SetDetails(System.Data.DataTable dt, bool isCurrentZRead = false)
         {
-            TerminalReportDetails Details = new TerminalReportDetails();
-
-            foreach (System.Data.DataRow dr in dt.Rows)
+            try
             {
-                Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
-                Details.TerminalNo = dr["TerminalNo"].ToString();
-                Details.BeginningTransactionNo = dr["BeginningTransactionNo"].ToString();
-                Details.EndingTransactionNo = dr["EndingTransactionNo"].ToString();
-                Details.BeginningORNo = dr["BeginningORNo"].ToString();
-                Details.EndingORNo = dr["EndingORNo"].ToString();
-                Details.ZReadCount = Int32.Parse(dr["ZReadCount"].ToString());
-                Details.XReadCount = Int32.Parse(dr["XReadCount"].ToString());
-                Details.NetSales = decimal.Parse(dr["NetSales"].ToString());
-                Details.GrossSales = decimal.Parse(dr["GrossSales"].ToString());
-                Details.TotalDiscount = decimal.Parse(dr["TotalDiscount"].ToString());
-                Details.SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString());
-                Details.PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString());
-                Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
-                Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
-                Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
-                Details.ItemSold = decimal.Parse(dr["ItemSold"].ToString());
-                Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
-                Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
-                Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
-                Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
-                Details.ActualOldGrandTotal = decimal.Parse(dr["ActualOldGrandTotal"].ToString());
-                Details.ActualNewGrandTotal = decimal.Parse(dr["ActualNewGrandTotal"].ToString());
-                Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
-                Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
-                Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
-                Details.ZeroRatedSales = decimal.Parse(dr["ZeroRatedSales"].ToString());
-                Details.VAT = decimal.Parse(dr["VAT"].ToString());
-                Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
-                Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
-                Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
-                Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-                Details.CashSales = decimal.Parse(dr["CashSales"].ToString());
-                Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
-                Details.CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString());
-                Details.CreditSales = decimal.Parse(dr["CreditSales"].ToString());
-                Details.RefundCash = decimal.Parse(dr["RefundCash"].ToString());
-                Details.RefundCheque = decimal.Parse(dr["RefundCheque"].ToString());
-                Details.RefundCreditCard = decimal.Parse(dr["RefundCreditCard"].ToString());
-                Details.RefundCredit = decimal.Parse(dr["RefundCredit"].ToString());
-                Details.RefundDebit = decimal.Parse(dr["RefundDebit"].ToString());
-                Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
-                Details.CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString());
-                Details.CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString());
-                Details.CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString());
-                Details.CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString());
-                Details.DebitPayment = decimal.Parse(dr["DebitPayment"].ToString());
-                Details.RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString());
-                Details.RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString());
-                Details.CashInDrawer = decimal.Parse(dr["CashInDrawer"].ToString());
-                Details.TotalDisburse = decimal.Parse(dr["TotalDisburse"].ToString());
-                Details.CashDisburse = decimal.Parse(dr["CashDisburse"].ToString());
-                Details.ChequeDisburse = decimal.Parse(dr["ChequeDisburse"].ToString());
-                Details.CreditCardDisburse = decimal.Parse(dr["CreditCardDisburse"].ToString());
-                Details.TotalWithHold = decimal.Parse(dr["TotalWithHold"].ToString());
-                Details.CashWithHold = decimal.Parse(dr["CashWithHold"].ToString());
-                Details.ChequeWithHold = decimal.Parse(dr["ChequeWithHold"].ToString());
-                Details.CreditCardWithHold = decimal.Parse(dr["CreditCardWithHold"].ToString());
-                Details.TotalPaidOut = decimal.Parse(dr["TotalPaidOut"].ToString());
-                Details.TotalDeposit = decimal.Parse(dr["TotalDeposit"].ToString());
-                Details.CashDeposit = decimal.Parse(dr["CashDeposit"].ToString());
-                Details.ChequeDeposit = decimal.Parse(dr["ChequeDeposit"].ToString());
-                Details.CreditCardDeposit = decimal.Parse(dr["CreditCardDeposit"].ToString());
-                Details.BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString());
-                Details.VoidSales = decimal.Parse(dr["VoidSales"].ToString());
-                Details.RefundSales = decimal.Parse(dr["RefundSales"].ToString());
-                Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
-                Details.SNRItemsDiscount = decimal.Parse(dr["SNRItemsDiscount"].ToString());
-                Details.PWDItemsDiscount = decimal.Parse(dr["PWDItemsDiscount"].ToString());
-                Details.OtherItemsDiscount = decimal.Parse(dr["OtherItemsDiscount"].ToString());
-                Details.SubTotalDiscount = decimal.Parse(dr["SubTotalDiscount"].ToString());
-                Details.NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString());
-                Details.NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString());
-                Details.NoOfCreditCardTransactions = Int32.Parse(dr["NoOfCreditCardTransactions"].ToString());
-                Details.NoOfCreditTransactions = Int32.Parse(dr["NoOfCreditTransactions"].ToString());
-                Details.NoOfCombinationPaymentTransactions = Int32.Parse(dr["NoOfCombinationPaymentTransactions"].ToString());
-                Details.NoOfCreditPaymentTransactions = Int32.Parse(dr["NoOfCreditPaymentTransactions"].ToString());
-                Details.NoOfDebitPaymentTransactions = Int32.Parse(dr["NoOfDebitPaymentTransactions"].ToString());
-                Details.NoOfClosedTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
-                Details.NoOfRefundTransactions = Int32.Parse(dr["NoOfRefundTransactions"].ToString());
-                Details.NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString());
-                Details.NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString());
-                Details.NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
-                Details.DateLastInitialized = DateTime.Parse(dr["DateLastInitialized"].ToString());
-                Details.DateLastInitializedToDisplay = DateTime.Parse(dr["DateLastInitializedToDisplay"].ToString());
-                Details.NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString());
-                Details.NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString());
-                Details.NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString());
-                Details.PromotionalItems = decimal.Parse(dr["PromotionalItems"].ToString());
-                Details.CreditSalesTax = decimal.Parse(dr["CreditSalesTax"].ToString());
-                Details.BatchCounter = Int32.Parse(dr["BatchCounter"].ToString());
-                Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
-                Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
-                Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
-                Details.InitializedBy = dr["InitializedBy"].ToString();
+            
+                TerminalReportDetails Details = new TerminalReportDetails();
 
-                Details.TrustFund = decimal.Parse(dr["TrustFund"].ToString());
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                    Details.TerminalNo = dr["TerminalNo"].ToString();
+                    Details.BeginningTransactionNo = dr["BeginningTransactionNo"].ToString();
+                    Details.EndingTransactionNo = dr["EndingTransactionNo"].ToString();
+                    Details.BeginningORNo = dr["BeginningORNo"].ToString();
+                    Details.EndingORNo = dr["EndingORNo"].ToString();
+                    Details.ZReadCount = Int32.Parse(dr["ZReadCount"].ToString());
+                    Details.XReadCount = Int32.Parse(dr["XReadCount"].ToString());
+                    Details.NetSales = decimal.Parse(dr["NetSales"].ToString());
+                    Details.GrossSales = decimal.Parse(dr["GrossSales"].ToString());
+                    Details.TotalDiscount = decimal.Parse(dr["TotalDiscount"].ToString());
+                    Details.SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString());
+                    Details.PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString());
+                    Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
+                    Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
+                    Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
+                    Details.ItemSold = decimal.Parse(dr["ItemSold"].ToString());
+                    Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
+                    Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
+                    Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
+                    Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
+                    Details.ActualOldGrandTotal = decimal.Parse(dr["ActualOldGrandTotal"].ToString());
+                    Details.ActualNewGrandTotal = decimal.Parse(dr["ActualNewGrandTotal"].ToString());
+                    Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
+                    Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
+                    Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
+                    Details.ZeroRatedSales = decimal.Parse(dr["ZeroRatedSales"].ToString());
+                    Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                    Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
+                    Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
+                    Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                    Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                    Details.CashSales = decimal.Parse(dr["CashSales"].ToString());
+                    Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
+                    Details.CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString());
+                    Details.CreditSales = decimal.Parse(dr["CreditSales"].ToString());
+                    Details.RefundCash = decimal.Parse(dr["RefundCash"].ToString());
+                    Details.RefundCheque = decimal.Parse(dr["RefundCheque"].ToString());
+                    Details.RefundCreditCard = decimal.Parse(dr["RefundCreditCard"].ToString());
+                    Details.RefundCredit = decimal.Parse(dr["RefundCredit"].ToString());
+                    Details.RefundDebit = decimal.Parse(dr["RefundDebit"].ToString());
+                    Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
+                    Details.CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString());
+                    Details.CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString());
+                    Details.CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString());
+                    Details.CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString());
+                    Details.DebitPayment = decimal.Parse(dr["DebitPayment"].ToString());
+                    Details.RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString());
+                    Details.RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString());
+                    Details.CashInDrawer = decimal.Parse(dr["CashInDrawer"].ToString());
+                    Details.TotalDisburse = decimal.Parse(dr["TotalDisburse"].ToString());
+                    Details.CashDisburse = decimal.Parse(dr["CashDisburse"].ToString());
+                    Details.ChequeDisburse = decimal.Parse(dr["ChequeDisburse"].ToString());
+                    Details.CreditCardDisburse = decimal.Parse(dr["CreditCardDisburse"].ToString());
+                    Details.TotalWithHold = decimal.Parse(dr["TotalWithHold"].ToString());
+                    Details.CashWithHold = decimal.Parse(dr["CashWithHold"].ToString());
+                    Details.ChequeWithHold = decimal.Parse(dr["ChequeWithHold"].ToString());
+                    Details.CreditCardWithHold = decimal.Parse(dr["CreditCardWithHold"].ToString());
+                    Details.TotalPaidOut = decimal.Parse(dr["TotalPaidOut"].ToString());
+                    Details.TotalDeposit = decimal.Parse(dr["TotalDeposit"].ToString());
+                    Details.CashDeposit = decimal.Parse(dr["CashDeposit"].ToString());
+                    Details.ChequeDeposit = decimal.Parse(dr["ChequeDeposit"].ToString());
+                    Details.CreditCardDeposit = decimal.Parse(dr["CreditCardDeposit"].ToString());
+                    Details.BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString());
+                    Details.VoidSales = decimal.Parse(dr["VoidSales"].ToString());
+                    Details.RefundSales = decimal.Parse(dr["RefundSales"].ToString());
+                    Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
+                    Details.SNRItemsDiscount = decimal.Parse(dr["SNRItemsDiscount"].ToString());
+                    Details.PWDItemsDiscount = decimal.Parse(dr["PWDItemsDiscount"].ToString());
+                    Details.OtherItemsDiscount = decimal.Parse(dr["OtherItemsDiscount"].ToString());
+                    Details.SubTotalDiscount = decimal.Parse(dr["SubTotalDiscount"].ToString());
+                    Details.NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString());
+                    Details.NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString());
+                    Details.NoOfCreditCardTransactions = Int32.Parse(dr["NoOfCreditCardTransactions"].ToString());
+                    Details.NoOfCreditTransactions = Int32.Parse(dr["NoOfCreditTransactions"].ToString());
+                    Details.NoOfCombinationPaymentTransactions = Int32.Parse(dr["NoOfCombinationPaymentTransactions"].ToString());
+                    Details.NoOfCreditPaymentTransactions = Int32.Parse(dr["NoOfCreditPaymentTransactions"].ToString());
+                    Details.NoOfDebitPaymentTransactions = Int32.Parse(dr["NoOfDebitPaymentTransactions"].ToString());
+                    Details.NoOfClosedTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                    Details.NoOfRefundTransactions = Int32.Parse(dr["NoOfRefundTransactions"].ToString());
+                    Details.NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString());
+                    Details.NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString());
+                    Details.NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                    Details.DateLastInitialized = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                    Details.DateLastInitializedToDisplay = DateTime.Parse(dr["DateLastInitializedToDisplay"].ToString());
+                    Details.NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString());
+                    Details.NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString());
+                    Details.NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString());
+                    Details.PromotionalItems = decimal.Parse(dr["PromotionalItems"].ToString());
+                    Details.CreditSalesTax = decimal.Parse(dr["CreditSalesTax"].ToString());
+                    Details.BatchCounter = Int32.Parse(dr["BatchCounter"].ToString());
+                    Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
+                    Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
+                    Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
+                    Details.InitializedBy = dr["InitializedBy"].ToString();
+
+                    Details.TrustFund = decimal.Parse(dr["TrustFund"].ToString());
+
+                    TerminalReportHistory clsTerminalReportHistory = new TerminalReportHistory(base.Connection, base.Transaction);
+                    Details.PREVDateLastInitialized = clsTerminalReportHistory.PREVDateLastInitialized(Details.BranchID, Details.TerminalNo, Details.DateLastInitialized);
+
+                    if (isCurrentZRead)
+                        Details.NEXTDateLastInitialized = Constants.C_DATE_MIN_VALUE;
+                    else
+                        Details.NEXTDateLastInitialized = clsTerminalReportHistory.NEXTDateLastInitialized(Details.BranchID, Details.TerminalNo, Details.DateLastInitialized);
+
+                    // overwrite coz this means that this is new
+                    if (Details.NEXTDateLastInitialized == Constants.C_DATE_MIN_VALUE) Details.NEXTDateLastInitialized = DateTime.Now;
+                }
+
+                return Details;
             }
-
-            return Details;
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }	
+            
         }
-        public static TerminalReportDetails[] SetDetailsList(System.Data.DataTable dt)
+        public TerminalReportDetails[] SetDetailsList(System.Data.DataTable dt, bool isCurrentZRead = false)
         {
             ArrayList items = new ArrayList();
             
@@ -554,6 +577,16 @@ namespace AceSoft.RetailPlus.Data
                 Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
                 Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
                 Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
+
+                TerminalReportHistory clsTerminalReportHistory = new TerminalReportHistory(base.Connection, base.Transaction);
+                Details.PREVDateLastInitialized = clsTerminalReportHistory.PREVDateLastInitialized(Details.BranchID, Details.TerminalNo, Details.DateLastInitialized);
+                if (isCurrentZRead)
+                    Details.NEXTDateLastInitialized = Constants.C_DATE_MIN_VALUE;
+                else
+                    Details.NEXTDateLastInitialized = clsTerminalReportHistory.NEXTDateLastInitialized(Details.BranchID, Details.TerminalNo, Details.DateLastInitialized);
+
+                // overwrite coz this means that this is new
+                if (Details.NEXTDateLastInitialized == Constants.C_DATE_MIN_VALUE) Details.NEXTDateLastInitialized = DateTime.Now;
 
                 items.Add(Details);
             }
@@ -1399,6 +1432,30 @@ namespace AceSoft.RetailPlus.Data
 			return dt;
 		}
 
+        public System.Data.DataTable CreditCardReport(Int32 BranchID, string TerminalNo, Int64 CashierID, DateTime StartTransactionDate, DateTime EndTransactionDate)
+        {
+            MySqlCommand cmd = CreditCardReportPrivate(BranchID, TerminalNo, CashierID, StartTransactionDate, EndTransactionDate);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            decimal TotalAmount = 0;
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                TotalAmount += decimal.Parse(dr["Amount"].ToString());
+            }
+
+            if (TotalAmount != 0)
+            {
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    decimal percent = (decimal.Parse(dr["Amount"].ToString()) / TotalAmount) * 100;
+                    dr["Percentage"] = percent.ToString("#,##0.#0") + "%";
+                }
+            }
+
+            return dt;
+        }
+
         private MySqlCommand HourlyReportPrivate(string BeginningTransactionNo, string EndingTransactionNo, DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, Int32 BranchID = 0, string TerminalNo = Constants.ALL)
         {
             try
@@ -1508,6 +1565,30 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        private MySqlCommand CreditCardReportPrivate(Int32 BranchID, string TerminalNo, Int64 CashierID, DateTime StartTransactionDate, DateTime EndTransactionDate)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procCreditCardReportForZread(@BranchID, @TerminalNo, @CashierID, @StartTransactionDate, @EndTransactionDate);";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("CashierID", CashierID);
+                cmd.Parameters.AddWithValue("StartTransactionDate", StartTransactionDate);
+                cmd.Parameters.AddWithValue("EndTransactionDate", EndTransactionDate);
+
+                cmd.CommandText = SQL;
+                return cmd;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		public SalesTransactionDetails[] EJournalReport(Int32 BranchID, string CashierName, string TerminalNo)
 		{

@@ -8777,7 +8777,16 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.30';
 
 ALTER TABLE tblTransactionItems ADD `ItemRemarks` VARCHAR(80);
 
+UPDATE tblCashPayment 
+INNER JOIN tblTransactions ON tblCashPayment.TransactionID = tblTransactions.TransactioNID
+SET tblCashPayment.CreatedOn = tblTransactions.TransactionDate WHERE DATE_FORMAT(tblCashPayment.CreatedOn, '%Y-%m-%d') = '1900-01-01';
 
+UPDATE tblCreditPayment SET CreatedOn = CreditDate WHERE DATE_FORMAT(CreatedOn, '%Y-%m-%d') = '1900-01-01';
+UPDATE tblCreditCardPayment SET CreatedOn = TransactionDate WHERE DATE_FORMAT(CreatedOn, '%Y-%m-%d') = '1900-01-01';
+
+
+
+	
 -- Notes: Please read
 -- run the retailplus_proc.sql
 -- run this to fixed the previous reports.

@@ -86,6 +86,7 @@ namespace AceSoft.RetailPlus.Client.UI
         public bool IsCreditChargeExcluded { set {mboIsCreditChargeExcluded = value;} }
 
         public Data.TerminalDetails TerminalDetails { get; set; }
+        public Data.SysConfigDetails SysConfigDetails { get; set; }
 
         private ArrayList marrCreditCardPaymentDetails = new ArrayList();
         public ArrayList arrCreditCardPaymentDetails
@@ -994,7 +995,8 @@ namespace AceSoft.RetailPlus.Client.UI
             decimal decAdditionalCreditCharge = 0;
             if (mclsCreditorDetails.ContactID != 0)
             {
-                mdecAmount += decimal.Parse(txtCreditCardCharge.Text);
+                // add only the charge if the credit is chargeable
+                if (panCharge.Visible) mdecAmount += decimal.Parse(txtCreditCardCharge.Text);
 
                 decimal mdecAllowedCredit = mclsCreditorDetails.CreditLimit - mclsCreditorDetails.Credit;
                 
@@ -1098,6 +1100,7 @@ namespace AceSoft.RetailPlus.Client.UI
             mDetails.CardTypeDetails = mclsCardTypeDetails;
             mDetails.CreditorDetails = mclsCreditorDetails;
             mDetails.IsRefund = IsRefund;
+            mDetails.CreatedOn = mclsSalesTransactionDetails.TransactionDate;
 
             return true;
         }
@@ -1118,6 +1121,11 @@ namespace AceSoft.RetailPlus.Client.UI
             else if (stCreditCardInfo.IndexOf(',') > -1)
             {
                 strCareditInfo = stCreditCardInfo.Split(',');
+            }
+            else if (SysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
+            {
+                strCareditInfo = new string[1];
+                strCareditInfo[0] = stCreditCardInfo;
             }
 
             if (strCareditInfo == null) return;

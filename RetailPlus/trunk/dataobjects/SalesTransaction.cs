@@ -2976,6 +2976,21 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
+        public System.Data.DataTable SalesPerCreditCard(Int32 BranchID, string TerminalNo, Int64 CashierID, DateTime StartTransactionDate, DateTime EndTransactionDate)
+        {
+            try
+            {
+                TerminalReport clsTerminalReport = new TerminalReport(base.Connection, base.Transaction);
+                System.Data.DataTable dt = clsTerminalReport.CreditCardReport(BranchID, TerminalNo, CashierID, StartTransactionDate, EndTransactionDate);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 	}
 }

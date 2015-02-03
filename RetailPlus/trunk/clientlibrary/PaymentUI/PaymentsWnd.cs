@@ -1255,6 +1255,7 @@ namespace AceSoft.RetailPlus.Client.UI
             CreditCardPaymentWnd clsCreditCardPaymentWnd = new CreditCardPaymentWnd();
             clsCreditCardPaymentWnd.IsCreditChargeExcluded = mboIsCreditChargeExcluded;
             clsCreditCardPaymentWnd.TerminalDetails = TerminalDetails;
+            clsCreditCardPaymentWnd.SysConfigDetails = SysConfigDetails;
             clsCreditCardPaymentWnd.OfflineProduct = OfflineProductDesc;
             clsCreditCardPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
             if (sender == "f4") clsCreditCardPaymentWnd.CreditorDetails = mclsCustomerDetails;

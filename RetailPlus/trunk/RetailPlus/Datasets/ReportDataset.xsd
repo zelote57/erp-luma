@@ -1359,6 +1359,37 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="RewardsSummary" msprop:Generator_TableClassName="RewardsSummaryDataTable" msprop:Generator_TableVarName="tableRewardsSummary" msprop:Generator_RowChangedName="RewardsSummaryRowChanged" msprop:Generator_TablePropName="RewardsSummary" msprop:Generator_RowDeletingName="RewardsSummaryRowDeleting" msprop:Generator_RowChangingName="RewardsSummaryRowChanging" msprop:Generator_RowEvHandlerName="RewardsSummaryRowChangeEventHandler" msprop:Generator_RowDeletedName="RewardsSummaryRowDeleted" msprop:Generator_RowClassName="RewardsSummaryRow" msprop:Generator_UserTableName="RewardsSummary" msprop:Generator_RowEvArgName="RewardsSummaryRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RewardActive" msprop:Generator_ColumnVarNameInTable="columnRewardActive" msprop:Generator_ColumnPropNameInRow="RewardActive" msprop:Generator_ColumnPropNameInTable="RewardActiveColumn" msprop:Generator_UserColumnName="RewardActive" type="xs:boolean" minOccurs="0" />
+              <xs:element name="RewardActiveName" msprop:Generator_ColumnVarNameInTable="columnRewardActiveName" msprop:Generator_ColumnPropNameInRow="RewardActiveName" msprop:Generator_ColumnPropNameInTable="RewardActiveNameColumn" msprop:Generator_UserColumnName="RewardActiveName" type="xs:string" minOccurs="0" />
+              <xs:element name="RewardCardStatus" msprop:Generator_ColumnVarNameInTable="columnRewardCardStatus" msprop:Generator_ColumnPropNameInRow="RewardCardStatus" msprop:Generator_ColumnPropNameInTable="RewardCardStatusColumn" msprop:Generator_UserColumnName="RewardCardStatus" type="xs:short" minOccurs="0" />
+              <xs:element name="RewardCardStatusName" msprop:Generator_ColumnVarNameInTable="columnRewardCardStatusName" msprop:Generator_ColumnPropNameInRow="RewardCardStatusName" msprop:Generator_ColumnPropNameInTable="RewardCardStatusNameColumn" msprop:Generator_UserColumnName="RewardCardStatusName" type="xs:string" minOccurs="0" />
+              <xs:element name="NoOfCustomers" msprop:Generator_ColumnVarNameInTable="columnNoOfCustomers" msprop:Generator_ColumnPropNameInRow="NoOfCustomers" msprop:Generator_ColumnPropNameInTable="NoOfCustomersColumn" msprop:Generator_UserColumnName="NoOfCustomers" type="xs:int" minOccurs="0" />
+              <xs:element name="RewardPoints" msprop:Generator_ColumnVarNameInTable="columnRewardPoints" msprop:Generator_ColumnPropNameInRow="RewardPoints" msprop:Generator_ColumnPropNameInTable="RewardPointsColumn" msprop:Generator_UserColumnName="RewardPoints" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalPurchases" msprop:Generator_ColumnVarNameInTable="columnTotalPurchases" msprop:Generator_ColumnPropNameInRow="TotalPurchases" msprop:Generator_ColumnPropNameInTable="TotalPurchasesColumn" msprop:Generator_UserColumnName="TotalPurchases" type="xs:decimal" minOccurs="0" />
+              <xs:element name="RedeemedPoints" msprop:Generator_ColumnVarNameInTable="columnRedeemedPoints" msprop:Generator_ColumnPropNameInRow="RedeemedPoints" msprop:Generator_ColumnPropNameInTable="RedeemedPointsColumn" msprop:Generator_UserColumnName="RedeemedPoints" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CCISummary" msprop:Generator_TableClassName="CCISummaryDataTable" msprop:Generator_TableVarName="tableCCISummary" msprop:Generator_TablePropName="CCISummary" msprop:Generator_RowDeletingName="CCISummaryRowDeleting" msprop:Generator_RowChangingName="CCISummaryRowChanging" msprop:Generator_RowEvHandlerName="CCISummaryRowChangeEventHandler" msprop:Generator_RowDeletedName="CCISummaryRowDeleted" msprop:Generator_UserTableName="CCISummary" msprop:Generator_RowChangedName="CCISummaryRowChanged" msprop:Generator_RowEvArgName="CCISummaryRowChangeEvent" msprop:Generator_RowClassName="CCISummaryRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CardTypeCode" msprop:Generator_ColumnVarNameInTable="columnCardTypeCode" msprop:Generator_ColumnPropNameInRow="CardTypeCode" msprop:Generator_ColumnPropNameInTable="CardTypeCodeColumn" msprop:Generator_UserColumnName="CardTypeCode" type="xs:string" minOccurs="0" />
+              <xs:element name="CardTypeName" msprop:Generator_ColumnVarNameInTable="columnCardTypeName" msprop:Generator_ColumnPropNameInRow="CardTypeName" msprop:Generator_ColumnPropNameInTable="CardTypeNameColumn" msprop:Generator_UserColumnName="CardTypeName" type="xs:string" minOccurs="0" />
+              <xs:element name="CreditActive" msprop:Generator_ColumnVarNameInTable="columnCreditActive" msprop:Generator_ColumnPropNameInRow="CreditActive" msprop:Generator_ColumnPropNameInTable="CreditActiveColumn" msprop:Generator_UserColumnName="CreditActive" type="xs:boolean" minOccurs="0" />
+              <xs:element name="CreditActiveName" msprop:Generator_ColumnVarNameInTable="columnCreditActiveName" msprop:Generator_ColumnPropNameInRow="CreditActiveName" msprop:Generator_ColumnPropNameInTable="CreditActiveNameColumn" msprop:Generator_UserColumnName="CreditActiveName" type="xs:string" minOccurs="0" />
+              <xs:element name="CreditCardStatus" msprop:Generator_ColumnVarNameInTable="columnCreditCardStatus" msprop:Generator_ColumnPropNameInRow="CreditCardStatus" msprop:Generator_ColumnPropNameInTable="CreditCardStatusColumn" msprop:Generator_UserColumnName="CreditCardStatus" type="xs:short" minOccurs="0" />
+              <xs:element name="CreditCardStatusName" msprop:Generator_ColumnVarNameInTable="columnCreditCardStatusName" msprop:Generator_ColumnPropNameInRow="CreditCardStatusName" msprop:Generator_ColumnPropNameInTable="CreditCardStatusNameColumn" msprop:Generator_UserColumnName="CreditCardStatusName" type="xs:string" minOccurs="0" />
+              <xs:element name="NoOfCustomers" msprop:Generator_ColumnVarNameInTable="columnNoOfCustomers" msprop:Generator_ColumnPropNameInRow="NoOfCustomers" msprop:Generator_ColumnPropNameInTable="NoOfCustomersColumn" msprop:Generator_UserColumnName="NoOfCustomers" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalPurchases" msprop:Generator_ColumnVarNameInTable="columnTotalPurchases" msprop:Generator_ColumnPropNameInRow="TotalPurchases" msprop:Generator_ColumnPropNameInTable="TotalPurchasesColumn" msprop:Generator_UserColumnName="TotalPurchases" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Credit" msprop:Generator_ColumnVarNameInTable="columnCredit" msprop:Generator_ColumnPropNameInRow="Credit" msprop:Generator_ColumnPropNameInTable="CreditColumn" msprop:Generator_UserColumnName="Credit" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CreditLimit" msprop:Generator_ColumnVarNameInTable="columnCreditLimit" msprop:Generator_ColumnPropNameInRow="CreditLimit" msprop:Generator_ColumnPropNameInTable="CreditLimitColumn" msprop:Generator_UserColumnName="CreditLimit" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Debit" msprop:Generator_ColumnVarNameInTable="columnDebit" msprop:Generator_ColumnPropNameInRow="Debit" msprop:Generator_ColumnPropNameInTable="DebitColumn" msprop:Generator_UserColumnName="Debit" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

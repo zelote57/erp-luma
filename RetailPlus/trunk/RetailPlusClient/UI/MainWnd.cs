@@ -6825,7 +6825,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsContactCreditWnd.CardTypeDetails = clsContactDetails.CreditDetails.CardTypeDetails;
 					clsContactCreditWnd.Guarantor = clsGuarantor;
 					clsContactCreditWnd.ContactDetails = clsContactDetails;
-					clsContactCreditWnd.CreditCardStatus = CreditCardStatus.Reactivated_Lost;
+                    clsContactCreditWnd.CreditCardStatus = CreditCardStatus.Reactivated_Lost;
                     clsContactCreditWnd.TerminalDetails = mclsTerminalDetails;
 					clsContactCreditWnd.ShowDialog(this);
 					result = clsContactCreditWnd.Result;
@@ -8203,11 +8203,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 clsContact.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, dteTransactionDate);
 
+                // Jan 31, 2015 : Lemu
+                // put back to SuspendedOpen so that it won't be open somewhere else
+                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
+
                 mboIsInTransaction = true;
                 clsTerminalReport.CommitAndDispose();
 
                 InsertAuditLog(AccessTypes.CreateTransaction, "Create transaction #".PadRight(15) + ":" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
                 clsEvent.AddEventLn("Done! Trans #: " + lblTransNo.Text + " has been created.", true);
+
             }
             catch (Exception ex)
             {

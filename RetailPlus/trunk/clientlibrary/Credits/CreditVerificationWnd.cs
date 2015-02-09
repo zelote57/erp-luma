@@ -1010,6 +1010,11 @@ namespace AceSoft.RetailPlus.Client.UI
                         MessageBox.Show("Sorry printing verification slip is not allowed. Your GUARANTOR credit status InActive.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
+                    if (mContactDetails.CreditDetails.ExpiryDate < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23,59,59))
+                    {
+                        MessageBox.Show("Sorry printing verification slip is not allowed. Your card is already expired.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                     if (!mContactDetails.CreditDetails.CreditActive)
                     {
                         MessageBox.Show("Sorry printing verification slip is not allowed for InActive Credit Cards.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);

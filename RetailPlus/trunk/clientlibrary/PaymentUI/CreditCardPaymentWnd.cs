@@ -1044,17 +1044,21 @@ namespace AceSoft.RetailPlus.Client.UI
                 { decAdditionalCreditCharge = 0; }
                 else if (mclsCardTypeDetails.WithGuarantor && TerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
-                    if (TerminalDetails.GroupChargeType.InPercent)
-                        decAdditionalCreditCharge = mdecBalanceAmount * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
-                    else
-                        decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.GroupChargeType.ChargeAmount;
+                    if (panCharge.Visible) decAdditionalCreditCharge = decimal.Parse(txtCreditCardCharge.Text);
+
+                    //if (TerminalDetails.GroupChargeType.InPercent)
+                    //    decAdditionalCreditCharge = mdecBalanceAmount * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    //else
+                    //    decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.GroupChargeType.ChargeAmount;
                 }
                 else if (!mclsCardTypeDetails.WithGuarantor && TerminalDetails.PersonalChargeType.ChargeTypeID != 0)
                 {
-                    if (TerminalDetails.PersonalChargeType.InPercent)
-                        decAdditionalCreditCharge = mdecBalanceAmount * (TerminalDetails.PersonalChargeType.ChargeAmount / 100);
-                    else
-                        decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.PersonalChargeType.ChargeAmount;
+                    if (panCharge.Visible) decAdditionalCreditCharge = decimal.Parse(txtCreditCardCharge.Text);
+
+                    //if (TerminalDetails.PersonalChargeType.InPercent)
+                    //    decAdditionalCreditCharge = mdecBalanceAmount * (TerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                    //else
+                    //    decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.PersonalChargeType.ChargeAmount;
                 }
 
                 if (!IsRefund) // check only if it's not refund

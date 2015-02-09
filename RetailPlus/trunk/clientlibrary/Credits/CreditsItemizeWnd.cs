@@ -784,6 +784,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 payment.SalesTransactionDetails = clsSalesTransactionDetails;
                 payment.CreditCardSwiped = false;
                 payment.IsRefund = false;
+                payment.isFromCreditPayment = true;
                 payment.ShowDialog(this);
 
                 paymentResult = payment.Result;

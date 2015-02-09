@@ -1465,6 +1465,33 @@ namespace AceSoft.RetailPlus.Client.UI
                         break;
                     }
                 }
+
+                if (decRemainingAmountPaid > 0)
+                {
+                    //insert a dummy purchase dated Jan 1, 2014 as a reference for paying
+                    Data.CreditPaymentDetails clsCreditPaymentDetails = new Data.CreditPaymentDetails();
+                    clsCreditPaymentDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+                    clsCreditPaymentDetails.TerminalNo = mclsSalesTransactionDetails.TerminalNo;
+                    clsCreditPaymentDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
+                    clsCreditPaymentDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
+                    clsCreditPaymentDetails.IsRefund = false;
+                    clsCreditPaymentDetails.TransactionDate = new DateTime(2014, 12, 1); //this should be Dec1,2014 so that it wont include in Billing
+                    clsCreditPaymentDetails.CashierName = "SysUser";
+                    clsCreditPaymentDetails.Amount = decRemainingAmountPaid;
+                    clsCreditPaymentDetails.CustomerDetails = mclsSalesTransactionDetails.CustomerDetails;
+                    clsCreditPaymentDetails.Remarks = "pay-no purchase: deposit " + mclsSalesTransactionDetails.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    clsCreditPaymentDetails.CreditReason = "Deposit @ Ter#:" + mclsSalesTransactionDetails.TerminalNo + " Br#:1 trx: " + mclsSalesTransactionDetails.TransactionNo + " date:" + mclsSalesTransactionDetails.TransactionDate.ToString("yyyy-MM-dd HH:mm");
+                    clsCreditPaymentDetails.CreditCardTypeID = mclsContactDetails.CreditDetails.CardTypeDetails.CardTypeID;
+
+                    Data.CreditPayments clsCreditPayments = new Data.CreditPayments(mConnection, mTransaction);
+                    mConnection = clsCreditPayments.Connection; mTransaction = clsCreditPayments.Transaction;
+                    clsCreditPaymentDetails.CreditPaymentID = clsCreditPayments.Insert(clsCreditPaymentDetails);
+                    clsCreditPayments.CommitAndDispose();
+
+                    //insert the payment
+                    InsertCreditPaymentCheque(clsCreditPaymentDetails.CreditPaymentID, mclsTerminalDetails.BranchDetails.BranchID, mclsSalesTransactionDetails.TerminalNo, det.ChequeNo, decRemainingAmountPaid, det.ValidityDate, "pay-no purchase: deposit");
+                }
             }
         }
         public void SavePayments(ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails)
@@ -4616,7 +4643,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             //print credit card details
                             //print credit card details
                             msbToPrint.Append("Card Type".PadRight(15) + ":" + cardpaymentdet.CardTypeCode.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
-                            if (cardpaymentdet.CardTypeDetails.CreditCardType == CreditCardTypes.Internal)
+                            if (cardpaymentdet.CardTypeDetails.CreditCardType == CreditCardTypes.Internal || cardpaymentdet.CardTypeDetails.CreditCardType== CreditCardTypes.Both)
                                 msbToPrint.Append("Card No.".PadRight(15) + ":" + cardpaymentdet.CardNo.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             else if (cardpaymentdet.CardNo.Length <= 4)
                                 msbToPrint.Append("Card No.".PadRight(15) + ":" + ("xxxxxxxxxxxx" + cardpaymentdet.CardNo.Trim()).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
@@ -4662,7 +4689,12 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             //print credit card details
                             msbToPrint.Append("Card Type".PadRight(15) + ":" + cardpaymentdet.CardTypeCode.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
-                            msbToPrint.Append("Card No.".PadRight(15) + ":" + ("xxxxxxxxxxxx" + cardpaymentdet.CardNo.Trim().Substring(0,4)).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                            if (cardpaymentdet.CardTypeDetails.CreditCardType == CreditCardTypes.Internal || cardpaymentdet.CardTypeDetails.CreditCardType == CreditCardTypes.Both)
+                                msbToPrint.Append("Card No.".PadRight(15) + ":" + cardpaymentdet.CardNo.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                            else if (cardpaymentdet.CardNo.Length <= 4)
+                                msbToPrint.Append("Card No.".PadRight(15) + ":" + ("xxxxxxxxxxxx" + cardpaymentdet.CardNo.Trim()).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                            else
+                                msbToPrint.Append("Card No.".PadRight(15) + ":" + ("xxxxxxxxxxxx" + cardpaymentdet.CardNo.Trim().Substring(cardpaymentdet.CardNo.Length - 4)).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             if (cardpaymentdet.CardHolder.Trim() != mclsSalesTransactionDetails.RewardsCustomerName.Trim()) msbToPrint.Append("Member Name".PadRight(15) + ":" + cardpaymentdet.CardHolder.Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             if (cardpaymentdet.Amount != mclsSalesTransactionDetails.AmountPaid) msbToPrint.Append("Amount".PadRight(15) + ":" + cardpaymentdet.Amount.ToString("#,##0.#0").Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                             if (cardpaymentdet.CardHolder != mclsSalesTransactionDetails.RewardsCustomerName
@@ -4944,7 +4976,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append(CenterString("R E D E M P T I O N   S L I P", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                     msbToPrint.Append(Environment.NewLine);
-                    msbToPrint.Append("Rewards Card No.".PadRight(15) + ":" + mclsContactDetails.RewardDetails.RewardCardNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append("Reward CardNo. ".PadRight(15) + ":" + mclsSalesTransactionDetails.RewardCardNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append("Total Points".PadRight(15) + ":" + mclsSalesTransactionDetails.RewardPreviousPoints.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append("Redeemed Points".PadRight(15) + ":" + mclsSalesTransactionDetails.RewardPointsPayment.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append("".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);

@@ -95,6 +95,11 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mclsSysConfigDetails = value; }
         }
 
+        // determine if this window is from CreditItemize or CreditPayment
+        // show cheque if not houseware. hide otherwise
+        // always show if not from CreditItimize
+        public bool isFromCreditPayment { get; set; }
+
 		public decimal AllowedCredit
 		{
 			get {	return mdecAllowedCredit;	}
@@ -1003,8 +1008,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment)
             {
-                cmdF2.Visible = false;
-                lblCheque.Visible = false;
                 cmdF3.Visible = false;
                 lblCreditCard.Visible = false;
                 cmdF4.Visible = false;
@@ -1016,6 +1019,13 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     lblChangeName.Text = "Deposit";
                 }
+            }
+            // do not show cheque if Houseware
+            if (mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware
+                && isFromCreditPayment)
+            {
+                cmdF2.Visible = false;
+                lblCheque.Visible = false;
             }
 
 			lblCash.Tag = "0.00";

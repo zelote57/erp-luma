@@ -7,6 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AceSoft.RetailPlus.Security;
+using AceSoft.RetailPlus.Client;
+using AceSoft.RetailPlus.Client.UI;
 
 namespace AceSoft.RetailPlus.DataCollector
 {
@@ -24,6 +27,12 @@ namespace AceSoft.RetailPlus.DataCollector
         private Data.BranchDetails mclsBranchDetails;
 
         private string mstStatus;
+
+        /// <summary>
+        /// true    if [F7] or will reverse the polarity of quantity in loading
+        /// false   if [F4] or quantity is as-is in loading
+        /// </summary>
+        private bool isLoadInReverse;
 
         public MainWnd()
         {
@@ -361,30 +370,43 @@ namespace AceSoft.RetailPlus.DataCollector
                     }
                     break;
                 case Keys.F3:
-                    grpSaveToDB.Visible = false;
-                    if (mclsBranchDetails.BranchID == 0)
-                    {
-                        MessageBox.Show("Please select the branch to zero out the inventory.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        cmdBranchSelect.Focus();
-                        return;
-                    }
-                    if (MessageBox.Show("Are you sure you want to ZERO out the inventory of branch " + mclsBranchDetails.BranchCode + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        grpSaveToDB.Visible = true;
-                        Cursor.Current = Cursors.WaitCursor;
+                    LogInWnd login = new LogInWnd();
 
-                        this.bgwZeroOutInv.RunWorkerAsync();
+                    login.AccessType = AccessTypes.CloseInventory;
+                    login.Header = "Zero Out Inventory of Branch: access validation";
+                    login.ShowDialog(this);
+                    DialogResult loginresult = login.Result;
+                    login.Close();
+                    login.Dispose();
 
-                        // Wait for the BackgroundWorker to finish the download.
-                        while (this.bgwZeroOutInv.IsBusy)
+                    if (loginresult == DialogResult.OK)
+                    {
+                        grpSaveToDB.Visible = false;
+                        if (mclsBranchDetails.BranchID == 0)
                         {
-                            //prgBar.Increment(1);
-                            // Keep UI messages moving, so the form remains 
-                            // responsive during the asynchronous operation.
-                            Application.DoEvents();
+                            MessageBox.Show("Please select the branch to zero out the inventory.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            cmdBranchSelect.Focus();
+                            return;
                         }
-                    }
-                    break;
+                        if (MessageBox.Show("Are you sure you want to ZERO out the inventory of branch " + mclsBranchDetails.BranchCode + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+                        {
+                                grpSaveToDB.Visible = true;
+                                Cursor.Current = Cursors.WaitCursor;
+
+                                this.bgwZeroOutInv.RunWorkerAsync();
+
+                                // Wait for the BackgroundWorker to finish the download.
+                                while (this.bgwZeroOutInv.IsBusy)
+                                {
+                                    //prgBar.Increment(1);
+                                    // Keep UI messages moving, so the form remains 
+                                    // responsive during the asynchronous operation.
+                                    Application.DoEvents();
+                                }
+                            }
+                        }
+                        break;
+                    
                 case Keys.F4:
                     grpSaveToDB.Visible = false;
                     if (mclsBranchDetails.BranchID == 0)
@@ -416,6 +438,7 @@ namespace AceSoft.RetailPlus.DataCollector
                     }
                     break;
                 case Keys.F5:
+                    isLoadInReverse = false;
                     grpSaveToDB.Visible = false;
                     if (mclsBranchDetails.BranchID == 0)
                     {
@@ -432,6 +455,39 @@ namespace AceSoft.RetailPlus.DataCollector
 
                         // Wait for the BackgroundWorker to finish the download.
                         while (this.bgwZeroOutInvNeg.IsBusy)
+                        {
+                            //prgBar.Increment(1);
+                            // Keep UI messages moving, so the form remains 
+                            // responsive during the asynchronous operation.
+                            Application.DoEvents();
+                        }
+                    }
+                    break;
+
+                case Keys.F7:
+                    isLoadInReverse = true;
+
+                    grpSaveToDB.Visible = false;
+                    if (mclsBranchDetails.BranchID == 0)
+                    {
+                        MessageBox.Show("Please select the branch to upload the inventory.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cmdBranchSelect.Focus();
+                        return;
+                    }
+                    if (mdtItems == null || mdtItems.Rows.Count == 0)
+                    {
+                        MessageBox.Show("No rows to upload, please make sure the inventory file is loaded.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    if (MessageBox.Show("Are you sure you want to UPLOAD the inventory of branch " + mclsBranchDetails.BranchCode + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        grpSaveToDB.Visible = true;
+                        Cursor.Current = Cursors.WaitCursor;
+
+                        this.bgwSavetoDB.RunWorkerAsync();
+
+                        // Wait for the BackgroundWorker to finish the download.
+                        while (this.bgwSavetoDB.IsBusy)
                         {
                             //prgBar.Increment(1);
                             // Keep UI messages moving, so the form remains 
@@ -661,6 +717,7 @@ namespace AceSoft.RetailPlus.DataCollector
 			{
                 string strBarCode = dr["BarCode"].ToString();
                 decimal decQuantity = decimal.Parse(dr["Quantity"].ToString());
+
                 string strUnit = dr["Unit"].ToString();
                 string strDescription = dr["Description"].ToString();
 
@@ -732,6 +789,25 @@ namespace AceSoft.RetailPlus.DataCollector
 			}
             
             bgwSavetoDB.ReportProgress(100);
+        }
+
+        public DialogResult GetWriteAccess(Int64 UID, AccessTypes accesstype)
+        {
+            DialogResult resRetValue = DialogResult.None;
+
+            AccessRights clsAccessRights = new AccessRights();
+            AccessRightsDetails clsDetails = new AccessRightsDetails();
+
+            clsDetails = clsAccessRights.Details(UID, (Int16)accesstype);
+
+            if (clsDetails.Write)
+            {
+                resRetValue = DialogResult.OK;
+            }
+
+            clsAccessRights.CommitAndDispose();
+
+            return resRetValue;
         }
     }
 }

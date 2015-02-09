@@ -66,6 +66,9 @@
     <Compile Include="ItemsExc.cs" />
     <Compile Include="Items.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="LogInWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +79,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BranchWnd.resx">
       <DependentUpon>BranchWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogInWnd.resx">
+      <DependentUpon>LogInWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWnd.resx">
       <DependentUpon>MainWnd.cs</DependentUpon>
@@ -96,8 +103,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\Background.jpg" />
+    <Content Include="images\blank_medium_dark_green.jpg" />
+    <Content Include="images\blank_medium_dark_red.jpg" />
+    <Content Include="images\Login.jpg" />
+    <Content Include="images\MainIcon.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\clientlibrary\RetailPlusClientLibrary.csproj">
+      <Project>{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}</Project>
+      <Name>RetailPlusClientLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\company\Company Library.csproj">
       <Project>{810E3EE7-4E46-4DEC-85ED-2AAA53D5C531}</Project>
       <Name>Company Library</Name>
@@ -117,6 +132,10 @@
     <ProjectReference Include="..\logistics\AceSoft.csproj">
       <Project>{A800354C-F064-4836-9178-1DC7B752822E}</Project>
       <Name>AceSoft</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\security library\Security Library.csproj">
+      <Project>{88C68179-9BB1-4A08-92E7-7B003449A2AE}</Project>
+      <Name>Security Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

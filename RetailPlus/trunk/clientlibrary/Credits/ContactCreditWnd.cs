@@ -542,7 +542,16 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 clsDetails.CreditActive = true;
             }
+
             clsDetails.CreditCardStatus = mCreditCardStatus;
+
+            // do an overwride if the date is already expired
+            if (dteExpiryDate < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59))
+            {
+                clsDetails.CreditActive = false;
+                clsDetails.CreditCardStatus = CreditCardStatus.Expired;
+            }
+
 
             boRetValue = clsContactCreditCardInfos.Update(clsDetails);
 

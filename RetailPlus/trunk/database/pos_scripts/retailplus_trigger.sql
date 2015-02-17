@@ -18,4 +18,4 @@ GO
 
 delimiter ;
 
-update tblproducts set LastUpdateDate = '2001-01-01';
+-- update tblproducts set LastUpdateDate = '2001-01-01';

@@ -507,7 +507,23 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				Data.Contacts clsContact = new Contacts();
 				mDetails = clsContact.Details(long.Parse(cmdTable.Tag.ToString()));
-				clsContact.CommitAndDispose();
+
+                Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsContact.Connection, clsContact.Transaction);
+                string stTransactionNo = clsSalesTransactions.getSuspendedTransactionNo(mDetails.ContactID, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                Data.SalesTransactionDetails clsSalesTransactionDetails = new SalesTransactionDetails();
+                if (!string.IsNullOrEmpty(stTransactionNo))
+                {
+                    clsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                }
+                clsContact.CommitAndDispose();
+
+                if (!string.IsNullOrEmpty(stTransactionNo) && clsSalesTransactionDetails.TransactionStatus == TransactionStatus.SuspendedOpen)
+                {
+                    MessageBox.Show("Sorry the table is already open in another terminal. Please select another table.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                    LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
+                    return;
+                }
+
 
 				dialog = DialogResult.OK;
 				this.Hide();

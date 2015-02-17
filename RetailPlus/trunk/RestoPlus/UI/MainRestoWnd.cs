@@ -3759,6 +3759,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             clsContacts.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, Constants.C_DATE_MIN_VALUE);
                             clsContacts.UpdateLastCheckInDate(details.ContactID, mclsSalesTransactionDetails.TransactionDate);
+
+                            // Jan 31, 2015 : Lemu
+                            // put back to SuspendedOpen so that it won't be open somewhere else
+                            Data.SalesTransactions clsSalesTransactions1 = new Data.SalesTransactions(mConnection, mTransaction);
+                            mConnection = clsSalesTransactions1.Connection; mTransaction = clsSalesTransactions1.Transaction;
+                            clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                            clsSalesTransactions1.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
+
                             clsContacts.CommitAndDispose();
 
 							LoadContact(ContactGroupCategory.CUSTOMER, details);
@@ -3775,6 +3783,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                 clsContacts.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, Constants.C_DATE_MIN_VALUE);
                                 clsContacts.UpdateLastCheckInDate(details.ContactID, mclsSalesTransactionDetails.TransactionDate);
+
+                                // Jan 31, 2015 : Lemu
+                                // put back to SuspendedOpen so that it won't be open somewhere else
+                                Data.SalesTransactions clsSalesTransactions1 = new Data.SalesTransactions(mConnection, mTransaction);
+                                mConnection = clsSalesTransactions1.Connection; mTransaction = clsSalesTransactions1.Transaction;
+                                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                                clsSalesTransactions1.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
+
                                 clsContacts.CommitAndDispose();
 
                                 LoadContact(ContactGroupCategory.CUSTOMER, details);
@@ -6188,7 +6204,12 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 if (mclsSalesTransactionDetails.SubTotal == 0)
                 {
-                    if (MessageBox.Show("Are you sure you want to close this  ZERO amount transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                    if (!mclsSysConfigDetails.AllowZeroAmountTransaction)
+                    {
+                        MessageBox.Show("Sorry you cannot close this ZERO amount transaction." + Environment.NewLine + "You can VOID this transaction instead.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    else if (MessageBox.Show("Are you sure you want to close this  ZERO amount transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
                         return;
                 }
 
@@ -9339,6 +9360,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 if (!boRetValue) return boRetValue;
 
+                // Feb 16, 2015
+                if (mclsTerminalDetails.WithRestaurantFeatures)
+                {
+                    if (mclsContactDetails.ContactID == Constants.ZERO ||
+                        mclsContactDetails.ContactID == Constants.C_RETAILPLUS_CUSTOMERID)
+                    {
+                        MessageBox.Show("Sorry you must select a table / customer to order before punching an item.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return false;
+                    }
+                }
+
                 clsEvent.AddEventLn("[" + lblCashier.Text + "] Creating new transaction.", true);
 
                 mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
@@ -9407,6 +9439,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
 
                 clsContact.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, dteTransactionDate);
+
+                // Jan 31, 2015 : Lemu
+                // put back to SuspendedOpen so that it won't be open somewhere else
+                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
 
                 mboIsInTransaction = true;
                 clsTerminalReport.CommitAndDispose();

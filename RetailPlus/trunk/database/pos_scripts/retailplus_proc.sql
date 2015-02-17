@@ -1657,7 +1657,7 @@ BEGIN
 	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 
 	INSERT INTO tblTerminalReportHistory (
-					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
+					BranchID, TerminalID, TerminalNo, IncludeIneSales, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
 					VATExempt, NonVATableAmount, VATableAmount, ZeroRatedSales, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
@@ -1681,7 +1681,7 @@ BEGIN
 					PromotionalItems, CreditSalesTax, BatchCounter, 
 					NoOfReprintedTransaction, TotalReprintedTransaction, IsProcessed, InitializedBy) 
 				(SELECT 
-					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
+					BranchID, TerminalID, TerminalNo, IncludeIneSales, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
 					VATExempt, NonVATableAmount, VATableAmount, ZeroRatedSales, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
@@ -1796,6 +1796,7 @@ BEGIN
 					TotalReprintedTransaction			=  0, 
 					IsProcessed							=  0,
 					Trustfund							=  (SELECT TrustFund FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo),
+					IncludeIneSales						=  (SELECT IncludeIneSales FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo),
 					DateLastInitialized					=  dteDateLastInitialized
 			WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 			
@@ -8099,7 +8100,7 @@ BEGIN
 	-- TransactionStatus
 	--		Open = 0
 	--		SuspendedOpen = 2
-	UPDATE tblTransactions SET TransactionStatus = 13 WHERE TransactionID = iTransactionID AND TransactionStatus = 2;
+	UPDATE tblTransactions SET TransactionStatus = 13 WHERE TransactionID = iTransactionID AND (TransactionStatus = 2 OR TransactionStatus = 0);
 	
 END;
 GO
@@ -9131,6 +9132,7 @@ GO
 create procedure procTerminalReportHistorySelect(
 									IN intBranchID BIGINT, 
 									IN strTerminalNo VARCHAR(20), 
+									IN intOnlyIncludeIneSales TINYINT(1),
 									IN dteDateFrom DATETIME,
 									IN dteDateTo DATETIME,
 									IN dteDateLastInitialized DATETIME,
@@ -9397,6 +9399,10 @@ BEGIN
 	
 	IF (strTerminalNo <> '') THEN
 		SET @SQL = CONCAT(@SQL,'AND TerminalNo = ''', strTerminalNo,''' ');
+	END IF;
+
+	IF (intOnlyIncludeIneSales <> 0) THEN
+		SET @SQL = CONCAT(@SQL,'AND IncludeIneSales = ', intOnlyIncludeIneSales,' ');
 	END IF;
 
 	IF (DATE_FORMAT(dteDateFrom, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
@@ -10490,6 +10496,243 @@ DROP TRIGGER IF EXISTS trgr_tblProducts_Update
 GO
 
 delimiter ;
+
+
+
+/**************************************************************
+
+	procRewardsSummarizedStatistics
+	Lemuel E. Aceron
+	Feb 6, 2015
+	
+	Desc: This will get the summary of rewards, per status
+
+	CALL procRewardsSummarizedStatistics();
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procRewardsSummarizedStatistics
+GO
+
+create procedure procRewardsSummarizedStatistics()
+BEGIN
+	
+	SELECT
+		RewardActive
+		,CASE RewardActive
+			WHEN 0 THEN 'InActive'
+			WHEN 1 THEN 'Active'
+		 END RewardActiveName
+		,RewardCardStatus
+		,CASE RewardCardStatus 
+			WHEN 0 THEN 'New'
+			WHEN 1 THEN 'Lost'
+			WHEN 2 THEN 'Expired'
+			WHEN 3 THEN 'Replaced_Lost'
+			WHEN 4 THEN 'Replaced_Expired'
+			WHEN 5 THEN 'ReNew'
+			WHEN 6 THEN 'Reactivated_Lost'
+			WHEN 7 THEN 'ManualDeactivated'
+			WHEN 8 THEN 'SystemDeactivated'
+			WHEN 9 THEN 'ManualActivated'
+			WHEN 10 THEN 'SystemActivated'
+			WHEN 11 THEN 'Suspended'
+		 END RewardCardStatusName
+		,COUNT(crew.CustomerID) NoOfCustomers
+		,SUM(RewardPoints) RewardPoints
+		,SUM(TotalPurchases) TotalPurchases
+		,SUM(RedeemedPoints) RedeemedPoints
+	FROM tblContactRewards crew
+	GROUP BY 
+		RewardActive
+		,RewardCardStatus
+	ORDER BY RewardActiveName, RewardCardStatusName;
+
+END;
+GO
+delimiter ;
+
+/**************************************************************
+
+	procIHCreditCardSummarizedStatistics
+	Lemuel E. Aceron
+	Feb 6, 2015
+	
+	Desc: This will get the summary of in-house credit card, per status
+
+	CALL procIHCreditCardSummarizedStatistics(0);
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procIHCreditCardSummarizedStatistics
+GO
+
+create procedure procIHCreditCardSummarizedStatistics(
+	IN boWithGuarantor TINYINT(1)
+)
+BEGIN
+	
+	SELECT
+		ctype.CardTypeCode
+		,ctype.CardTypeName
+		,CASE CreditCardStatus
+			WHEN 0 THEN 1
+			WHEN 1 THEN 0
+			WHEN 2 THEN 0
+			WHEN 3 THEN 1
+			WHEN 4 THEN 1
+			WHEN 5 THEN 1
+			WHEN 6 THEN 1
+			WHEN 7 THEN 0
+			WHEN 8 THEN 0
+			WHEN 9 THEN 1
+			WHEN 10 THEN 1
+			WHEN 11 THEN 0
+		 END CreditActive
+		,CASE CreditCardStatus
+			WHEN 0 THEN 'Active'
+			WHEN 1 THEN 'InActive'
+			WHEN 2 THEN 'InActive'
+			WHEN 3 THEN 'Active'
+			WHEN 4 THEN 'Active'
+			WHEN 5 THEN 'Active'
+			WHEN 6 THEN 'Active'
+			WHEN 7 THEN 'InActive'
+			WHEN 8 THEN 'InActive'
+			WHEN 9 THEN 'Active'
+			WHEN 10 THEN 'Active'
+			WHEN 11 THEN 'InActive'
+		 END CreditActiveName
+		,CreditCardStatus
+		,CASE CreditCardStatus
+			WHEN 0 THEN 'New'
+			WHEN 1 THEN 'Lost'
+			WHEN 2 THEN 'Expired'
+			WHEN 3 THEN 'Replaced_Lost'
+			WHEN 4 THEN 'Replaced_Expired'
+			WHEN 5 THEN 'ReNew'
+			WHEN 6 THEN 'Reactivated_Lost'
+			WHEN 7 THEN 'ManualDeactivated'
+			WHEN 8 THEN 'SystemDeactivated'
+			WHEN 9 THEN 'ManualActivated'
+			WHEN 10 THEN 'SystemActivated'
+			WHEN 11 THEN 'Suspended'
+		 END CreditCardStatusName
+		,COUNT(cci.CustomerID) NoOfCustomers
+		,SUM(cci.TotalPurchases) TotalPurchases
+		,SUM(cntct.Credit) Credit
+		,SUM(cntct.CreditLimit) CreditLimit
+		,SUM(cntct.Debit) Debit
+	FROM tblContactCreditCardInfo cci
+	INNER JOIN tblCardTypes ctype ON cci.CreditCardTypeID = ctype.CardTypeID
+	INNER JOIN tblContacts cntct ON cci.CustomerID = cntct.ContactID
+	WHERE ctype.WithGuarantor = boWithGuarantor
+	GROUP BY 
+		ctype.CardTypeCode
+		,ctype.CardTypeName
+		,cci.CreditCardStatus
+	ORDER BY ctype.CardTypeCode, CreditActiveName, CreditCardStatusName;
+
+END;
+GO
+delimiter ;
+
+
+/**************************************************************
+
+	procInventorySummary
+	Lemuel E. Aceron
+	Feb 6, 2015
+	
+	Desc: This will get the inventory in summary form
+
+	CALL procInventorySummary(0, 0, 0, 0);
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procInventorySummary
+GO
+
+create procedure procInventorySummary(
+	IN intInventoryType INT(1),
+	IN intBranchID INT(2),
+	IN intSupplierID BIGINT(20),
+	IN intProductGroupID BIGINT(20)
+)
+BEGIN
+	
+	IF (intInventoryType = 2) THEN -- by group
+		SELECT 
+			BranchCode,
+			BranchName,
+			'' SupplierName,
+			ProductGroupName,
+			'' ProductSubGroupName,
+			'' ProductCode,
+			SUM(inv.Quantity) Quantity,
+			MAX(pkg.PurchasePrice) PurchasePrice,
+			SUM(inv.Quantity * pkg.PurchasePrice) TotalInventory
+		FROM tblProductInventory inv
+		INNER JOIN tblBranch brnch ON inv.branchID = brnch.BranchID
+		LEFT OUTER JOIN tblProducts prd ON prd.ProductID = inv.ProductID
+		LEFT OUTER JOIN tblProductPackage pkg ON pkg.ProductID = prd.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1
+		LEFT OUTER JOIN tblProductSubGroup prdsg ON prd.ProductSubGroupID = prdsg.ProductSubGroupID
+		LEFT OUTER JOIN tblProductGroup prdg ON prdsg.ProductGroupID = prdg.ProductGroupID
+		LEFT OUTER JOIN tblContacts cntct ON cntct.ContactID = prd.SupplierID
+		WHERE IF(intBranchID=0,0,inv.BranchID) = intBranchID
+			AND IF(intSupplierID=0,0,cntct.ContactID) = intSupplierID
+			AND IF(intProductGroupID=0,0,prdg.ProductGroupID) = intProductGroupID
+		GROUP BY BranchCode, BranchName, ProductGroupName;
+	ELSEIF (intInventoryType = 1) THEN
+		SELECT 
+			BranchCode,
+			BranchName,
+			ContactName SupplierName,
+			'' ProductGroupName,
+			'' ProductSubGroupName,
+			'' ProductCode,
+			SUM(inv.Quantity) Quantity,
+			MAX(pkg.PurchasePrice) PurchasePrice,
+			SUM(inv.Quantity * pkg.PurchasePrice) TotalInventory
+		FROM tblProductInventory inv
+		INNER JOIN tblBranch brnch ON inv.branchID = brnch.BranchID
+		LEFT OUTER JOIN tblProducts prd ON prd.ProductID = inv.ProductID
+		LEFT OUTER JOIN tblProductPackage pkg ON pkg.ProductID = prd.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1
+		LEFT OUTER JOIN tblProductSubGroup prdsg ON prd.ProductSubGroupID = prdsg.ProductSubGroupID
+		LEFT OUTER JOIN tblProductGroup prdg ON prdsg.ProductGroupID = prdg.ProductGroupID
+		LEFT OUTER JOIN tblContacts cntct ON cntct.ContactID = prd.SupplierID
+		WHERE IF(intBranchID=0,0,inv.BranchID) = intBranchID
+			AND IF(intSupplierID=0,0,cntct.ContactID) = intSupplierID
+			AND IF(intProductGroupID=0,0,prdg.ProductGroupID) = intProductGroupID
+		GROUP BY BranchCode, BranchName, ContactName;
+	ELSE	-- by branch
+		SELECT 
+			BranchCode,
+			BranchName,
+			'' SupplierName,
+			'' ProductGroupName,
+			'' ProductSubGroupName,
+			'' ProductCode,
+			SUM(inv.Quantity) Quantity,
+			MAX(pkg.PurchasePrice) PurchasePrice,
+			SUM(inv.Quantity * pkg.PurchasePrice) TotalInventory
+		FROM tblProductInventory inv
+		INNER JOIN tblBranch brnch ON inv.branchID = brnch.BranchID
+		LEFT OUTER JOIN tblProducts prd ON prd.ProductID = inv.ProductID
+		LEFT OUTER JOIN tblProductPackage pkg ON pkg.ProductID = prd.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1
+		LEFT OUTER JOIN tblProductSubGroup prdsg ON prd.ProductSubGroupID = prdsg.ProductSubGroupID
+		LEFT OUTER JOIN tblProductGroup prdg ON prdsg.ProductGroupID = prdg.ProductGroupID
+		LEFT OUTER JOIN tblContacts cntct ON cntct.ContactID = prd.SupplierID
+		WHERE IF(intBranchID=0,0,inv.BranchID) = intBranchID
+			AND IF(intSupplierID=0,0,cntct.ContactID) = intSupplierID
+			AND IF(intProductGroupID=0,0,prdg.ProductGroupID) = intProductGroupID
+		GROUP BY BranchCode, BranchName;
+	END IF;
+
+END;
+GO
+delimiter ;
+
 
 
 GRANT RELOAD ON *.* TO 'POSUser';

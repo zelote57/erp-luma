@@ -426,6 +426,7 @@ create procedure procSaveBranch(
 	IN strDBPort VARCHAR(4),
 	IN strAddress VARCHAR(120),
 	IN strRemarks VARCHAR(120),
+	IN intIncludeIneSales TINYINT(1),
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 	)
@@ -445,11 +446,12 @@ BEGIN
 			DBPort				= strDBPort,
 			Address				= strAddress,
 			Remarks				= strRemarks,
+			IncludeIneSales		= intIncludeIneSales,
 			LastModified		= dteLastModified
 		WHERE BranchID			= intBranchID;
 	ELSE
-		INSERT INTO tblBranch(BranchID, BranchCode, Branchname, DBIP, DBPort, Address, Remarks, CreatedOn, LastModified)
-			VALUES(intBranchID, strBranchCode, strBranchname, strDBIP, strDBPort, strAddress, strRemarks, dteCreatedOn, dteLastModified);
+		INSERT INTO tblBranch(BranchID, BranchCode, Branchname, DBIP, DBPort, Address, Remarks, IncludeIneSales, CreatedOn, LastModified)
+			VALUES(intBranchID, strBranchCode, strBranchname, strDBIP, strDBPort, strAddress, strRemarks, intIncludeIneSales, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;

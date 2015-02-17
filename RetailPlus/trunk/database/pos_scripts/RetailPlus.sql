@@ -6734,14 +6734,14 @@ SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schem
 DELETE FROM sysConfig;
 
 DELETE FROM sysConfig WHERE ConfigName = 'CompanyCode';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'ACERON MINI DRUG STORE');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'HP SUPERMARKET');
 DELETE FROM sysConfig WHERE ConfigName = 'CompanyName';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyName',			'CompanyDetails',					'ACERON MINI DRUG STORE');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyName',			'CompanyDetails',					'HP SUPERMARKET');
 
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BACKEND_VARIATION_TYPE',	'BACKEND_VARIATION_TYPE',			'EXPIRATION;LOTNO');
 
 
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('TIN',					'CompanyDetails',					'229-191-536-000');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('TIN',					'CompanyDetails',					'004-180-231-005');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('Currency',				'CompanyDetails',					'PHP');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('VersionFTPIPAddress',	'CompanyDetails',					'Localhost');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CheckOutBillHeaderLabel','FE',								'-/- CHECK-OUT BILL -/-');
@@ -6764,11 +6764,11 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillWriteSyst
 -- 18Nov2013 settings to show if will print the values with TF
 --			 set to true
 DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInXRead';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInXRead',			'FE',						'false');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInXRead',			'FE',						'true');
 DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInZRead';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInZRead',			'FE',						'false');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInZRead',			'FE',						'true');
 DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInTerminalReport';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInTerminalReport',	'FE',						'false');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInTerminalReport',	'FE',						'true');
 
 -- 20Nov2013 settings to show if will print the values with TF
 --			hold the actual values.
@@ -6795,10 +6795,10 @@ DELETE FROM sysConfig WHERE ConfigName = 'WillAskDoNotPrintTransactionDate';
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillAskDoNotPrintTransactionDate',			'FE',						'false');
 
 DELETE FROM sysConfig WHERE ConfigName = 'WillShowProductTotalQuantityInItemSelect';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillShowProductTotalQuantityInItemSelect',	'FE',						'true');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillShowProductTotalQuantityInItemSelect',	'FE',						'false');
 
 DELETE FROM sysConfig WHERE ConfigName = 'WillNotPrintReprintMessage';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillNotPrintReprintMessage',					'FE',						'true');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillNotPrintReprintMessage',					'FE',						'false');
 
 DELETE FROM sysConfig WHERE ConfigName = 'ORHeader';
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ORHeader',									'FE',						'WARRANTY RECEIPT');
@@ -8784,9 +8784,62 @@ SET tblCashPayment.CreatedOn = tblTransactions.TransactionDate WHERE DATE_FORMAT
 UPDATE tblCreditPayment SET CreatedOn = CreditDate WHERE DATE_FORMAT(CreatedOn, '%Y-%m-%d') = '1900-01-01';
 UPDATE tblCreditCardPayment SET CreatedOn = TransactionDate WHERE DATE_FORMAT(CreatedOn, '%Y-%m-%d') = '1900-01-01';
 
+/*********************************  v_4.0.1.30.sql END  *******************************************************/ 
 
+UPDATE tblTerminal SET DBVersion = '4.0.1.31';
 
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (172, 'Change OSPrinter', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 172, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 172, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '05: Backend - MasterFiles - Products' WHERE TypeID = 172;
+
+DELETE FROM sysAccessTypes WHERE TypeID = 173;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (173, 'Print Shelves/Tag Price', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 173, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 173, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 11, Category = '05: Backend - MasterFiles - Products' WHERE TypeID = 173;
 	
+-- this will determine if the report will show in eSales Report / BIR
+ALTER TABLE tblTerminal ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
+ALTER TABLE tblTerminalReport ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
+ALTER TABLE tblTerminalReportHistory ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
+
+-- Jan 31, 2015
+UPDATE tblTerminal SET IncludeIneSales = 0 WHERE TerminalID >= 80;
+UPDATE tblTerminalReport SET IncludeIneSales = 0 WHERE TerminalID >= 80;
+UPDATE tblTerminalReportHistory SET IncludeIneSales = 0 WHERE TerminalID >= 80;
+
+ALTER TABLE tblBranch ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
+
+
+/*********************************  v_4.0.1.32.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.32';
+
+DELETE FROM sysAccessTypes WHERE TypeID = 174;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (174, 'Zero Out Branch Inventory', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 174, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 174, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 11, Category = '11: Data Collector' WHERE TypeID = 174;
+	
+
+-- put the isDefaultButtonYesInPrintTransaction to be use when default button is yes = true
+-- selection: true, false
+DELETE FROM sysConfig WHERE ConfigName = 'isDefaultButtonYesInPrintTransaction';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('isDefaultButtonYesInPrintTransaction',	'FE', 'false');
+
+-- put the AllowZeroAmountTransaction to be use when closing transaction
+-- selection: 
+--		true	- allow
+--		false	- do not allow
+-- default true:
+DELETE FROM sysConfig WHERE ConfigName = 'AllowZeroAmountTransaction';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('AllowZeroAmountTransaction',	'FE', 'true');
+-- INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('AllowZeroAmountTransaction',	'FE', 'false');
+
+
+-- Added  xxxxxx if credit card type is inhouse
+
 -- Notes: Please read
 -- run the retailplus_proc.sql
 -- run this to fixed the previous reports.

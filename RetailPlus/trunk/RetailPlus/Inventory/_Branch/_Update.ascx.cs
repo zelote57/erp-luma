@@ -100,6 +100,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			txtDBPort.Text = clsDetails.DBPort;
 			txtAddress.Text = clsDetails.Address;
 			txtRemarks.Text = clsDetails.Remarks;
+            chkIncludeIneSales.Checked = clsDetails.IncludeIneSales;
 		}
 		private void SaveRecord()
 		{
@@ -113,6 +114,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			clsDetails.DBPort = txtDBPort.Text;
 			clsDetails.Address = txtAddress.Text;
 			clsDetails.Remarks = txtRemarks.Text;
+            clsDetails.IncludeIneSales = chkIncludeIneSales.Checked;
 
 			clsBranch.Update(clsDetails);
 			clsBranch.CommitAndDispose();

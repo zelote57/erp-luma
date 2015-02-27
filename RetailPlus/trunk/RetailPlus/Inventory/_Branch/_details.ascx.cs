@@ -78,6 +78,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			txtDBPort.Text = clsDetails.DBPort;
 			txtAddress.Text = clsDetails.Address;
 			txtRemarks.Text = clsDetails.Remarks;
+            chkIncludeIneSales.Checked = clsDetails.IncludeIneSales;
 		}
 
 		#endregion

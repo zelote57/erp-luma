@@ -84,6 +84,14 @@
 										</td>
                                         <td class="Ms-pvnavmidr1"></td>
 									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkSummarizedStatistics" runat="server" title="Print summarized statistics report">
+													    Summarize Statistics</asp:HyperLink>
+										</td>
+                                        <td class="Ms-pvnavmidr1"></td>
+									</tr>
 								</table>
 								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126" />
 							</div>
@@ -120,6 +128,14 @@
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkGuarantorsLedger" runat="server" title="Print Guarantor's Ledger Summary report">
 													    Guarantor's Ledger Summary</asp:HyperLink>
+										</td>
+                                        <td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkSummarizedStatisticsWG" runat="server" title="Print summarized statistics report">
+													    Summarize Statistics</asp:HyperLink>
 										</td>
                                         <td class="Ms-pvnavmidr1"></td>
 									</tr>

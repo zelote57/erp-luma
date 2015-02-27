@@ -46,6 +46,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblDiscountType;
         private Label label9;
         private CheckBox chkIsCreditAllowed;
+        private Label label10;
+        private TextBox txtContactCode;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -150,6 +152,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCreditLimit = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtContactCode = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -180,6 +184,8 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.txtContactCode);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtTelNo);
             this.groupBox1.Controls.Add(this.label2);
@@ -499,6 +505,27 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit.GotFocus += new System.EventHandler(this.txtCreditLimit_GotFocus);
             this.txtCreditLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCreditLimit_KeyPress);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label10.Location = new System.Drawing.Point(511, 25);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(167, 13);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "Please enter Customer Code";
+            // 
+            // txtContactCode
+            // 
+            this.txtContactCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContactCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactCode.Location = new System.Drawing.Point(554, 43);
+            this.txtContactCode.MaxLength = 25;
+            this.txtContactCode.Name = "txtContactCode";
+            this.txtContactCode.Size = new System.Drawing.Size(257, 30);
+            this.txtContactCode.TabIndex = 8;
+            // 
             // ContactAddWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
@@ -716,6 +743,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mContactDetails.ContactID != 0)
             {
+                txtContactCode.Text = mContactDetails.ContactCode;
                 txtCustomerName.Text = mContactDetails.ContactName;
                 txtBusinessName.Text = mContactDetails.BusinessName;
                 txtTelNo.Text = mContactDetails.TelephoneNo;
@@ -727,6 +755,13 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtTerms.Text = mContactDetails.Terms.ToString("#,##0");
                 cboTerms.SelectedIndex = int.Parse(mContactDetails.ModeOfTerms.ToString("d"));
                 chkIsCreditAllowed.Checked = mContactDetails.IsCreditAllowed;
+            }
+            else
+            {
+                Data.ERPConfig clsERPConfig = new Data.ERPConfig();
+                BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
+                txtContactCode.Text = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+                clsERPConfig.CommitAndDispose();
             }
         }
 
@@ -741,7 +776,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 Data.ContactDetails clsDetails = new Data.ContactDetails();
                 clsDetails = mContactDetails;
 
-                clsDetails.ContactCode = txtCustomerName.Text;
+                clsDetails.ContactCode = txtContactCode.Text;
                 clsDetails.ContactName = txtCustomerName.Text;
                 clsDetails.Address = txtAddress.Text;
                 clsDetails.BusinessName = txtBusinessName.Text;
@@ -768,17 +803,10 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
                     clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
                     clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
-
-                    // overwrite the contactcode
-                    Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContact.Connection, clsContact.Transaction);
-                    BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
-                    clsDetails.ContactCode = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
-
                     clsDetails.ContactID = clsContact.Insert(clsDetails);
                 }
                 else
                 {
-                    clsDetails.ContactCode = mContactDetails.ContactCode;
                     clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
                     clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
                     clsContact.Update(clsDetails);

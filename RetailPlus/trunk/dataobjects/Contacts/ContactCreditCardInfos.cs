@@ -522,6 +522,29 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public System.Data.DataTable IHCreditCardSummarizedStatistics(bool WithGuarantor)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procIHCreditCardSummarizedStatistics(@WithGuarantor);";
+
+                cmd.Parameters.AddWithValue("WithGuarantor", WithGuarantor);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 	}
 }

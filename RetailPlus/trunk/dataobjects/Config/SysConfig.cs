@@ -68,7 +68,18 @@ namespace AceSoft.RetailPlus.Data
         public bool AllowRewardPointsPayment;
         public bool AllowDiscountGreaterThanAmount;
 
+        public bool isDefaultButtonYesInPrintTransaction;
+        public bool AllowZeroAmountTransaction;
+        public bool AllowMoreThan1ItemIfConsignment;
+
+        public bool WillProcessCreditBillerInProgram;
+
+        public string OutOfStockCustomerCode;
+        public string WalkInCustomerCode;
+
         public string ORHeader;
+
+        
     }
     public class SysConfig : POSConnection
     {
@@ -236,6 +247,50 @@ namespace AceSoft.RetailPlus.Data
             catch { }
             return boRetValue;
         }
+        
+        public bool get_AllowZeroAmountTransaction()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ALLOW_ZERO_AMOUNT_TRANSACTION));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_AllowMoreThan1ItemIfConsignment()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ALLOW_MORE_THAN_1ITEM_IF_CONSIGNMENT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_WillProcessCreditBillerInProgram()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_PROCESS_CREDIT_BILLER_IN_PROGRAM));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_isDefaultButtonYesInPrintTransaction()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_IS_DEFAULT_BUTTON_YES_INPRINTTRANSACTION));
+            }
+            catch { }
+            return boRetValue;
+        }
 
         public CreditPaymentType get_CreditPaymentType()
         {
@@ -246,6 +301,28 @@ namespace AceSoft.RetailPlus.Data
             }
             catch { }
             return clsCreditPaymentType;
+        }
+
+        public string get_OutOfStockCustomerCode()
+        {
+            string strRetValue = "OUT OF STOCK";
+            try
+            {
+                strRetValue = get_Sysconfig(Constants.SYS_CONFIG_OUT_OF_STOCK_CUSTOMER_CODE);
+            }
+            catch { }
+            return strRetValue;
+        }
+
+        public string get_WalkInCustomerCode()
+        {
+            string strRetValue = "WALK-IN";
+            try
+            {
+                strRetValue = get_Sysconfig(Constants.SYS_CONFIG_WALKIN_CUSTOMER_CODE);
+            }
+            catch { }
+            return strRetValue;
         }
 
         public string get_ORHeader()
@@ -335,6 +412,12 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.AllowDebitPayment = get_AllowDebitPayment();
             clsSysConfigDetails.AllowRewardPointsPayment = get_AllowRewardPointsPayment();
             clsSysConfigDetails.AllowDiscountGreaterThanAmount= get_AllowDiscountGreaterThanAmount();
+            clsSysConfigDetails.AllowZeroAmountTransaction = get_AllowZeroAmountTransaction();
+            clsSysConfigDetails.AllowMoreThan1ItemIfConsignment = get_AllowMoreThan1ItemIfConsignment();
+            clsSysConfigDetails.WillProcessCreditBillerInProgram = get_WillProcessCreditBillerInProgram();
+            clsSysConfigDetails.isDefaultButtonYesInPrintTransaction = get_isDefaultButtonYesInPrintTransaction();
+            clsSysConfigDetails.OutOfStockCustomerCode = get_OutOfStockCustomerCode();
+            clsSysConfigDetails.WalkInCustomerCode = get_WalkInCustomerCode();
             clsSysConfigDetails.ORHeader = get_ORHeader();
 
             return clsSysConfigDetails;

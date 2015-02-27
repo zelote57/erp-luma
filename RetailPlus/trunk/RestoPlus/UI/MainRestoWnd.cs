@@ -3019,8 +3019,19 @@ namespace AceSoft.RetailPlus.Client.UI
                                         Data.ProductDetails det = clsProduct.Details(Details.ProductID, Details.VariationsMatrixID, mclsTerminalDetails.BranchID);
 
                                         decimal decProductCurrentQuantity = det.Quantity - det.ReservedQuantity + oldQuantity;
-                                        if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true &&
-                                            Details.BarCode != Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE)
+
+                                        // 04Sep2014 : Include exception for CreditPayment
+                                        if (decProductCurrentQuantity < Details.Quantity &&
+                                            mclsTerminalDetails.ShowItemMoreThanZeroQty &&
+                                            Details.BarCode != Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE &&
+                                            Details.BarCode != Data.Products.DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE)
                                         {
                                             clsProduct.CommitAndDispose();
                                             MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + decProductCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -5489,8 +5500,17 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
 
                         if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER &&
-                            !mboIsRefund && clsProductDetails.Quantity - clsProductDetails.ReservedQuantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty &&
-                            clsProductDetails.BarCode != Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE)
+                            !mboIsRefund && clsProductDetails.Quantity - clsProductDetails.ReservedQuantity < decQuantity &&
+                            mclsTerminalDetails.ShowItemMoreThanZeroQty &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE &&
+                            clsProductDetails.BarCode != Data.Products.DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE)
                         {
                             if (clsProductDetails.Quantity >= decQuantity)
                             {
@@ -7033,8 +7053,13 @@ namespace AceSoft.RetailPlus.Client.UI
                     CreditsItemizeWnd creditWnd = new CreditsItemizeWnd();
                     creditWnd.TerminalDetails = mclsTerminalDetails;
                     creditWnd.SysConfigDetails = mclsSysConfigDetails;
+                    creditWnd.CashierID = mclsSalesTransactionDetails.CashierID;
                     creditWnd.CustomerDetails = mclsContactDetails;
                     creditWnd.ShowDialog(this);
+
+                    Keys keyData = creditWnd.KeyData;
+                    string strTransactionNoToReprint = creditWnd.TransactionNoToReprint;
+                    string strTerminalNoToReprint = creditWnd.TerminalNoToReprint;
 
                     decimal AmountPaid = creditWnd.AmountPayment;
                     decimal CashPayment = creditWnd.CashPayment;
@@ -7058,6 +7083,12 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (result == DialogResult.OK)
                     {
+                        if (keyData == Keys.F12)
+                        {
+                            ReprintTransaction(strTransactionNoToReprint, strTerminalNoToReprint);
+                            return;
+                        }
+
                         bool boActivateSuspendedAccount = true;
 
                         if (!mclsContactDetails.CreditDetails.CreditActive)
@@ -8742,7 +8773,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
             }
         }
-        private void ReprintTransaction()
+        private void ReprintTransaction(string TransactionNo = "", string TerminalNo = "")
         {
             if (!SuspendTransactionAndContinue()) return;
 
@@ -8750,16 +8781,23 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (loginresult == DialogResult.OK)
             {
-                TransactionNoWnd clsTransactionNoWnd = new TransactionNoWnd();
-                clsTransactionNoWnd.TransactionNoLength = mclsTerminalDetails.TransactionNoLength;
-                clsTransactionNoWnd.TerminalNo = mclsTerminalDetails.TerminalNo;
-                clsTransactionNoWnd.TerminalDetails = mclsTerminalDetails;
-                clsTransactionNoWnd.ShowDialog(this);
-                DialogResult result = clsTransactionNoWnd.Result;
-                string strTransactionNo = clsTransactionNoWnd.TransactionNo;
-                string strTerminalNo = clsTransactionNoWnd.TerminalNo;
-                clsTransactionNoWnd.Close();
-                clsTransactionNoWnd.Dispose();
+                DialogResult result = System.Windows.Forms.DialogResult.OK;
+                string strTransactionNo = TransactionNo;
+                string strTerminalNo = TerminalNo;
+
+                if (string.IsNullOrEmpty(TransactionNo))
+                {
+                    TransactionNoWnd clsTransactionNoWnd = new TransactionNoWnd();
+                    clsTransactionNoWnd.TransactionNoLength = mclsTerminalDetails.TransactionNoLength;
+                    clsTransactionNoWnd.TerminalNo = mclsTerminalDetails.TerminalNo;
+                    clsTransactionNoWnd.TerminalDetails = mclsTerminalDetails;
+                    clsTransactionNoWnd.ShowDialog(this);
+                    result = clsTransactionNoWnd.Result;
+                    strTransactionNo = clsTransactionNoWnd.TransactionNo;
+                    strTerminalNo = clsTransactionNoWnd.TerminalNo;
+                    clsTransactionNoWnd.Close();
+                    clsTransactionNoWnd.Dispose();
+                }
 
                 if (result == DialogResult.OK)
                 {
@@ -8817,10 +8855,27 @@ namespace AceSoft.RetailPlus.Client.UI
                     //items are already printed during the loading of items.
                     //if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
                     //    PrintReportFooterSection(true, TransactionStatus.Reprinted, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, mclsSalesTransactionDetails.CashPayment, mclsSalesTransactionDetails.ChequePayment, mclsSalesTransactionDetails.CreditCardPayment, mclsSalesTransactionDetails.CreditPayment, mclsSalesTransactionDetails.DebitPayment, mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardConvertedPayment, mclsSalesTransactionDetails.ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
-
-                    if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
+                    if (mclsSalesTransactionDetails.isConsignment)
+                    {
+                        // 18Feb2015 : Print DR only if the transaction is consignment
+                        clsEvent.AddEventLn("      re-printing delivery receipt as consginment...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintDeliveryReceipt();
+                    }
+                    else if (mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.WalkInCustomerCode &&
+                        (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice ||
+                         mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt ||
+                        mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR))
+                    {
+                        clsEvent.AddEventLn("      re-printing walk-in customer quote form...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintWalkInReceipt();
+                    }
+                    else if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment &&
+                        mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
                     {
                         // do another report for credit payment if HP
+                        PrintCreditPayment();
+
+                        // do this twice as per request of CN trader's and CS
                         PrintCreditPayment();
                     }
                     else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
@@ -8835,11 +8890,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR)
                     {
-                        clsEvent.AddEventLn("      printing sales invoice & delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        clsEvent.AddEventLn("      re-printing sales invoice & delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
 
-                        // Sep 24, 2014 do not print sales invoice if its a consignment
-                        if (!mclsSalesTransactionDetails.isConsignment)
-                            PrintSalesInvoice();
+                        PrintSalesInvoice();
 
                         PrintDeliveryReceipt();
                     }

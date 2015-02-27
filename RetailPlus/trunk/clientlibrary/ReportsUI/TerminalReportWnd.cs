@@ -596,6 +596,26 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Total Transactions", ":", mclsDetails.NoOfTotalTransactions.ToString("#,##0.00"));
 
+            // 25Feb2015 : These lines will not be printed in the actual print-out
+            dt.Rows.Add("Misc Amount Breakdown", "", "");
+            dt.Rows.Add("Consignment", ":", (mclsDetails.ConsignmentSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Walk-In", ":", (mclsDetails.WalkInSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Out Of Stock", ":", (mclsDetails.OutOfStockSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("    Refund", "", "");
+            dt.Rows.Add("Consignment", ":", (mclsDetails.ConsignmentRefundSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Walk-In", ":", (mclsDetails.WalkInRefundSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Out Of Stock", ":", (mclsDetails.OutOfStockRefundSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+
+            dt.Rows.Add("-", "-", "-");
+            dt.Rows.Add("Consignment Trans", ":", mclsDetails.NoOfConsignmentTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("Walk-In Trans", ":", mclsDetails.NoOfWalkInTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("Out Of Stock Trans", ":", mclsDetails.NoOfOutOfStockTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("    Refund", "", "");
+            dt.Rows.Add("Consignment Trans", ":", mclsDetails.NoOfConsignmentRefundTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("Walk-In Trans", ":", mclsDetails.NoOfWalkInRefundTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("Out Of Stock Trans", ":", mclsDetails.NoOfOutOfStockRefundTransactions.ToString("#,##0.00"));
+            // 25Feb2015 : End of lines
+
             string strReportFooter1 = clsReceipt.Details("ReportFooter1").Value;
             string strReportFooter2 = clsReceipt.Details("ReportFooter2").Value;
             string strReportFooter3 = clsReceipt.Details("ReportFooter3").Value;

@@ -30,6 +30,7 @@ namespace AceSoft.RetailPlus.Client.UI
         public Data.ContactDetails CustomerDetails
         {
             set { mclsCustomerDetails = value; }
+            get { return mclsCustomerDetails; }
         }
 
         public Data.TerminalDetails TerminalDetails { get; set; }
@@ -586,12 +587,22 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                 Data.Creditors clsCreditors = new Data.Creditors(clsLocalConnection.Connection, clsLocalConnection.Transaction);
 
-                                clsCreditors.DeleteCreditTransaction(BranchID, TerminalNo, TransactionID);
-
-                                clsCreditors.AutoAdjustCredit(mclsCustomerDetails, mclsCustomerDetails.Credit + AmountPaid);
+                                switch (mclsSysConfigDetails.CreditPaymentType)
+                                {
+                                    case CreditPaymentType.Houseware:
+                                        clsCreditors.DeleteCreditTransaction(BranchID, TerminalNo, TransactionID);
+                                        clsCreditors.AutoAdjustCredit(mclsCustomerDetails, mclsCustomerDetails.Credit + AmountPaid);
+                                        break;
+                                    case CreditPaymentType.Normal:
+                                    case CreditPaymentType.MPC:
+                                    default:
+                                        clsCreditors.AdjustCredit(BranchID, TerminalNo, TransactionID, mclsCustomerDetails, mclsCustomerDetails.Credit + AmountPaid, AmountPaid);
+                                        clsCreditors.DeleteCreditTransaction(BranchID, TerminalNo, TransactionID);
+                                        break;
+                                }
 
                                 clsLocalConnection.CommitAndDispose();
-
+                                mclsCustomerDetails.Credit = mclsCustomerDetails.Credit + AmountPaid;
                                 this.Hide();
                                 dialog = System.Windows.Forms.DialogResult.OK;
                             }

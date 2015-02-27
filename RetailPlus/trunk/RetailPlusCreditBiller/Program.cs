@@ -24,7 +24,8 @@ namespace AceSoft.RetailPlus.Monitor
             // check if it's already running
             if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
             {
-                WriteProcessToMonitor("   already running. not ok");
+                WriteProcessToMonitor("   already running. Press any key to continue...");
+                Console.ReadLine();
                 return;
             }
 
@@ -74,12 +75,30 @@ namespace AceSoft.RetailPlus.Monitor
                     clsDatabase.CommitAndDispose();
                     return;
                 }
-                WriteProcessToMonitor("Checking credit billings to process...");
+                
+                WriteProcessToMonitor("Checking credit billings with guarantor to process...");
                 WriteProcessToMonitor("   done checking...");
 
                 Data.CardType clsCardType = new Data.CardType(mConnection, mTransaction);
                 mConnection = clsCardType.Connection; mTransaction = clsCardType.Transaction;
-                System.Data.DataTable dt = clsCardType.ListAsDataTable(new Data.CardTypeDetails() { CreditCardType = CreditCardTypes.Internal, CheckGuarantor = true, WithGuarantor = false });
+                System.Data.DataTable dt = clsCardType.ListAsDataTable(new Data.CardTypeDetails() { CreditCardType = CreditCardTypes.Internal, CheckGuarantor = true, WithGuarantor = true });
+                clsCardType.CommitAndDispose();
+                clsDatabase.CommitAndDispose();
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    WriteProcessToMonitor("Processing " + dr["CardTypeName"].ToString() + "...");
+                    ProcessCreditBillWG(dr["CardTypeName"].ToString());
+                }
+
+                WriteProcessToMonitor("Checking credit billings to process...");
+                WriteProcessToMonitor("   done checking...");
+
+
+                // processing of Internal WithOutGuarantor
+                clsCardType = new Data.CardType(mConnection, mTransaction);
+                mConnection = clsCardType.Connection; mTransaction = clsCardType.Transaction;
+                dt = clsCardType.ListAsDataTable(new Data.CardTypeDetails() { CreditCardType = CreditCardTypes.Internal, CheckGuarantor = true, WithGuarantor = false });
                 clsCardType.CommitAndDispose();
                 clsDatabase.CommitAndDispose();
 
@@ -104,37 +123,6 @@ namespace AceSoft.RetailPlus.Monitor
                     goto exit;
                 }
                 // end-redo this checking before processing creditbill with Guarantor
-                
-                WriteProcessToMonitor("Checking credit billings with guarantor to process...");
-                WriteProcessToMonitor("   done checking...");
-
-                clsCardType = new Data.CardType(mConnection, mTransaction);
-                mConnection = clsCardType.Connection; mTransaction = clsCardType.Transaction;
-                dt = clsCardType.ListAsDataTable(new Data.CardTypeDetails() { CreditCardType = CreditCardTypes.Internal, CheckGuarantor = true, WithGuarantor = true });
-                clsCardType.CommitAndDispose();
-                clsDatabase.CommitAndDispose();
-
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    WriteProcessToMonitor("Processing " + dr["CardTypeName"].ToString() + "...");
-                    ProcessCreditBillWG(dr["CardTypeName"].ToString());
-                }
-
-                //Int32 intProcessWaitInMins = 1;
-                //if (System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"] != null)
-                //    intProcessWaitInMins = Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"].ToString(), out intProcessWaitInMins) ? intProcessWaitInMins : 1;
-
-                //WriteProcessToMonitor("Waiting " + intProcessWaitInMins.ToString("#,##0") + "Mins for next process...");
-
-                //// Create a Timer object that knows to call our TimerCallback
-                //// method once every 2000 milliseconds.
-                //iTmrCtr = 0;
-                //System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
-
-                //System.Threading.Thread.Sleep(60000 * intProcessWaitInMins);
-
-                //t.Dispose(); // Cancel the timer now
-                //Console.WriteLine();
 
                 Wait();
                 goto back;
@@ -185,6 +173,11 @@ namespace AceSoft.RetailPlus.Monitor
             Data.CardType clsCardType = new Data.CardType(mConnection, mTransaction);
             mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
 
+            Data.SysConfig clsSysConfig = new Data.SysConfig(mConnection, mTransaction);
+            mConnection = clsSysConfig.Connection; mTransaction = clsSysConfig.Transaction;
+
+            bool boWillProcessCreditBillerInProgram = clsSysConfig.get_WillProcessCreditBillerInProgram();
+
             Data.CardTypeDetails clsCreditCardTypeInfo = clsCardType.Details(CardTypeName);
 
             try
@@ -225,21 +218,31 @@ namespace AceSoft.RetailPlus.Monitor
                     clsLocalDB.CommitAndDispose();
                     return;
                 }
-                WriteProcessToMonitor("Processing credit bill for BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. ");
-                clsBilling.ProcessCurrentBill(CreditType.Individual, clsCreditCardTypeInfo.CardTypeCode);
 
-                // print SOA first before closing the billing date to make sure all are printed
-                lstBillingDetails = clsBilling.List(CreditType: CreditType.Individual, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID, BillingDate: clsCreditCardTypeInfo.BillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
-                clsBilling.CommitAndDispose();
+                // 19Feb2015 : ByPass execution, put in the event instead. Just put the printing here.
+                if (boWillProcessCreditBillerInProgram)
+                {
+                    WriteProcessToMonitor("Processing credit bill for BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. ");
+                    clsBilling.ProcessCurrentBill(CreditType.Individual, clsCreditCardTypeInfo.CardTypeCode);
 
-                PrintORs(lstBillingDetails);
+                    // print SOA first before closing the billing date to make sure all are printed
+                    lstBillingDetails = clsBilling.List(CreditType: CreditType.Individual, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID, BillingDate: clsCreditCardTypeInfo.BillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+                    clsBilling.CommitAndDispose();
 
-                WriteProcessToMonitor("Closing current billing date...");
-                clsBilling = new Data.Billing(mConnection, mTransaction);
-                mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
+                    PrintORs(lstBillingDetails);
 
-                clsBilling.CloseCurrentBill(CreditType.Individual, clsCreditCardTypeInfo.CardTypeCode);
-                WriteProcessToMonitor("Done.");
+                    WriteProcessToMonitor("Closing current billing date...");
+                    clsBilling = new Data.Billing(mConnection, mTransaction);
+                    mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
+
+                    clsBilling.CloseCurrentBill(CreditType.Individual, clsCreditCardTypeInfo.CardTypeCode);
+                    WriteProcessToMonitor("Done.");
+                }
+                else
+                {
+                    WriteProcessToMonitor("Will not process group credit bill. WillProcessCreditBillerInProgram : false");
+                    WriteProcessToMonitor("Done.");
+                }
             }
             catch (Exception ex)
             {
@@ -739,6 +742,11 @@ namespace AceSoft.RetailPlus.Monitor
             Data.Contacts clsContacts = new Data.Contacts(mConnection, mTransaction);
             mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
 
+            Data.SysConfig clsSysConfig = new Data.SysConfig(mConnection, mTransaction);
+            mConnection = clsSysConfig.Connection; mTransaction = clsSysConfig.Transaction;
+
+            bool boWillProcessCreditBillerInProgram = clsSysConfig.get_WillProcessCreditBillerInProgram();
+
             Data.CardType clsCardType = new Data.CardType(mConnection, mTransaction);
             mConnection = clsCardType.Connection; mTransaction = clsCardType.Transaction;
 
@@ -791,22 +799,32 @@ namespace AceSoft.RetailPlus.Monitor
 
                     return;
                 }
-                WriteProcessToMonitor("Processing group credit bill for BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. ");
-                clsBilling.ProcessCurrentBill(CreditType.Group, clsCreditCardTypeInfo.CardTypeCode);
 
-                // print SOA first before closing the billing date to make sure all are printed
-                clsContacts = new Data.Contacts(mConnection, mTransaction);
-                mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
-                dtGuarantors = clsContacts.Guarantors(clsContactColumns, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID);
-                clsBilling.CommitAndDispose();
-                PrintORsWG(dtGuarantors, clsCreditCardTypeInfo);
+                // 19Feb2015 : ByPass execution, put in the event instead. Just put the printing here.
+                if (boWillProcessCreditBillerInProgram)
+                {
+                    WriteProcessToMonitor("Processing group credit bill for BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. ");
+                    clsBilling.ProcessCurrentBill(CreditType.Group, clsCreditCardTypeInfo.CardTypeCode);
 
-                WriteProcessToMonitor("Closing group current billing date...");
-                clsBilling = new Data.Billing(mConnection, mTransaction);
-                mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
+                    // print SOA first before closing the billing date to make sure all are printed
+                    clsContacts = new Data.Contacts(mConnection, mTransaction);
+                    mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
+                    dtGuarantors = clsContacts.Guarantors(clsContactColumns, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID);
+                    clsBilling.CommitAndDispose();
+                    PrintORsWG(dtGuarantors, clsCreditCardTypeInfo);
 
-                clsBilling.CloseCurrentBill(CreditType.Group, clsCreditCardTypeInfo.CardTypeCode);
-                WriteProcessToMonitor("Done.");
+                    WriteProcessToMonitor("Closing group current billing date...");
+                    clsBilling = new Data.Billing(mConnection, mTransaction);
+                    mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
+
+                    clsBilling.CloseCurrentBill(CreditType.Group, clsCreditCardTypeInfo.CardTypeCode);
+                    WriteProcessToMonitor("Done.");
+                }
+                else
+                {
+                    WriteProcessToMonitor("Will not process group credit bill. WillProcessCreditBillerInProgram : false");
+                    WriteProcessToMonitor("Done.");
+                }
             }
             catch (Exception ex)
             {
@@ -1210,7 +1228,7 @@ namespace AceSoft.RetailPlus.Monitor
         private static void WriteProcessToMonitor(string ProcessToWrite)
         {
             Event clsEvent = new Event();
-            clsEvent.AddEventLn(ProcessToWrite);
+            clsEvent.AddEventLn(ProcessToWrite, true);
             Console.WriteLine(ConsoleMonitor() + ProcessToWrite);
         }
 

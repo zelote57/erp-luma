@@ -3168,6 +3168,21 @@ create procedure procSaveCashierReport(
 	IN decRefundCreditCard				 	 decimal(18,3),
 	IN decRefundCredit						 decimal(18,3),
 	IN decRefundDebit						 decimal(18,3),
+
+	IN intNoOfConsignmentTransactions  int(10),
+	IN intNoOfConsignmentRefundTransactions  int(10),
+	IN intNoOfWalkInTransactions  int(10),
+	IN intNoOfWalkInRefundTransactions  int(10),
+	IN intNoOfOutOfStockTransactions  int(10),
+	IN intNoOfOutOfStockRefundTransactions  int(10),
+
+	IN decConsignmentSales  decimal(18,3),
+	IN decConsignmentRefundSales  decimal(18,3),
+	IN decWalkInSales  decimal(18,3),
+	IN decWalkInRefundSales  decimal(18,3),
+	IN decOutOfStockSales  decimal(18,3),
+	IN decOutOfStockRefundSales  decimal(18,3),
+
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 	)
@@ -3262,6 +3277,21 @@ BEGIN
 			RefundCreditCard		= decRefundCreditCard,
 			RefundCredit			= decRefundCredit,
 			RefundDebit				= decRefundDebit,
+
+			NoOfConsignmentTransactions			=	intNoOfConsignmentTransactions,
+			NoOfConsignmentRefundTransactions	=	intNoOfConsignmentRefundTransactions,
+			NoOfWalkInTransactions				=	intNoOfWalkInTransactions,
+			NoOfWalkInRefundTransactions		=	intNoOfWalkInRefundTransactions,
+			NoOfOutOfStockTransactions			=	intNoOfOutOfStockTransactions,
+			NoOfOutOfStockRefundTransactions	=	intNoOfOutOfStockRefundTransactions,
+
+			ConsignmentSales				=	decConsignmentSales,
+			ConsignmentRefundSales		=	decConsignmentRefundSales,
+			WalkInSales					=	decWalkInSales,
+			WalkInRefundSales			=	decWalkInRefundSales,
+			OutOfStockSales				=	decOutOfStockSales,
+			OutOfStockRefundSales		=	decOutOfStockRefundSales,
+
 			LastModified			= dteLastModified
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
 
@@ -3283,6 +3313,10 @@ BEGIN
 							NoOfRewardPointsPayment, CreditPaymentCash, CreditPaymentCheque,
 							CreditPaymentCreditCard, CreditPaymentDebit, 
 							RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit, 
+							NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+							NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+							ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+							WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
 							CreatedOn, LastModified)
 			VALUES(intBranchID, strTerminalNo, intSyncID, intCashierID, intTerminalID, decNetSales, decGrossSales, 
 							decTotalDiscount, decSNRDiscount, decPWDDiscount, decOtherDiscount, decDailySales,
@@ -3301,6 +3335,10 @@ BEGIN
 							intNoOfRewardPointsPayment, decCreditPaymentCash, decCreditPaymentCheque,
 							decCreditPaymentCreditCard, decCreditPaymentDebit, 
 							decRefundCash, decRefundCheque, decRefundCreditCard, decRefundCredit, decRefundDebit, 
+							intNoOfConsignmentTransactions, intNoOfConsignmentRefundTransactions, intNoOfWalkInTransactions,
+							intNoOfWalkInRefundTransactions, intNoOfOutOfStockTransactions, intNoOfOutOfStockRefundTransactions,
+							decConsignmentSales, decConsignmentRefundSales, decWalkInSales,
+							decWalkInRefundSales, decOutOfStockSales, decOutOfStockRefundSales,
 							dteCreatedOn, dteLastModified);
 
 		UPDATE tblCashierReport SET SyncID = CashierReportID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
@@ -3405,6 +3443,21 @@ create procedure procSaveCashierReportHistory(
 	IN decRefundCreditCard					decimal(18,3),
 	IN decRefundCredit						decimal(18,3),
 	IN decRefundDebit						decimal(18,3),
+
+	IN intNoOfConsignmentTransactions  int(10),
+	IN intNoOfConsignmentRefundTransactions  int(10),
+	IN intNoOfWalkInTransactions  int(10),
+	IN intNoOfWalkInRefundTransactions  int(10),
+	IN intNoOfOutOfStockTransactions  int(10),
+	IN intNoOfOutOfStockRefundTransactions  int(10),
+
+	IN decConsignmentSales  decimal(18,3),
+	IN decConsignmentRefundSales  decimal(18,3),
+	IN decWalkInSales  decimal(18,3),
+	IN decWalkInRefundSales  decimal(18,3),
+	IN decOutOfStockSales  decimal(18,3),
+	IN decOutOfStockRefundSales  decimal(18,3),
+
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 	)
@@ -3495,6 +3548,21 @@ BEGIN
 			RefundCreditCard		= decRefundCreditCard,
 			RefundCredit			= decRefundCredit,
 			RefundDebit				= decRefundDebit,
+
+			NoOfConsignmentTransactions			=	intNoOfConsignmentTransactions,
+			NoOfConsignmentRefundTransactions	=	intNoOfConsignmentRefundTransactions,
+			NoOfWalkInTransactions				=	intNoOfWalkInTransactions,
+			NoOfWalkInRefundTransactions		=	intNoOfWalkInRefundTransactions,
+			NoOfOutOfStockTransactions			=	intNoOfOutOfStockTransactions,
+			NoOfOutOfStockRefundTransactions	=	intNoOfOutOfStockRefundTransactions,
+
+			ConsignmentSales					=	decConsignmentSales,
+			ConsignmentRefundSales				=	decConsignmentRefundSales,
+			WalkInSales							=	decWalkInSales,
+			WalkInRefundSales					=	decWalkInRefundSales,
+			OutOfStockSales						=	decOutOfStockSales,
+
+			OutOfStockRefundTransactions		=	decOutOfStockRefundTransactions,
 			LastModified			= dteLastModified
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
 
@@ -3515,6 +3583,10 @@ BEGIN
 							NoOfRewardPointsPayment, CreditPaymentCash, CreditPaymentCheque,
 							CreditPaymentCreditCard, CreditPaymentDebit, 
 							RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit, 
+							NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+							NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+							ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+							WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
 							CreatedOn, LastModified)
 			VALUES(intBranchID, strTerminalNo, intSyncID, intCashierID, intTerminalID, decNetSales, decGrossSales, decTotalDiscount, decDailySales,
 							decQuantitySold, decGroupSales, decVAT, decEVAT, decLocalTax, decCashSales, decChequeSales, decCreditCardSales,
@@ -3532,6 +3604,10 @@ BEGIN
 							intNoOfRewardPointsPayment, decCreditPaymentCash, decCreditPaymentCheque,
 							decCreditPaymentCreditCard, decCreditPaymentDebit, 
 							decRefundCash, decRefundCheque, decRefundCreditCard, decRefundCredit, decRefundDebit, 
+							intNoOfConsignmentTransactions, intNoOfConsignmentRefundTransactions, intNoOfWalkInTransactions,
+							intNoOfWalkInRefundTransactions, intNoOfOutOfStockTransactions, intNoOfOutOfStockRefundTransactions,
+							decConsignmentSales, decConsignmentRefundSales, decWalkInSales,
+							decWalkInRefundSales, decOutOfStockSales, decOutOfStockRefundSales,
 							dteCreatedOn, dteLastModified);
 
 		UPDATE tblCashierReportHistory SET SyncID = CashierReportHistoryID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;

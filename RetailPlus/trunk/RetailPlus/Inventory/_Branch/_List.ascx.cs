@@ -131,6 +131,9 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 				Label lblDBPort = (Label) e.Item.FindControl("lblDBPort");
 				lblDBPort.Text = dr["DBPort"].ToString();
 
+                CheckBox chkIncludeIneSales = (CheckBox) e.Item.FindControl("chkIncludeIneSales");
+                chkIncludeIneSales.Checked = bool.Parse(dr["IncludeIneSales"].ToString());
+
 				Label lblAddress = (Label) e.Item.FindControl("lblAddress");
 				lblAddress.Text = dr["Address"].ToString();
 
@@ -210,6 +213,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			HyperLink SortByBranchName = (HyperLink) e.Item.FindControl("SortByBranchName");
 			HyperLink SortByDBIP = (HyperLink) e.Item.FindControl("SortByDBIP");
 			HyperLink SortByDBPort = (HyperLink) e.Item.FindControl("SortByDBPort");
+            HyperLink SortByIncludeIneSales = (HyperLink)e.Item.FindControl("SortByIncludeIneSales");
 			HyperLink SortByAddress = (HyperLink) e.Item.FindControl("SortByAddress");
 			HyperLink SortByRemarks = (HyperLink) e.Item.FindControl("SortByRemarks");
 
@@ -217,6 +221,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			SortByBranchName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BranchName", Session.SessionID);
 			SortByDBIP.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("DBIP", Session.SessionID);
 			SortByDBPort.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("DBPort", Session.SessionID);
+            SortByIncludeIneSales.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("IncludeIneSales", Session.SessionID);
 			SortByAddress.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("Address", Session.SessionID);
 			SortByRemarks.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("Remarks", Session.SessionID);
 		}

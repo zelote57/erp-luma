@@ -30,10 +30,15 @@ namespace AceSoft.RetailPlus
         public const string OverStockItems = "Over Stock Items";
         public const string ExpiredInventory = "Expired Inventory";
 
+        public const string SummarizedInventoryByBranch = "Summarized Inventory by Branch";
+        public const string SummarizedInventoryBySupplier = "Summarized Inventory by Supplier";
+        public const string SummarizedInventoryByGroup = "Summarized Inventory by Group";
+
         public const string CustomerCredit = "Customer Individual Credit";
         public const string CustomerCreditBill = "Customer Individual Latest Bill";
         public const string CustomerCreditListWCredit = "Customer's List w/ Credit";
         public const string CustomerCreditListLatestBill = "Customer's List Latest Bill";
+        public const string CustomerCreditSummarizedStatistics = "Summarized Statistics";
 
         public const string SalesPerHour = "Sales Per Hour";
         public const string SalesPerDay = "Sales Per Day";
@@ -65,6 +70,7 @@ namespace AceSoft.RetailPlus
 
         public const string RewardsHistory = "Rewards History";
         public const string RewardsSummary = "Rewards Summary";
+        public const string RewardsSummaryStatistics = "Summarized Statistics";
 
         public const string MANAGEMENT_PerBranch = "Transactions per branch";
         public const string MANAGEMENT_PerBranchPerMonth = "Transactions per branch/monthly";

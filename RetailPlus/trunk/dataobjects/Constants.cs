@@ -183,7 +183,14 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_ALLOW_DEBIT_PAYMENT = "AllowDebitPayment";
         public const string SYS_CONFIG_ALLOW_REWARD_POINTS_PAYMENT = "AllowRewardPointsPayment";
         public const string SYS_CONFIG_ALLOW_DISCOUNT_GREATER_THAN_AMOUNT = "AllowDiscountGreaterThanAmount";
+        public const string SYS_CONFIG_ALLOW_ZERO_AMOUNT_TRANSACTION = "AllowZeroAmountTransaction";
+        public const string SYS_CONFIG_ALLOW_MORE_THAN_1ITEM_IF_CONSIGNMENT = "AllowMoreThan1ItemIfConsignment";
+        public const string SYS_CONFIG_WILL_PROCESS_CREDIT_BILLER_IN_PROGRAM = "WillProcessCreditBillerInProgram";
+        public const string SYS_CONFIG_IS_DEFAULT_BUTTON_YES_INPRINTTRANSACTION = "isDefaultButtonYesInPrintTransaction";
+        public const string SYS_CONFIG_OUT_OF_STOCK_CUSTOMER_CODE = "OutOfStockCustomerCode";
+        public const string SYS_CONFIG_WALKIN_CUSTOMER_CODE = "WalkInCustomerCode";
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
+
 
         /// <summary>
         /// GLA Files

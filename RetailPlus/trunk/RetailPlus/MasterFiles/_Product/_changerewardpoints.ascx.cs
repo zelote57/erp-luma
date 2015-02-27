@@ -83,12 +83,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             decimal decCommision = 0;
             try {
                 ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedValue));
+
                 intProductBaseUnitID = clsDetails.BaseUnitID; decCommision = clsDetails.PercentageCommision;
+                txtRewardPoints.Text = clsDetails.RewardPoints.ToString("#,##0");
             }
             catch { }
             txtProductCode.ToolTip = intProductBaseUnitID.ToString();
             lblProductID.ToolTip = decCommision.ToString();
-
+            
             clsProduct.CommitAndDispose();
 
         }
@@ -185,6 +187,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             if (cboProductCode.Items.Count == 0) cboProductCode.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboProductCode.SelectedIndex = 0;
+
+            cboProductCode_SelectedIndexChanged(null, null);
         }
 		private void SaveRecord()
 		{

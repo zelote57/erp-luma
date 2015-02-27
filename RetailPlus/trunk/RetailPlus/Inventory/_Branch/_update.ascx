@@ -93,7 +93,8 @@
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()">3306</asp:TextBox>
+                                    <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()" Width="60px">3306</asp:TextBox>
+                                    <asp:CheckBox id="chkIncludeIneSales" runat="server" Text="Check if will show in eSales Reporting" Checked="true" /> 
 									<asp:RequiredFieldValidator ID="Requiredfieldvalidator8" runat="server" ControlToValidate="txtDBPort"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Port Number' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>

@@ -1131,6 +1131,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 strCareditInfo = new string[1];
                 strCareditInfo[0] = stCreditCardInfo;
             }
+            else if (SysConfigDetails.CreditPaymentType == CreditPaymentType.MPC)
+            {
+                strCareditInfo = new string[1];
+                strCareditInfo[0] = stCreditCardInfo;
+            }
 
             if (strCareditInfo == null) return;
 

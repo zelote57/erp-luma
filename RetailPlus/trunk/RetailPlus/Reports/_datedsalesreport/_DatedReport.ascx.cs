@@ -218,12 +218,13 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SummarizeDailySales:
                 //case ReportTypes.SummarizeDailySalesWithTF:
                     {
-                        if (optActualAndEffective.Checked)
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithActualEffective.rpt"));
-                        else if (optEffective.Checked)
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithEffective.rpt"));
-                        else if (optActual.Checked)
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithActual.rpt"));
+                        rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithActualEffective.rpt"));
+                        //if (optActualAndEffective.Checked)
+                        //    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithActualEffective.rpt"));
+                        //else if (optEffective.Checked)
+                        //    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithEffective.rpt"));
+                        //else if (optActual.Checked)
+                        //    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithActual.rpt"));
                     }
                     break;
                 case ReportTypes.SalesTransactions:
@@ -462,7 +463,7 @@ namespace AceSoft.RetailPlus.Reports
 
                     if (strReportType == ReportTypes.SummarizeDailySales) boWithTrustFund = false;
                     Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-                    dt = clsTerminalReportHistory.SummarizedDailySalesReport(Int32.Parse(cboBranch.SelectedItem.Value), TerminalNo, StartTransactionDate, EndTransactionDate, boWithTrustFund);
+                    dt = clsTerminalReportHistory.SummarizedDailySalesReport(Int32.Parse(cboBranch.SelectedItem.Value), TerminalNo, false, StartTransactionDate, EndTransactionDate, boWithTrustFund);
                     clsTerminalReportHistory.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -895,6 +896,24 @@ namespace AceSoft.RetailPlus.Reports
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);
                     
+                    break;
+
+                case ReportTypes.SummarizeDailySales:
+                case ReportTypes.SummarizeDailySalesWithTF:
+                    paramField = Report.DataDefinition.ParameterFields["isSummary"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = chkisSummary.Checked;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = Report.DataDefinition.ParameterFields["UseEffectiveDate"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = optActualAndEffective.Checked ? 0 : ( optEffective.Checked ? 1 : 2 );
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
                     break;
             }
 		}

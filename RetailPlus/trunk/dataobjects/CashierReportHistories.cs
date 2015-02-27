@@ -109,6 +109,20 @@ namespace AceSoft.RetailPlus.Data
 								"NoOfVoidTransactions, " +
                                 "NoOfRewardPointsPayment, " +
 								"NoOfTotalTransactions, " +
+
+                                "NoOfConsignmentTransactions, " +
+                                "NoOfConsignmentRefundTransactions, " +
+                                "NoOfWalkInTransactions, " +
+                                "NoOfWalkInRefundTransactions, " +
+                                "NoOfOutOfStockTransactions, " +
+                                "NoOfOutOfStockRefundTransactions, " +
+                                "ConsignmentSales, " +
+                                "ConsignmentRefundSales, " +
+                                "WalkInSales, " +
+                                "WalkInRefundSales, " +
+                                "OutOfStockSales, " +
+                                "OutOfStockRefundSales, " +
+
 								"CashCount, " +
 								"LastLoginDate " +
 							"FROM tblCashierReportHistory " +
@@ -161,6 +175,10 @@ namespace AceSoft.RetailPlus.Data
                                         "@NoOfRewardPointsPayment, @CreditPaymentCash, @CreditPaymentCheque," +
                                         "@CreditPaymentCreditCard, @CreditPaymentDebit, " +
                                         "@RefundCash, @RefundCheque, @RefundCreditCard, @RefundCredit, @RefundDebit, " +
+                                        "@NoOfConsignmentTransactions, @NoOfConsignmentRefundTransactions, @NoOfWalkInTransactions, " +
+                                        "@NoOfWalkInRefundTransactions, @NoOfOutOfStockTransactions, @NoOfOutOfStockRefundTransactions," +
+                                        "@ConsignmentSales, @ConsignmentRefundSales, @WalkInSales," +
+                                        "@WalkInRefundSales, @OutOfStockSales, @OutOfStockRefundSales," +
                                         "@CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
@@ -239,6 +257,20 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("RefundCreditCard", Details.RefundCreditCard);
                 cmd.Parameters.AddWithValue("RefundCredit", Details.RefundCredit);
                 cmd.Parameters.AddWithValue("RefundDebit", Details.RefundDebit);
+
+                cmd.Parameters.AddWithValue("NoOfConsignmentTransactions", Details.NoOfConsignmentTransactions);
+                cmd.Parameters.AddWithValue("NoOfConsignmentRefundTransactions", Details.NoOfConsignmentRefundTransactions);
+                cmd.Parameters.AddWithValue("NoOfWalkInTransactions", Details.NoOfWalkInTransactions);
+                cmd.Parameters.AddWithValue("NoOfWalkInRefundTransactions", Details.NoOfWalkInRefundTransactions);
+                cmd.Parameters.AddWithValue("NoOfOutOfStockTransactions", Details.NoOfOutOfStockTransactions);
+                cmd.Parameters.AddWithValue("NoOfOutOfStockRefundTransactions", Details.NoOfOutOfStockRefundTransactions);
+                cmd.Parameters.AddWithValue("ConsignmentSales", Details.ConsignmentSales);
+                cmd.Parameters.AddWithValue("ConsignmentRefundSales", Details.ConsignmentRefundSales);
+                cmd.Parameters.AddWithValue("WalkInSales", Details.WalkInSales);
+                cmd.Parameters.AddWithValue("WalkInRefundSales", Details.WalkInRefundSales);
+                cmd.Parameters.AddWithValue("OutOfStockSales", Details.OutOfStockSales);
+                cmd.Parameters.AddWithValue("OutOfStockRefundSales", Details.OutOfStockRefundSales);
+
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 

@@ -66,11 +66,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "CALL procContactRewardModify(@lngCustomerID, @strRewardCardNo, @intRewardActive, @decRewardPoints, @dteRewardAwardDate, @intRewardCardStatus, @dteExpiryDate, @dteBirthDate);";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -90,18 +86,10 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
+
 		public bool Update(ContactRewardDetails Details)
 		{
 			try 
@@ -111,15 +99,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -379,56 +358,52 @@ namespace AceSoft.RetailPlus.Data
 
 		public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
 		{
-			string SQL = SQLSelect() + "WHERE ORDER BY " + SortField;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			if (SortOrder == SortOption.Ascending)
-				SQL += " ASC";
-			else
-				SQL += " DESC";
+			    string SQL = SQLSelect() + "WHERE 1=1  ";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "RewardCardNo") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
 
-			
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			MySqlCommand cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-
-			System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
-			base.MySqlDataAdapterFill(cmd, dt);
-			
-
-			return dt;
+			    return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
 		public DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
 		{
-			string SQL = SQLSelect() + "WHERE (RewardCardNo LIKE @SearchKey or RewardActive LIKE @SearchKey) ";
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			SQL += "ORDER BY " + SortField;
+			    string SQL = SQLSelect() + "WHERE (RewardCardNo LIKE @SearchKey or RewardActive LIKE @SearchKey) ";
 
-			if (SortOrder == SortOption.Ascending)
-				SQL += " ASC";
-			else
-				SQL += " DESC";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "RewardCardNo") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
 
-			
+                cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
 
-			MySqlCommand cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 
-			System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
-			base.MySqlDataAdapterFill(cmd, dt);
-			
-
-			return dt;
 		}
-
-		
 
 		#endregion
 
@@ -438,33 +413,19 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "CALL procContactRewardsAddPurchase(@ContactID, @Amount);";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
 				cmd.Parameters.AddWithValue("@ContactID", ContactID);
 				cmd.Parameters.AddWithValue("@Amount", Amount);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
@@ -472,35 +433,19 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "CALL procContactRewardsAddPoint(@ContactID, @RewardPoint);";
-				  
-				
-				
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 				
 				cmd.Parameters.AddWithValue("@ContactID", ContactID);
 				cmd.Parameters.AddWithValue("@RewardPoint", RewardPoint);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
-
-				
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -508,33 +453,19 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "CALL procContactRewardsDeductPoint(@ContactID, @RewardPoint);";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
 				cmd.Parameters.AddWithValue("@ContactID", ContactID);
 				cmd.Parameters.AddWithValue("@RewardPoint", RewardPoint);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -543,15 +474,10 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "CALL procContactRewardsMovementInsert(@lngCustomerID, @dteRewardDate, @decRewardPointsBefore, @decRewardPointsAdjustment, @decRewardPointsAfter, @dteRewardExpiryDate, @strRewardReason, @strTerminalNo, @strCashierName, @strTransactionNo);";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
 				cmd.Parameters.AddWithValue("@lngCustomerID", lngCustomerID);
 				cmd.Parameters.AddWithValue("@dteRewardDate", dteRewardDate);
@@ -564,20 +490,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@strCashierName", strCashierName);
 				cmd.Parameters.AddWithValue("@strTransactionNo", strTransactionNo);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
@@ -586,96 +503,100 @@ namespace AceSoft.RetailPlus.Data
 
         #region reports
 
-        public DataTable ActiveStatisticsReport(DateTime StartDate, DateTime EndDate)
+        public System.Data.DataTable ActiveStatisticsReport(DateTime StartDate, DateTime EndDate)
         {
-            string SQL = "SELECT  SUM(IF(RewardActive=0,1,0)) TotalNoOfInActiveRewards " +
-                                ",SUM(IF(RewardActive=1,1,0)) TotalNoOfActiveRewards " +
-                            "FROM tblContactRewards CREW ";
-
-            
-
-            MySqlCommand cmd = new MySqlCommand();
-            
-            
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-            Int32 intTotalNoOfInActiveRewards = 0;
-            Int32 intTotalNoOfActiveRewards = 0;
-            while (myReader.Read())
+            try
             {
-                intTotalNoOfInActiveRewards = myReader.GetInt32("TotalNoOfInActiveRewards");
-                intTotalNoOfActiveRewards = myReader.GetInt32("TotalNoOfActiveRewards");
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT  SUM(IF(RewardActive=0,1,0)) TotalNoOfInActiveRewards " +
+                                    ",SUM(IF(RewardActive=1,1,0)) TotalNoOfActiveRewards " +
+                                "FROM tblContactRewards CREW ";
+
+                
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                Int32 intTotalNoOfInActiveRewards = 0;
+                Int32 intTotalNoOfActiveRewards = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    intTotalNoOfInActiveRewards = Int32.TryParse(dr["TotalNoOfInActiveRewards"].ToString(), out intTotalNoOfInActiveRewards) ? intTotalNoOfInActiveRewards : 0;
+                    intTotalNoOfActiveRewards = Int32.TryParse(dr["TotalNoOfActiveRewards"].ToString(), out intTotalNoOfActiveRewards) ? intTotalNoOfActiveRewards : 0; 
+                }
+
+                SQL = "SELECT " +
+                                    "CALD.CalDate RewardAwardDate " +
+                                    ",SUM(IF(RewardActive=0,1,0)) NoOfInActiveRewards " +
+                                    ",SUM(IF(RewardActive=1,1,0)) NoOfActiveRewards " +
+                                    "," + intTotalNoOfInActiveRewards + " TotalNoOfInActiveRewards " +
+                                    "," + intTotalNoOfActiveRewards + " TotalNoOfActiveRewards " +
+                                "FROM tblCalDate CALD " +
+                                "LEFT OUTER JOIN tblContactRewards CREW ON CALD.CalDate = DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d') " +
+                                "WHERE " +
+                                    "CALD.CalDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
+                                    "DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') " +
+                                "GROUP BY CALD.CalDate " +
+                                "ORDER BY CALD.CalDate";
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
-            myReader.Close();
-
-            SQL = "SELECT " +
-                                "CALD.CalDate RewardAwardDate " +
-                                ",SUM(IF(RewardActive=0,1,0)) NoOfInActiveRewards " +
-                                ",SUM(IF(RewardActive=1,1,0)) NoOfActiveRewards " +
-                                "," + intTotalNoOfInActiveRewards + " TotalNoOfInActiveRewards " +
-                                "," + intTotalNoOfActiveRewards + " TotalNoOfActiveRewards " +
-                            "FROM tblCalDate CALD " +
-                            "LEFT OUTER JOIN tblContactRewards CREW ON CALD.CalDate = DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d') " +
-                            "WHERE " +
-                                "CALD.CalDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
-                                "DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') " +
-                            "GROUP BY CALD.CalDate " +
-                            "ORDER BY CALD.CalDate";
-
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
-            base.MySqlDataAdapterFill(cmd, dt);
-            
-
-            return dt;
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
-        public DataTable RewardsMovement(DateTime StartDate, DateTime EndDate, Int64 CustomerID = Constants.ZERO)
+        public System.Data.DataTable RewardsMovement(DateTime StartDate, DateTime EndDate, Int64 CustomerID = Constants.ZERO)
         {
-            MySqlCommand cmd = new MySqlCommand();
-
-            string SQL = "SELECT " +
-                                "RewardDate " +
-                                ",RewardPointsBefore " +
-                                ",RewardPointsAdjustment " +
-                                ",RewardPointsAfter " +
-                                ",RewardReason " +
-                                ",TerminalNo " +
-                                ",CashierName " +
-                                ",TransactionNo " +
-                            "FROM tblContactRewardsMovement " +
-                            "WHERE " +
-                                "RewardDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
-                                "DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') ";
-
-            if (CustomerID != Constants.ZERO)
+            try
             {
-                SQL += "AND CustomerID = @CustomerID ";
-                cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT " +
+                                    "RewardDate " +
+                                    ",RewardPointsBefore " +
+                                    ",RewardPointsAdjustment " +
+                                    ",RewardPointsAfter " +
+                                    ",RewardReason " +
+                                    ",TerminalNo " +
+                                    ",CashierName " +
+                                    ",TransactionNo " +
+                                "FROM tblContactRewardsMovement " +
+                                "WHERE " +
+                                    "RewardDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
+                                    "DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') ";
+
+                if (CustomerID != Constants.ZERO)
+                {
+                    SQL += "AND CustomerID = @CustomerID ";
+                    cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
+                }
+
+                SQL += "ORDER BY CustomerID, RewardDate";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
-                            
-            SQL += "ORDER BY CustomerID, RewardDate";
-
-            
-            
-            
-            
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            System.Data.DataTable dt = new System.Data.DataTable("tblContactRewardsMovement");
-            base.MySqlDataAdapterFill(cmd, dt);
-            
-
-            return dt;
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
-        public DataTable RewardsSummary(DateTime StartDate, DateTime EndDate, Int64 CustomerID = Constants.ZERO)
+        public System.Data.DataTable RewardsSummary(DateTime StartDate, DateTime EndDate, Int64 CustomerID = Constants.ZERO)
         {
             try
             {
@@ -710,9 +631,30 @@ namespace AceSoft.RetailPlus.Data
                                 "rwd.RewardPoints, " +
                                 "rwdm.RewardDate ";
                 SQL += "ORDER BY ContactName, RewardDate";
-                
+
                 cmd.CommandText = SQL;
-                System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable SummarizedStatistics()
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procRewardsSummarizedStatistics();";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;

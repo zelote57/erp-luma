@@ -631,6 +631,12 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_customercredit\_ccisummarystatistics.cs">
+      <DependentUpon>_ccisummarystatistics.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithEffective.cs">
       <DependentUpon>_DatedReportSummarizedPerDayBIRWithEffective.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -685,6 +691,24 @@
     </Compile>
     <Compile Include="Reports\_esalesreport\_esalesreport.ascx.designer.cs">
       <DependentUpon>_esalesreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_inventory\_SummarizedInventoryByGroup.cs">
+      <DependentUpon>_SummarizedInventoryByGroup.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_inventory\_SummarizedInventoryBySupplier.cs">
+      <DependentUpon>_SummarizedInventoryBySupplier.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_inventory\_SummarizedInventoryByBranch.cs">
+      <DependentUpon>_SummarizedInventoryByBranch.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\_managementreport\_PerBranchPerMonthOld.cs">
       <AutoGen>True</AutoGen>
@@ -746,6 +770,12 @@
     </Compile>
     <Compile Include="Reports\_managementreport\_managementreport.ascx.designer.cs">
       <DependentUpon>_managementreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_rewards\_rewardssummarystatistics.cs">
+      <DependentUpon>_rewardssummarystatistics.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\_rewards\_rewardssummary.cs">
       <DependentUpon>_rewardssummary.rpt</DependentUpon>
@@ -4209,6 +4239,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_customercredit\_ccisummarystatistics.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ccisummarystatistics.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithEffective.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSummarizedPerDayBIRWithEffective.cs</LastGenOutput>
@@ -4240,6 +4274,18 @@
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesPerDay.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_SummarizedInventoryByGroup.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SummarizedInventoryByGroup.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_SummarizedInventoryBySupplier.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SummarizedInventoryBySupplier.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_SummarizedInventoryByBranch.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SummarizedInventoryByBranch.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_managementreport\_PerBranchPerMonthCovers.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -4560,6 +4606,10 @@
     <EmbeddedResource Include="Reports\_PurchasesAndPayablesPurchaseAnalysis.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_PurchasesAndPayablesPurchaseAnalysis.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_rewards\_rewardssummarystatistics.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_rewardssummarystatistics.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_rewards\_rewardssummary.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

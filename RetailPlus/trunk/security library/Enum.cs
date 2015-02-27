@@ -290,7 +290,12 @@ namespace AceSoft.RetailPlus
         CreditPaymentReversal = 169,
         CreditAmountDueAdjustment = 170,
 
-        ChangeOrderType = 171
+        ChangeOrderType = 171,
+
+        ChangeOSPrinter = 172,
+        PrintShlevesTagPrice = 173,
+
+        ZeroOutBranchInventory = 174
     }
 
     /// <summary>

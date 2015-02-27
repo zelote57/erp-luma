@@ -119,7 +119,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                System.Data.DataTable dt = ListAsDataTable(BranchID, TerminalNo, DateFrom, DateTo, DateLastInitialized, WithTF, LastInitializationDetails, NextDetails);
+                System.Data.DataTable dt = ListAsDataTable(BranchID, TerminalNo, false, DateFrom, DateTo, DateLastInitialized, WithTF, LastInitializationDetails, NextDetails);
 
                 return new TerminalReport(base.Connection, base.Transaction).SetDetails(dt);
             }
@@ -185,7 +185,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                System.Data.DataTable dt = ListAsDataTable(0, string.Empty, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, false, false, false);
+                System.Data.DataTable dt = ListAsDataTable(0, string.Empty, false, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, false, false, false);
 
                 return new TerminalReport(base.Connection, base.Transaction).SetDetailsList(dt);
 			}
@@ -200,17 +200,18 @@ namespace AceSoft.RetailPlus.Data
 	
 		#region Streams : Report
 
-        public System.Data.DataTable ListAsDataTable(Int32 BranchID, string TerminalNo = "", DateTime? DateFrom = null, DateTime? DateTo = null, DateTime? DateLastInitialized = null, bool WithTF = false, bool LastInitializationDetails = false, bool NextDetails = false)
+        public System.Data.DataTable ListAsDataTable(Int32 BranchID, string TerminalNo = "", bool OnlyIncludeIneSales = false, DateTime? DateFrom = null, DateTime? DateTo = null, DateTime? DateLastInitialized = null, bool WithTF = false, bool LastInitializationDetails = false, bool NextDetails = false)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procTerminalReportHistorySelect(@BranchID, @TerminalNo, @DateFrom, @DateTo, @DateLastInitialized, @WithTF, @LastInitializationDetails, @NextDetails);";
+                string SQL = "CALL procTerminalReportHistorySelect(@BranchID, @TerminalNo, @OnlyIncludeIneSales, @DateFrom, @DateTo, @DateLastInitialized, @WithTF, @LastInitializationDetails, @NextDetails);";
 
                 cmd.Parameters.AddWithValue("BranchID", BranchID);
                 cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("OnlyIncludeIneSales", OnlyIncludeIneSales);
                 cmd.Parameters.AddWithValue("DateFrom", DateFrom.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DateFrom);
                 cmd.Parameters.AddWithValue("DateTo", DateTo.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DateTo);
                 cmd.Parameters.AddWithValue("DateLastInitialized", DateLastInitialized.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DateLastInitialized);
@@ -230,11 +231,11 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable SummarizedDailySalesReport(Int32 BranchID = 0, string TerminalNo = "", DateTime? DateFrom = null, DateTime? DateTo = null, bool WithTF = false)
+        public System.Data.DataTable SummarizedDailySalesReport(Int32 BranchID = 0, string TerminalNo = "", bool OnlyIncludeIneSales = false, DateTime? DateFrom = null, DateTime? DateTo = null, bool WithTF = false)
         {
             try
             {
-                return ListAsDataTable(BranchID, TerminalNo, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, WithTF, false, false);
+                return ListAsDataTable(BranchID, TerminalNo, OnlyIncludeIneSales, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, WithTF, false, false);
 
             }
             catch (Exception ex)

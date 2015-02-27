@@ -272,9 +272,10 @@
                                         &nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optActualAndEffective" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use actual reporting & effective date" Checked="True" />
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optActual" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use actual reporting date" />
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optEffective" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use effective date" />
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox id="chkisSummary" runat="server" Text="Check this if isSummary" Checked="false" />
 					                </td>
 					                <td width="99%" id="Td6" nowrap="nowrap" align="right">
-                                        <img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+                                        <img height="1" alt="" src="../_layouts/images/blank.gif" width="1" />
 					                </td>
 				                </tr>
 					        </asp:PlaceHolder>

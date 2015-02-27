@@ -52,6 +52,9 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
             cboReportType.Items.Add(new ListItem(ReportTypes.CREDITS_Purchases, ReportTypes.CREDITS_Purchases));
             cboReportType.Items.Add(new ListItem(ReportTypes.CREDITS_Payments, ReportTypes.CREDITS_Payments));
             cboReportType.Items.Add(new ListItem(ReportTypes.CREDITS_GuarantorLedgerSummary, ReportTypes.CREDITS_GuarantorLedgerSummary));
+            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+            cboReportType.Items.Add(new ListItem(ReportTypes.CustomerCreditSummarizedStatistics, ReportTypes.CustomerCreditSummarizedStatistics));
+
             cboReportType.SelectedIndex = 0;
 
             if (Request.QueryString["reporttype"] != null)
@@ -63,6 +66,7 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                     case "purchases": cboReportType.SelectedIndex = cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.CREDITS_Purchases)); break;
                     case "payments": cboReportType.SelectedIndex = cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.CREDITS_Payments)); break;
                     case "ledger": cboReportType.SelectedIndex = cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.CREDITS_GuarantorLedgerSummary)); break;
+                    case "stat": cboReportType.SelectedIndex = cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.CustomerCreditSummarizedStatistics)); break;
                     default:
                         break;
                 }
@@ -117,8 +121,11 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                 case ReportTypes.CREDITS_GuarantorLedgerSummary:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_credits/withguarantor/creditledger.rpt"));
                     break;
-                default:
+                case ReportTypes.CustomerCreditSummarizedStatistics:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_customercredit/_ccisummarystatistics.rpt"));
                     break;
+                default:
+                    return null;
             }
             
             return rpt;
@@ -264,6 +271,27 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                     }
                     #endregion
                     break;
+
+                case ReportTypes.CustomerCreditSummarizedStatistics:
+                    #region  CustomerCreditSummarizedStatistics
+
+                    Data.ContactCreditCardInfos clsContactCreditCardInfos = new Data.ContactCreditCardInfos();
+                    dt = clsContactCreditCardInfos.IHCreditCardSummarizedStatistics(true);
+                    clsContactCreditCardInfos.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.CCISummary.NewRow();
+
+                        foreach (DataColumn dc in rptds.CCISummary.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.CCISummary.Rows.Add(drNew);
+                    }
+
+                    break;
+                    #endregion
+
                 default:
                     break;
             }
@@ -298,17 +326,17 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
-            paramField = Report.DataDefinition.ParameterFields["CreditCardTypeName"];
-            discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = cboCreditType.SelectedItem.Text;
-            currentValues = new ParameterValues();
-            currentValues.Add(discreteParam);
-            paramField.ApplyCurrentValues(currentValues);
-
             switch (cboReportType.SelectedItem.Value)
             {
                 case ReportTypes.CREDITS_Purchases:
                     #region purchases
+                    paramField = Report.DataDefinition.ParameterFields["CreditCardTypeName"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = cboCreditType.SelectedItem.Text;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
                     paramField = Report.DataDefinition.ParameterFields["PurchaseStartDate"];
                     discreteParam = new ParameterDiscreteValue();
                     discreteParam.Value = DateTime.TryParse(txtTrxStartDate.Text, out dteRetValue) ? dteRetValue.ToString("yyyy-MM-dd") : Constants.C_DATE_MIN_VALUE.ToString("yyyy-MM-dd");
@@ -327,6 +355,13 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
 
                 case ReportTypes.CREDITS_Payments:
                     #region payments
+                    paramField = Report.DataDefinition.ParameterFields["CreditCardTypeName"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = cboCreditType.SelectedItem.Text;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
                     paramField = Report.DataDefinition.ParameterFields["PaymentStartDate"];
                     discreteParam = new ParameterDiscreteValue();
                     discreteParam.Value = DateTime.TryParse(txtTrxStartDate.Text, out dteRetValue) ? dteRetValue.ToString("yyyy-MM-dd") : Constants.C_DATE_MIN_VALUE.ToString("yyyy-MM-dd");
@@ -345,6 +380,12 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
 
                 case ReportTypes.CREDITS_GuarantorLedgerSummary:
                     #region ledger summary
+                    paramField = Report.DataDefinition.ParameterFields["CreditCardTypeName"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = cboCreditType.SelectedItem.Text;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
 
                     Data.CreditBills clsCreditBills = new Data.CreditBills();
                     Data.CreditBillDetails clsCreditBillDetails = clsCreditBills.Details(CreditType.Group, DateTime.Parse(cboBillingDate.SelectedItem.Value), Int16.Parse(cboCreditType.SelectedItem.Value));
@@ -476,6 +517,9 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                     break;
                 case ReportTypes.CREDITS_GuarantorLedgerSummary:
                     divDates.Visible = false; divBilingDate.Visible = true;
+                    break;
+                case ReportTypes.CustomerCreditSummarizedStatistics:
+                    divBranch.Visible = false; divDates.Visible = false; divBilingDate.Visible = false;
                     break;
                 default:
                     return;

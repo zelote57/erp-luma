@@ -87,6 +87,8 @@ namespace AceSoft.RetailPlus.MasterFiles
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ChangeProductPrices);
             lnkChangeProductPrice.Visible = clsDetails.Write;
             lnkChangeTax.Visible = clsDetails.Write;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.PrintShlevesTagPrice);
             lnkChangeOSPrinter.Visible = clsDetails.Write;
 			
             // Contacts

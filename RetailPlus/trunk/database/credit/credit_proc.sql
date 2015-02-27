@@ -10,8 +10,9 @@
 		CreditCutOff:	2012-12-31
 		BillingDate:	2012-01-10
 
-	call procProcessCreditBills(0, 'HP CREDIT CARD');
-	
+	CALL procProcessCreditBills(0, 'HP CREDIT CARD');	-- 14mins
+	CALL procProcessCreditBillsClose('HP CREDIT CARD');
+
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procProcessCreditBills
@@ -302,7 +303,7 @@ BEGIN
 									VariationsMatrixID, MatrixDescription, ProductGroup, ProductSubGroup, TransactionItemStatus,
 									DiscountCode,DiscountRemarks,ProductPackageID,MatrixPackageID, PackageQuantity,PromoQuantity,
 									PromoValue,PromoInPercent,PromoType,PromoApplied,PurchasePrice,PurchaseAmount,
-									IncludeInSubtotalDiscount,OrderSlipPrinter,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
+									IncludeInSubtotalDiscount,OrderSlipPrinter1,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
 			SELECT TRX.TransactionID , prd.ProductID, prd.ProductCode, prd.BarCode1, prd.ProductDesc
 										,prd.UnitID, 'PC', 1
 										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
@@ -442,7 +443,7 @@ BEGIN
 									VariationsMatrixID, MatrixDescription, ProductGroup, ProductSubGroup, TransactionItemStatus,
 									DiscountCode,DiscountRemarks,ProductPackageID,MatrixPackageID, PackageQuantity,PromoQuantity,
 									PromoValue,PromoInPercent,PromoType,PromoApplied,PurchasePrice,PurchaseAmount,
-									IncludeInSubtotalDiscount,OrderSlipPrinter,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
+									IncludeInSubtotalDiscount,OrderSlipPrinter1,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
 			SELECT TRX.TransactionID , prd.ProductID, prd.ProductCode, prd.BarCode1, prd.ProductDesc
 										,prd.UnitID, 'PC', 1
 										,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge) AS Price
@@ -623,8 +624,8 @@ delimiter ;
 /**************************************************************
 	procProcessCreditBillsWG
 	Lemuel E. Aceron
-	CALL procProcessCreditBillsWG(0, 'CN EMP SUPER CARD');
-	CALL procProcessCreditBillsWGClose('CN EMP SUPER CARD');
+	CALL procProcessCreditBillsWG(0, 'HP SUPER CARD - 15/30');
+	CALL procProcessCreditBillsWGClose('HP SUPER CARD - 15/30');
 	08-Oct-2014	Create this procedure
 	
 	Sample:
@@ -974,7 +975,7 @@ BEGIN
 									VariationsMatrixID, MatrixDescription, ProductGroup, ProductSubGroup, TransactionItemStatus,
 									DiscountCode,DiscountRemarks,ProductPackageID,MatrixPackageID, PackageQuantity,PromoQuantity,
 									PromoValue,PromoInPercent,PromoType,PromoApplied,PurchasePrice,PurchaseAmount,
-									IncludeInSubtotalDiscount,OrderSlipPrinter,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
+									IncludeInSubtotalDiscount,OrderSlipPrinter1,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
 			SELECT TRX.TransactionID , prd.ProductID, prd.ProductCode, prd.BarCode1, prd.ProductDesc
 										,prd.UnitID, 'PC', 1, (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyChargeToUse AS Price, (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyChargeToUse AS SellingPrice
 										,0, 0, 0, (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyChargeToUse AS Amount, 0, 0, 0, 0
@@ -1047,6 +1048,11 @@ BEGIN
 				,RunningCreditAmt = Prev1MoCurrentDueAmount + CurrMonthAmountPaid
 			WHERE CreditBillID = lngCreditBillID;
 
+			-- 02Feb2015 update the current amountdue; as per request by Dan. if ending balance < EndingBalance
+			UPDATE tblCreditBillHeader 
+			SET  CurrentDueAmount = 0, MinimumAmountDue = 0 -- CurrMonthCreditAmt = 0, 
+			WHERE CreditBillID = lngCreditBillID AND EndingBalance < 0 AND MinimumAmountDue < 0 AND CurrentDueAmount < 0;
+
 			-- update the credit of contact
 			UPDATE tblContacts AS CON
 			INNER JOIN
@@ -1054,6 +1060,7 @@ BEGIN
 				SELECT ContactID ,CurrentDueAmount FROM tblCreditBillHeader WHERE CreditBillID = lngCreditBillID
 			) CBH ON CBH.ContactID = CON.ContactID
 			SET CON.Credit = CurrentDueAmount;
+
 			/****end-Update the tblCreditBillHeader to update the current credit of contact to get the before and after during saving in creditpayment*******/
 
 			-- update the LastBillingDate of contacts

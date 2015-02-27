@@ -37,7 +37,13 @@ namespace AceSoft.RetailPlus
         OrderSlip           =   10,
         ParkingTicket       =   11,
         CancelledCreditPayment = 12,
-        SuspendedOpen       =   13
+        SuspendedOpen       =   13,
+        ClosedWalkIn        =   14,
+        ClosedOutOfStock    =   15,
+        Consignment         =   16,
+        ClosedWalkInRefund = 17,
+        ClosedOutOfStockRefund = 18,
+        ConsignmentRefund = 19,
 	}
 	
 	public enum TransactionItemStatus
@@ -57,6 +63,13 @@ namespace AceSoft.RetailPlus
 		XRead				=	1,
 		ZRead				=	2
 	}
+
+    public enum SummarizedInventoryTypes
+    {
+        byBranch = 0,
+        bySupplier = 1,
+        byGroup = 2
+    }
 
 	public enum PaymentTypes
 	{
@@ -501,6 +514,7 @@ namespace AceSoft.RetailPlus
     public enum CreditPaymentType
     {
         Normal,
-        Houseware
+        Houseware,
+        MPC
     }
 }

@@ -818,7 +818,6 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else
                 {
-                    //clsDetails.ContactCode = mContactDetails.ContactCode;
                     clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
                     clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
                     clsContact.Update(clsDetails);

@@ -75,24 +75,25 @@
                                     <label>DB Port Number<font color="red">*</font></label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBranchCode" runat="server" accesskey="G" CssClass="ms-short" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Branch code' must not be left blank." Display="Dynamic" ControlToValidate="txtBranchCode" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBranchName" runat="server" accesskey="T" CssClass="ms-short" MaxLength="50" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Branch name.' must not be left blank." Display="Dynamic" ControlToValidate="txtBranchName" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtDBIP" runat="server" accesskey="T" CssClass="ms-short" MaxLength="20" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'DB IP.' must not be left blank." Display="Dynamic" ControlToValidate="txtDBIP" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()">3306</asp:TextBox>
+                                    <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()" Width="60px">3306</asp:TextBox>
+                                    <asp:CheckBox id="chkIncludeIneSales" runat="server" Text="Check if will show in eSales Reporting" Checked="true" /> 
 									<asp:RequiredFieldValidator ID="Requiredfieldvalidator8" runat="server" ControlToValidate="txtDBPort"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Port Number' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
@@ -113,12 +114,12 @@
                             </tr>
                             <tr>
                                 <td class="ms-formspacer">
-                                    <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                    <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:TextBox id="txtAddress" runat="server" accesskey="T" CssClass="ms-long" MaxLength="120" BorderStyle="Groove"></asp:TextBox>
                                 </td>
                                 <td class="ms-formspacer">
-                                    <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                    <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:TextBox id="txtRemarks" runat="server" accesskey="T" CssClass="ms-long" MaxLength="120" BorderStyle="Groove"></asp:TextBox>
                                 </td>

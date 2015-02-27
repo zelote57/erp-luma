@@ -55,6 +55,10 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Add(new ListItem(ReportTypes.TotalStockInventorySummarized, ReportTypes.TotalStockInventorySummarized));
             cboReportType.Items.Add(new ListItem(ReportTypes.TotalStockInventoryWSupplier, ReportTypes.TotalStockInventoryWSupplier));
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+            cboReportType.Items.Add(new ListItem(ReportTypes.SummarizedInventoryByBranch, ReportTypes.SummarizedInventoryByBranch));
+            cboReportType.Items.Add(new ListItem(ReportTypes.SummarizedInventoryBySupplier, ReportTypes.SummarizedInventoryBySupplier));
+            cboReportType.Items.Add(new ListItem(ReportTypes.SummarizedInventoryByGroup, ReportTypes.SummarizedInventoryByGroup));
+            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
 
             cboMonth.Items.Clear();
             cboMonth.Items.Add(new ListItem("Jan", "01"));
@@ -161,6 +165,14 @@ namespace AceSoft.RetailPlus.Reports
                 rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_ProductInventoryReportOverStock.rpt"));
             else if (strReportType == ReportTypes.ExpiredInventory)
                 rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_ProductInventoryReportExpired.rpt"));
+
+            else if (strReportType == ReportTypes.SummarizedInventoryByBranch)
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_SummarizedInventoryByBranch.rpt"));
+            else if (strReportType == ReportTypes.SummarizedInventoryBySupplier)
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_SummarizedInventoryBySupplier.rpt"));
+            else if (strReportType == ReportTypes.SummarizedInventoryByGroup)
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_SummarizedInventoryByGroup.rpt"));
+
             else return null;
 
             return rpt;
@@ -235,29 +247,89 @@ namespace AceSoft.RetailPlus.Reports
                 ExpirationDate = txtExpiryDate.Text;
 
             int isSummary = intBranchID == 0 ? 1 : 0;
-            ProductInventories clsProductInventories = new ProductInventories();
+            ProductInventories clsProductInventories;
             System.Data.DataTable dt;
-            if (cboMonth.SelectedItem.Value == DateTime.Now.Month.ToString("0#") && cboYear.SelectedItem.Value == DateTime.Now.Year.ToString())
-            {
-                dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, isSummary : isSummary, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
-            }else {
-                dt = clsProductInventories.ListAsDataTable(Month: int.Parse(cboMonth.SelectedItem.Value), Year: int.Parse(cboYear.SelectedItem.Value.ToString()), BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, isSummary: isSummary, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
-            }
-            clsProductInventories.CommitAndDispose();
-            
-            foreach (DataRow dr in dt.Rows)
-            {
-                //if (dr[ProductColumnNames.BarCode].ToString() != null && dr[ProductColumnNames.BarCode].ToString() != string.Empty)
-                //{
-                    DataRow drNew = rptds.Products.NewRow();
 
-                    foreach (DataColumn dc in rptds.Products.Columns)
+            switch (strReportType)
+            {
+                case ReportTypes.SummarizedInventoryByBranch:
+                    clsProductInventories = new ProductInventories();
+                    dt = clsProductInventories.SummarizedInventory(SummarizedInventoryTypes.byBranch, intBranchID, lngSupplierID, lngProductGroupID);
+                    clsProductInventories.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        drNew[dc] = dr[dc.ColumnName];
+                        DataRow drNew = rptds.SummarizedInventory.NewRow();
+
+                        foreach (DataColumn dc in rptds.SummarizedInventory.Columns)
+                        {
+                            drNew[dc] = dr[dc.ColumnName];
+                        }
+                        rptds.SummarizedInventory.Rows.Add(drNew);
                     }
-                    rptds.Products.Rows.Add(drNew);
-                //}
+
+                    break;
+                case ReportTypes.SummarizedInventoryBySupplier:
+                    clsProductInventories = new ProductInventories();
+                    dt = clsProductInventories.SummarizedInventory(SummarizedInventoryTypes.bySupplier, intBranchID, lngSupplierID, lngProductGroupID);
+                    clsProductInventories.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.SummarizedInventory.NewRow();
+
+                        foreach (DataColumn dc in rptds.SummarizedInventory.Columns)
+                        {
+                            drNew[dc] = dr[dc.ColumnName];
+                        }
+                        rptds.SummarizedInventory.Rows.Add(drNew);
+                    }
+
+                    break;
+                case ReportTypes.SummarizedInventoryByGroup:
+                    clsProductInventories = new ProductInventories();
+                    dt = clsProductInventories.SummarizedInventory(SummarizedInventoryTypes.byGroup, intBranchID, lngSupplierID, lngProductGroupID);
+                    clsProductInventories.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.SummarizedInventory.NewRow();
+
+                        foreach (DataColumn dc in rptds.SummarizedInventory.Columns)
+                        {
+                            drNew[dc] = dr[dc.ColumnName];
+                        }
+                        rptds.SummarizedInventory.Rows.Add(drNew);
+                    }
+
+                    break;
+                default:
+                    clsProductInventories = new ProductInventories();
+
+                    if (cboMonth.SelectedItem.Value == DateTime.Now.Month.ToString("0#") && cboYear.SelectedItem.Value == DateTime.Now.Year.ToString())
+                    {
+                        dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, isSummary : isSummary, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
+                    }else {
+                        dt = clsProductInventories.ListAsDataTable(Month: int.Parse(cboMonth.SelectedItem.Value), Year: int.Parse(cboYear.SelectedItem.Value.ToString()), BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, isSummary: isSummary, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
+                    }
+                    clsProductInventories.CommitAndDispose();
+            
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        //if (dr[ProductColumnNames.BarCode].ToString() != null && dr[ProductColumnNames.BarCode].ToString() != string.Empty)
+                        //{
+                            DataRow drNew = rptds.Products.NewRow();
+
+                            foreach (DataColumn dc in rptds.Products.Columns)
+                            {
+                                drNew[dc] = dr[dc.ColumnName];
+                            }
+                            rptds.Products.Rows.Add(drNew);
+                        //}
+                    }
+                    break;
             }
+            
 
             Report.SetDataSource(rptds); 
 

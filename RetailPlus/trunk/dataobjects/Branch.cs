@@ -25,6 +25,8 @@ namespace AceSoft.RetailPlus.Data
 
         public DateTime CreatedOn;
         public DateTime LastModified;
+
+        public bool IncludeIneSales;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -89,7 +91,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procSaveBranch(@BranchID, @BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks, @CreatedOn, @LastModified);";
+                string SQL = "CALL procSaveBranch(@BranchID, @BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks, @IncludeIneSales, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
                 cmd.Parameters.AddWithValue("BranchCode", Details.BranchCode);
@@ -98,6 +100,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("DBPort", Details.DBPort);
                 cmd.Parameters.AddWithValue("Address", Details.Address);
                 cmd.Parameters.AddWithValue("Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("IncludeIneSales", Details.IncludeIneSales);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
@@ -147,7 +150,8 @@ namespace AceSoft.RetailPlus.Data
 					            "DBIP, " +
 					            "DBPort, " +
 					            "Address, " +
-					            "Remarks " +
+					            "Remarks, " +
+                                "IncludeIneSales " +
 					        "FROM tblBranch ";
 
             return stSQL;
@@ -180,6 +184,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.DBPort = dr["DBPort"].ToString();
                     Details.Address = dr["Address"].ToString();
                     Details.Remarks = dr["Remarks"].ToString();
+                    Details.IncludeIneSales = bool.Parse(dr["IncludeIneSales"].ToString());
                 }
 
                 return Details;
@@ -214,6 +219,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.DBPort = dr["DBPort"].ToString();
                     Details.Address = dr["Address"].ToString();
                     Details.Remarks = dr["Remarks"].ToString();
+                    Details.IncludeIneSales = bool.Parse(dr["IncludeIneSales"].ToString());
                 }
 
                 return Details;
@@ -228,7 +234,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending, Int32 limit = 0, string TerminalNo = "")
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0, string TerminalNo = "", bool OnlyIncludeIneSales = false)
         {
             try
             {
@@ -247,6 +253,11 @@ namespace AceSoft.RetailPlus.Data
                 {
                     SQL += "AND BranchID IN (SELECT DISTINCT BranchID FROM tblTerminal WHERE TerminalNo = @TerminalNo) ";
                     cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                }
+
+                if (OnlyIncludeIneSales)
+                {
+                    SQL += "AND IncludeIneSales = 1 ";
                 }
 
                 SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BranchCode") + " ";

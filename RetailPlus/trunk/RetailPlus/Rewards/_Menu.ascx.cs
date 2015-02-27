@@ -24,6 +24,7 @@ namespace AceSoft.RetailPlus.Rewards
 
                 lnkRewardsMovement.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt(ReportTypes.RewardsHistory, Session.SessionID);
                 lnkRewardsSummary.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt(ReportTypes.RewardsSummary, Session.SessionID);
+                lnkRewardsSummaryStatistics.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt(ReportTypes.RewardsSummaryStatistics, Session.SessionID);
             }
 		}
 
@@ -38,6 +39,7 @@ namespace AceSoft.RetailPlus.Rewards
             lnkRewardsMovement.Visible = clsDetails.Read;
             lnkCheckRewardPoints.Visible = clsDetails.Read;
             lnkRewardsSummary.Visible = clsDetails.Read;
+            lnkRewardsSummaryStatistics.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.RewardPointsReedemption); 
             lnkRewardsReddem.Visible = clsDetails.Read;

@@ -49,12 +49,18 @@ namespace AceSoft.RetailPlus
 							lblMessage.Text = "We're sorry, but an error has occurred.";
 							lblErrorMessage.Text  = "<b>Message :</b>" + ErrorMessage.Replace("MySQLDriverCS Exception: MySQLDriverCS Error: wrong query.","");
 						}
-						else if (ExceptionType.IndexOf("System.NullReferenceException") != -1)
+                        else if (ExceptionType.IndexOf("Timeout expired.") != -1)
 						{
 							lblMessage.Text = "We're sorry, but an error has occurred.";
-							lblErrorMessage.Text  = "<b>Message :</b>System.NullReferenceException, please double check the data.";
+							lblErrorMessage.Text  = "<b>Message :</b>Too many records to fetch, please limit your search criteria.";
 							lblStackTrace.Text = "<b>Stack Trace :</b>" + Session["ErrorStackTrace"];
 						}
+                        else if (ExceptionType.IndexOf("System.NullReferenceException") != -1)
+                        {
+                            lblMessage.Text = "We're sorry, but an error has occurred.";
+                            lblErrorMessage.Text = "<b>Message :</b>Please double check the data, the system does not accept null for certain fields.";
+                            lblStackTrace.Text = "<b>Stack Trace :</b>" + Session["ErrorStackTrace"];
+                        }
 						else if(Session["ErrorSource"].ToString() == Constants.DEMO_EXPIRED_HEADER)
 						{
 							lblMessage.Text = Constants.RETAILPLUS_BUSINESS_SOLUTIONS;

@@ -372,7 +372,7 @@ namespace AceSoft.RetailPlus.DataCollector
                 case Keys.F3:
                     LogInWnd login = new LogInWnd();
 
-                    login.AccessType = AccessTypes.CloseInventory;
+                    login.AccessType = AccessTypes.ZeroOutBranchInventory;
                     login.Header = "Zero Out Inventory of Branch: access validation";
                     login.ShowDialog(this);
                     DialogResult loginresult = login.Result;

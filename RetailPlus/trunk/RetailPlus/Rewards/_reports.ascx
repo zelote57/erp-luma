@@ -36,7 +36,7 @@
 						    <table cellpadding="1" cellspacing="0" border="0">
 							    <tr>
 								    <td class="ms-toolbar" nowrap="nowrap">
-									    <asp:DropDownList id="cboReportType" runat="server" AutoPostBack="true" CausesValidation="false">
+									    <asp:DropDownList id="cboReportType" runat="server" AutoPostBack="true" CausesValidation="false" OnSelectedIndexChanged="cboReportType_SelectedIndexChanged">
 										    <asp:ListItem Value="0" Selected="True">Select Report Type</asp:ListItem>
 									    </asp:DropDownList>
 								    </td>
@@ -79,7 +79,8 @@
 			    <table cellpadding="0" cellspacing="0" border="0" width="100%">
 				    <tr>
 					    <td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
-						    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
+						    <asp:Panel id="panHolder" runat="server">
+                            <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <asp:PlaceHolder id="holderSelectCustomer" runat="server" Visible="true">
 							        <tr>
 								        <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
@@ -125,6 +126,7 @@
 				                    </tr>
 					            </asp:PlaceHolder>
 						    </table>
+                            </asp:Panel>
 					    </td>
 				    </tr>
 				    <tr>

@@ -418,6 +418,15 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.RadioButton optEffective;
         
         /// <summary>
+        /// chkisSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkisSummary;
+        
+        /// <summary>
         /// holderSalesPerDay control.
         /// </summary>
         /// <remarks>

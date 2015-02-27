@@ -271,24 +271,61 @@ namespace AceSoft.RetailPlus.Client.UI
                     TransactionStatus status = clsSalesTransactions.Status(txtTransactionNo.Text, txtTerminalNo.Text);
                     clsSalesTransactions.CommitAndDispose();
 
-                    if (status == TransactionStatus.NotYetApplied)
-                    {
-                        MessageBox.Show("Sorry you have entered an invalid Transaction No. Please type a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    else if (status == TransactionStatus.Closed || status == TransactionStatus.Released || status == TransactionStatus.Refund || status == TransactionStatus.CreditPayment)
-                    {
-                        mstrTransactionNo = txtTransactionNo.Text.PadLeft(miTransactionNoLength - 1, '0');
-                        mstrTerminalNo = txtTerminalNo.Text;
-                        dialog = DialogResult.OK;
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Sorry the Transaction No. you entered is " + status.ToString("G") + ". " +
+                    switch (status)
+	                {
+                        case TransactionStatus.Closed:
+                        case TransactionStatus.Reprinted:
+                        case TransactionStatus.Refund:
+                        case TransactionStatus.CreditPayment:
+                        case TransactionStatus.DebitPayment:
+                        case TransactionStatus.Released:
+                        case TransactionStatus.ParkingTicket:
+
+                        case TransactionStatus.ClosedWalkIn:
+                        case TransactionStatus.ClosedOutOfStock:
+                        case TransactionStatus.Consignment:
+                        case TransactionStatus.ClosedWalkInRefund:
+                        case TransactionStatus.ClosedOutOfStockRefund:
+                        case TransactionStatus.ConsignmentRefund:
+                            mstrTransactionNo = txtTransactionNo.Text.PadLeft(miTransactionNoLength - 1, '0');
+                            mstrTerminalNo = txtTerminalNo.Text;
+                            dialog = DialogResult.OK;
+                            this.Hide();
+                            break;
+                        case TransactionStatus.Open:
+                        case TransactionStatus.NotYetApplied:
+                        
+                            MessageBox.Show("Sorry you have entered an invalid Transaction No. Please type a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                        case TransactionStatus.Void:
+                        case TransactionStatus.CancelledCreditPayment:
+                        case TransactionStatus.Suspended:
+                        case TransactionStatus.SuspendedOpen:
+                        case TransactionStatus.OrderSlip:
+                        default:
+                            MessageBox.Show("Sorry the Transaction No. you entered is " + status.ToString("G") + ". " +
                             "Please enter a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                            break;
+	                }
+                    //if (status == TransactionStatus.NotYetApplied)
+                    //{
+                    //    MessageBox.Show("Sorry you have entered an invalid Transaction No. Please type a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //    return;
+                    //}
+                    //else if (status == TransactionStatus.Closed || 
+                    //        status == TransactionStatus.Released || status == TransactionStatus.Refund || status == TransactionStatus.CreditPayment)
+                    //{
+                    //    mstrTransactionNo = txtTransactionNo.Text.PadLeft(miTransactionNoLength - 1, '0');
+                    //    mstrTerminalNo = txtTerminalNo.Text;
+                    //    dialog = DialogResult.OK;
+                    //    this.Hide();
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Sorry the Transaction No. you entered is " + status.ToString("G") + ". " +
+                    //        "Please enter a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //    return;
+                    //}
                     break;
             }
         }

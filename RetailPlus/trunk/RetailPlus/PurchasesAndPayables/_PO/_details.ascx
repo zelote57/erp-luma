@@ -35,7 +35,22 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
 			        </td>
-			        <td class="ms-separator"><asp:label id="Label1" runat="server">|</asp:label></td>
+                    <asp:Panel id="holderTagPrice" runat="server">
+			        <td class="ms-separator"><asp:label id="lblSeparatorTP" runat="server">|</asp:label></td>
+                    <td class="ms-toolbar">
+                        <asp:UpdatePanel ID="updTP" runat="server">
+                            <ContentTemplate>
+						        <table cellspacing="0" cellpadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPrintTagPrice" title="Print tag price for all items below" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Order" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" OnClick="imgPrintTagPrice_Click"></asp:imagebutton></td>
+								        <td nowrap="nowrap"><asp:linkbutton id="cmdPrintTagPrice" title="Print tag price for all items below" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="cmdPrintTagPrice_Click">Print Tag Price</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+					</td>
+                    </asp:Panel>
+					<td class="ms-separator"><asp:label id="Label2" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
@@ -95,7 +110,7 @@
 							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"></td>
-								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td style="padding-bottom: 2px" width="30%"><asp:HyperLink id="lnkPONo" runat="server" CssClass="ms-error"></asp:HyperLink></td>
 							</tr>
 							<tr style="padding-bottom: 5px">
@@ -112,12 +127,12 @@
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Terms:</label></td>
 							</tr>
 							<tr style="padding-bottom: 5px">
-								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="False"></asp:label>
 									<asp:HyperLink id="lblSupplierCode" runat="server" Target="_blank">lblSupplierCode</asp:HyperLink></td>
-								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
-								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblTerms" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblModeOfterms" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
@@ -132,11 +147,11 @@
 										Delivery Date:</label></td>
 							</tr>
 							<tr style="padding-bottom: 5px">
-								<td class="ms-formspacer" style="height: 19px"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer" style="height: 19px"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px; height: 19px;" width="30%"><asp:label id="lblSupplierAddress" runat="server" CssClass="ms-error"></asp:label></td>
-								<td class="ms-formspacer" style="height: 19px"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer" style="height: 19px"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px; height: 19px;" width="40%"><asp:label id="lblSupplierTelephoneNo" runat="server" CssClass="ms-error"></asp:label></td>
-								<td class="ms-formspacer" style="height: 19px"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer" style="height: 19px"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px; height: 19px;" width="30%"><asp:label id="lblRequiredDeliveryDate" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
@@ -149,9 +164,9 @@
 										Address:</label></td>
 							</tr>
 							<tr style="padding-bottom: 5px">
-								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="False"></asp:label></td>
-								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="3"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
@@ -172,7 +187,7 @@
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<td><asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" ShowFooter="false" OnItemDataBound="lstItem_ItemDataBound">
+		<td><asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" ShowFooter="false" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand">
 				<HeaderTemplate>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
@@ -192,7 +207,7 @@
 							<th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByProductUnitCode" runat="server">Unit of Measure</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align:right" align="right"><asp:hyperlink id="SortByUntCost" runat="server">Unit Cost</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align:right" align="right"><asp:hyperlink id="SortByDiscount" runat="server">Discount</asp:hyperlink></th>
-							<th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align:right" align="right"><asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></th>
+							<th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align:center" align="center"><asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></th>
 						</tr>
                     </table>
@@ -228,6 +243,7 @@
 							</td>
 							<td class="ms-vb-user" style="text-align:right">
 								<asp:Label ID="lblUnitCost" Runat="server"></asp:Label>
+                                <asp:Label ID="lblSellingPrice" Runat="server" Visible="false"></asp:Label>
 							</td>
 							<td class="ms-vb-user" style="text-align:right">
 								<asp:Label ID="lblDiscountApplied" Runat="server"></asp:Label>
@@ -235,6 +251,8 @@
 							</td>
 							<td class="ms-vb-user" style="text-align:right">
 								<asp:Label ID="lblAmount" Runat="server"></asp:Label>
+                                <asp:textbox onkeypress="AllNum()" id="txtTagPriceCount" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text=0 Width="50px"></asp:textbox>
+                                <asp:ImageButton id="cmdPrintTagPriceBarCode" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode" CausesValidation="false"></asp:ImageButton>
 							</td>
 							<td class="ms-vb2">
 								<A class="DropDown" id="anchorDown" href="" runat="server">
@@ -248,7 +266,7 @@
 									<asp:panel id="panItem" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 										<table id="tblpanItem" cellspacing="0" cellpadding="0" width="100%" border="0">
 											<tr>
-												<td class="ms-formspacer" colspan="1"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+												<td class="ms-formspacer" colspan="1"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 											</tr>
 											<tr>
 												<td width="19%">

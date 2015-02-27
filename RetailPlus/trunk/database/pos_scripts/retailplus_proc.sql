@@ -131,7 +131,7 @@ GO
 
 create procedure procProductInventoryAuditInsert(
 	IN intBranchID INT(4),
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,3),
 	IN decQuantityIn DECIMAL(18,3),
@@ -143,7 +143,7 @@ create procedure procProductInventoryAuditInsert(
 BEGIN
 	INSERT INTO tblProductInventoryAudit (
 			 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DateCreated)
-	VALUES (intBranchID ,lngProductID ,lngMatrixID ,decQuantity ,decQuantityIn ,decQuantityOut 
+	VALUES (intBranchID ,intProductID ,lngMatrixID ,decQuantity ,decQuantityIn ,decQuantityOut 
 			,decActualQuantity ,decReservedQuantity ,intIsLock ,NOW());
 
 END;
@@ -247,7 +247,7 @@ delimiter ;
 /********************************************
 	procCashierReportSyncTransactionSales
 
-	CALL procCashierReportSyncTransactionSales( 1, '01', '00000000000001', '00000000000001');
+	CALL procCashierReportSyncTransactionSales( 1, '01', '2015-01-28 19:05:45', '2015-01-29 18:58:42');
 ********************************************/
 
 delimiter GO
@@ -266,91 +266,91 @@ BEGIN
 	LEFT JOIN (
 			select BranchID, TerminalNo, CashierID,
 					SUM(CASE TransactionStatus 
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 						END) NetSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+							WHEN 1 THEN GrossSales WHEN 4 THEN GrossSales WHEN 5 THEN GrossSales WHEN 9 THEN GrossSales WHEN 11 THEN GrossSales ELSE 0
 						END) GrossSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+							WHEN 1 THEN Subtotal WHEN 4 THEN Subtotal WHEN 5 THEN Subtotal WHEN 9 THEN Subtotal WHEN 11 THEN Subtotal ELSE 0
 						END) SubTotal, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+							WHEN 1 THEN Discount WHEN 4 THEN Discount WHEN 5 THEN Discount WHEN 9 THEN Discount WHEN 11 THEN Discount ELSE 0
 						END) Discount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+							WHEN 1 THEN ItemsDiscount WHEN 4 THEN ItemsDiscount WHEN 5 THEN ItemsDiscount WHEN 9 THEN ItemsDiscount WHEN 11 THEN ItemsDiscount ELSE 0
 						END) ItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+							WHEN 1 THEN SNRItemsDiscount WHEN 4 THEN SNRItemsDiscount WHEN 5 THEN SNRItemsDiscount WHEN 9 THEN SNRItemsDiscount WHEN 11 THEN SNRItemsDiscount ELSE 0
 						END) SNRItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+							WHEN 1 THEN PWDItemsDiscount WHEN 4 THEN PWDItemsDiscount WHEN 5 THEN PWDItemsDiscount WHEN 9 THEN PWDItemsDiscount WHEN 11 THEN PWDItemsDiscount ELSE 0
 						END) PWDItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+							WHEN 1 THEN OtherItemsDiscount WHEN 4 THEN OtherItemsDiscount WHEN 5 THEN OtherItemsDiscount WHEN 9 THEN OtherItemsDiscount WHEN 11 THEN OtherItemsDiscount ELSE 0
 						END) OtherItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+							WHEN 1 THEN SNRDiscount WHEN 4 THEN SNRDiscount WHEN 5 THEN SNRDiscount WHEN 9 THEN SNRDiscount WHEN 11 THEN SNRDiscount ELSE 0
 						END) SNRDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+							WHEN 1 THEN PWDDiscount WHEN 4 THEN PWDDiscount WHEN 5 THEN PWDDiscount WHEN 9 THEN PWDDiscount WHEN 11 THEN PWDDiscount ELSE 0
 						END) PWDDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+							WHEN 1 THEN OtherDiscount WHEN 4 THEN OtherDiscount WHEN 5 THEN OtherDiscount WHEN 9 THEN OtherDiscount WHEN 11 THEN OtherDiscount ELSE 0
 						END) OtherDiscount,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+							WHEN 1 THEN Charge WHEN 4 THEN Charge WHEN 5 THEN Charge WHEN 9 THEN Charge WHEN 11 THEN Charge ELSE 0
 						END) TotalCharge, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 						END) DailySales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+							WHEN 1 THEN ItemSold WHEN 4 THEN ItemSold WHEN 5 THEN ItemSold WHEN 9 THEN ItemSold WHEN 11 THEN ItemSold ELSE 0
 						END) ItemSold,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+							WHEN 1 THEN QuantitySold WHEN 4 THEN QuantitySold WHEN 5 THEN QuantitySold WHEN 9 THEN QuantitySold WHEN 11 THEN QuantitySold ELSE 0
 						END) QuantitySold,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+							WHEN 1 THEN VATExempt WHEN 4 THEN VATExempt WHEN 5 THEN VATExempt WHEN 9 THEN VATExempt WHEN 11 THEN VATExempt ELSE 0
 						END) VATExempt, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+							WHEN 1 THEN NonVATableAmount WHEN 4 THEN NonVATableAmount WHEN 5 THEN NonVATableAmount WHEN 9 THEN NonVATableAmount WHEN 11 THEN NonVATableAmount ELSE 0
 						END) NonVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+							WHEN 1 THEN VATableAmount WHEN 4 THEN VATableAmount WHEN 5 THEN VATableAmount WHEN 9 THEN VATableAmount WHEN 11 THEN VATableAmount ELSE 0
 						END) VATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+							WHEN 1 THEN ZeroRatedSales WHEN 4 THEN ZeroRatedSales WHEN 5 THEN ZeroRatedSales WHEN 9 THEN ZeroRatedSales WHEN 11 THEN ZeroRatedSales ELSE 0
 						END) ZeroRatedSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+							WHEN 1 THEN VAT WHEN 4 THEN VAT WHEN 5 THEN VAT WHEN 9 THEN VAT WHEN 11 THEN VAT ELSE 0
 						END) VAT, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+							WHEN 1 THEN EVATableAmount WHEN 4 THEN EVATableAmount WHEN 5 THEN EVATableAmount WHEN 9 THEN EVATableAmount WHEN 11 THEN EVATableAmount ELSE 0
 						END) EVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+							WHEN 1 THEN NonEVATableAmount WHEN 4 THEN NonEVATableAmount WHEN 5 THEN NonEVATableAmount WHEN 9 THEN NonEVATableAmount WHEN 11 THEN NonEVATableAmount ELSE 0
 						END) NonEVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+							WHEN 1 THEN EVAT WHEN 4 THEN EVAT WHEN 5 THEN EVAT WHEN 9 THEN EVAT WHEN 11 THEN EVAT ELSE 0
 						END) EVAT, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+							WHEN 1 THEN LocalTax WHEN 4 THEN LocalTax WHEN 5 THEN LocalTax WHEN 9 THEN LocalTax WHEN 11 THEN LocalTax ELSE 0
 						END) LocalTax,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
+							WHEN 1 THEN CashPayment WHEN 4 THEN CashPayment WHEN 9 THEN CashPayment WHEN 11 THEN CashPayment ELSE 0
 						END) CashSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
+							WHEN 1 THEN ChequePayment WHEN 4 THEN ChequePayment WHEN 9 THEN ChequePayment WHEN 11 THEN ChequePayment ELSE 0
 						END) ChequeSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
+							WHEN 1 THEN CreditCardPayment WHEN 4 THEN CreditCardPayment WHEN 9 THEN CreditCardPayment WHEN 11 THEN CreditCardPayment ELSE 0
 						END) CreditCardSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
+							WHEN 1 THEN CreditPayment WHEN 4 THEN CreditPayment WHEN 9 THEN CreditPayment WHEN 11 THEN CreditPayment ELSE 0
 						END) CreditSales, -- creditpayment for normal transactions
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
+							WHEN 1 THEN DebitPayment WHEN 4 THEN DebitPayment WHEN 9 THEN DebitPayment WHEN 11 THEN DebitPayment ELSE 0
 						END) DebitPayment, -- debit for normal transactions
 					SUM(CASE TransactionStatus
 							WHEN 5 THEN CashPayment ELSE 0
@@ -383,17 +383,35 @@ BEGIN
 							WHEN 7 THEN DebitPayment ELSE 0
 						END) CreditPaymentDebit, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+							WHEN 1 THEN RewardPointsPayment WHEN 4 THEN RewardPointsPayment WHEN 5 THEN RewardPointsPayment WHEN 9 THEN RewardPointsPayment WHEN 11 THEN RewardPointsPayment ELSE 0
 						END) RewardPointsPayment,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+							WHEN 1 THEN RewardConvertedPayment WHEN 4 THEN RewardConvertedPayment WHEN 5 THEN RewardConvertedPayment WHEN 9 THEN RewardConvertedPayment WHEN 11 THEN RewardConvertedPayment ELSE 0
 						END) RewardConvertedPayment,
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN Subtotal ELSE 0
 						END) VoidSales, 
 					SUM(CASE TransactionStatus
 							WHEN 5 THEN Subtotal ELSE 0
-						END) RefundSales
+						END) RefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 14 THEN Subtotal ELSE 0
+						END) WalkInSales,	-- CashPayment lang ito, cannot pay using other payment types.
+					SUM(CASE TransactionStatus
+							WHEN 15 THEN Subtotal ELSE 0
+						END) OutOfStockSales,
+					SUM(CASE TransactionStatus
+							WHEN 16 THEN Subtotal ELSE 0
+						END) ConsignmentSales,
+					SUM(CASE TransactionStatus
+							WHEN 17 THEN Subtotal ELSE 0
+						END) WalkInRefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 18 THEN Subtotal ELSE 0
+						END) OutOfStockRefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 19 THEN Subtotal ELSE 0
+						END) ConsignmentRefundSales
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
@@ -440,7 +458,7 @@ BEGIN
 					
 						tblCashierReport.RewardPointsPayment				=  IFNULL(Trx.RewardPointsPayment,0),
 						tblCashierReport.RewardConvertedPayment				=  IFNULL(Trx.RewardConvertedPayment,0),
-						tblCashierReport.CashInDrawer						=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
+						tblCashierReport.CashInDrawer						=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + IFNULL(Trx.WalkInSales,0) + IFNULL(Trx.WalkInRefundSales,0) + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
 						tblCashierReport.VoidSales							=  IFNULL(Trx.VoidSales,0), 
 						tblCashierReport.RefundSales						=  IFNULL(Trx.RefundSales,0), 
 						tblCashierReport.ItemsDiscount						=  IFNULL(Trx.ItemsDiscount,0), 
@@ -448,6 +466,14 @@ BEGIN
 						tblCashierReport.PWDItemsDiscount					=  IFNULL(Trx.PWDItemsDiscount,0), 
 						tblCashierReport.OtherItemsDiscount					=  IFNULL(Trx.OtherItemsDiscount,0), 
 						tblCashierReport.SubTotalDiscount					=  IFNULL(Trx.Discount,0),
+
+						tblCashierReport.ConsignmentSales					=  IFNULL(Trx.ConsignmentSales,0),
+						tblCashierReport.ConsignmentRefundSales				=  IFNULL(Trx.ConsignmentRefundSales,0),
+						tblCashierReport.WalkInSales						=  IFNULL(Trx.WalkInSales,0),
+						tblCashierReport.WalkInRefundSales					=  IFNULL(Trx.WalkInRefundSales,0),
+						tblCashierReport.OutOfStockSales					=  IFNULL(Trx.OutOfStockSales,0),
+						tblCashierReport.OutOfStockRefundSales				=  IFNULL(Trx.OutOfStockRefundSales,0),
+
 						tblCashierReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 	WHERE tblCashierReport.BranchID = intBranchID AND tblCashierReport.TerminalNo = strTerminalNo
 		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
@@ -489,91 +515,91 @@ BEGIN
 		LEFT JOIN (
 				select BranchID, TerminalNo, 
 						SUM(CASE TransactionStatus 
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+								WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 							END) NetSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+								WHEN 1 THEN GrossSales WHEN 4 THEN GrossSales WHEN 5 THEN GrossSales WHEN 9 THEN GrossSales WHEN 11 THEN GrossSales ELSE 0
 							END) GrossSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SubTotal
+								WHEN 1 THEN Subtotal WHEN 4 THEN Subtotal WHEN 5 THEN Subtotal WHEN 9 THEN Subtotal WHEN 11 THEN Subtotal ELSE 0
 							END) SubTotal, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+								WHEN 1 THEN Discount WHEN 4 THEN Discount WHEN 5 THEN Discount WHEN 9 THEN Discount WHEN 11 THEN Discount ELSE 0
 							END) Discount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+								WHEN 1 THEN ItemsDiscount WHEN 4 THEN ItemsDiscount WHEN 5 THEN ItemsDiscount WHEN 9 THEN ItemsDiscount WHEN 11 THEN ItemsDiscount ELSE 0
 							END) ItemsDiscount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+								WHEN 1 THEN SNRItemsDiscount WHEN 4 THEN SNRItemsDiscount WHEN 5 THEN SNRItemsDiscount WHEN 9 THEN SNRItemsDiscount WHEN 11 THEN SNRItemsDiscount ELSE 0
 							END) SNRItemsDiscount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+								WHEN 1 THEN PWDItemsDiscount WHEN 4 THEN PWDItemsDiscount WHEN 5 THEN PWDItemsDiscount WHEN 9 THEN PWDItemsDiscount WHEN 11 THEN PWDItemsDiscount ELSE 0
 							END) PWDItemsDiscount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+								WHEN 1 THEN OtherItemsDiscount WHEN 4 THEN OtherItemsDiscount WHEN 5 THEN OtherItemsDiscount WHEN 9 THEN OtherItemsDiscount WHEN 11 THEN OtherItemsDiscount ELSE 0
 							END) OtherItemsDiscount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+								WHEN 1 THEN SNRDiscount WHEN 4 THEN SNRDiscount WHEN 5 THEN SNRDiscount WHEN 9 THEN SNRDiscount WHEN 11 THEN SNRDiscount ELSE 0
 							END) SNRDiscount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+								WHEN 1 THEN PWDDiscount WHEN 4 THEN PWDDiscount WHEN 5 THEN PWDDiscount WHEN 9 THEN PWDDiscount WHEN 11 THEN PWDDiscount ELSE 0
 							END) PWDDiscount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+								WHEN 1 THEN OtherDiscount WHEN 4 THEN OtherDiscount WHEN 5 THEN OtherDiscount WHEN 9 THEN OtherDiscount WHEN 11 THEN OtherDiscount ELSE 0
 							END) OtherDiscount,
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+								WHEN 1 THEN Charge WHEN 4 THEN Charge WHEN 5 THEN Charge WHEN 9 THEN Charge WHEN 11 THEN Charge ELSE 0
 							END) TotalCharge, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+								WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 							END) DailySales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+								WHEN 1 THEN ItemSold WHEN 4 THEN ItemSold WHEN 5 THEN ItemSold WHEN 9 THEN ItemSold WHEN 11 THEN ItemSold ELSE 0
 							END) ItemSold,
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+								WHEN 1 THEN QuantitySold WHEN 4 THEN QuantitySold WHEN 5 THEN QuantitySold WHEN 9 THEN QuantitySold WHEN 11 THEN QuantitySold ELSE 0
 							END) QuantitySold,
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+								WHEN 1 THEN VATExempt WHEN 4 THEN VATExempt WHEN 5 THEN VATExempt WHEN 9 THEN VATExempt WHEN 11 THEN VATExempt ELSE 0
 							END) VATExempt, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+								WHEN 1 THEN NonVATableAmount WHEN 4 THEN NonVATableAmount WHEN 5 THEN NonVATableAmount WHEN 9 THEN NonVATableAmount WHEN 11 THEN NonVATableAmount ELSE 0
 							END) NonVATableAmount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+								WHEN 1 THEN VATableAmount WHEN 4 THEN VATableAmount WHEN 5 THEN VATableAmount WHEN 9 THEN VATableAmount WHEN 11 THEN VATableAmount ELSE 0
 							END) VATableAmount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+								WHEN 1 THEN ZeroRatedSales WHEN 4 THEN ZeroRatedSales WHEN 5 THEN ZeroRatedSales WHEN 9 THEN ZeroRatedSales WHEN 11 THEN ZeroRatedSales ELSE 0
 							END) ZeroRatedSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+								WHEN 1 THEN VAT WHEN 4 THEN VAT WHEN 5 THEN VAT WHEN 9 THEN VAT WHEN 11 THEN VAT ELSE 0
 							END) VAT, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+								WHEN 1 THEN EVATableAmount WHEN 4 THEN EVATableAmount WHEN 5 THEN EVATableAmount WHEN 9 THEN EVATableAmount WHEN 11 THEN EVATableAmount ELSE 0
 							END) EVATableAmount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+								WHEN 1 THEN NonEVATableAmount WHEN 4 THEN NonEVATableAmount WHEN 5 THEN NonEVATableAmount WHEN 9 THEN NonEVATableAmount WHEN 11 THEN NonEVATableAmount ELSE 0
 							END) NonEVATableAmount, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+								WHEN 1 THEN EVAT WHEN 4 THEN EVAT WHEN 5 THEN EVAT WHEN 9 THEN EVAT WHEN 11 THEN EVAT ELSE 0
 							END) EVAT, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+								WHEN 1 THEN LocalTax WHEN 4 THEN LocalTax WHEN 5 THEN LocalTax WHEN 9 THEN LocalTax WHEN 11 THEN LocalTax ELSE 0
 							END) LocalTax,
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
+								WHEN 1 THEN CashPayment WHEN 4 THEN CashPayment WHEN 9 THEN CashPayment WHEN 11 THEN CashPayment ELSE 0
 							END) CashSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
+								WHEN 1 THEN ChequePayment WHEN 4 THEN ChequePayment WHEN 9 THEN ChequePayment WHEN 11 THEN ChequePayment ELSE 0
 							END) ChequeSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
+								WHEN 1 THEN CreditCardPayment WHEN 4 THEN CreditCardPayment WHEN 9 THEN CreditCardPayment WHEN 11 THEN CreditCardPayment ELSE 0
 							END) CreditCardSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
+								WHEN 1 THEN CreditPayment WHEN 4 THEN CreditPayment WHEN 9 THEN CreditPayment WHEN 11 THEN CreditPayment ELSE 0
 							END) CreditSales, -- creditpayment for normal transactions
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
+								WHEN 1 THEN DebitPayment WHEN 4 THEN DebitPayment WHEN 9 THEN DebitPayment WHEN 11 THEN DebitPayment ELSE 0
 							END) DebitPayment, -- debit for normal transactions
 						SUM(CASE TransactionStatus
 								WHEN 5 THEN CashPayment ELSE 0
@@ -606,17 +632,35 @@ BEGIN
 								WHEN 7 THEN DebitPayment ELSE 0
 							END) CreditPaymentDebit, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+								WHEN 1 THEN RewardPointsPayment WHEN 4 THEN RewardPointsPayment WHEN 5 THEN RewardPointsPayment WHEN 9 THEN RewardPointsPayment WHEN 11 THEN RewardPointsPayment ELSE 0
 							END) RewardPointsPayment,
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+								WHEN 1 THEN RewardConvertedPayment WHEN 4 THEN RewardConvertedPayment WHEN 5 THEN RewardConvertedPayment WHEN 9 THEN RewardConvertedPayment WHEN 11 THEN RewardConvertedPayment ELSE 0
 							END) RewardConvertedPayment,
 						SUM(CASE TransactionStatus
 								WHEN 3 THEN Subtotal ELSE 0
 							END) VoidSales, 
 						SUM(CASE TransactionStatus
 								WHEN 5 THEN Subtotal ELSE 0
-							END) RefundSales
+							END) RefundSales,
+						SUM(CASE TransactionStatus
+								WHEN 14 THEN Subtotal ELSE 0
+							END) WalkInSales,
+						SUM(CASE TransactionStatus
+								WHEN 15 THEN Subtotal ELSE 0
+							END) OutOfStockSales,
+						SUM(CASE TransactionStatus
+								WHEN 16 THEN Subtotal ELSE 0
+							END) ConsignmentSales,
+						SUM(CASE TransactionStatus
+								WHEN 17 THEN Subtotal ELSE 0
+							END) WalkInRefundSales,
+						SUM(CASE TransactionStatus
+								WHEN 18 THEN Subtotal ELSE 0
+							END) OutOfStockRefundSales,
+						SUM(CASE TransactionStatus
+								WHEN 19 THEN Subtotal ELSE 0
+							END) ConsignmentRefundSales
 				FROM  tblTransactions
 						WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 							AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
@@ -637,7 +681,7 @@ BEGIN
 							tblTerminalReport.DailySales						=  IFNULL(Trx.DailySales,0), 
 							tblTerminalReport.ItemSold							=  IFNULL(Trx.ItemSold,0), 
 							tblTerminalReport.QuantitySold						=  IFNULL(Trx.QuantitySold,0), 
-							tblTerminalReport.GroupSales						=  IFNULL(Trx.SubTotal,0), 
+							tblTerminalReport.GroupSales						=  IFNULL(Trx.NetSales,0), -- IFNULL(Trx.SubTotal,0), 
 							tblTerminalReport.VATExempt   						=  IFNULL(Trx.VATExempt,0), 
 							tblTerminalReport.NonVATableAmount					=  IFNULL(Trx.NonVATableAmount,0), 
 							tblTerminalReport.VATableAmount						=  IFNULL(Trx.VATableAmount,0), 
@@ -665,7 +709,7 @@ BEGIN
 					
 							tblTerminalReport.RewardPointsPayment				=  IFNULL(Trx.RewardPointsPayment,0),
 							tblTerminalReport.RewardConvertedPayment			=  IFNULL(Trx.RewardConvertedPayment,0),
-							tblTerminalReport.CashInDrawer						=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
+							tblTerminalReport.CashInDrawer						=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + IFNULL(Trx.WalkInSales,0) + IFNULL(Trx.WalkInRefundSales,0) + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
 							tblTerminalReport.VoidSales							=  IFNULL(Trx.VoidSales,0), 
 							tblTerminalReport.RefundSales						=  IFNULL(Trx.RefundSales,0), 
 							tblTerminalReport.ItemsDiscount						=  IFNULL(Trx.ItemsDiscount,0), 
@@ -673,6 +717,13 @@ BEGIN
 							tblTerminalReport.PWDItemsDiscount					=  IFNULL(Trx.PWDItemsDiscount,0), 
 							tblTerminalReport.OtherItemsDiscount				=  IFNULL(Trx.OtherItemsDiscount,0), 
 							tblTerminalReport.SubTotalDiscount					=  IFNULL(Trx.Discount,0),
+
+							tblTerminalReport.ConsignmentSales					=  IFNULL(Trx.ConsignmentSales,0),
+							tblTerminalReport.ConsignmentRefundSales			=  IFNULL(Trx.ConsignmentRefundSales,0),
+							tblTerminalReport.WalkInSales						=  IFNULL(Trx.WalkInSales,0),
+							tblTerminalReport.WalkInRefundSales					=  IFNULL(Trx.WalkInRefundSales,0),
+							tblTerminalReport.OutOfStockSales					=  IFNULL(Trx.OutOfStockSales,0),
+							tblTerminalReport.OutOfStockRefundSales				=  IFNULL(Trx.OutOfStockRefundSales,0),
 
 							tblTerminalReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 		WHERE tblTerminalReport.BranchID = intBranchID AND tblTerminalReport.TerminalNo = strTerminalNo
@@ -752,6 +803,12 @@ create procedure procTerminalReportUpdateTransactionSales(IN intBranchID int(4),
 														IN intNoOfDiscountedTransactions int(10),
 														IN decNegativeAdjustments decimal(10),
 														IN intNoOfNegativeAdjustmentTransactions  int(10),
+														IN intNoOfConsignmentTransactions  int(10),
+														IN intNoOfConsignmentRefundTransactions  int(10),
+														IN intNoOfWalkInTransactions  int(10),
+														IN intNoOfWalkInRefundTransactions  int(10),
+														IN intNoOfOutOfStockTransactions  int(10),
+														IN intNoOfOutOfStockRefundTransactions  int(10),
 														IN decPromotionalItems decimal(10),
 														IN decCreditSalesTax decimal(10))
 BEGIN
@@ -820,6 +877,21 @@ BEGIN
 					NoOfDiscountedTransactions			=  NoOfDiscountedTransactions			+  intNoOfDiscountedTransactions,
 					NegativeAdjustments					=  NegativeAdjustments					+  decNegativeAdjustments,
 					NoOfNegativeAdjustmentTransactions	=  NoOfNegativeAdjustmentTransactions	+  intNoOfNegativeAdjustmentTransactions,
+					NoOfConsignmentTransactions			=  NoOfConsignmentTransactions			+  intNoOfConsignmentTransactions,
+					NoOfConsignmentRefundTransactions	=  NoOfConsignmentRefundTransactions	+  intNoOfConsignmentRefundTransactions,
+					NoOfWalkInTransactions				=  NoOfWalkInTransactions				+  intNoOfWalkInTransactions,
+					NoOfWalkInRefundTransactions		=  NoOfWalkInRefundTransactions			+  intNoOfWalkInRefundTransactions,
+					NoOfOutOfStockTransactions			=  NoOfOutOfStockTransactions			+  intNoOfOutOfStockTransactions,
+					NoOfOutOfStockRefundTransactions	=  NoOfOutOfStockRefundTransactions		+  intNoOfOutOfStockRefundTransactions,
+
+					-- 25Feb2015 : no need for this, already recomputed in procCashierReportSyncTransactionSales after zread
+					-- ConsignmentTransactions					=  ConsignmentTransactions			+  decConsignmentTransactions,
+					-- ConsignmentRefundTransactions			=  ConsignmentRefundTransactions	+  decConsignmentRefundTransactions,
+					-- WalkInTransactions						=  WalkInTransactions				+  decWalkInTransactions,
+					-- WalkInRefundTransactions					=  WalkInRefundTransactions			+  decWalkInRefundTransactions,
+					-- OutOfStockTransactions					=  OutOfStockTransactions			+  decOutOfStockTransactions,
+					-- OutOfStockRefundTransactions				=  OutOfStockRefundTransactions		+  decOutOfStockRefundTransactions,
+
 					PromotionalItems					=  PromotionalItems						+  decPromotionalItems,
 					CreditSalesTax						=  CreditSalesTax						+  decCreditSalesTax,
 					IsProcessed							=  0	-- this must be set to 0 during transaction update
@@ -942,8 +1014,16 @@ create procedure procCashierReportUpdateTransactionSales(IN intBranchID INT(4), 
 														IN intNoOfRewardPointsPayment int(10),
 														IN intNoOfTotalTransactions int(10),
 														IN intNoOfDiscountedTransactions int(10),
-														IN decNegativeAdjustments decimal(10),
+														IN decNegativeAdjustments decimal(18,3),
 														IN intNoOfNegativeAdjustmentTransactions  int(10),
+
+														IN intNoOfConsignmentTransactions  int(10),
+														IN intNoOfConsignmentRefundTransactions  int(10),
+														IN intNoOfWalkInTransactions  int(10),
+														IN intNoOfWalkInRefundTransactions  int(10),
+														IN intNoOfOutOfStockTransactions  int(10),
+														IN intNoOfOutOfStockRefundTransactions  int(10),
+														
 														IN decPromotionalItems decimal(10),
 														IN decCreditSalesTax decimal(10))
 BEGIN
@@ -1007,6 +1087,22 @@ BEGIN
 		NoOfDiscountedTransactions				=  NoOfDiscountedTransactions			+  intNoOfDiscountedTransactions,
 		NegativeAdjustments						=  NegativeAdjustments					+  decNegativeAdjustments,
 		NoOfNegativeAdjustmentTransactions		=  NoOfNegativeAdjustmentTransactions	+  intNoOfNegativeAdjustmentTransactions,
+
+		NoOfConsignmentTransactions				=  NoOfConsignmentTransactions			+  intNoOfConsignmentTransactions,
+		NoOfConsignmentRefundTransactions		=  NoOfConsignmentRefundTransactions	+  intNoOfConsignmentRefundTransactions,
+		NoOfWalkInTransactions					=  NoOfWalkInTransactions				+  intNoOfWalkInTransactions,
+		NoOfWalkInRefundTransactions			=  NoOfWalkInRefundTransactions			+  intNoOfWalkInRefundTransactions,
+		NoOfOutOfStockTransactions				=  NoOfOutOfStockTransactions			+  intNoOfOutOfStockTransactions,
+		NoOfOutOfStockRefundTransactions		=  NoOfOutOfStockRefundTransactions		+  intNoOfOutOfStockRefundTransactions,
+
+		-- 25Feb2015 : no need for this, already recomputed in procCashierReportSyncTransactionSales after zread
+		-- ConsignmentTransactions					=  ConsignmentTransactions			+  decConsignmentTransactions,
+		-- ConsignmentRefundTransactions			=  ConsignmentRefundTransactions	+  decConsignmentRefundTransactions,
+		-- WalkInTransactions						=  WalkInTransactions				+  decWalkInTransactions,
+		-- WalkInRefundTransactions					=  WalkInRefundTransactions			+  decWalkInRefundTransactions,
+		-- OutOfStockTransactions					=  OutOfStockTransactions			+  decOutOfStockTransactions,
+		-- OutOfStockRefundTransactions				=  OutOfStockRefundTransactions		+  decOutOfStockRefundTransactions,
+
 		PromotionalItems						=  PromotionalItems						+  decPromotionalItems,
 		CreditSalesTax							=  CreditSalesTax						+  decCreditSalesTax,
 		IsProcessed								=  0	-- this must be set to 0 during transaction update
@@ -1171,7 +1267,7 @@ GO
 
 create procedure procSyncQuantityProductHistoryAdjust()
 BEGIN	
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE decProductQuantity, decMatrixQuantity, decMinThreshold, decMaxThreshold DECIMAL(18,3);
 	DECLARE strProductCode, strUnitCode VARCHAR(30);
 	DECLARE strDescription VARCHAR(150);
@@ -1183,12 +1279,12 @@ BEGIN
 	
 	OPEN curItems;
 	REPEAT
-		FETCH curItems INTO lngProductID, decProductQuantity, strProductCode, strDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold;
+		FETCH curItems INTO intProductID, decProductQuantity, strProductCode, strDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold;
 		
 		IF NOT done THEN
-			SET decMatrixQuantity = (SELECT SUM(Quantity) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID);
+			SET decMatrixQuantity = (SELECT SUM(Quantity) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = intProductID);
 			
-			-- CALL procInvAdjustmentInsert (1, now(), lngProductID, strProductCode, strDescription, 0, 0, intUnitID, strUnitCode, 
+			-- CALL procInvAdjustmentInsert (1, now(), intProductID, strProductCode, strDescription, 0, 0, intUnitID, strUnitCode, 
 			--								decProductQuantity, decMatrixQuantity, decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, 'System added during auto-sync.');
 			
 		END IF;
@@ -1223,7 +1319,7 @@ create procedure procGenerateProductHistory(
 	IN strSessionID varchar(30),
 	IN dteStartTransactionDate DateTime,
 	IN dteEndTransactionDate DateTime,
-	IN lngProductID BIGINT
+	IN intProductID BIGINT
 	)
 BEGIN
 	
@@ -1247,7 +1343,7 @@ BEGIN
 	LEFT OUTER JOIN tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID)
 	LEFT OUTER JOIN tblUnit d ON a.ProductUnitID = d.UnitID)
 	LEFT OUTER JOIN tblStockType e ON a.StockTypeID = e.StockTypeID
-	WHERE a.ProductID = lngProductID
+	WHERE a.ProductID = intProductID
 		AND DATE_FORMAT(a.StockDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(a.StockDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i');
 
@@ -1271,7 +1367,7 @@ BEGIN
 		END AS Remarks,
 		b.TransactionDate, b.TransactionNo
 	FROM  tblTransactionItems a INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
-	WHERE a.ProductID = lngProductID 
+	WHERE a.ProductID = intProductID 
 		AND DATE_FORMAT(b.TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(b.TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i');
 
@@ -1286,7 +1382,7 @@ BEGIN
 		b.PONo AS TransactionNo
 	FROM tblPOItems a
 	INNER JOIN tblPO b ON a.POID = b.POID
-	WHERE a.ProductID = lngProductID
+	WHERE a.ProductID = intProductID
 		AND DATE_FORMAT(b.PODate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(b.PODate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
 		AND b.Status = 1;
@@ -1302,7 +1398,7 @@ BEGIN
 		CONCAT('Adjusted By :' , b.Name) AS TransactionNo
 	FROM tblInvAdjustment a
 	INNER JOIN sysAccessUserDetails b ON a.UID = b.UID
-	WHERE a.ProductID = lngProductID
+	WHERE a.ProductID = intProductID
 		AND DATE_FORMAT(a.InvAdjustmentDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(a.InvAdjustmentDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i');
 		
@@ -1317,7 +1413,7 @@ BEGIN
 		b.TransferInNo AS TransactionNo
 	FROM tblTransferInItems a
 	INNER JOIN tblTransferIn b ON a.TransferInID = b.TransferInID
-	WHERE a.ProductID = lngProductID
+	WHERE a.ProductID = intProductID
 		AND DATE_FORMAT(b.TransferInDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(b.TransferInDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
 		AND b.Status = 1;
@@ -1333,7 +1429,7 @@ BEGIN
 		b.TransferOutNo AS TransactionNo
 	FROM tblTransferOutItems a
 	INNER JOIN tblTransferOut b ON a.TransferOutID = b.TransferOutID
-	WHERE a.ProductID = lngProductID
+	WHERE a.ProductID = intProductID
 		AND DATE_FORMAT(b.TransferOutDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(b.TransferOutDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
 		AND b.Status = 1;
@@ -1394,10 +1490,10 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionOrderTypeUpdate;
 delimiter GO
 
-create procedure procTransactionOrderTypeUpdate(IN lngTransactionID bigint(20), IN intOrderType smallint)
+create procedure procTransactionOrderTypeUpdate(IN intTransactionID bigint(20), IN intOrderType smallint)
 BEGIN
 
-	UPDATE tblTransactions SET OrderType = intOrderType WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET OrderType = intOrderType WHERE TransactionID = intTransactionID;
 	
 END;
 GO
@@ -1408,7 +1504,7 @@ delimiter ;
 	Lemuel E. Aceron
 	May 1, 2009
 
-	SET @SQL := CONCAT('UPDATE tblTransactions',strMonth,' SET WaiterID = ',lngWaiterID,', WaiterName = ''',strWaiterName,''' WHERE TransactionID = ',lngTransactionID,';');
+	SET @SQL := CONCAT('UPDATE tblTransactions',strMonth,' SET WaiterID = ',intWaiterID,', WaiterName = ''',strWaiterName,''' WHERE TransactionID = ',intTransactionID,';');
 	
 	PREPARE stmt FROM @SQL;
 	EXECUTE stmt;
@@ -1418,10 +1514,10 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionWaiterUpdate;
 delimiter GO
 
-create procedure procTransactionWaiterUpdate(IN lngTransactionID bigint(20), IN lngWaiterID BIGINT(20), IN strWaiterName varchar(100))
+create procedure procTransactionWaiterUpdate(IN intTransactionID bigint(20), IN intWaiterID BIGINT(20), IN strWaiterName varchar(100))
 BEGIN
 	
-	UPDATE tblTransactions SET WaiterID = lngWaiterID, WaiterName = strWaiterName WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET WaiterID = intWaiterID, WaiterName = strWaiterName WHERE TransactionID = intTransactionID;
 
 END;
 GO
@@ -1461,10 +1557,19 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionContactUpdate;
 delimiter GO
 
-create procedure procTransactionContactUpdate(IN lngTransactionID bigint(20), IN lngCustomerID BIGINT(20), IN strCustomerName varchar(100), IN strCustomerGroupName varchar(100))
+create procedure procTransactionContactUpdate(
+	IN intTransactionID bigint(20), 
+	IN intCustomerID BIGINT(20), 
+	IN strCustomerName varchar(100), 
+	IN strCustomerGroupName varchar(100),
+	IN intModeOfTerms int(10),
+	IN intTerms int(10))
 BEGIN
 	
-	UPDATE tblTransactions SET CustomerID = lngCustomerID, CustomerName = strCustomerName, CustomerGroupName = strCustomerGroupName WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET 
+		CustomerID = intCustomerID, CustomerName = strCustomerName, CustomerGroupName = strCustomerGroupName,
+		ModeOfTerms = intModeOfTerms, Terms = intTerms
+	WHERE TransactionID = intTransactionID;
 
 END;
 GO
@@ -1478,10 +1583,12 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionTerminalNoUpdate;
 delimiter GO
 
-create procedure procTransactionTerminalNoUpdate(IN lngTransactionID bigint(20), IN strTerminalNo varchar(30))
+create procedure procTransactionTerminalNoUpdate(
+	IN intTransactionID bigint(20), 
+	IN strTerminalNo varchar(30))
 BEGIN
 	
-	UPDATE tblTransactions SET TerminalNo = strTerminalNo WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET TerminalNo = strTerminalNo WHERE TransactionID = intTransactionID;
 
 END;
 GO
@@ -1495,10 +1602,10 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionDateClosedUpdate;
 delimiter GO
 
-create procedure procTransactionDateClosedUpdate(IN lngTransactionID bigint(20), IN dteDateClosed DateTime)
+create procedure procTransactionDateClosedUpdate(IN intTransactionID bigint(20), IN dteDateClosed DateTime)
 BEGIN
 	
-	UPDATE tblTransactions SET TransactionDate = DATE_FORMAT(dteDateClosed, '%Y-%m-%d %H:%i') WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET TransactionDate = DATE_FORMAT(dteDateClosed, '%Y-%m-%d %H:%i') WHERE TransactionID = intTransactionID;
 
 END;
 GO
@@ -1679,7 +1786,12 @@ BEGIN
 					DateLastInitialized, TrustFund, 
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax, BatchCounter, 
-					NoOfReprintedTransaction, TotalReprintedTransaction, IsProcessed, InitializedBy) 
+					NoOfReprintedTransaction, TotalReprintedTransaction, 
+					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
+					IsProcessed, InitializedBy) 
 				(SELECT 
 					BranchID, TerminalID, TerminalNo, IncludeIneSales, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
@@ -1703,7 +1815,12 @@ BEGIN
 					DateLastInitialized, TrustFund,
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax, BatchCounter, 
-					NoOfReprintedTransaction, TotalReprintedTransaction, IsProcessed, strInitializedBy 
+					NoOfReprintedTransaction, TotalReprintedTransaction, 
+					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
+					IsProcessed, strInitializedBy 
 				FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 	
 	UPDATE tblTerminalReport SET 
@@ -1794,6 +1911,18 @@ BEGIN
 					BatchCounter						=  1,
 					NoOfReprintedTransaction			=  0,
 					TotalReprintedTransaction			=  0, 
+					NoOfConsignmentTransactions			=  0, 
+					NoOfConsignmentRefundTransactions	=  0,  
+					NoOfWalkInTransactions				=  0, 
+					NoOfWalkInRefundTransactions		=  0, 
+					NoOfOutOfStockTransactions			=  0,  
+					NoOfOutOfStockRefundTransactions	=  0, 
+					ConsignmentSales					=  0, 
+					ConsignmentRefundSales				=  0,  
+					WalkInSales							=  0, 
+					WalkInRefundSales					=  0,  
+					OutOfStockSales						=  0,  
+					OutOfStockRefundSales				=  0, 
 					IsProcessed							=  0,
 					Trustfund							=  (SELECT TrustFund FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo),
 					IncludeIneSales						=  (SELECT IncludeIneSales FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo),
@@ -1824,6 +1953,10 @@ BEGIN
 					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
 					CashCount, LastLoginDate,
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
 					PromotionalItems, CreditSalesTax )
 				(SELECT 
 					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
@@ -1848,6 +1981,10 @@ BEGIN
 					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
 					CashCount, LastLoginDate,
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
 					PromotionalItems, CreditSalesTax FROM tblCashierReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 	
 	-- Just delete the cashier's this will be recreated anyway.
@@ -2382,10 +2519,10 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procProductVariationCountUpdate
 GO
 
-create procedure procProductVariationCountUpdate(IN lngProductID BIGINT)
+create procedure procProductVariationCountUpdate(IN intProductID BIGINT)
 BEGIN
 	
-	UPDATE tblProducts SET VariationCount = (SELECT COUNT(MatrixID) FROM tblProductBaseVariationsMatrix z WHERE z.Deleted = 0 AND tblProducts.ProductID = z.ProductID) WHERE ProductID = lngProductID ;
+	UPDATE tblProducts SET VariationCount = (SELECT COUNT(MatrixID) FROM tblProductBaseVariationsMatrix z WHERE z.Deleted = 0 AND tblProducts.ProductID = z.ProductID) WHERE ProductID = intProductID ;
 
 END;
 GO
@@ -2409,7 +2546,7 @@ DROP PROCEDURE IF EXISTS procProductSynchronizeQuantity
 GO
 
 create procedure procProductSynchronizeQuantity(
-	IN lngProductID BIGINT
+	IN intProductID BIGINT
 )
 BEGIN
 	DECLARE strTransactionNo VARCHAR(30) DEFAULT '';
@@ -2427,7 +2564,7 @@ BEGIN
 	-- STEP 1: check if there is an existing variation
 
 	-- STEP 1.a: Set the value of lngMatrixVariationCount
-	SELECT COUNT(MatrixID) INTO lngMatrixVariationCount FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID;
+	SELECT COUNT(MatrixID) INTO lngMatrixVariationCount FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = intProductID;
 
 	IF (ISNULL(lngMatrixVariationCount)) THEN SET lngMatrixVariationCount = 0; END IF; 
 	
@@ -2436,12 +2573,12 @@ BEGIN
 
 		-- STEP 2: get the total Quantity of all Matrix
 		SET decMatrixTotalQuantity = 0;
-		SELECT SUM(Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID;
+		SELECT SUM(Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = intProductID;
 	
 		-- STEP 3: Set the value of strProductCode, strProductDesc, decProductQuantity, decProductActualQuantity, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold
 		SELECT ProductCode, ProductDesc, Quantity, ActualQuantity, BaseUnitID, UnitCode, MinThreshold, MaxThreshold INTO 
 				strProductCode, strProductDesc, decProductQuantity, decProductActualQuantity, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold
-		FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = lngProductID;
+		FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = intProductID;
 			
 		-- STEP 4: IF Matrix Total Quantity is not equal to Product Quantity
 		--		   auto adjust the product quantity based on total of quantities of all variations
@@ -2451,26 +2588,26 @@ BEGIN
 			SET strRemarks = 'SYSTEM AUTO ADJUSTMENT OF PRODUCT QTY FROM SUM OF MATRIX QTY AS BASIS';
 			
 			-- STEP 4.a: Insert to product movement history
-			CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, 0, '', 
+			CALL procProductMovementInsert(intProductID, strProductCode, strProductDesc, 0, '', 
 											decProductQuantity, decMatrixTotalQuantity - decProductQuantity, decMatrixTotalQuantity, 0, 
 											strUnitCode, strRemarks, now(), strTransactionNo, 'SYSTEM', intBranchID, intBranchID, 0);
 			
 			-- STEP 4.b: Insert to inventory adjustment
-			CALL procInvAdjustmentInsert(1, now(), lngProductID, strProductCode, strProductDesc, 0,
+			CALL procInvAdjustmentInsert(1, now(), intProductID, strProductCode, strProductDesc, 0,
 														'', intUnitID, strUnitCode, decProductQuantity, decMatrixTotalQuantity, 
 														decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strTransactionNo));
 			
 			-- STEP 4.c: Do the actual adjustment
 			UPDATE tblProducts a SET 
 				Quantity			= (SELECT IFNULL(SUM(Quantity), 0) from tblProductBaseVariationsMatrix b where b.Deleted = 0 AND a.productID = b.ProductID) 
-			WHERE ProductID = lngProductID;
+			WHERE ProductID = intProductID;
 		
 		END IF;
 		
 		-- STEP 5: Update the Actual Quantity
 		UPDATE tblProducts a SET 
 			ActualQuantity		= (SELECT IFNULL(SUM(ActualQuantity), 0) from tblProductBaseVariationsMatrix b where b.Deleted = 0 AND a.productID = b.ProductID) 
-		WHERE ProductID = lngProductID;
+		WHERE ProductID = intProductID;
 	
 	END IF;
 	
@@ -2498,7 +2635,7 @@ create procedure procProductBaseVariationsMatrixDelete(
 	IN pvtIDs varchar(100)
 )
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE done INT DEFAULT 0;
 	DECLARE curProductIDs CURSOR FOR SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND MatrixID IN (pvtIDs);
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
@@ -2512,15 +2649,15 @@ BEGIN
 	UPDATE tblProductBaseVariationsMatrix SET Deleted = 1 WHERE MatrixID IN (pvtIDs);
 	
 	REPEAT
-		FETCH curProductIDs INTO lngProductID;
+		FETCH curProductIDs INTO intProductID;
 		
 		IF NOT done THEN
 			
 			-- Synchronize the Product Quantity	
-			CALL procProductSynchronizeQuantity(lngProductID);
+			CALL procProductSynchronizeQuantity(intProductID);
 			
 			-- Update the variation count in table Product
-			CALL procProductVariationCountUpdate(lngProductID);
+			CALL procProductVariationCountUpdate(intProductID);
 			
 		END IF;
 		
@@ -3119,10 +3256,10 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procProductTagActiveInactive
 GO
 
-create procedure procProductTagActiveInactive(IN lngProductID BIGINT, IN intStatus TINYINT(1))
+create procedure procProductTagActiveInactive(IN intProductID BIGINT, IN intStatus TINYINT(1))
 BEGIN
 	
-	UPDATE tblProducts SET Active = intStatus WHERE ProductID = lngProductID ;
+	UPDATE tblProducts SET Active = intStatus WHERE ProductID = intProductID ;
 
 END;
 GO
@@ -3290,10 +3427,10 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionAgentUpdate;
 delimiter GO
 
-create procedure procTransactionAgentUpdate(IN lngTransactionID bigint(20), IN lngAgentID BIGINT(20), IN strAgentName varchar(100), IN strAgentPositionName varchar(30), IN strAgentDepartmentName varchar(30))
+create procedure procTransactionAgentUpdate(IN intTransactionID bigint(20), IN lngAgentID BIGINT(20), IN strAgentName varchar(100), IN strAgentPositionName varchar(30), IN strAgentDepartmentName varchar(30))
 BEGIN
 	
-	UPDATE tblTransactions SET AgentID = lngAgentID, AgentName = strAgentName, AgentPositionName = strAgentPositionName, AgentDepartmentName = strAgentDepartmentName WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET AgentID = lngAgentID, AgentName = strAgentName, AgentPositionName = strAgentPositionName, AgentDepartmentName = strAgentDepartmentName WHERE TransactionID = intTransactionID;
 
 END;
 GO
@@ -3311,10 +3448,10 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procProductCommisionUpdate
 GO
 
-create procedure procProductCommisionUpdate(IN lngProductID BIGINT, IN decPercentageCommision DECIMAL(3,2))
+create procedure procProductCommisionUpdate(IN intProductID BIGINT, IN decPercentageCommision DECIMAL(3,2))
 BEGIN
 	
-	UPDATE tblProducts SET PercentageCommision = decPercentageCommision WHERE ProductID = lngProductID ;
+	UPDATE tblProducts SET PercentageCommision = decPercentageCommision WHERE ProductID = intProductID ;
 
 END;
 GO
@@ -3574,7 +3711,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionRelease;
 delimiter GO
 
-create procedure procTransactionRelease(IN lngTransactionID BIGINT(20), 
+create procedure procTransactionRelease(IN intTransactionID BIGINT(20), 
 										IN intMonth SMALLINT(2) UNSIGNED ZEROFILL, 
 										IN intTransactionStatus SMALLINT,
 										IN lngReleasedByID BIGINT(20),
@@ -3585,7 +3722,7 @@ BEGIN
 	SET @SQL = CONCAT(@SQL,'	ReleaserID=', lngReleasedByID,', ');
 	SET @SQL = CONCAT(@SQL,'	ReleaserName=''', strReleasedByName,''', ');
 	SET @SQL = CONCAT(@SQL,'	ReleasedDate=NOW() ');
-	SET @SQL = CONCAT(@SQL,'WHERE TransactionID=',lngTransactionID,'; ');
+	SET @SQL = CONCAT(@SQL,'WHERE TransactionID=',intTransactionID,'; ');
 		
 	PREPARE strCmd FROM @SQL;
 	EXECUTE strCmd;
@@ -3657,7 +3794,7 @@ DROP PROCEDURE IF EXISTS procProductMovementInsert
 GO
 
 create procedure procProductMovementInsert(
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN strProductCode VARCHAR(30),
 	IN strProductDesc VARCHAR(50),
 	IN lngMatrixID BIGINT,
@@ -3694,7 +3831,7 @@ BEGIN
 									BranchIDFrom,
 									BranchIDTo,
 									QuantityMovementType)
-							VALUES( lngProductID,
+							VALUES( intProductID,
 									strProductCode,
 									strProductDesc,
 									lngMatrixID,
@@ -3734,7 +3871,7 @@ GO
 
 create procedure procProductAddQuantity(
 	IN intBranchID INT(4),
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,2),
 	IN strRemarks VARCHAR(8000),
@@ -3757,50 +3894,50 @@ BEGIN
 	FROM tblProducts a 
 	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
 	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
-	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	WHERE a.Deleted = 0 AND a.ProductID = intProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
 	
 	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
 	FROM tblProductInventory inv
-	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = intProductID;
 	
 	SET decQuantityDiff = decQuantity - decProductQuantity;
 
 	-- Insert to product movement history
-	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
+	CALL procProductMovementInsert(intProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
 									decProductQuantity, decQuantity, decProductQuantity + decQuantity, 0, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 0);
 	
-	IF EXISTS(SELECT Quantity FROM tblProductInventory WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
+	IF EXISTS(SELECT Quantity FROM tblProductInventory WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
 		IF decQuantity >= 0 THEN
 			UPDATE tblProductInventory SET
 				Quantity	= decQuantity + Quantity,
 				QuantityIN  = decQuantity + QuantityIN
-			WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
+			WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
 		ELSE
 			UPDATE tblProductInventory SET
 				Quantity	= decQuantity + Quantity,
 				QuantityOut = decQuantity + QuantityOut
-			WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
+			WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
 		END IF;
 	ELSE
 		IF decQuantity >= 0 THEN
 			INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIN, QuantityOut)
-			VALUES(intBranchID, lngProductID, lngMatrixID, decQuantity, decQuantity, 0);
+			VALUES(intBranchID, intProductID, lngMatrixID, decQuantity, decQuantity, 0);
 		ELSE
 			INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIN, QuantityOut)
-			VALUES(intBranchID, lngProductID, lngMatrixID, decQuantity, 0, decQuantity);
+			VALUES(intBranchID, intProductID, lngMatrixID, decQuantity, 0, decQuantity);
 		END IF;
 	END IF;
 									
 	/*********** end add to main ***********/	
 	
 	-- Tag product as Active if quantity > 0
-	IF (SELECT SUM(Quantity) FROM tblProductInventory WHERE ProductID = lngProductID) > 0 THEN
-		CALL procProductTagActiveInactive(lngProductID, 1);
+	IF (SELECT SUM(Quantity) FROM tblProductInventory WHERE ProductID = intProductID) > 0 THEN
+		CALL procProductTagActiveInactive(intProductID, 1);
 	END IF;
 
 	-- Process sync of product that are sold without matrix but with existing matrix now
-	-- CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
+	-- CALL procSyncProductVariationFromQuantityPerItem(intProductID, intBranchID);
 END;
 GO
 delimiter ;
@@ -3824,7 +3961,7 @@ GO
 
 create procedure procProductSubtractQuantity(
 	IN intBranchID INT(4),
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,2),
 	IN strRemarks VARCHAR(8000),
@@ -3848,14 +3985,14 @@ BEGIN
 	FROM tblProducts a 
 	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
 	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
-	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	WHERE a.Deleted = 0 AND a.ProductID = intProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
 	
 	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
 	FROM tblProductInventory inv
-	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = intProductID;
 	
 	-- Insert to product movement history
-	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
+	CALL procProductMovementInsert(intProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
 									decProductQuantity, -1 * decQuantity, decProductQuantity - decQuantity, 0, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 0);
 	
@@ -3863,20 +4000,20 @@ BEGIN
 	UPDATE tblProductInventory SET 
 		Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity
 	WHERE MatrixID	= lngMatrixID 
-		AND ProductID = lngProductID
+		AND ProductID = intProductID
 		AND BranchID = intBranchID;
 		
 	/*********** end subtract from main ***********/
 	
 	-- Tag product as InActive if quantity <= 0
 	IF (SELECT ShowItemMoreThanZeroQty FROM tblTerminal WHERE TerminalID = 1) = 1 THEN
-		IF (SELECT SUM(Quantity) FROM tblProductInventory WHERE ProductID = lngProductID) = 0 THEN
-			CALL procProductTagActiveInactive(lngProductID, 0);
+		IF (SELECT SUM(Quantity) FROM tblProductInventory WHERE ProductID = intProductID) = 0 THEN
+			CALL procProductTagActiveInactive(intProductID, 0);
 		END IF;
 	END IF;
 	
 	-- Process sync of product that are returned without matrix but with existing matrix now
-	-- CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
+	-- CALL procSyncProductVariationFromQuantityPerItem(intProductID, intBranchID);
 									
 END;
 GO
@@ -3899,18 +4036,18 @@ GO
 
 create procedure procProductUpdateActualQuantity(
 						IN intBranchID INT(4),
-						IN lngProductID bigint,
+						IN intProductID bigint,
 						IN lngMatrixID bigint,
 						IN decQuantity numeric)
 BEGIN
 	
-	IF EXISTS(SELECT ActualQuantity FROM tblProductInventory WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
+	IF EXISTS(SELECT ActualQuantity FROM tblProductInventory WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
 		UPDATE tblProductInventory SET
 			ActualQuantity	= decQuantity
-		WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
+		WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
 	ELSE
 		INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, ActualQuantity)
-			VALUES(intBranchID, lngProductID, lngMatrixID, decQuantity);
+			VALUES(intBranchID, intProductID, lngMatrixID, decQuantity);
 	END IF;
 	
 END;
@@ -3933,8 +4070,8 @@ DROP PROCEDURE IF EXISTS procProductMovementSelect
 GO
 
 create procedure procProductMovementSelect(
-									IN lngProductID BIGINT, 
-									IN lngMatrixID BIGINT, 
+									IN intProductID BIGINT, 
+									IN intMatrixID BIGINT, 
 									IN dteStartTransactionDate DATETIME,
 									IN dteEndTransactionDate DATETIME,
 									IN intBranchID INT)
@@ -3959,12 +4096,12 @@ BEGIN
 					FROM tblProductMovement
 					WHERE QuantityMovementType = 0 ';
 	
-	IF (lngProductID <> 0) THEN
-		SET @SQL = CONCAT(@SQL,'AND ProductID = ', lngProductID,' ');
+	IF (intProductID <> 0) THEN
+		SET @SQL = CONCAT(@SQL,'AND ProductID = ', intProductID,' ');
 	END IF;
 	
-	IF (lngMatrixID <> -1) THEN
-		SET @SQL = CONCAT(@SQL,'AND MatrixID = ', lngMatrixID,' ');
+	IF (intMatrixID <> -1) THEN
+		SET @SQL = CONCAT(@SQL,'AND MatrixID = ', intMatrixID,' ');
 	END IF;
 
 	IF (intBranchID <> 0) THEN
@@ -4019,7 +4156,7 @@ GO
 
 create procedure procProductUpdateRIDByPO(IN lngPOID BIGINT)
 BEGIN
-	DECLARE lngProductID, lngRID BIGINT DEFAULT 0;
+	DECLARE intProductID, lngRID BIGINT DEFAULT 0;
 	DECLARE done INT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE curItems CURSOR FOR SELECT ProductID, RID FROM tblPOItems WHERE POID = lngPOID; 
@@ -4033,13 +4170,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID, lngRID to be processed 
-		FETCH curItems INTO lngProductID, lngRID;
+		FETCH curItems INTO intProductID, lngRID;
 		
 		-- Process the actual update of product RID
-		CALL procProductUpdateRID(lngProductID, lngRID);
+		CALL procProductUpdateRID(intProductID, lngRID);
 		
 		-- reset the ProductID, lngRID to be processed
-		SET lngProductID = 0; SET lngRID = 0;
+		SET intProductID = 0; SET lngRID = 0;
 			
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4063,13 +4200,13 @@ DROP PROCEDURE IF EXISTS procProductUpdateRID
 GO
 
 create procedure procProductUpdateRID(
-									IN lngProductID BIGINT, 
+									IN intProductID BIGINT, 
 									IN lngRID BIGINT)
 BEGIN
 	-- Update the RID to Products table
 	UPDATE tblProducts SET 
 		RID	= lngRID 
-	WHERE ProductID	= lngProductID;
+	WHERE ProductID	= intProductID;
 	
 END;
 GO
@@ -4090,7 +4227,7 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procUpdateProductReorderOverStockPerProduct
 GO
 
-create procedure procUpdateProductReorderOverStockPerProduct(IN lngProductID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
+create procedure procUpdateProductReorderOverStockPerProduct(IN intProductID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID VARCHAR(15);
@@ -4103,7 +4240,7 @@ BEGIN
 		UNTIL lngCtr = lngCount 
 	END REPEAT;
 	
-	CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+	CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 	
 	DELETE FROM tblCountingRef WHERE SessionID = strSessionID;
 	
@@ -4126,7 +4263,7 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procUpdateProductReorderOverStockPerProductID
 GO
 
-create procedure procUpdateProductReorderOverStockPerProductID(IN lngProductID BIGINT, IN strSessionID VARCHAR(15), IN dteStartDate DATETIME, IN dteEndDate DATETIME)
+create procedure procUpdateProductReorderOverStockPerProductID(IN intProductID BIGINT, IN strSessionID VARCHAR(15), IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
 	DECLARE lngRID BIGINT DEFAULT 0;
 	DECLARE intAvgCounter INT DEFAULT 0;
@@ -4136,14 +4273,14 @@ BEGIN
 	DECLARE intOrderSlipItemStatus INTEGER DEFAULT 5;
 	
 	SELECT IFNULL(inv.Quantity,0) Quantity, prd.RID INTO decQuantity, lngRID 
-	FROM (SELECT ProductID, RID FROM tblProducts WHERE ProductID = lngProductID) prd
-	LEFT OUTER JOIN (SELECT SUM(Quantity) Quantity, ProductID FROM tblProductInventory WHERE ProductID = lngProductID AND BranchID = 1) inv ON prd.productID = inv.ProductID;
+	FROM (SELECT ProductID, RID FROM tblProducts WHERE ProductID = intProductID) prd
+	LEFT OUTER JOIN (SELECT SUM(Quantity) Quantity, ProductID FROM tblProductInventory WHERE ProductID = intProductID AND BranchID = 1) inv ON prd.productID = inv.ProductID;
 	
 	SET intValidTransactionItemStatus = 0; SET intOrderSlipItemStatus = 5;
 	SET intAvgCounter = 0; SET decTotalAverageSales = 0;
 	
 	-- SELECT * FROM tblCountingRef;
-	-- SELECT lngProductID, decAverageSales, decQuantity, decIDC, lngRID,  (decTotalQuantity - decQuantity) AS ReorderQty, decTotalAverageSales, intAvgCounter;
+	-- SELECT intProductID, decAverageSales, decQuantity, decIDC, lngRID,  (decTotalQuantity - decQuantity) AS ReorderQty, decTotalAverageSales, intAvgCounter;
 	
 	-- Get the average sales
 	SELECT AVG(Quantity) INTO decAverageSales FROM 
@@ -4151,7 +4288,7 @@ BEGIN
 									LEFT JOIN tblTransactions b ON a.ReferenceDate = CAST(b.TransactionDate AS DATE)
 									LEFT JOIN tblTransactionItems c ON b.TransactionID = c.TransactionID
 													AND (TransactionItemStatus = intValidTransactionItemStatus OR TransactionItemStatus = intOrderSlipItemStatus)
-													AND ProductID = lngProductID
+													AND ProductID = intProductID
 													AND TransactionDate BETWEEN dteStartDate AND dteEndDate
 									WHERE SessionID = strSessionID GROUP BY ReferenceDate) AS tblTransactionItems;
 	SET intAvgCounter = intAvgCounter + 1; SET decTotalAverageSales = decTotalAverageSales + decAverageSales;
@@ -4187,11 +4324,11 @@ BEGIN
 	
 	-- For checking purposes uncomment this
 	-- SELECT * FROM tblCountingRef;
-	-- SELECT lngProductID, decAverageSales, decQuantity, decIDC, lngRID,  (decTotalQuantity - decQuantity) AS ReorderQty, decTotalAverageSales, intAvgCounter;
+	-- SELECT intProductID, decAverageSales, decQuantity, decIDC, lngRID,  (decTotalQuantity - decQuantity) AS ReorderQty, decTotalAverageSales, intAvgCounter;
 	
 	-- Set the RIDMinThreshold and RIDMaxThreshold
-	UPDATE tblProducts SET RIDMinThreshold = round(IFNULL(decAverageSales, 0), 2), RIDMaxThreshold = round(IFNULL(decTotalQuantity, 0), 2) WHERE ProductID = lngProductID;
-	UPDATE tblProductBaseVariationsMatrix SET RIDMinThreshold = round(IFNULL(decAverageSales, 0), 2), RIDMaxThreshold = round(IFNULL(decTotalQuantity, 0), 2) WHERE ProductID = lngProductID;
+	UPDATE tblProducts SET RIDMinThreshold = round(IFNULL(decAverageSales, 0), 2), RIDMaxThreshold = round(IFNULL(decTotalQuantity, 0), 2) WHERE ProductID = intProductID;
+	UPDATE tblProductBaseVariationsMatrix SET RIDMinThreshold = round(IFNULL(decAverageSales, 0), 2), RIDMaxThreshold = round(IFNULL(decTotalQuantity, 0), 2) WHERE ProductID = intProductID;
 	
 END;
 GO
@@ -4213,7 +4350,7 @@ GO
 
 create procedure procUpdateProductReorderOverStockPerSupplierPerRID(IN lngSupplierID BIGINT, IN lngRID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID VARCHAR(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND SupplierID = lngSupplierID) ; 
@@ -4234,13 +4371,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4266,7 +4403,7 @@ GO
 
 create procedure procUpdateProductReorderOverStockPerSupplier(IN lngSupplierID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID VARCHAR(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND SupplierID = lngSupplierID) ; 
@@ -4287,13 +4424,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4319,7 +4456,7 @@ GO
 
 create procedure procUpdateProductReorderOverStockPerSupplierPerGroup(IN lngSupplierID BIGINT, IN lngGroupID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID VARCHAR(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND SupplierID = lngSupplierID) 
@@ -4342,13 +4479,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4375,7 +4512,7 @@ GO
 
 create procedure procUpdateProductReorderOverStockPerSupplierPerSubGroup(IN lngSupplierID BIGINT, IN lngSubGroupID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID VARCHAR(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND SupplierID = lngSupplierID) 
@@ -4398,13 +4535,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4430,7 +4567,7 @@ GO
 
 create procedure procUpdateProductReorderOverStockPerGroup(IN lngGroupID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID varchar(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE ProductSubGroupID IN (SELECT ProductSubGroupID FROM tblProductSubGroup WHERE ProductGroupID = lngGroupID); 
@@ -4451,13 +4588,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4484,7 +4621,7 @@ GO
 
 create procedure procUpdateProductReorderOverStockPerSubGroup(IN lngSubGroupID BIGINT, IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID varchar(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE ProductSubGroupID = lngSubGroupID; 
@@ -4505,13 +4642,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4538,7 +4675,7 @@ GO
 
 create procedure procUpdateProductReorderOverStock(IN dteStartDate DATETIME, IN dteEndDate DATETIME)
 BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
 	DECLARE strSessionID VARCHAR(15);
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts; 
@@ -4559,13 +4696,13 @@ BEGIN
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
 		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
 		-- Process the ProductID
-		CALL procUpdateProductReorderOverStockPerProductID(lngProductID, strSessionID, dteStartDate, dteEndDate);
+		CALL procUpdateProductReorderOverStockPerProductID(intProductID, strSessionID, dteStartDate, dteEndDate);
 		
 		-- reset the ProductID to be processed
-		SET lngProductID = 0;
+		SET intProductID = 0;
 		
 	END LOOP curItems;
 	CLOSE curItems;
@@ -4753,11 +4890,11 @@ GO
 create procedure procProductUpdateRewardPoints(
 						IN lngProductGroupID BIGINT,
 						IN lngProductSubGroupID BIGINT,
-						IN lngProductID BIGINT,
+						IN intProductID BIGINT,
 						IN decRewardPoints NUMERIC)
 BEGIN
-	IF (lngProductID > 0) THEN
-		UPDATE tblProducts SET RewardPoints = decRewardPoints WHERE ProductID = lngProductID;
+	IF (intProductID > 0) THEN
+		UPDATE tblProducts SET RewardPoints = decRewardPoints WHERE ProductID = intProductID;
 	ELSEIF (lngProductSubGroupID > 0) THEN
 		UPDATE tblProducts SET RewardPoints = decRewardPoints WHERE ProductSubGroupID = lngProductSubGroupID;
 	ELSEIF (lngProductGroupID > 0) THEN
@@ -4782,7 +4919,7 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procProductBranchInventoryInsert
 GO
 
-create procedure procProductBranchInventoryInsert(IN lngProductID BIGINT)
+create procedure procProductBranchInventoryInsert(IN intProductID BIGINT)
 BEGIN
 	DECLARE lngCtr, lngCount bigint DEFAULT 0;
 	DECLARE intBranchID INT(4) DEFAULT 0;
@@ -4797,14 +4934,14 @@ BEGIN
 	
 		FETCH curBranches INTO intBranchID;
 		
-		IF NOT EXISTS(SELECT ProductID FROM tblBranchInventory WHERE ProductID = lngProductID AND BranchID = intBranchID) THEN
-			INSERT INTO tblBranchInventory(BranchID, ProductID)VALUES (intBranchID, lngProductID);
+		IF NOT EXISTS(SELECT ProductID FROM tblBranchInventory WHERE ProductID = intProductID AND BranchID = intBranchID) THEN
+			INSERT INTO tblBranchInventory(BranchID, ProductID)VALUES (intBranchID, intProductID);
 		END IF;
 
 		INSERT INTO tblBranchInventoryMatrix(BranchID, ProductID, MatrixID, Quantity, QuantityIn)
-		SELECT intBranchID, lngProductID, MatrixID, Quantity, QuantityIn FROM tblProductBaseVariationsMatrix 
-										 WHERE ProductID = lngProductID 
-												AND MatrixID NOT IN (SELECT DISTINCT MatrixID FROM tblBranchInventoryMatrix WHERE ProductID = lngProductID AND BranchID = intBranchID);
+		SELECT intBranchID, intProductID, MatrixID, Quantity, QuantityIn FROM tblProductBaseVariationsMatrix 
+										 WHERE ProductID = intProductID 
+												AND MatrixID NOT IN (SELECT DISTINCT MatrixID FROM tblBranchInventoryMatrix WHERE ProductID = intProductID AND BranchID = intBranchID);
 		
 		SET intBranchID = 0;
 	END LOOP curBranches;
@@ -4824,7 +4961,7 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procSyncProductVariationFromQuantityPerItemAllBranch
 GO
 
-create procedure procSyncProductVariationFromQuantityPerItemAllBranch(IN lngProductID BIGINT)
+create procedure procSyncProductVariationFromQuantityPerItemAllBranch(IN intProductID BIGINT)
 BEGIN
 	DECLARE lngCtr, lngCount bigint DEFAULT 0;
 	DECLARE intBranchID INT(4) DEFAULT 0;
@@ -4840,7 +4977,7 @@ BEGIN
 		FETCH curBranches INTO intBranchID;
 		
 		-- Put the correct quantity of the newly created variation based on Product Quantity
-		CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
+		CALL procSyncProductVariationFromQuantityPerItem(intProductID, intBranchID);
 		
 		SET intBranchID = 0;
 	END LOOP curBranches;
@@ -4860,7 +4997,7 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procProductBranchInventoryMatrixInsert
 GO
 
-create procedure procProductBranchInventoryMatrixInsert(IN lngProductID BIGINT, IN lngMatrixID BIGINT)
+create procedure procProductBranchInventoryMatrixInsert(IN intProductID BIGINT, IN lngMatrixID BIGINT)
 BEGIN
 	DECLARE lngCtr, lngCount bigint DEFAULT 0;
 	DECLARE intBranchID INT(4) DEFAULT 0;
@@ -4875,8 +5012,8 @@ BEGIN
 	
 		FETCH curBranches INTO intBranchID;
 		
-		IF NOT EXISTS(SELECT ProductID FROM tblBranchInventoryMatrix WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN
-			INSERT INTO tblBranchInventory(BranchID, ProductID, MatrixID)VALUES (intBranchID, lngProductID, MatrixID);
+		IF NOT EXISTS(SELECT ProductID FROM tblBranchInventoryMatrix WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN
+			INSERT INTO tblBranchInventory(BranchID, ProductID, MatrixID)VALUES (intBranchID, intProductID, MatrixID);
 		END IF;
 		
 		SET intBranchID = 0;
@@ -4902,7 +5039,7 @@ GO
 create procedure procProductBranchInventoryMatrixCopyAllItems()
 BEGIN
 	DECLARE lngCtr, lngCount bigint DEFAULT 0;
-	DECLARE lngProductID, lngMatrixID BIGINT DEFAULT 0;
+	DECLARE intProductID, lngMatrixID BIGINT DEFAULT 0;
 	DECLARE curItems CURSOR FOR SELECT ProductID, MatrixID FROM tblProductBaseVariationsMatrix WHERE Deleted = 0; 
 	
 	SELECT COUNT(MatrixID) INTO lngCount FROM tblProductBaseVariationsMatrix WHERE Deleted = 0; 
@@ -4912,11 +5049,11 @@ BEGIN
 		SET lngCtr = lngCtr + 1; 
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 	
-		FETCH curItems INTO lngProductID, lngMatrixID;
+		FETCH curItems INTO intProductID, lngMatrixID;
 		
-		CALL procProductBranchInventoryMatrixInsert(lngProductID, lngMatrixID);
+		CALL procProductBranchInventoryMatrixInsert(intProductID, lngMatrixID);
 		
-		SET lngProductID = 0;
+		SET intProductID = 0;
 	END LOOP curItems;
 	CLOSE curItems;
 END;
@@ -4939,7 +5076,7 @@ GO
 create procedure procProductBranchInventoryCopyAllItems()
 BEGIN
 	DECLARE lngCtr, lngCount bigint DEFAULT 0;
-	DECLARE lngProductID BIGINT DEFAULT 0;
+	DECLARE intProductID BIGINT DEFAULT 0;
 	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts WHERE Deleted = 0; 
 	
 	SELECT COUNT(ProductID) INTO lngCount FROM tblProducts WHERE Deleted = 0; 
@@ -4949,11 +5086,11 @@ BEGIN
 		SET lngCtr = lngCtr + 1; 
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 	
-		FETCH curItems INTO lngProductID;
+		FETCH curItems INTO intProductID;
 		
-		CALL procProductBranchInventoryInsert(lngProductID);
+		CALL procProductBranchInventoryInsert(intProductID);
 		
-		SET lngProductID = 0;
+		SET intProductID = 0;
 	END LOOP curItems;
 	CLOSE curItems;
 END;
@@ -5052,7 +5189,7 @@ DROP FUNCTION IF EXISTS fnProductQuantityConvert
 GO
 
 create function fnProductQuantityConvert(
-	lngProductID BIGINT,
+	intProductID BIGINT,
 	decProductQuantity DECIMAL(18,3),
 	intProductUnitID INT
 	) RETURNS VARCHAR(200) DETERMINISTIC
@@ -5064,12 +5201,12 @@ BEGIN
 	DECLARE strBaseUnitCode, strBottomUnitCode VARCHAR(5);
 	DECLARE curItems CURSOR FOR SELECT PUM.BaseUnitID, PUM.BaseUnitValue, PUM.BottomUnitValue, PUM.BottomUnitID, BottU.UnitCode
 								FROM tblProductUnitMatrix PUM LEFT JOIN tblUnit BottU ON PUM.BottomUnitID = BottU.UnitID 
-								WHERE ProductID = lngProductID ORDER BY MatrixID ASC;
+								WHERE ProductID = intProductID ORDER BY MatrixID ASC;
 	
-	SELECT COUNT(*) INTO lngCount FROM tblProductUnitMatrix PUM LEFT JOIN tblUnit BottU ON PUM.BottomUnitID = BottU.UnitID WHERE ProductID = lngProductID;
+	SELECT COUNT(*) INTO lngCount FROM tblProductUnitMatrix PUM LEFT JOIN tblUnit BottU ON PUM.BottomUnitID = BottU.UnitID WHERE ProductID = intProductID;
 	
 	IF (intProductUnitID = 0) THEN
-		SELECT P.BaseUnitID, U.UnitCode INTO intComparedUnitID, strBaseUnitCode FROM tblProducts P INNER JOIN tblUnit U ON P.BaseUnitID = U.UnitID WHERE ProductID = lngProductID;
+		SELECT P.BaseUnitID, U.UnitCode INTO intComparedUnitID, strBaseUnitCode FROM tblProducts P INNER JOIN tblUnit U ON P.BaseUnitID = U.UnitID WHERE ProductID = intProductID;
 	ELSE
 		SET intComparedUnitID = intProductUnitID;
 		SELECT UnitCode INTO strBaseUnitCode FROM tblUnit WHERE UnitID = intProductUnitID;
@@ -5202,7 +5339,7 @@ DROP PROCEDURE IF EXISTS procProductIsExist
 GO
 
 create procedure procProductIsExist(
-									IN lngProductID BIGINT, 
+									IN intProductID BIGINT, 
 									IN strBarCode VARCHAR(30))
 BEGIN
 	SET @SQL := '';
@@ -5214,9 +5351,9 @@ BEGIN
 					FROM tblProductPackage pkg INNER JOIN tblProducts prd ON pkg.ProductID = prd.ProductID
 					WHERE prd.deleted = 0 ';
 	
-	IF (lngProductID <> 0) THEN
-		SET @SQL = CONCAT(@SQL,' AND pkg.ProductID <> ', lngProductID,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
-	ELSEIF (lngProductID = 0) THEN
+	IF (intProductID <> 0) THEN
+		SET @SQL = CONCAT(@SQL,' AND pkg.ProductID <> ', intProductID,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
+	ELSEIF (intProductID = 0) THEN
 		SET @SQL = CONCAT(@SQL,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
 	END IF;
 	
@@ -7276,7 +7413,7 @@ BEGIN
 	SET strRemarks = CONCAT('SYSTEM AUTO ADJUSTMENT-ZERO OUT INVENTORY BranchID:', intBranchID);
 
 		-- STEP 2: Insert to product movement history
-		-- CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		-- CALL procProductMovementInsert(intProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
 		-- 								decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
 		-- 								strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
 
@@ -7308,7 +7445,7 @@ BEGIN
 		
 		-- STEP 3: Insert to inventory adjustment
 		
-		-- CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		-- CALL procInvAdjustmentInsert(lngUID, dteClosingDate, intProductID, strProductCode, strDescription, lngMatrixID,
 		--										strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
 		--										decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
 
@@ -7367,7 +7504,7 @@ BEGIN
 	SET strRemarks = CONCAT('SYSTEM AUTO ADJUSTMENT-ZERO OUT NEG-INVENTORY BranchID:', intBranchID);
 
 		-- STEP 2: Insert to product movement history
-		-- CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		-- CALL procProductMovementInsert(intProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
 		-- 								decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
 		-- 								strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
 
@@ -7399,7 +7536,7 @@ BEGIN
 		
 		-- STEP 3: Insert to inventory adjustment
 		
-		-- CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		-- CALL procInvAdjustmentInsert(lngUID, dteClosingDate, intProductID, strProductCode, strDescription, lngMatrixID,
 		--										strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
 		--										decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
 
@@ -7456,7 +7593,7 @@ create procedure procCloseInventory(IN intBranchID INT(4),
 									IN strContactCode varchar(150))
 BEGIN
 	
-	DECLARE lngProductID, lngMatrixID BIGINT DEFAULT 0;
+	DECLARE intProductID, lngMatrixID BIGINT DEFAULT 0;
 	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
@@ -7532,8 +7669,8 @@ BEGIN
 		SET lngCtr = lngCtr + 1; 
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
-		FETCH curItems INTO lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
-		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		FETCH curItems INTO intProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		-- For testing: SELECT intProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
 		
 		-- STEP 1: Insert to tblInventory
 		INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
@@ -7542,29 +7679,29 @@ BEGIN
 									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice) VALUES (
 									intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
 									strReferenceNo, lngContactID, strContactCode, 
-									lngProductID, strProductCode, lngMatrixID, strMatrixDescription,
+									intProductID, strProductCode, lngMatrixID, strMatrixDescription,
 									decProductQuantity, decProductActualQuantity, 
 									decPurchasePrice * decProductActualQuantity * 0.12, 
 									decPurchasePrice * decProductActualQuantity, decPurchasePrice);
 					
 		-- STEP 2: Insert to product movement history
-		CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		CALL procProductMovementInsert(intProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
 										decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
 										strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
 		
 		-- STEP 3: Insert to inventory adjustment
-		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, intProductID, strProductCode, strDescription, lngMatrixID,
 												strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
 												decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
 		
 		-- STEP 4: auto adjust the quantity based on actual quantity
-		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
 		
 		
-		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
-		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
 
-		SET lngProductID = 0; SET strProductCode = ''; 
+		SET intProductID = 0; SET strProductCode = ''; 
 		SET lngMatrixID = 0; SET strMatrixDescription = '';
 		SET decPurchasePrice = 0; SET decProductQuantity = 0; SET decProductActualQuantity = 0;
 			
@@ -7602,7 +7739,7 @@ create procedure procCloseInventoryByProductGroup(IN intBranchID INT(4),
 									IN strProductGroupName varchar(150))
 BEGIN
 	
-	DECLARE lngProductID, lngMatrixID, lngSupplierID BIGINT DEFAULT 0;
+	DECLARE intProductID, lngMatrixID, lngSupplierID BIGINT DEFAULT 0;
 	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
@@ -7660,8 +7797,8 @@ BEGIN
 		SET lngCtr = lngCtr + 1; 
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
-		FETCH curItems INTO lngProductID, lngSupplierID, strSupplierCode, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
-		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		FETCH curItems INTO intProductID, lngSupplierID, strSupplierCode, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		-- For testing: SELECT intProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
 		
 		-- STEP 1: Insert to tblInventory
 		INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
@@ -7670,29 +7807,29 @@ BEGIN
 									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice) VALUES (
 									intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
 									strReferenceNo, lngSupplierID, strSupplierCode, 
-									lngProductID, strProductCode, lngMatrixID, strMatrixDescription,
+									intProductID, strProductCode, lngMatrixID, strMatrixDescription,
 									decProductQuantity, decProductActualQuantity, 
 									decPurchasePrice * decProductActualQuantity * 0.12, 
 									decPurchasePrice * decProductActualQuantity, decPurchasePrice);
 					
 		-- STEP 2: Insert to product movement history
-		CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		CALL procProductMovementInsert(intProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
 										decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
 										strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
 		
 		-- STEP 3: Insert to inventory adjustment
-		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, intProductID, strProductCode, strDescription, lngMatrixID,
 												strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
 												decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
 		
 		-- STEP 4: auto adjust the quantity based on actual quantity
-		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
 		
 		
-		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
-		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
 
-		SET lngProductID = 0; SET strProductCode = ''; 
+		SET intProductID = 0; SET strProductCode = ''; 
 		SET lngMatrixID = 0; SET strMatrixDescription = '';
 		SET decPurchasePrice = 0; SET decProductQuantity = 0; SET decProductActualQuantity = 0;
 			
@@ -7727,7 +7864,7 @@ create procedure procCloseInventoryByProductSubGroup(IN intBranchID INT(4),
 									IN strProductSubGroupName varchar(150))
 BEGIN
 	
-	DECLARE lngProductID, lngMatrixID, lngSupplierID BIGINT DEFAULT 0;
+	DECLARE intProductID, lngMatrixID, lngSupplierID BIGINT DEFAULT 0;
 	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
@@ -7785,8 +7922,8 @@ BEGIN
 		SET lngCtr = lngCtr + 1; 
 		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
 		
-		FETCH curItems INTO lngProductID, lngSupplierID, strSupplierCode, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
-		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		FETCH curItems INTO intProductID, lngSupplierID, strSupplierCode, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		-- For testing: SELECT intProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
 		
 		-- STEP 1: Insert to tblInventory
 		INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
@@ -7795,29 +7932,29 @@ BEGIN
 									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice) VALUES (
 									intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
 									strReferenceNo, lngSupplierID, strSupplierCode, 
-									lngProductID, strProductCode, lngMatrixID, strMatrixDescription,
+									intProductID, strProductCode, lngMatrixID, strMatrixDescription,
 									decProductQuantity, decProductActualQuantity, 
 									decPurchasePrice * decProductActualQuantity * 0.12, 
 									decPurchasePrice * decProductActualQuantity, decPurchasePrice);
 					
 		-- STEP 2: Insert to product movement history
-		CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		CALL procProductMovementInsert(intProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
 										decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
 										strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
 		
 		-- STEP 3: Insert to inventory adjustment
-		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, intProductID, strProductCode, strDescription, lngMatrixID,
 												strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
 												decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
 		
 		-- STEP 4: auto adjust the quantity based on actual quantity
-		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
 		
 		
-		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
-		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = intProductID AND MatrixID = lngMatrixID;
 
-		SET lngProductID = 0; SET strProductCode = ''; 
+		SET intProductID = 0; SET strProductCode = ''; 
 		SET lngMatrixID = 0; SET strMatrixDescription = '';
 		SET decPurchasePrice = 0; SET decProductQuantity = 0; SET decProductActualQuantity = 0;
 			
@@ -7858,7 +7995,7 @@ GO
 
 create procedure procParkingRateSelect(
 			 	IN lngParkingRateID BIGINT,
-				IN lngProductID BIGINT,
+				IN intProductID BIGINT,
 				IN strDayOfWeek VARCHAR(9),
 				IN strStartTime VARCHAR(5),
 				IN strEndtime VARCHAR(5),
@@ -7886,8 +8023,8 @@ BEGIN
 		SET @SQL = CONCAT(@SQL, 'AND rte.ParkingRateID >= ',lngParkingRateID,' ');
 	END IF;
 
-	IF lngProductID <> 0 THEN
-		SET @SQL = CONCAT(@SQL, 'AND rte.ProductID = ',lngProductID,' ');
+	IF intProductID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND rte.ProductID = ',intProductID,' ');
 	END IF;
 
 	IF IFNULL(strDayOfWeek,'') <> '' THEN
@@ -8055,10 +8192,10 @@ delimiter ;
 DROP PROCEDURE IF EXISTS procTransactionIsConsignmentUpdate;
 delimiter GO
 
-create procedure procTransactionIsConsignmentUpdate(IN lngTransactionID bigint(20), IN intIsConsignment tinyint(1))
+create procedure procTransactionIsConsignmentUpdate(IN intTransactionID bigint(20), IN intIsConsignment tinyint(1))
 BEGIN
 
-	UPDATE tblTransactions SET isConsignment = intIsConsignment WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET isConsignment = intIsConsignment WHERE TransactionID = intTransactionID;
 	
 END;
 GO
@@ -8121,7 +8258,7 @@ GO
 
 create procedure procProductAddReservedQuantity(
 	IN intBranchID INT(4),
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,3),
 	IN strRemarks VARCHAR(8000),
@@ -8144,26 +8281,26 @@ BEGIN
 	FROM tblProducts a 
 	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
 	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
-	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	WHERE a.Deleted = 0 AND a.ProductID = intProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
 	
 	SELECT IFNULL(SUM(Quantity),0), IFNULL(SUM(ReservedQuantity),0)  INTO decProductQuantity, decProductReservedQuantity
 	FROM tblProductInventory inv
-	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = intProductID;
 	
 	-- Apr 20, 2014 remove the remarks
-	SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
-	-- SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription);
+	SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',intProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
+	-- SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',intProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription);
 	
 	-- Insert to audit instead of product movement history
 	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED ADD', 'localhost', strAuditRemarks);
 	
-	IF EXISTS(SELECT ReservedQuantity FROM tblProductInventory WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
+	IF EXISTS(SELECT ReservedQuantity FROM tblProductInventory WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
 		UPDATE tblProductInventory SET
 			ReservedQuantity	= decQuantity + ReservedQuantity
-		WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
+		WHERE ProductID = intProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
 	ELSE
 		INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, ReservedQuantity)
-		VALUES(intBranchID, lngProductID, lngMatrixID, decQuantity);
+		VALUES(intBranchID, intProductID, lngMatrixID, decQuantity);
 	END IF;
 									
 	
@@ -8188,7 +8325,7 @@ GO
 
 create procedure procProductSubtractReservedQuantity(
 	IN intBranchID INT(4),
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,2),
 	IN strRemarks VARCHAR(8000),
@@ -8211,13 +8348,13 @@ BEGIN
 	FROM tblProducts a 
 	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
 	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
-	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	WHERE a.Deleted = 0 AND a.ProductID = intProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
 	
 	SELECT IFNULL(SUM(Quantity),0), IFNULL(SUM(ReservedQuantity),0)  INTO decProductQuantity, decProductReservedQuantity
 	FROM tblProductInventory inv
-	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = intProductID;
 	
-	SET strAuditRemarks = CONCAT('Unreserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
+	SET strAuditRemarks = CONCAT('Unreserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',intProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
 	
 	-- Insert to audit instead of product movement history
 	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED SUBTRACT', 'localhost', strAuditRemarks);
@@ -8227,7 +8364,7 @@ BEGIN
 	UPDATE tblProductInventory SET 
 		ReservedQuantity	= ReservedQuantity - decQuantity
 	WHERE MatrixID	= lngMatrixID 
-		AND ProductID = lngProductID
+		AND ProductID = intProductID
 		AND BranchID = intBranchID;
 		
 							
@@ -8453,7 +8590,7 @@ GO
 create procedure procProductUpdateVAT(
 	IN lngProductGroupID BIGINT,
 	IN lngProductSubGroupID BIGINT,
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN decNewVAT DECIMAL(18,3),
 	IN decNewEVAT DECIMAL(18,3),
 	IN decNewLocalTax DECIMAL(18,3),
@@ -8465,8 +8602,8 @@ BEGIN
 							,EVAT = ',decNewEVAT,'
 							,LocalTax = ',decNewLocalTax,' ');
 
-	IF lngProductID <> 0 THEN
-		SET @SQL = CONCAT(@SQL, 'WHERE ProductID > 10 AND ProductID = ',lngProductID,' ');
+	IF intProductID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID > 10 AND ProductID = ',intProductID,' ');
 	ELSEIF lngProductSubGroupID <> 0 THEN
 		SET @SQL = CONCAT(@SQL, 'WHERE ProductID > 10 AND ProductID IN (SELECT DISTINCT ProductID FROM tblProducts WHERE ProductSubGroupID = ',lngProductSubGroupID,') ');
 	ELSEIF lngProductGroupID <> 0 THEN
@@ -8479,7 +8616,7 @@ BEGIN
 
 	
 	-- update also the subgroup and group
-	IF lngProductID = 0 AND lngProductGroupID = 0 THEN
+	IF intProductID = 0 AND lngProductGroupID = 0 THEN
 		SET @SQL = CONCAT('	UPDATE tblProductSubGroup SET
 							 VAT = ',decNewVAT,'
 							,EVAT = ',decNewEVAT,'
@@ -8492,7 +8629,7 @@ BEGIN
 		DEALLOCATE PREPARE cmd;
 	END IF;
 
-	IF lngProductSubGroupID = 0 AND lngProductID = 0 THEN
+	IF lngProductSubGroupID = 0 AND intProductID = 0 THEN
 		SET @SQL = CONCAT('	UPDATE tblProductSubGroup SET
 							 VAT = ',decNewVAT,'
 							,EVAT = ',decNewEVAT,'
@@ -8540,7 +8677,7 @@ BEGIN
 	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - RENEWAL FEE');
 	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - REPLACEMENT FEE');
 
-	CALL procsysAuditInsert(NOW(), strCreatedBy, 'UPDATE VAT', 'localhost', CONCAT('ProductID:',lngProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VAT:',decNewVAT,' EVAT:',decNewEVAT,' LocalTax:',decNewLocalTax));
+	CALL procsysAuditInsert(NOW(), strCreatedBy, 'UPDATE VAT', 'localhost', CONCAT('ProductID:',intProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VAT:',decNewVAT,' EVAT:',decNewEVAT,' LocalTax:',decNewLocalTax));
 
 END;
 GO
@@ -8631,7 +8768,7 @@ GO
 create procedure procProductVariationAddEasy(
 	IN lngProductGroupID BIGINT,
 	IN lngProductSubGroupID BIGINT,
-	IN lngProductID BIGINT,
+	IN intProductID BIGINT,
 	IN lngVariationID BIGINT,
 	IN strCreatedBy VARCHAR(100)
 	)
@@ -8640,9 +8777,9 @@ BEGIN
 
 		SET @SQL = 'INSERT tblProductVariations	(ProductID, VariationID)  ';
 	
-		IF lngProductID <> 0 THEN
+		IF intProductID <> 0 THEN
 			SET @SQL = CONCAT(@SQL, 'SELECT ProductID, ',lngVariationID,' FROM tblProducts WHERE ProductID NOT IN (SELECT ProductID FROM tblProductVariations WHERE VariationID = ',lngVariationID,') 
-																								 AND ProductID = ',lngProductID,' ');
+																								 AND ProductID = ',intProductID,' ');
 		ELSEIF lngProductSubGroupID <> 0 THEN
 			SET @SQL = CONCAT(@SQL, 'SELECT ProductID, ',lngVariationID,' FROM tblProducts WHERE ProductID NOT IN (SELECT ProductID FROM tblProductVariations WHERE VariationID = ',lngVariationID,')
 																								 AND ProductID IN (SELECT DISTINCT ProductID FROM tblProducts WHERE ProductSubGroupID = ',lngProductSubGroupID,') ');
@@ -8660,7 +8797,7 @@ BEGIN
 		DEALLOCATE PREPARE cmd;
 
 		-- update also the subgroup and group
-		IF lngProductID = 0 AND lngProductGroupID = 0 THEN
+		IF intProductID = 0 AND lngProductGroupID = 0 THEN
 			SET @SQL = CONCAT('	INSERT tblProductSubGroupVariations	(SubGroupID, VariationID)
 								SELECT ProductSubGroupID, ',lngVariationID,' FROM tblProductSubGroup WHERE ProductSubGroupID NOT IN (SELECT DISTINCT SubGroupID FROM tblProductSubGroupVariations WHERE VariationID = ',lngVariationID,') ');
 			SET @SQL = CONCAT(@SQL, IF(lngProductSubGroupID=0,'',CONCAT('AND ProductSubGroupID = ',lngProductSubGroupID,' ')));
@@ -8670,7 +8807,7 @@ BEGIN
 			DEALLOCATE PREPARE cmd;
 		END IF;
 		
-		IF lngProductSubGroupID = 0 AND lngProductID = 0 THEN
+		IF lngProductSubGroupID = 0 AND intProductID = 0 THEN
 			SET @SQL = CONCAT('	INSERT tblProductSubGroupVariations	(SubGroupID, VariationID)
 								SELECT ProductSubGroupID, ',lngVariationID,' FROM tblProductSubGroup WHERE ProductSubGroupID NOT IN (SELECT DISTINCT SubGroupID FROM tblProductSubGroupVariations WHERE VariationID = ',lngVariationID,') ');
 			SET @SQL = CONCAT(@SQL, IF(lngProductGroupID=0,'',CONCAT('AND ProductSubGroupID IN (SELECT DISTINCT ProductSubGroupID FROM tblProductSubGroup WHERE ProductGroupID=',lngProductGroupID,') ')));
@@ -8689,7 +8826,7 @@ BEGIN
 		
 		END IF;	
 		
-		CALL procsysAuditInsert(NOW(), strCreatedBy, 'ADD MULTIPLE VARIATION', 'localhost', CONCAT('ProductID:',lngProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VriationID:',lngVariationID));
+		CALL procsysAuditInsert(NOW(), strCreatedBy, 'ADD MULTIPLE VARIATION', 'localhost', CONCAT('ProductID:',intProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VriationID:',lngVariationID));
 	END IF;
 END;
 GO
@@ -8901,7 +9038,7 @@ BEGIN
 		,DateClosed, PaymentType, DiscountCode, DebitPayment, ItemsDiscount, Charge, ChargeAmount, ChargeCode, ChargeRemarks, WaiterID, WaiterName
 		,Packed, OrderType, AgentID, AgentName, CreatedByID, CreatedByName
 		,AgentDepartmentName, AgentPositionName, ReleaserID, ReleaserName, ReleasedDate
-		,RewardPointsPayment, RewardConvertedPayment, PaxNo, CreditChargeAmount, BranchID, BranchCode, TransactionType, isConsignment
+		,RewardPointsPayment, RewardConvertedPayment, PaxNo, ModeOfTerms, Terms, CRNo, CreditChargeAmount, BranchID, BranchCode, TransactionType, isConsignment
 		,Datasource)
 	SELECT chk_headers_seq_number TransactionID, chk_num TransactionNo
 		,IFNULL(cntct.ContactID,1) CustomerID ,IFNULL(cntct.ContactName, 'RetailPlus Default Customer') CustomerName -- ,RIGHT(dsc.Ref_Info_1, 6) ContactCode
@@ -8922,7 +9059,7 @@ BEGIN
 		,MAX(IFNULL(chrg.ChargeTypeCode, '')) ChargeCode, '' ChargeRemarks, 2 WaiterID, 'RetailPlus Default' WaiterName
 		,0 Packed, 0 OrderType, 1 AgentID, 'RetailPlus Agent ?' AgentName, CONCAT(999,hdr.fk_emp_def) CreatedByID, IFNULL(usr.Name, '') CreatedByName
 		,'System Default Department' AgentDepartmentName, 'System Default Position' AgentPositionName, 0 ReleaserID, '' ReleaserName, hdr.fk_business_date ReleasedDate
-		,0 RewardPointsPayment,0 RewardConvertedPayment, hdr.cov_cnt PaxNo, 0 CreditChargeAmount
+		,0 RewardPointsPayment,0 RewardConvertedPayment, hdr.cov_cnt PaxNo, 0 ModeOfTerms, 0 Terms, 0 CRNo, 0 CreditChargeAmount
 		,CONCAT(999,hdr.fk_location_def) BranchID, brnch.BranchCode
 		,case when dsc.Status_Flag = 'DSC_RTN' THEN 1 else 0 end TransactionType, 0 isConsignment
 		,hdr.BatchID
@@ -9264,6 +9401,11 @@ BEGIN
 							BatchCounter, 
 							NoOfReprintedTransaction, 
 							TotalReprintedTransaction, 
+							NoOfReprintedTransaction, TotalReprintedTransaction, 
+							NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+							NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+							ConsignmentSales, ConsignmentRefundSales, WalkInSales,
+							WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
 							InitializedBy 
 						FROM tblTerminalReportHistory
 						WHERE 1 = 1 ';
@@ -9389,6 +9531,15 @@ BEGIN
 							BatchCounter, 
 							NoOfReprintedTransaction, 
 							TotalReprintedTransaction - (TotalReprintedTransaction * TrustFund/100) TotalReprintedTransaction, 
+							NoOfReprintedTransaction, TotalReprintedTransaction, 
+							NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
+							NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
+							ConsignmentSales - (ConsignmentSales * TrustFund/100) ConsignmentSales, 
+							ConsignmentRefundSales - (ConsignmentRefundSales * TrustFund/100) ConsignmentRefundSales, 
+							WalkInSales - (WalkInSales * TrustFund/100) WalkInSales,
+							WalkInRefundSales - (WalkInRefundSales * TrustFund/100) WalkInRefundSales, 
+							OutOfStockSales - (OutOfStockSales * TrustFund/100) OutOfStockSales, 
+							OutOfStockRefundSales - (OutOfStockRefundSales * TrustFund/100) OutOfStockRefundSales,
 							InitializedBy 
 					FROM tblTerminalReportHistory
 					WHERE 1 = 1 ';
@@ -9566,6 +9717,9 @@ BEGIN
 							trx.RewardPointsPayment,
 							trx.RewardConvertedPayment,
 							trx.PaxNo,
+							trx.ModeOfTerms,
+							trx.Terms,
+							trx.CRNo,
 							trx.CreditChargeAmount,
 							trx.BranchCode,
 							trx.TransactionType,
@@ -9670,6 +9824,9 @@ BEGIN
 							trx.RewardPointsPayment - (trx.RewardPointsPayment * IFNULL(trh.TrustFund, 0)/100) RewardPointsPayment,
 							trx.RewardConvertedPayment - (trx.RewardConvertedPayment * IFNULL(trh.TrustFund, 0)/100) RewardConvertedPayment,
 							trx.PaxNo,
+							trx.ModeOfTerms,
+							trx.Terms,
+							trx.CRNo,
 							trx.CreditChargeAmount - (trx.CreditChargeAmount * IFNULL(trh.TrustFund, 0)/100) CreditChargeAmount,
 							trx.BranchCode,
 							trx.TransactionType,
@@ -9788,7 +9945,7 @@ delimiter ;
 /********************************************
 	procCashierReportHistorySyncTransactionSales
 
-	CALL procCashierReportHistorySyncTransactionSales( 1, '01', '00000000931189', '00000000931193');
+	CALL procCashierReportHistorySyncTransactionSales( 1, '01', '2015-01-28 19:05:45', '2015-01-29 18:58:42');
 ********************************************/
 
 delimiter GO
@@ -9807,91 +9964,91 @@ BEGIN
 	LEFT JOIN (
 			select BranchID, TerminalNo, CashierID,
 					SUM(CASE TransactionStatus 
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 						END) NetSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+							WHEN 1 THEN GrossSales WHEN 4 THEN GrossSales WHEN 5 THEN GrossSales WHEN 9 THEN GrossSales WHEN 11 THEN GrossSales ELSE 0
 						END) GrossSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SubTotal
+							WHEN 1 THEN Subtotal WHEN 4 THEN Subtotal WHEN 5 THEN Subtotal WHEN 9 THEN Subtotal WHEN 11 THEN Subtotal ELSE 0
 						END) SubTotal, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+							WHEN 1 THEN Discount WHEN 4 THEN Discount WHEN 5 THEN Discount WHEN 9 THEN Discount WHEN 11 THEN Discount ELSE 0
 						END) Discount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+							WHEN 1 THEN ItemsDiscount WHEN 4 THEN ItemsDiscount WHEN 5 THEN ItemsDiscount WHEN 9 THEN ItemsDiscount WHEN 11 THEN ItemsDiscount ELSE 0
 						END) ItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+							WHEN 1 THEN SNRItemsDiscount WHEN 4 THEN SNRItemsDiscount WHEN 5 THEN SNRItemsDiscount WHEN 9 THEN SNRItemsDiscount WHEN 11 THEN SNRItemsDiscount ELSE 0
 						END) SNRItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+							WHEN 1 THEN PWDItemsDiscount WHEN 4 THEN PWDItemsDiscount WHEN 5 THEN PWDItemsDiscount WHEN 9 THEN PWDItemsDiscount WHEN 11 THEN PWDItemsDiscount ELSE 0
 						END) PWDItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+							WHEN 1 THEN OtherItemsDiscount WHEN 4 THEN OtherItemsDiscount WHEN 5 THEN OtherItemsDiscount WHEN 9 THEN OtherItemsDiscount WHEN 11 THEN OtherItemsDiscount ELSE 0
 						END) OtherItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+							WHEN 1 THEN SNRDiscount WHEN 4 THEN SNRDiscount WHEN 5 THEN SNRDiscount WHEN 9 THEN SNRDiscount WHEN 11 THEN SNRDiscount ELSE 0
 						END) SNRDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+							WHEN 1 THEN PWDDiscount WHEN 4 THEN PWDDiscount WHEN 5 THEN PWDDiscount WHEN 9 THEN PWDDiscount WHEN 11 THEN PWDDiscount ELSE 0
 						END) PWDDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+							WHEN 1 THEN OtherDiscount WHEN 4 THEN OtherDiscount WHEN 5 THEN OtherDiscount WHEN 9 THEN OtherDiscount WHEN 11 THEN OtherDiscount ELSE 0
 						END) OtherDiscount,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+							WHEN 1 THEN Charge WHEN 4 THEN Charge WHEN 5 THEN Charge WHEN 9 THEN Charge WHEN 11 THEN Charge ELSE 0
 						END) TotalCharge, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 						END) DailySales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+							WHEN 1 THEN ItemSold WHEN 4 THEN ItemSold WHEN 5 THEN ItemSold WHEN 9 THEN ItemSold WHEN 11 THEN ItemSold ELSE 0
 						END) ItemSold,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+							WHEN 1 THEN QuantitySold WHEN 4 THEN QuantitySold WHEN 5 THEN QuantitySold WHEN 9 THEN QuantitySold WHEN 11 THEN QuantitySold ELSE 0
 						END) QuantitySold,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+							WHEN 1 THEN VATExempt WHEN 4 THEN VATExempt WHEN 5 THEN VATExempt WHEN 9 THEN VATExempt WHEN 11 THEN VATExempt ELSE 0
 						END) VATExempt, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+							WHEN 1 THEN NonVATableAmount WHEN 4 THEN NonVATableAmount WHEN 5 THEN NonVATableAmount WHEN 9 THEN NonVATableAmount WHEN 11 THEN NonVATableAmount ELSE 0
 						END) NonVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+							WHEN 1 THEN VATableAmount WHEN 4 THEN VATableAmount WHEN 5 THEN VATableAmount WHEN 9 THEN VATableAmount WHEN 11 THEN VATableAmount ELSE 0
 						END) VATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+							WHEN 1 THEN ZeroRatedSales WHEN 4 THEN ZeroRatedSales WHEN 5 THEN ZeroRatedSales WHEN 9 THEN ZeroRatedSales WHEN 11 THEN ZeroRatedSales ELSE 0
 						END) ZeroRatedSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+							WHEN 1 THEN VAT WHEN 4 THEN VAT WHEN 5 THEN VAT WHEN 9 THEN VAT WHEN 11 THEN VAT ELSE 0
 						END) VAT, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+							WHEN 1 THEN EVATableAmount WHEN 4 THEN EVATableAmount WHEN 5 THEN EVATableAmount WHEN 9 THEN EVATableAmount WHEN 11 THEN EVATableAmount ELSE 0
 						END) EVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+							WHEN 1 THEN NonEVATableAmount WHEN 4 THEN NonEVATableAmount WHEN 5 THEN NonEVATableAmount WHEN 9 THEN NonEVATableAmount WHEN 11 THEN NonEVATableAmount ELSE 0
 						END) NonEVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+							WHEN 1 THEN EVAT WHEN 4 THEN EVAT WHEN 5 THEN EVAT WHEN 9 THEN EVAT WHEN 11 THEN EVAT ELSE 0
 						END) EVAT, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+							WHEN 1 THEN LocalTax WHEN 4 THEN LocalTax WHEN 5 THEN LocalTax WHEN 9 THEN LocalTax WHEN 11 THEN LocalTax ELSE 0
 						END) LocalTax,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
+							WHEN 1 THEN CashPayment WHEN 4 THEN CashPayment WHEN 9 THEN CashPayment WHEN 11 THEN CashPayment ELSE 0
 						END) CashSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
+							WHEN 1 THEN ChequePayment WHEN 4 THEN ChequePayment WHEN 9 THEN ChequePayment WHEN 11 THEN ChequePayment ELSE 0
 						END) ChequeSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
+							WHEN 1 THEN CreditCardPayment WHEN 4 THEN CreditCardPayment WHEN 9 THEN CreditCardPayment WHEN 11 THEN CreditCardPayment ELSE 0
 						END) CreditCardSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
+							WHEN 1 THEN CreditPayment WHEN 4 THEN CreditPayment WHEN 9 THEN CreditPayment WHEN 11 THEN CreditPayment ELSE 0
 						END) CreditSales, -- creditpayment for normal transactions
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
+							WHEN 1 THEN DebitPayment WHEN 4 THEN DebitPayment WHEN 9 THEN DebitPayment WHEN 11 THEN DebitPayment ELSE 0
 						END) DebitPayment, -- debit for normal transactions
 					SUM(CASE TransactionStatus
 							WHEN 5 THEN CashPayment ELSE 0
@@ -9924,17 +10081,35 @@ BEGIN
 							WHEN 7 THEN DebitPayment ELSE 0
 						END) CreditPaymentDebit, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+							WHEN 1 THEN RewardPointsPayment WHEN 4 THEN RewardPointsPayment WHEN 5 THEN RewardPointsPayment WHEN 9 THEN RewardPointsPayment WHEN 11 THEN RewardPointsPayment ELSE 0
 						END) RewardPointsPayment,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+							WHEN 1 THEN RewardConvertedPayment WHEN 4 THEN RewardConvertedPayment WHEN 5 THEN RewardConvertedPayment WHEN 9 THEN RewardConvertedPayment WHEN 11 THEN RewardConvertedPayment ELSE 0
 						END) RewardConvertedPayment,
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN Subtotal ELSE 0
 						END) VoidSales, 
 					SUM(CASE TransactionStatus
 							WHEN 5 THEN Subtotal ELSE 0
-						END) RefundSales
+						END) RefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 14 THEN Subtotal ELSE 0
+						END) WalkInSales,
+					SUM(CASE TransactionStatus
+							WHEN 15 THEN Subtotal ELSE 0
+						END) OutOfStockSales,
+					SUM(CASE TransactionStatus
+							WHEN 16 THEN Subtotal ELSE 0
+						END) ConsignmentSales,
+					SUM(CASE TransactionStatus
+							WHEN 17 THEN Subtotal ELSE 0
+						END) WalkInRefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 18 THEN Subtotal ELSE 0
+						END) OutOfStockRefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 19 THEN Subtotal ELSE 0
+						END) ConsignmentRefundSales
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
@@ -9981,7 +10156,7 @@ BEGIN
 					
 						tblCashierReportHistory.RewardPointsPayment				=  IFNULL(Trx.RewardPointsPayment,0),
 						tblCashierReportHistory.RewardConvertedPayment			=  IFNULL(Trx.RewardConvertedPayment,0),
-						tblCashierReportHistory.CashInDrawer					=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
+						tblCashierReportHistory.CashInDrawer					=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + IFNULL(Trx.WalkInSales,0) + IFNULL(Trx.WalkInRefundSales,0) + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
 						tblCashierReportHistory.VoidSales						=  IFNULL(Trx.VoidSales,0), 
 						tblCashierReportHistory.RefundSales						=  IFNULL(Trx.RefundSales,0), 
 						tblCashierReportHistory.ItemsDiscount					=  IFNULL(Trx.ItemsDiscount,0), 
@@ -9989,6 +10164,14 @@ BEGIN
 						tblCashierReportHistory.PWDItemsDiscount				=  IFNULL(Trx.PWDItemsDiscount,0), 
 						tblCashierReportHistory.OtherItemsDiscount				=  IFNULL(Trx.OtherItemsDiscount,0), 
 						tblCashierReportHistory.SubTotalDiscount				=  IFNULL(Trx.Discount,0),
+
+						tblCashierReportHistory.ConsignmentSales				=  IFNULL(Trx.ConsignmentSales,0),
+						tblCashierReportHistory.ConsignmentRefundSales			=  IFNULL(Trx.ConsignmentRefundSales,0),
+						tblCashierReportHistory.WalkInSales						=  IFNULL(Trx.WalkInSales,0),
+						tblCashierReportHistory.WalkInRefundSales				=  IFNULL(Trx.WalkInRefundSales,0),
+						tblCashierReportHistory.OutOfStockSales					=  IFNULL(Trx.OutOfStockSales,0),
+						tblCashierReportHistory.OutOfStockRefundSales			=  IFNULL(Trx.OutOfStockRefundSales,0),
+
 						tblCashierReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 	WHERE tblCashierReportHistory.BranchID = intBranchID AND tblCashierReportHistory.TerminalNo = strTerminalNo
 		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
@@ -10069,91 +10252,91 @@ BEGIN
 		LEFT JOIN (
 			select BranchID, TerminalNo, 
 					SUM(CASE TransactionStatus 
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 						END) NetSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+							WHEN 1 THEN GrossSales WHEN 4 THEN GrossSales WHEN 5 THEN GrossSales WHEN 9 THEN GrossSales WHEN 11 THEN GrossSales ELSE 0
 						END) GrossSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+							WHEN 1 THEN Subtotal WHEN 4 THEN Subtotal WHEN 5 THEN Subtotal WHEN 9 THEN Subtotal WHEN 11 THEN Subtotal ELSE 0
 						END) SubTotal, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+							WHEN 1 THEN Discount WHEN 4 THEN Discount WHEN 5 THEN Discount WHEN 9 THEN Discount WHEN 11 THEN Discount ELSE 0
 						END) Discount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+							WHEN 1 THEN ItemsDiscount WHEN 4 THEN ItemsDiscount WHEN 5 THEN ItemsDiscount WHEN 9 THEN ItemsDiscount WHEN 11 THEN ItemsDiscount ELSE 0
 						END) ItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+							WHEN 1 THEN SNRItemsDiscount WHEN 4 THEN SNRItemsDiscount WHEN 5 THEN SNRItemsDiscount WHEN 9 THEN SNRItemsDiscount WHEN 11 THEN SNRItemsDiscount ELSE 0
 						END) SNRItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+							WHEN 1 THEN PWDItemsDiscount WHEN 4 THEN PWDItemsDiscount WHEN 5 THEN PWDItemsDiscount WHEN 9 THEN PWDItemsDiscount WHEN 11 THEN PWDItemsDiscount ELSE 0
 						END) PWDItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+							WHEN 1 THEN OtherItemsDiscount WHEN 4 THEN OtherItemsDiscount WHEN 5 THEN OtherItemsDiscount WHEN 9 THEN OtherItemsDiscount WHEN 11 THEN OtherItemsDiscount ELSE 0
 						END) OtherItemsDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+							WHEN 1 THEN SNRDiscount WHEN 4 THEN SNRDiscount WHEN 5 THEN SNRDiscount WHEN 9 THEN SNRDiscount WHEN 11 THEN SNRDiscount ELSE 0
 						END) SNRDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+							WHEN 1 THEN PWDDiscount WHEN 4 THEN PWDDiscount WHEN 5 THEN PWDDiscount WHEN 9 THEN PWDDiscount WHEN 11 THEN PWDDiscount ELSE 0
 						END) PWDDiscount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+							WHEN 1 THEN OtherDiscount WHEN 4 THEN OtherDiscount WHEN 5 THEN OtherDiscount WHEN 9 THEN OtherDiscount WHEN 11 THEN OtherDiscount ELSE 0
 						END) OtherDiscount,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+							WHEN 1 THEN Charge WHEN 4 THEN Charge WHEN 5 THEN Charge WHEN 9 THEN Charge WHEN 11 THEN Charge ELSE 0
 						END) TotalCharge, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							WHEN 1 THEN NetSales WHEN 4 THEN NetSales WHEN 5 THEN NetSales WHEN 9 THEN NetSales WHEN 11 THEN NetSales ELSE 0
 						END) DailySales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+							WHEN 1 THEN ItemSold WHEN 4 THEN ItemSold WHEN 5 THEN ItemSold WHEN 9 THEN ItemSold WHEN 11 THEN ItemSold ELSE 0
 						END) ItemSold,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+							WHEN 1 THEN QuantitySold WHEN 4 THEN QuantitySold WHEN 5 THEN QuantitySold WHEN 9 THEN QuantitySold WHEN 11 THEN QuantitySold ELSE 0
 						END) QuantitySold,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+							WHEN 1 THEN VATExempt WHEN 4 THEN VATExempt WHEN 5 THEN VATExempt WHEN 9 THEN VATExempt WHEN 11 THEN VATExempt ELSE 0
 						END) VATExempt, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+							WHEN 1 THEN NonVATableAmount WHEN 4 THEN NonVATableAmount WHEN 5 THEN NonVATableAmount WHEN 9 THEN NonVATableAmount WHEN 11 THEN NonVATableAmount ELSE 0
 						END) NonVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+							WHEN 1 THEN VATableAmount WHEN 4 THEN VATableAmount WHEN 5 THEN VATableAmount WHEN 9 THEN VATableAmount WHEN 11 THEN VATableAmount ELSE 0
 						END) VATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+							WHEN 1 THEN ZeroRatedSales WHEN 4 THEN ZeroRatedSales WHEN 5 THEN ZeroRatedSales WHEN 9 THEN ZeroRatedSales WHEN 11 THEN ZeroRatedSales ELSE 0
 						END) ZeroRatedSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+							WHEN 1 THEN VAT WHEN 4 THEN VAT WHEN 5 THEN VAT WHEN 9 THEN VAT WHEN 11 THEN VAT ELSE 0
 						END) VAT, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+							WHEN 1 THEN EVATableAmount WHEN 4 THEN EVATableAmount WHEN 5 THEN EVATableAmount WHEN 9 THEN EVATableAmount WHEN 11 THEN EVATableAmount ELSE 0
 						END) EVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+							WHEN 1 THEN NonEVATableAmount WHEN 4 THEN NonEVATableAmount WHEN 5 THEN NonEVATableAmount WHEN 9 THEN NonEVATableAmount WHEN 11 THEN NonEVATableAmount ELSE 0
 						END) NonEVATableAmount, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+							WHEN 1 THEN EVAT WHEN 4 THEN EVAT WHEN 5 THEN EVAT WHEN 9 THEN EVAT WHEN 11 THEN EVAT ELSE 0
 						END) EVAT, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+							WHEN 1 THEN LocalTax WHEN 4 THEN LocalTax WHEN 5 THEN LocalTax WHEN 9 THEN LocalTax WHEN 11 THEN LocalTax ELSE 0
 						END) LocalTax,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
+							WHEN 1 THEN CashPayment WHEN 4 THEN CashPayment WHEN 9 THEN CashPayment WHEN 11 THEN CashPayment ELSE 0
 						END) CashSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
+							WHEN 1 THEN ChequePayment WHEN 4 THEN ChequePayment WHEN 9 THEN ChequePayment WHEN 11 THEN ChequePayment ELSE 0
 						END) ChequeSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
+							WHEN 1 THEN CreditCardPayment WHEN 4 THEN CreditCardPayment WHEN 9 THEN CreditCardPayment WHEN 11 THEN CreditCardPayment ELSE 0
 						END) CreditCardSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
+							WHEN 1 THEN CreditPayment WHEN 4 THEN CreditPayment WHEN 9 THEN CreditPayment WHEN 11 THEN CreditPayment ELSE 0
 						END) CreditSales, -- creditpayment for normal transactions
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
+							WHEN 1 THEN DebitPayment WHEN 4 THEN DebitPayment WHEN 9 THEN DebitPayment WHEN 11 THEN DebitPayment ELSE 0
 						END) DebitPayment, -- debit for normal transactions
 					SUM(CASE TransactionStatus
 							WHEN 5 THEN CashPayment ELSE 0
@@ -10186,17 +10369,35 @@ BEGIN
 							WHEN 7 THEN DebitPayment ELSE 0
 						END) CreditPaymentDebit, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+							WHEN 1 THEN RewardPointsPayment WHEN 4 THEN RewardPointsPayment WHEN 5 THEN RewardPointsPayment WHEN 9 THEN RewardPointsPayment WHEN 11 THEN RewardPointsPayment ELSE 0
 						END) RewardPointsPayment,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+							WHEN 1 THEN RewardConvertedPayment WHEN 4 THEN RewardConvertedPayment WHEN 5 THEN RewardConvertedPayment WHEN 9 THEN RewardConvertedPayment WHEN 11 THEN RewardConvertedPayment ELSE 0
 						END) RewardConvertedPayment,
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN Subtotal ELSE 0
 						END) VoidSales, 
 					SUM(CASE TransactionStatus
 							WHEN 5 THEN Subtotal ELSE 0
-						END) RefundSales
+						END) RefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 14 THEN Subtotal ELSE 0
+						END) WalkInSales,
+					SUM(CASE TransactionStatus
+							WHEN 15 THEN Subtotal ELSE 0
+						END) OutOfStockSales,
+					SUM(CASE TransactionStatus
+							WHEN 16 THEN Subtotal ELSE 0
+						END) ConsignmentSales,
+					SUM(CASE TransactionStatus
+							WHEN 17 THEN Subtotal ELSE 0
+						END) WalkInRefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 18 THEN Subtotal ELSE 0
+						END) OutOfStockRefundSales,
+					SUM(CASE TransactionStatus
+							WHEN 19 THEN Subtotal ELSE 0
+						END) ConsignmentRefundSales
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
@@ -10245,7 +10446,7 @@ BEGIN
 					
 				tblTerminalReportHistory.RewardPointsPayment				= IFNULL(Trx.RewardPointsPayment,0),
 				tblTerminalReportHistory.RewardConvertedPayment				= IFNULL(Trx.RewardConvertedPayment,0),
-				tblTerminalReportHistory.CashInDrawer						= IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
+				tblTerminalReportHistory.CashInDrawer						= IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + IFNULL(Trx.WalkInSales,0) + IFNULL(Trx.WalkInRefundSales,0) + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
 				tblTerminalReportHistory.VoidSales							= IFNULL(Trx.VoidSales,0), 
 				tblTerminalReportHistory.RefundSales						= IFNULL(Trx.RefundSales,0), 
 				tblTerminalReportHistory.ItemsDiscount						= IFNULL(Trx.ItemsDiscount,0), 
@@ -10253,6 +10454,13 @@ BEGIN
 				tblTerminalReportHistory.PWDItemsDiscount					= IFNULL(Trx.PWDItemsDiscount,0), 
 				tblTerminalReportHistory.OtherItemsDiscount					= IFNULL(Trx.OtherItemsDiscount,0), 
 				tblTerminalReportHistory.SubTotalDiscount					= IFNULL(Trx.Discount, 0),
+
+				tblTerminalReportHistory.ConsignmentSales					=  IFNULL(Trx.ConsignmentSales,0),
+				tblTerminalReportHistory.ConsignmentRefundSales				=  IFNULL(Trx.ConsignmentRefundSales,0),
+				tblTerminalReportHistory.WalkInSales						=  IFNULL(Trx.WalkInSales,0),
+				tblTerminalReportHistory.WalkInRefundSales					=  IFNULL(Trx.WalkInRefundSales,0),
+				tblTerminalReportHistory.OutOfStockSales					=  IFNULL(Trx.OutOfStockSales,0),
+				tblTerminalReportHistory.OutOfStockRefundSales				=  IFNULL(Trx.OutOfStockRefundSales,0),
 
 				tblTerminalReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 		WHERE tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo

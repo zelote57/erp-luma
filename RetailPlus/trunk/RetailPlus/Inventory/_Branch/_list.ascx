@@ -100,10 +100,11 @@
 							<col width="10">
 							<col width="10">
 							<col width="10">
-							<col width="15%">
-							<col width="15%">
+							<col width="11%">
 							<col width="15%">
 							<col width="10%">
+							<col width="10%">
+                            <col width="9%">
 							<col width="20%">
 							<col width="20%">
 							<col width="1%">
@@ -121,6 +122,8 @@
 								<asp:hyperlink id="SortByDBIP" runat="server">DB IP</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByDBPort" runat="server">DB Port</asp:hyperlink></TH>
+                            <TH class="ms-vh2" style="padding-bottom: 4px">
+								<asp:hyperlink id="SortByIncludeIneSales" runat="server">Show In eSales</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByAddress" runat="server">Address</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
@@ -136,10 +139,11 @@
 							<col width="10">
 							<col width="10">
 							<col width="10">
-							<col width="15%">
-							<col width="15%">
+							<col width="11%">
 							<col width="15%">
 							<col width="10%">
+							<col width="10%">
+                            <col width="9%">
 							<col width="20%">
 							<col width="19%">
 							<col width="1%">
@@ -165,6 +169,9 @@
 							</td>
 							<td class="ms-vb-user">
 								<asp:Label ID="lblDBPort" Runat="server"></asp:Label>
+							</td>
+                            <td class="ms-vb-user">
+								<asp:CheckBox id="chkIncludeIneSales" runat="server" Text="" Checked="true" Enabled="false" /> 
 							</td>
 							<td class="ms-vb-user">
 								<asp:Label ID="lblAddress" Runat="server"></asp:Label>

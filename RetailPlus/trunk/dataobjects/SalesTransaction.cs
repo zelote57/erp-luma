@@ -129,6 +129,10 @@ namespace AceSoft.RetailPlus.Data
 
 		public int PaxNo;
 
+        public ModeOfTerms ModeOfTerms;
+        public Int32 Terms;
+        public Int64 CRNo;
+
 		public DateTime TransactionDateFrom;
 		public DateTime TransactionDateTo;
 
@@ -248,6 +252,9 @@ namespace AceSoft.RetailPlus.Data
 		public bool RewardConvertedPayment;
 
 		public bool PaxNo;
+        public bool ModeOfterms;
+        public bool Terms;
+        public bool CRNo;
 
         public bool isConsignment;
         public bool isZeroRated;
@@ -364,6 +371,10 @@ namespace AceSoft.RetailPlus.Data
 		public const string RewardConvertedPayment = "RewardConvertedPayment";
 
 		public const string PaxNo = "PaxNo";
+        public const string ModeOfTerms = "ModeOfTerms";
+        public const string Terms = "Terms";
+        public const string CRNo = "CRNo";
+
         public const string isConsignment = "isConsignment";
         public const string isZeroRated = "isZeroRated";
 
@@ -396,93 +407,6 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
-        // sep 14, 2014 deleted
-        //private string SQLSelect()
-        //{
-        //    //	Apr 30, 2007 : Added "Charge, ChargeAmount, ChargeCode, ChargeRemarks "
-        //    //	Feb 07, 2008 : Added "WaiterID, WaiterName "
-
-        //    string stSQL = "SELECT " +
-        //                        "tblTransactions.TransactionID, " +
-        //                        "TransactionType, " +
-        //                        "tblTransactions.TransactionNo, " +
-        //                        "tblTransactions.ORNo, " +
-        //                        "tblTransactions.BranchID, " +
-        //                        "BranchCode, " +
-        //                        "PaxNo, " +
-        //                        "CustomerID, " +
-        //                        "CustomerName, " +
-        //                        "CustomerGroupName, " +
-        //                        "AgentID, " +
-        //                        "AgentName, " +
-        //                        "CreatedByID, " +
-        //                        "CreatedByName, " +
-        //                        "CashierID, " +
-        //                        "CashierName, " +
-        //                        "tblTransactions.TerminalNo, " +
-        //                        "TransactionDate, " +
-        //                        "DateSuspended, " +
-        //                        "DateResumed, " +
-        //                        "TransactionStatus, " +
-        //                        "CASE TransactionStatus " +
-        //                            "WHEN 0 THEN 'Open' " +
-        //                            "WHEN 1 THEN 'Closed' " +
-        //                            "WHEN 2 THEN 'Suspended' " +
-        //                            "WHEN 3 THEN 'Void' " +
-        //                            "WHEN 4 THEN 'Reprinted' " +
-        //                            "WHEN 5 THEN 'Refund' " +
-        //                            "WHEN 6 THEN 'NotYetApplied' " +
-        //                            "WHEN 7 THEN 'NotYetApplied' " +
-        //                            "WHEN 8 THEN 'DebitPayment' " +
-        //                            "WHEN 9 THEN 'Released' " +
-        //                            "WHEN 10 THEN 'OrderSlip' " +
-        //                        "END 'TransactionStatusName', " +
-        //                        "SubTotal, " +
-        //                        "NetSales, " +
-        //                        "ItemsDiscount, " +
-        //                        "Discount, " +
-        //                        "SNRDiscount, " +
-        //                        "PWDDiscount, " +
-        //                        "OtherDiscount, " +
-        //                        "DiscountCode, " +
-        //                        "DiscountRemarks, " +
-        //                        "TransDiscount, " +
-        //                        "TransDiscountType, " +
-        //                        "VAT, " +
-        //                        "VATableAmount, " +
-        //                        "NonVATableAmount, " +
-        //                        "VATExempt, " +
-        //                        "EVAT, " +
-        //                        "EVATableAmount, " +
-        //                        "NonEVATableAmount, " +
-        //                        "LocalTax, " +
-        //                        "AmountPaid, " +
-        //                        "CashPayment, " +
-        //                        "ChequePayment, " +
-        //                        "CreditCardPayment, " +
-        //                        "CreditPayment, " +
-        //                        //"IF(isConsignment=0,CreditPayment,0) 'CreditPayment', " +
-        //                        "IF(isConsignment<>0,CreditPayment,0) 'ConsignmentPayment', " +
-        //                        "DebitPayment, " +
-        //                        "RewardPointsPayment, " +
-        //                        "RewardConvertedPayment, " +
-        //                        "BalanceAmount, " +
-        //                        "ChangeAmount, " +
-        //                        "DateClosed, " +
-        //                        "PaymentType, " +
-        //                        "WaiterID, " +
-        //                        "WaiterName, " +
-        //                        "Charge, ChargeAmount, ChargeCode, ChargeRemarks, " +
-        //                        "CreditChargeAmount, " +
-        //                        "OrderType, " +
-        //                        "AgentPositionName, AgentDepartmentName, isConsignment, " +
-        //                        "IFNULL(ChequeNo,'') AS ChequeNo, IFNULL(ValidityDate,'" + DateTime.MinValue.ToString("yyyy-MM-dd") + "') AS ValidityDate " +
-        //                    "FROM tblTransactions " +
-        //                    "LEFT OUTER JOIN tblChequePayment chque ON tblTransactions.TransactionID = chque.TransactionID ";
-
-        //    return stSQL;
-        //}
-
 		private string SQLSelect(SalesTransactionsColumns clsSalesTransactionsColumns)
 		{
 			string stSQL = "SELECT ";
@@ -492,6 +416,9 @@ namespace AceSoft.RetailPlus.Data
             if (clsSalesTransactionsColumns.BranchID) stSQL += "tblTransactions." + SalesTransactionsColumnNames.BranchID + ", ";
 			if (clsSalesTransactionsColumns.BranchCode) stSQL += "" + SalesTransactionsColumnNames.BranchCode + ", ";
 			if (clsSalesTransactionsColumns.PaxNo) stSQL += "" + SalesTransactionsColumnNames.PaxNo + ", ";
+            if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.ModeOfTerms + ", ";
+            if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.Terms + ", ";
+            if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.CRNo + ", ";
             if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.RewardsCustomerID + ", ";
             if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.RewardsCustomerName + ", ";
             if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.CustomerID + ", ";
@@ -592,6 +519,9 @@ namespace AceSoft.RetailPlus.Data
                 Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
                 Details.BranchCode = "" + dr["BranchCode"].ToString();
                 Details.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
+                Details.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), dr["ModeOfTerms"].ToString());
+                Details.Terms = Int32.Parse(dr["Terms"].ToString());
+                Details.CRNo = Int64.Parse(dr["CRNo"].ToString());
                 Details.RewardsCustomerID = Int32.Parse(dr["RewardsCustomerID"].ToString());
                 Details.RewardsCustomerName = dr["RewardsCustomerName"].ToString();
                 Details.CustomerID = Int32.Parse(dr["CustomerID"].ToString());
@@ -693,105 +623,6 @@ namespace AceSoft.RetailPlus.Data
         }
 
         #region Deleted
-        // sep 14, 2014 deleted
-        //public SalesTransactionDetails Details(string TransactionNo, string TerminalNo, Int32 BranchID)
-        //{
-        //    try
-        //    {
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-				
-        //        string SQL = SQLSelect() + "WHERE tblTransactions.TransactionNo = @TransactionNo AND tblTransactions.TerminalNo = @TerminalNo AND tblTransactions.BranchID = @BranchID;";
-
-        //        cmd.Parameters.AddWithValue("BranchID", BranchID);
-        //        cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
-        //        cmd.Parameters.AddWithValue("TransactionNo", TransactionNo);
-
-        //        cmd.CommandText = SQL;
-        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-        //        base.MySqlDataAdapterFill(cmd, dt);
-
-        //        SalesTransactionDetails Details = new SalesTransactionDetails();
-        //        foreach (System.Data.DataRow dr in dt.Rows)
-        //        {
-        //            Details.TransactionID = Int64.Parse(dr["TransactionID"].ToString());
-        //            Details.TransactionType = (TransactionTypes)Enum.Parse(typeof(TransactionTypes), dr["TransactionType"].ToString());
-        //            Details.TransactionNo = "" + dr["TransactionNo"].ToString();
-        //            Details.ORNo = "" + dr["ORNo"].ToString();
-        //            Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
-        //            Details.BranchCode = "" + dr["BranchCode"].ToString();
-        //            Details.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
-        //            Details.CustomerID = Int32.Parse(dr["CustomerID"].ToString());
-        //            Details.CustomerName = "" + dr["CustomerName"].ToString();
-        //            Details.CustomerGroupName = "" + dr["CustomerGroupName"].ToString();
-        //            Details.AgentID = Int32.Parse(dr["AgentID"].ToString());
-        //            Details.AgentName = "" + dr["AgentName"].ToString();
-        //            Details.CreatedByID = Int64.Parse(dr["CreatedByID"].ToString());
-        //            Details.CreatedByName = "" + dr["CreatedByName"].ToString();
-        //            Details.CashierID = Int64.Parse(dr["CashierID"].ToString());
-        //            Details.CashierName = "" + dr["CashierName"].ToString();
-        //            Details.TerminalNo = "" + dr["TerminalNo"].ToString();
-        //            Details.TransactionDate = DateTime.Parse(dr["TransactionDate"].ToString());
-        //            Details.DateSuspended = DateTime.Parse(dr["DateSuspended"].ToString());
-        //            Details.DateResumed = DateTime.Parse(dr["DateResumed"].ToString());
-        //            Details.TransactionStatus = (TransactionStatus)Enum.Parse(typeof(TransactionStatus), dr["TransactionStatus"].ToString());
-        //            Details.SubTotal = decimal.Parse(dr["SubTotal"].ToString());
-        //            Details.NetSales = decimal.Parse(dr["NetSales"].ToString());
-        //            Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
-        //            Details.Discount = decimal.Parse(dr["Discount"].ToString());
-
-        //            // Sep 14, 2014 Separate the discounts for VAT computation
-        //            Details.SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString());
-        //            Details.PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString());
-        //            Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
-        //            // Aug 6, 2011 : Include in loading DiscountCode
-        //            Details.DiscountCode = "" + dr["DiscountCode"].ToString();
-        //            // Aug 6, 2011 : Include in loading DiscountRemarks
-        //            Details.DiscountRemarks = "" + dr["DiscountRemarks"].ToString();
-        //            Details.TransDiscount = decimal.Parse(dr["TransDiscount"].ToString());
-        //            Details.TransDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["TransDiscountType"].ToString());
-        //            Details.VAT = decimal.Parse(dr["VAT"].ToString());
-        //            Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
-        //            Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
-        //            Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
-        //            Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
-        //            Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
-        //            Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
-        //            Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-        //            Details.AmountPaid = decimal.Parse(dr["AmountPaid"].ToString());
-        //            Details.CashPayment = decimal.Parse(dr["CashPayment"].ToString());
-        //            Details.ChequePayment = decimal.Parse(dr["ChequePayment"].ToString());
-        //            Details.CreditCardPayment = decimal.Parse(dr["CreditCardPayment"].ToString());
-        //            Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
-        //            Details.DebitPayment = decimal.Parse(dr["DebitPayment"].ToString());
-        //            Details.RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString());
-        //            Details.RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString());
-        //            Details.BalanceAmount = decimal.Parse(dr["BalanceAmount"].ToString());
-        //            Details.ChangeAmount = decimal.Parse(dr["ChangeAmount"].ToString());
-        //            Details.DateClosed = DateTime.Parse(dr["DateClosed"].ToString());
-        //            Details.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString());
-        //            Details.WaiterID = Int64.Parse(dr["WaiterID"].ToString());
-        //            Details.WaiterName = "" + dr["WaiterName"].ToString();
-        //            Details.Charge = decimal.Parse(dr["Charge"].ToString());
-        //            Details.ChargeAmount = decimal.Parse(dr["ChargeAmount"].ToString());
-        //            Details.ChargeCode = "" + dr["ChargeCode"].ToString();
-        //            Details.ChargeRemarks = "" + dr["ChargeRemarks"].ToString();
-        //            Details.CreditChargeAmount = decimal.Parse(dr["CreditChargeAmount"].ToString());
-        //            Details.OrderType = (OrderTypes)Enum.Parse(typeof(OrderTypes), dr["OrderType"].ToString());
-        //            Details.AgentPositionName = "" + dr["AgentPositionName"].ToString();
-        //            Details.AgentDepartmentName = "" + dr["AgentDepartmentName"].ToString();
-        //            Details.isExist = true;
-        //            Details.isConsignment = Convert.ToBoolean(dr["isConsignment"]);
-        //        }
-
-        //        return Details;
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
         #endregion
 
         public string getSuspendedTransactionNo(long CustomerID, string TerminalNo, int BranchID)
@@ -884,6 +715,8 @@ namespace AceSoft.RetailPlus.Data
 								"CustomerID, " +
 								"CustomerName, " +
                                 "CustomerGroupName, " +
+                                "ModeOfTerms, " +
+                                "Terms, " +
 								"AgentID, " +
 								"AgentName, " +
 								"CreatedByID, " +
@@ -912,6 +745,8 @@ namespace AceSoft.RetailPlus.Data
                                 "@CustomerID, " +
 								"@CustomerName, " +
                                 "@CustomerGroupName, " +
+                                "@ModeOfTerms, " +
+                                "@Terms, " +
 								"@AgentID, " +
 								"@AgentName, " +
 								"@CreatedByID, " +
@@ -939,6 +774,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("RewardsCustomerName", Details.RewardsCustomerName);
 				cmd.Parameters.AddWithValue("CustomerName", Details.CustomerName);
                 cmd.Parameters.AddWithValue("CustomerGroupName", Details.CustomerGroupName);
+                cmd.Parameters.AddWithValue("ModeOfTerms", Details.CustomerDetails.ModeOfTerms.ToString("d"));
+                cmd.Parameters.AddWithValue("Terms", Details.CustomerDetails.Terms);
 				cmd.Parameters.AddWithValue("AgentID", Details.AgentID);
 				cmd.Parameters.AddWithValue("AgentName", Details.AgentName);
 				cmd.Parameters.AddWithValue("CreatedByID", Details.CreatedByID);
@@ -1008,7 +845,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                string SQL = "CALL procTransactionContactUpdate(@TransactionID, @CustomerID, @CustomerName, @CustomerGroupName);";
+                string SQL = "CALL procTransactionContactUpdate(@TransactionID, @CustomerID, @CustomerName, @CustomerGroupName, @ModeOfTerms, @Terms);";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
@@ -1018,6 +855,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@CustomerID", details.ContactID);
 				cmd.Parameters.AddWithValue("@CustomerName", details.ContactName);
                 cmd.Parameters.AddWithValue("@CustomerGroupName", details.ContactGroupName);
+                cmd.Parameters.AddWithValue("@ModeOfTerms", details.ModeOfTerms.ToString("d"));
+                cmd.Parameters.AddWithValue("@Terms", details.Terms);
 
 				base.ExecuteNonQuery(cmd);
 			}
@@ -1282,7 +1121,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        public System.Data.DataTable ListForPaymentDataTable(Int64 ContactID, string SortField = "TransactionNo", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListForPaymentDataTable(Int64 ContactID, string SortField = "TransactionNo", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0, DateTime? TransactionDateFrom = null, DateTime? TransactionDateTo = null, bool boShowConsignment = true, bool boShowAROnly = true)
 		{
 			try
             {
@@ -1296,6 +1135,12 @@ namespace AceSoft.RetailPlus.Data
                                        "a.TransactionID, " +
 									   "a.TransactionNo, " +
 									   "a.PaxNo, " +
+                                       "a.ModeOfTerms, a.Terms, " +
+                                       "CASE ModeOfTerms " +
+                                       "    WHEN 0 THEN 'Days' " +
+                                       "    WHEN 1 THEN 'Months' " +
+                                       "    WHEN 2 THEN 'Years' " +
+                                       "END ModeOfTermsCode, " +
                                        "a.CustomerID, " +
 									   "a.CustomerName, " +
 									   "a.TransactionDate, " +
@@ -1318,8 +1163,29 @@ namespace AceSoft.RetailPlus.Data
 								   "FROM  tblTransactions a " +
 								   "INNER JOIN tblCreditPayment b ON a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND a.TransactionNo = b.TransactionNo " +
                                    "WHERE b.Amount - b.AmountPaid <> 0 AND a.CustomerID = @ContactID " +
-								   "AND b.ContactID = @ContactID " +
-								   "AND b.Amount <> b.AmountPaid";
+								       "AND b.ContactID = @ContactID " +
+								       "AND b.Amount <> b.AmountPaid ";
+
+                if (TransactionDateFrom.GetValueOrDefault() != DateTime.MinValue)
+                {
+                    SQL += "AND a.TransactionDate >= @TransactionDateFrom ";
+                    cmd.Parameters.AddWithValue("@TransactionDateFrom", TransactionDateFrom.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : TransactionDateFrom);
+                }
+                if (TransactionDateTo.GetValueOrDefault() != DateTime.MinValue)
+                {
+                    SQL += "AND a.TransactionDate <= @TransactionDateTo ";
+                    cmd.Parameters.AddWithValue("@TransactionDateTo", TransactionDateTo.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : TransactionDateTo);
+                }
+                if (!boShowConsignment)
+                {
+                    SQL += "AND a.isConsignment = @ShowConsignment ";
+                    cmd.Parameters.AddWithValue("@ShowConsignment", false);
+                }
+                if (!boShowAROnly)
+                {
+                    SQL += "AND a.isConsignment = @boShowAR ";
+                    cmd.Parameters.AddWithValue("@boShowAR", true);
+                }
 
 				// Added Jan 18, 2009
 				// ORDER BY TransactionNo ASC
@@ -1332,6 +1198,7 @@ namespace AceSoft.RetailPlus.Data
 							"CustomerName, " +
 							"TransactionDate, " +
                             "CreditReason, CreditReasonID, " +
+                            "ModeOfTerms, Terms, ModeOfTermsCode, " +
 							"GrossSales, " +
                             "SubTotal, " +
                             "NetSales, " +
@@ -1772,7 +1639,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@EVATableAmount", EVATableAmount);
                 cmd.Parameters.AddWithValue("@NonEVATableAmount", NonEVATableAmount);
                 cmd.Parameters.AddWithValue("@LocalTax", LocalTax);
-                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Open.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.SuspendedOpen.ToString("d"));
                 cmd.Parameters.AddWithValue("@DiscCode", DiscountCode);
                 cmd.Parameters.AddWithValue("@DiscRemarks", DiscountRemarks);
                 cmd.Parameters.AddWithValue("@Charge", Charge);
@@ -1869,7 +1736,7 @@ namespace AceSoft.RetailPlus.Data
                                 "LastModified	    =	NOW() " +
 							"WHERE TransactionID = @TransactionID;";
 
-                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Open.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.SuspendedOpen.ToString("d"));
 				cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
 
                 cmd.CommandText = SQL;
@@ -2107,7 +1974,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-        public void Refund(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
+        public void Refund(TransactionStatus RefundTransactionStatus, Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
 		{
 			try
 			{
@@ -2165,7 +2032,7 @@ namespace AceSoft.RetailPlus.Data
 							"WHERE TransactionID	=	@TransactionID;";
 
                 cmd.Parameters.AddWithValue("ORNo", ORNo);
-                cmd.Parameters.AddWithValue("TransactionStatus", TransactionStatus.Refund.ToString("d"));
+                cmd.Parameters.AddWithValue("TransactionStatus", RefundTransactionStatus.ToString("d"));
                 cmd.Parameters.AddWithValue("ItemSold", ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", QuantitySold);
                 cmd.Parameters.AddWithValue("GrossSales", GrossSales);

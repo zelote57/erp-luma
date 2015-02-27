@@ -9,6 +9,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 	using AceSoft.RetailPlus.Data;
     using System.IO;
     using System.Xml;
+    using AceSoft.RetailPlus.Security;
 	
 	public partial  class __Details : System.Web.UI.UserControl
 	{
@@ -22,6 +23,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				if (Visible)
 				{
+                    ManageSecurity();
 					LoadRecord();	
 					LoadItems();
 				}
@@ -70,6 +72,14 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         {
             PrintPOSelling();
         }
+        protected void imgPrintTagPrice_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            PrintTagPrice();
+        }
+        protected void cmdPrintTagPrice_Click(object sender, System.EventArgs e)
+        {
+            PrintTagPrice();
+        }
         protected void  imgExport_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             ExportPO2File();
@@ -100,6 +110,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
                 HyperLink lnkDescription = (HyperLink)e.Item.FindControl("lnkDescription");
                 lnkDescription.Text = dr["Description"].ToString();
+                lnkDescription.ToolTip = dr["ProductCode"].ToString();
                 lnkDescription.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("det", Session.SessionID) + "&id=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID);
                 lnkBarcode.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("det", Session.SessionID) + "&id=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID);
 
@@ -122,6 +133,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
                 Label lblUnitCost = (Label)e.Item.FindControl("lblUnitCost");
                 lblUnitCost.Text = Convert.ToDecimal(dr["UnitCost"].ToString()).ToString("#,##0.##0");
+
+                Label lblSellingPrice = (Label)e.Item.FindControl("lblSellingPrice");
+                lblSellingPrice.Text = Convert.ToDecimal(dr["SellingPrice"].ToString()).ToString("#,##0.##0");
 
                 Label lblDiscountApplied = (Label)e.Item.FindControl("lblDiscountApplied");
                 lblDiscountApplied.Text = Convert.ToDecimal(dr["DiscountApplied"].ToString()).ToString("#,##0.##0");
@@ -155,6 +169,34 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 POItemReceivedStatus clsPOItemReceivedStatus = (POItemReceivedStatus)Enum.Parse(typeof(POItemReceivedStatus), dr["POItemReceivedStatus"].ToString());
                 lblPOItemReceivedStatus.Text = clsPOItemReceivedStatus.ToString("d");
 
+                TextBox txtTagPriceCount = (TextBox)e.Item.FindControl("txtTagPriceCount");
+                ImageButton cmdPrintTagPriceBarCode = (ImageButton)e.Item.FindControl("cmdPrintTagPriceBarCode");
+                txtTagPriceCount.Visible = holderTagPrice.Visible;
+                cmdPrintTagPriceBarCode.Visible = holderTagPrice.Visible;
+
+                //if (holderTagPrice.Visible)
+                //{
+                string strUnitCode = lblProductUnitCode.Text.ToUpper();
+                decimal iQty = decimal.TryParse(lblQuantity.Text, out iQty) ? iQty : 1;
+                switch (strUnitCode)
+                {
+                    case "CAN":
+                    case "BOX":
+                    case "PC":
+                    case "PCS":
+                    case "PIECE":
+                    case "BTL":
+                    case "BOT":
+                    case "BOTTLE": 
+                    case "PACK":
+                    case "BNDL":
+                        txtTagPriceCount.Text = iQty.ToString("#,##0");break;
+                    default:
+                        txtTagPriceCount.Text = "1"; break;
+                }
+                    
+                //}
+
                 //For anchor
                 HtmlGenericControl divExpCollAsst = (HtmlGenericControl)e.Item.FindControl("divExpCollAsst");
 
@@ -162,11 +204,44 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 anchorDown.HRef = "javascript:ToggleDiv('" + divExpCollAsst.ClientID + "')";
             }
         }
+        protected void lstItem_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
+        {
+            HyperLink lnkDescription = (HyperLink)e.Item.FindControl("lnkDescription");
+            HyperLink lnkBarcode = (HyperLink)e.Item.FindControl("lnkBarcode");
+            Label lblSellingPrice = (Label)e.Item.FindControl("lblSellingPrice");
+            
+            switch (e.CommandName)
+            {
+                case "cmdPrintTagPriceBarCode":
+                    TextBox txtTagPriceCount = (TextBox)e.Item.FindControl("txtTagPriceCount");
+                    decimal iCount = decimal.TryParse(txtTagPriceCount.Text, out iCount) ? iCount : 1;
+
+                    AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice = new ThermalBarCodePrinter();
+                    for (int iCtr = 0; iCtr < iCount; iCtr++)
+                        clsThermalBarCodeTagPrice.PrintTagPrice(lnkDescription.ToolTip, lnkBarcode.Text, Convert.ToDecimal(lblSellingPrice.Text).ToString("#,##0.#0"));
+
+                    string javaScript = "window.alert('Tag Price has been printed.');";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.lstItem, this.lstItem.GetType(), "openwindow", javaScript, true);
+
+                    break;
+            }
+        }
 
 		#endregion
 
 		#region Private Methods
 
+        private void ManageSecurity()
+        {
+            Int64 UID = Convert.ToInt64(Session["UID"]);
+            AccessRights clsAccessRights = new AccessRights();
+            AccessRightsDetails clsDetails = new AccessRightsDetails();
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.PrintShlevesTagPrice);
+            holderTagPrice.Visible = clsDetails.Write;
+
+            clsAccessRights.CommitAndDispose();
+        }
 		private void LoadRecord()
 		{
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["poid"],Session.SessionID));
@@ -243,7 +318,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			DataClass clsDataClass = new DataClass();
 
 			POItem clsPOItem = new POItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOItem.List(Convert.ToInt64(lblPOID.Text), "POItemID",SortOption.Ascending)).DefaultView;
+			//lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOItem.List(Convert.ToInt64(lblPOID.Text), "POItemID",SortOption.Ascending)).DefaultView;
+            lstItem.DataSource = clsPOItem.ListAsDataTable(Convert.ToInt64(lblPOID.Text), "POItemID", SortOption.Ascending).DefaultView;
 			lstItem.DataBind();
 			clsPOItem.CommitAndDispose();
             lstItemFixCssClass();
@@ -278,6 +354,33 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             string javaScript = "window.open('" + newWindowUrl + "');";
 
             System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrintSellingPrice, this.updPrintSellingPrice.GetType(), "openwindow", javaScript, true);
+        }
+        private void PrintTagPrice()
+        {
+            try
+            {
+                AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice = new ThermalBarCodePrinter();
+
+                foreach (DataListItem item in lstItem.Items)
+                {
+                    HyperLink lnkDescription = (HyperLink)item.FindControl("lnkDescription");
+                    HyperLink lnkBarcode = (HyperLink)item.FindControl("lnkBarcode");
+                    Label lblSellingPrice = (Label)item.FindControl("lblSellingPrice");
+                    TextBox txtTagPriceCount = (TextBox)item.FindControl("txtTagPriceCount");
+
+                    decimal iCount = decimal.TryParse(txtTagPriceCount.Text, out iCount) ? iCount : 1;
+
+                    for(int iCtr=0;iCtr < iCount; iCtr++)
+                        clsThermalBarCodeTagPrice.PrintTagPrice(lnkDescription.ToolTip, lnkBarcode.Text, Convert.ToDecimal(lblSellingPrice.Text).ToString("#,##0.#0"));
+                }
+
+                string javaScript = "window.alert('Tag Price has been printed.');";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updTP, this.updTP.GetType(), "openwindow", javaScript, true);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         private void ExportPO2File()
         {
@@ -452,6 +555,5 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
 		#endregion
 
-        
     }
 }

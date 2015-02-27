@@ -79,7 +79,8 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td class="ms-authoringcontrols">
 		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
-				<tr>
+				<div id="divBranch" runat="server">
+                <tr>
 					<td style="padding-bottom:2px" nowrap="nowrap">
 						&nbsp;<label>Branch&nbsp;/&nbsp;Terminal #</label>&nbsp;
 					</td>
@@ -99,6 +100,7 @@
 					<td width="99%" id="align05" nowrap="nowrap" align="left">&nbsp;
 					</td>
 				</tr>
+                </div>
                 <div id="divDates" runat="server">
 				<tr>
 					<td style="padding-bottom:2px" nowrap="nowrap">

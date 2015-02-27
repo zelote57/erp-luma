@@ -116,6 +116,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        public Int64 CashierID { get; set; }
+
         private Data.ContactDetails mclsCustomerDetails;
         public Data.ContactDetails CustomerDetails
         {
@@ -134,7 +136,30 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label10;
         private Label label6;
         private Label lblAddNewCustomer;
-    
+        private Label labelF5;
+        private Label lblF5;
+        private GroupBox grpSearch;
+        private CheckBox checkBox2;
+        private CheckBox checkBox1;
+        private Label label4;
+        private Label label3;
+        private TextBox txtTrxEndDate;
+        private TextBox txtTrxStartDate;
+        private Label label1;
+        private Label label2;
+
+        private Keys mKeyData;
+        public Keys KeyData
+        {
+            get
+            {
+                return mKeyData;
+            }
+        }
+
+        public string TransactionNoToReprint { get; set; }
+        public string TerminalNoToReprint { get; set; }
+
         public Data.SysConfigDetails SysConfigDetails
         {
             set { mclsSysConfigDetails = value; }
@@ -181,9 +206,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void InitializeComponent()
 		{
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvItems = new System.Windows.Forms.DataGridView();
@@ -204,9 +229,21 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label10 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
+            this.labelF5 = new System.Windows.Forms.Label();
+            this.lblF5 = new System.Windows.Forms.Label();
+            this.grpSearch = new System.Windows.Forms.GroupBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtTrxEndDate = new System.Windows.Forms.TextBox();
+            this.txtTrxStartDate = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
+            this.grpSearch.SuspendLayout();
             this.SuspendLayout();
             // 
             // imgIcon
@@ -244,14 +281,14 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.CausesValidation = false;
             this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvItems.ColumnHeadersHeight = 24;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
@@ -259,19 +296,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.Location = new System.Drawing.Point(8, 24);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvItems.RowHeadersVisible = false;
             this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvItems.Size = new System.Drawing.Size(994, 361);
             this.dgvItems.TabIndex = 56;
@@ -478,12 +515,144 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAddNewCustomer.TabIndex = 105;
             this.lblAddNewCustomer.Text = " to enter payments";
             // 
+            // labelF5
+            // 
+            this.labelF5.AutoSize = true;
+            this.labelF5.BackColor = System.Drawing.Color.Transparent;
+            this.labelF5.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.labelF5.Location = new System.Drawing.Point(657, 41);
+            this.labelF5.Name = "labelF5";
+            this.labelF5.Size = new System.Drawing.Size(74, 13);
+            this.labelF5.TabIndex = 113;
+            this.labelF5.Text = " Filters search";
+            this.labelF5.Visible = false;
+            // 
+            // lblF5
+            // 
+            this.lblF5.BackColor = System.Drawing.Color.Transparent;
+            this.lblF5.ForeColor = System.Drawing.Color.Red;
+            this.lblF5.Location = new System.Drawing.Point(618, 41);
+            this.lblF5.Name = "lblF5";
+            this.lblF5.Size = new System.Drawing.Size(27, 13);
+            this.lblF5.TabIndex = 112;
+            this.lblF5.Text = "[F5]";
+            this.lblF5.Visible = false;
+            // 
+            // grpSearch
+            // 
+            this.grpSearch.BackColor = System.Drawing.Color.White;
+            this.grpSearch.Controls.Add(this.checkBox2);
+            this.grpSearch.Controls.Add(this.checkBox1);
+            this.grpSearch.Controls.Add(this.label4);
+            this.grpSearch.Controls.Add(this.label3);
+            this.grpSearch.Controls.Add(this.txtTrxEndDate);
+            this.grpSearch.Controls.Add(this.txtTrxStartDate);
+            this.grpSearch.ForeColor = System.Drawing.Color.Blue;
+            this.grpSearch.Location = new System.Drawing.Point(9, 81);
+            this.grpSearch.Name = "grpSearch";
+            this.grpSearch.Size = new System.Drawing.Size(1009, 391);
+            this.grpSearch.TabIndex = 114;
+            this.grpSearch.TabStop = false;
+            this.grpSearch.Text = "Press [Enter ] to search or [Esc] to hide this filter.";
+            this.grpSearch.Visible = false;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.Location = new System.Drawing.Point(238, 112);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(117, 17);
+            this.checkBox2.TabIndex = 115;
+            this.checkBox2.Text = "Show Consignment";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(44, 112);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(159, 17);
+            this.checkBox1.TabIndex = 115;
+            this.checkBox1.Text = "Show Accounts Receivables";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label4.Location = new System.Drawing.Point(41, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(120, 13);
+            this.label4.TabIndex = 113;
+            this.label4.Text = "Start transaction date :";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label3.Location = new System.Drawing.Point(41, 75);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(128, 13);
+            this.label3.TabIndex = 112;
+            this.label3.Text = "Ending transaction date :";
+            // 
+            // txtTrxEndDate
+            // 
+            this.txtTrxEndDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTrxEndDate.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTrxEndDate.Location = new System.Drawing.Point(238, 71);
+            this.txtTrxEndDate.Name = "txtTrxEndDate";
+            this.txtTrxEndDate.Size = new System.Drawing.Size(136, 23);
+            this.txtTrxEndDate.TabIndex = 3;
+            // 
+            // txtTrxStartDate
+            // 
+            this.txtTrxStartDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTrxStartDate.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTrxStartDate.Location = new System.Drawing.Point(238, 42);
+            this.txtTrxStartDate.Name = "txtTrxStartDate";
+            this.txtTrxStartDate.Size = new System.Drawing.Size(136, 23);
+            this.txtTrxStartDate.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label1.Location = new System.Drawing.Point(657, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(142, 13);
+            this.label1.TabIndex = 116;
+            this.label1.Text = "Reprint selected transaction";
+            this.label1.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(618, 22);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(34, 13);
+            this.label2.TabIndex = 115;
+            this.label2.Text = "[F12]";
+            this.label2.Visible = false;
+            // 
             // CreditsItemizeWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelF5);
+            this.Controls.Add(this.lblF5);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
@@ -502,6 +671,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Controls.Add(this.lblHeader1);
             this.Controls.Add(this.lblBalance);
             this.Controls.Add(this.imgIcon);
+            this.Controls.Add(this.grpSearch);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -514,6 +684,8 @@ namespace AceSoft.RetailPlus.Client.UI
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
+            this.grpSearch.ResumeLayout(false);
+            this.grpSearch.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -540,67 +712,32 @@ namespace AceSoft.RetailPlus.Client.UI
 			{ this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
 			catch { }
 
-			lblHeader.Text = mclsCustomerDetails.ContactName;
-			lblBalance.Text = mclsCustomerDetails.Credit.ToString("#,##0.#0");
 			LoadOptions();
 			LoadData();
-
-            //if (!TerminalDetails.ShowCustomerSelection)
-            if (mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
-            {
-                // sort this so that the least amount will be on top
-                // for HP
-                dgvItems.Sort(dgvItems.Columns["Balance"], ListSortDirection.Descending);
-                dgvItems.SelectAll();
-                dgvItems_RowStateChanged(null, null);
-                dgvItems.Enabled = false;
-
-                Data.Billing clsBilling = new Data.Billing();
-                Data.BillingDetails clsBillingDetails = clsBilling.Details(mclsCustomerDetails.ContactID, mclsCustomerDetails.CreditDetails.LastBillingDate, false);
-                clsBilling.CommitAndDispose();
-
-                lblAmountDue.Visible = true;
-                labelAmountDue.Visible = true;
-                lblAmountDue.Text = "0.00";
-                if (clsBillingDetails.ContactID !=0)
-                {
-                    if (mclsCustomerDetails.CreditDetails.CardTypeDetails.WithGuarantor)
-                    {
-                        labelAmountDue.Text = "Amount Due";
-
-                        if (decimal.Parse(lblBalance.Text) < clsBillingDetails.CurrentDueAmount)
-                        {
-                            lblAmountDue.Text = lblBalance.Text;
-                        }
-                        else
-                        {
-                            lblAmountDue.Text = clsBillingDetails.CurrentDueAmount.ToString("#,##0.#0");
-                        }
-                    }
-                    else {
-                        labelAmountDue.Text = "Minimum Amount Due";
-                        if (decimal.Parse(lblBalance.Text) < clsBillingDetails.MinimumAmountDue)
-                        {
-                            lblAmountDue.Text = lblBalance.Text;
-                        }
-                        else
-                        {
-                            lblAmountDue.Text = clsBillingDetails.MinimumAmountDue.ToString("#,##0.#0");
-                        }
-                    }
-                }
-            }
 		}
 		private void CreditsItemizeWnd_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.KeyData)
 			{
 				case Keys.Escape:
-					this.Hide(); 
+                    if (grpSearch.Visible)
+                    {
+                        grpSearch.Visible = false;
+                        dgvItems.Focus();
+                        cmdEnter.Text = "Enter";
+                    }
+                    else
+                    {
+                        this.Hide();
+                    }
 					break;
 
 				case Keys.Enter:
-					if (Convert.ToDecimal(lblBalanceSelected.Text) > 0)
+                    if (grpSearch.Visible)
+                    {
+                        LoadData();
+                    }
+					else if (Convert.ToDecimal(lblBalanceSelected.Text) > 0)
 					{
                         Data.Products clsProducts = new Data.Products();
                         if (clsProducts.Details(Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE).ProductID == 0)
@@ -612,7 +749,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         
                         dialog = ShowPayment();
                         if (dialog == DialogResult.OK)
-                            this.Hide();
+                        { mKeyData = Keys.Enter; this.Hide(); }
 					}
 					else
 						this.Hide();
@@ -634,10 +771,46 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsCreditPaymentsWnd.TerminalDetails = TerminalDetails;
                     clsCreditPaymentsWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsCreditPaymentsWnd.CustomerDetails = mclsCustomerDetails;
+                    clsCreditPaymentsWnd.CashierID = CashierID;
                     clsCreditPaymentsWnd.ShowDialog(this);
+                    DialogResult result = clsCreditPaymentsWnd.Result;
+                    mclsCustomerDetails = clsCreditPaymentsWnd.CustomerDetails;
                     clsCreditPaymentsWnd.Close();
                     clsCreditPaymentsWnd.Dispose();
+
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        LoadData();
+                    }
                     break;
+
+                case Keys.F5:
+                    grpSearch.Visible = !grpSearch.Visible;
+                    if (grpSearch.Visible)
+                    {
+                        txtTrxStartDate.Focus();
+                        cmdEnter.Text = "Search";
+                    }
+                    else
+                    {
+                        dgvItems.Focus();
+                        cmdEnter.Text = "Enter";
+                    }
+                    break;
+                case Keys.F12:
+                    TransactionNoToReprint = ""; TerminalNoToReprint = "";
+                    foreach (DataGridViewRow dr in dgvItems.SelectedRows)
+                    {
+                        TransactionNoToReprint = dr.Cells["TransactionNo"].Value.ToString();
+                        TerminalNoToReprint = dr.Cells["TerminalNo"].Value.ToString();
+                        dialog = System.Windows.Forms.DialogResult.OK;
+                        mKeyData = Keys.F12; 
+                        this.Hide();
+                        break;
+                    }
+
+                    break;
+
 			}
 		}
 
@@ -652,7 +825,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void cmdEnter_Click(object sender, EventArgs e)
 		{
-			if (Convert.ToDecimal(lblBalanceSelected.Text) > 0)
+            if (grpSearch.Visible)
+            {
+                LoadData();
+            }
+			else if (Convert.ToDecimal(lblBalanceSelected.Text) > 0)
 			{
 				dialog = ShowPayment();
 				if (dialog == DialogResult.OK)
@@ -686,21 +863,41 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void LoadOptions()
 		{
+            switch (mclsSysConfigDetails.CreditPaymentType)
+            {
+                case CreditPaymentType.MPC:
+                case CreditPaymentType.Normal:
+                default:
+                    lblF5.Visible = true; labelF5.Visible = true;
+                    txtTrxStartDate.Text = DateTime.Now.AddYears(-2).ToString("yyyy-MM-dd");
+                    txtTrxEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
+                    break;
+            }
         }
 		
 		private void LoadData()
 		{	
 			try
 			{
-				Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-				System.Data.DataTable dt;
+                DateTime dteRetValue = DateTime.MinValue;
+                DateTime dtePaymentDateFrom = DateTime.TryParse(txtTrxStartDate.Text + " 00:00:00", out dteRetValue) ? dteRetValue : DateTime.Now.AddYears(-2);
+                DateTime dtePaymentDateTo = DateTime.TryParse(txtTrxEndDate.Text + " 23:59:59", out dteRetValue) ? dteRetValue : DateTime.Now; 
                 
-                if (TerminalDetails.ShowCustomerSelection)
-                    dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID);
-                else
-                    dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID, "Balance, TransactionID", System.Data.SqlClient.SortOrder.Descending);
+                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
+				System.Data.DataTable dt;
 
+                switch (mclsSysConfigDetails.CreditPaymentType)
+                {
+                    case CreditPaymentType.Houseware:
+                        dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID, "Balance, TransactionID", System.Data.SqlClient.SortOrder.Descending);
+                        break;
+                    case CreditPaymentType.MPC:
+                    case CreditPaymentType.Normal:
+                    default:
+                        dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID, "TransactionNo", System.Data.SqlClient.SortOrder.Ascending, 0, dtePaymentDateFrom, dtePaymentDateTo);
+                        break;
+                }   
                 //Data.Billing clsBilling = new Data.Billing(clsTransactions.Connection, clsTransactions.Transaction);
                 //Data.BillingDetails clsBillingDetails = clsBilling.Details(mclsCustomerDetails.ContactID, false);
 
@@ -718,7 +915,19 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 dgvItems.Columns["TransactionNo"].Visible = true;
                 dgvItems.Columns["TransactionDate"].Visible = true;
-                dgvItems.Columns["CreditReason"].Visible = true;
+                switch (mclsSysConfigDetails.CreditPaymentType)
+                {
+                    case CreditPaymentType.Houseware:
+                        dgvItems.Columns["CreditReason"].Visible = true;
+                        break;
+                    case CreditPaymentType.MPC:
+                    case CreditPaymentType.Normal:
+                    default:
+                        dgvItems.Columns["Terms"].Visible = true;
+                        dgvItems.Columns["ModeOfTermsCode"].Visible = true;
+                        break;
+                }
+                //
                 dgvItems.Columns["SubTotal"].Visible = true;
                 dgvItems.Columns["Credit"].Visible = true;
                 dgvItems.Columns["CreditPaid"].Visible = true;
@@ -726,9 +935,25 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 dgvItems.Columns["TransactionNo"].Width = 120;
                 dgvItems.Columns["TransactionDate"].Width = 120;
-                if (dt.Rows.Count < 14) dgvItems.Columns["CreditReason"].Width = 240; else dgvItems.Columns["CreditReason"].Width = 210;
-                int iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["CreditReason"].Width) / 4;
-                if (dt.Rows.Count >= 14) iWidth = iWidth - 5;
+                // do an override
+                int iWidth = 100;
+                switch (mclsSysConfigDetails.CreditPaymentType)
+                {
+                    case CreditPaymentType.Houseware:
+                        if (dt.Rows.Count < 14) dgvItems.Columns["CreditReason"].Width = 240; else dgvItems.Columns["CreditReason"].Width = 210;
+                        iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["CreditReason"].Width) / 4;
+                        if (dt.Rows.Count >= 14) iWidth = iWidth - 5;
+
+                        break;
+                    case CreditPaymentType.MPC:
+                    case CreditPaymentType.Normal:
+                    default:
+                        dgvItems.Columns["Terms"].Width = 90;
+                        if (dt.Rows.Count < 14) dgvItems.Columns["ModeOfTermsCode"].Width = 150; else dgvItems.Columns["ModeOfTermsCode"].Width = 120;
+                        iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["Terms"].Width - dgvItems.Columns["ModeOfTermsCode"].Width) / 4;
+                        if (dt.Rows.Count >= 14) iWidth = iWidth - 5;
+                        break;
+                }
                 dgvItems.Columns["SubTotal"].Width = iWidth;
                 dgvItems.Columns["Credit"].Width = iWidth;
                 dgvItems.Columns["CreditPaid"].Width = iWidth;
@@ -736,7 +961,21 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 dgvItems.Columns["TransactionNo"].HeaderText = "Trans. No";
                 dgvItems.Columns["TransactionDate"].HeaderText = "Trans. Date";
-                dgvItems.Columns["CreditReason"].HeaderText = "Description";
+                switch (mclsSysConfigDetails.CreditPaymentType)
+                {
+                    case CreditPaymentType.Houseware:
+                        dgvItems.Columns["CreditReason"].HeaderText = "Description";
+                        break;
+                    case CreditPaymentType.MPC:
+                    case CreditPaymentType.Normal:
+                    default:
+                        dgvItems.Columns["Terms"].HeaderText = "Terms";
+                        dgvItems.Columns["ModeOfTermsCode"].HeaderText = "ModeOfTerms";
+                        dgvItems.Columns["Terms"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvItems.Columns["Terms"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvItems.Columns["Terms"].DefaultCellStyle.Format = "#,##0";
+                        break;
+                }
                 dgvItems.Columns["SubTotal"].HeaderText = "Subtotal";
                 dgvItems.Columns["Credit"].HeaderText = "Credit";
                 dgvItems.Columns["CreditPaid"].HeaderText = "Credit Paid";
@@ -761,6 +1000,85 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.ReadOnly = true;
                 dgvItems.Select();
 
+
+                lblHeader.Text = mclsCustomerDetails.ContactName;
+                lblBalance.Text = mclsCustomerDetails.Credit.ToString("#,##0.#0");
+
+                switch (mclsSysConfigDetails.CreditPaymentType)
+                {
+                    case CreditPaymentType.Houseware:
+                        // sort this so that the least amount will be on top
+                        // for HP
+                        dgvItems.Sort(dgvItems.Columns["Balance"], ListSortDirection.Descending);
+                        dgvItems.SelectAll();
+                        dgvItems_RowStateChanged(null, null);
+                        dgvItems.Enabled = false;
+
+                        Data.Billing clsBilling = new Data.Billing();
+                        Data.BillingDetails clsBillingDetails = clsBilling.Details(mclsCustomerDetails.ContactID, mclsCustomerDetails.CreditDetails.LastBillingDate, false);
+                        clsBilling.CommitAndDispose();
+
+                        lblAmountDue.Visible = true;
+                        labelAmountDue.Visible = true;
+                        lblAmountDue.Text = "0.00";
+                        if (clsBillingDetails.ContactID != 0)
+                        {
+                            if (mclsCustomerDetails.CreditDetails.CardTypeDetails.WithGuarantor)
+                            {
+                                labelAmountDue.Text = "Amount Due";
+
+                                if (decimal.Parse(lblBalance.Text) < clsBillingDetails.CurrentDueAmount)
+                                {
+                                    lblAmountDue.Text = lblBalance.Text;
+                                }
+                                else
+                                {
+                                    lblAmountDue.Text = clsBillingDetails.CurrentDueAmount.ToString("#,##0.#0");
+                                }
+                            }
+                            else
+                            {
+                                labelAmountDue.Text = "Minimum Amount Due";
+                                if (decimal.Parse(lblBalance.Text) < clsBillingDetails.MinimumAmountDue)
+                                {
+                                    lblAmountDue.Text = lblBalance.Text;
+                                }
+                                else
+                                {
+                                    lblAmountDue.Text = clsBillingDetails.MinimumAmountDue.ToString("#,##0.#0");
+                                }
+                            }
+                        }
+                        break;
+                    case CreditPaymentType.Normal:
+                    case CreditPaymentType.MPC:
+                    default:
+                        lblAmountDue.Visible = true;
+                        labelAmountDue.Visible = true;
+
+                        labelAmountDue.Text = "SubTotal Amount";
+                        lblAmountDue.Text = mclsCustomerDetails.Credit.ToString("#,##0.#0");
+
+                        decimal decTemp = 0;
+                        decimal decTotalPayable = 0;
+                        foreach (DataGridViewRow dr in dgvItems.Rows)
+                        {
+                            decTemp = 0;
+                            decimal.TryParse(dr.Cells["Balance"].Value.ToString(), out decTemp);
+                            decTotalPayable += decTemp;
+                        }
+                        lblAmountDue.Text = decTotalPayable.ToString("#,##0.#0");
+
+                        labelAmountDue.Location = new Point(116, 475);
+                        lblAmountDue.Location = new Point(700, 477);
+                        lblBalanceName.Location = new Point(116, 553);
+                        lblBalance.Location = new Point(705, 555);
+                        break;
+                }
+                
+                grpSearch.Visible = false;
+                dgvItems.Focus();
+                cmdEnter.Text = "Enter";
 			}
 			catch (Exception ex)
 			{

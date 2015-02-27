@@ -105,7 +105,7 @@ namespace AceSoft.RetailPlus.Reports
             Branch clsBranch = new Branch(clsCustomer.Connection, clsCustomer.Transaction);
             cboBranch.DataTextField = "BranchCode";
             cboBranch.DataValueField = "BranchID";
-            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable(OnlyIncludeIneSales: true).DefaultView;
             cboBranch.DataBind();
             cboBranch.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboBranch.SelectedIndex = 0;
@@ -168,12 +168,14 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.SummarizeDailySales:
                     {
-                        if (optActualAndEffective.Checked)
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithActualEffective.rpt"));
-                        else if (optEffective.Checked)
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithEffective.rpt"));
-                        else if (optActual.Checked)
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithActual.rpt"));
+                        rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithActualEffective.rpt"));
+
+                        //if (optActualAndEffective.Checked)
+                        //    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithActualEffective.rpt"));
+                        //else if (optEffective.Checked)
+                        //    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithEffective.rpt"));
+                        //else if (optActual.Checked)
+                        //    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_esalesreport/_DatedReportSummarizedPerDayBIRWithActual.rpt"));
                     }
                     break;
                 default:
@@ -328,7 +330,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SummarizeDailySales:
                     #region SummarizeDailySales
                     Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-                    dt = clsTerminalReportHistory.SummarizedDailySalesReport(Int32.Parse(cboBranch.SelectedItem.Value), TerminalNo, StartTransactionDate, EndTransactionDate, boWithTrustFund);
+                    dt = clsTerminalReportHistory.SummarizedDailySalesReport(Int32.Parse(cboBranch.SelectedItem.Value), TerminalNo, true, StartTransactionDate, EndTransactionDate, boWithTrustFund);
                     clsTerminalReportHistory.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -409,6 +411,24 @@ namespace AceSoft.RetailPlus.Reports
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);
                     
+                    break;
+
+                case ReportTypes.SummarizeDailySales:
+                case ReportTypes.SummarizeDailySalesWithTF:
+                    paramField = Report.DataDefinition.ParameterFields["isSummary"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = chkisSummary.Checked;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = Report.DataDefinition.ParameterFields["UseEffectiveDate"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = optActualAndEffective.Checked ? 0 : ( optEffective.Checked ? 1 : 2 );
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
                     break;
             }
 		}

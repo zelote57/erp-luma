@@ -65,7 +65,8 @@
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short-disabled" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()">3306</asp:TextBox>
+                                    <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short-disabled" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()" Width="60px">3306</asp:TextBox>
+                                    <asp:CheckBox id="chkIncludeIneSales" runat="server" Text="Will show in eSales Reporting" Checked="true" /> 
                                     &nbsp;
                                 </td>
                             </tr>

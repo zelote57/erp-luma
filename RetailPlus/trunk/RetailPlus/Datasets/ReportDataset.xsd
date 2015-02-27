@@ -1390,6 +1390,21 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="SummarizedInventory" msprop:Generator_TableClassName="SummarizedInventoryDataTable" msprop:Generator_TableVarName="tableSummarizedInventory" msprop:Generator_RowChangedName="SummarizedInventoryRowChanged" msprop:Generator_TablePropName="SummarizedInventory" msprop:Generator_RowDeletingName="SummarizedInventoryRowDeleting" msprop:Generator_RowChangingName="SummarizedInventoryRowChanging" msprop:Generator_RowEvHandlerName="SummarizedInventoryRowChangeEventHandler" msprop:Generator_RowDeletedName="SummarizedInventoryRowDeleted" msprop:Generator_RowClassName="SummarizedInventoryRow" msprop:Generator_UserTableName="SummarizedInventory" msprop:Generator_RowEvArgName="SummarizedInventoryRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BranchCode" msprop:Generator_ColumnVarNameInTable="columnBranchCode" msprop:Generator_ColumnPropNameInRow="BranchCode" msprop:Generator_ColumnPropNameInTable="BranchCodeColumn" msprop:Generator_UserColumnName="BranchCode" type="xs:string" minOccurs="0" />
+              <xs:element name="BranchName" msprop:Generator_ColumnVarNameInTable="columnBranchName" msprop:Generator_ColumnPropNameInRow="BranchName" msprop:Generator_ColumnPropNameInTable="BranchNameColumn" msprop:Generator_UserColumnName="BranchName" type="xs:string" minOccurs="0" />
+              <xs:element name="SupplierName" msprop:Generator_ColumnVarNameInTable="columnSupplierName" msprop:Generator_ColumnPropNameInRow="SupplierName" msprop:Generator_ColumnPropNameInTable="SupplierNameColumn" msprop:Generator_UserColumnName="SupplierName" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductGroupName" msprop:Generator_ColumnVarNameInTable="columnProductGroupName" msprop:Generator_ColumnPropNameInRow="ProductGroupName" msprop:Generator_ColumnPropNameInTable="ProductGroupNameColumn" msprop:Generator_UserColumnName="ProductGroupName" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductSubGroupName" msprop:Generator_ColumnVarNameInTable="columnProductSubGroupName" msprop:Generator_ColumnPropNameInRow="ProductSubGroupName" msprop:Generator_ColumnPropNameInTable="ProductSubGroupNameColumn" msprop:Generator_UserColumnName="ProductSubGroupName" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductCode" msprop:Generator_ColumnVarNameInTable="columnProductCode" msprop:Generator_ColumnPropNameInRow="ProductCode" msprop:Generator_ColumnPropNameInTable="ProductCodeColumn" msprop:Generator_UserColumnName="ProductCode" type="xs:string" minOccurs="0" />
+              <xs:element name="Quantity" msprop:Generator_ColumnVarNameInTable="columnQuantity" msprop:Generator_ColumnPropNameInRow="Quantity" msprop:Generator_ColumnPropNameInTable="QuantityColumn" msprop:Generator_UserColumnName="Quantity" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PurchasePrice" msprop:Generator_ColumnVarNameInTable="columnPurchasePrice" msprop:Generator_ColumnPropNameInRow="PurchasePrice" msprop:Generator_ColumnPropNameInTable="PurchasePriceColumn" msprop:Generator_UserColumnName="PurchasePrice" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalInventory" msprop:Generator_ColumnVarNameInTable="columnTotalInventory" msprop:Generator_ColumnPropNameInRow="TotalInventory" msprop:Generator_ColumnPropNameInTable="TotalInventoryColumn" msprop:Generator_UserColumnName="TotalInventory" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

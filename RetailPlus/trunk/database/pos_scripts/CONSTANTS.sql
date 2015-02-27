@@ -133,11 +133,25 @@ INSERT INTO tblProductPackage (Barcode1, ProductID, UnitID, Price, PurchasePrice
 INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'GCI FINANCE		';
 SELECT * FROM tblProducts WHERE ProductCode = 'GCI FINANCE CHARGE';
 
+DELETE FROM tblProductInventory WHERE ProductID IN (SELECT ProductID FROM tblProducts WHERE ProductCode = 'IC IMPORTED TRX');  
+DELETE FROM tblProductPackage WHERE ProductID IN (SELECT ProductID FROM tblProducts WHERE ProductCode = 'IC IMPORTED TRX');  
+DELETE FROM tblProducts WHERE ProductCode = 'IC IMPORTED TRX';  
+INSERT INTO tblProducts(ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES ('IC IMPORTED TRX','IC IMPORTED TRX',1,1,2,1,NOW());
+INSERT INTO tblProductPackage (Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT '99019', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'IC IMPORTED TRX';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'IC IMPORTED TRX';
+UPDATE tblProducts SET IsCreditChargeExcluded =1 WHERE ProductCode = 'IC IMPORTED TRX'; 
+SELECT * FROM tblProducts WHERE ProductCode = 'IC IMPORTED TRX';
+
 DELETE FROM sysConfig WHERE Category = 'Salutation';
 INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MR', 'MR');
 INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MRS', 'MRS');
 INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MS', 'MS');
 SELECT * FROM tblSalutations; 
+
+INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
+('WALK-IN', 'WALK-IN', 1, 0, 'RBS', 'RBS', '', '', NOW());
+INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
+('OUT OF STOCK', 'OUT OF STOCK', 1, 0, 'RBS', 'RBS', '', '', NOW());
 
 /*!40000 ALTER TABLE `tblProducts` ENABLE KEYS */;
 SET FOREIGN_KEY_CHECKS = 1;

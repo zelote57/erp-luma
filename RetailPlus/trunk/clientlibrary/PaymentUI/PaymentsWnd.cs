@@ -1008,10 +1008,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment)
             {
-                cmdF3.Visible = false;
-                lblCreditCard.Visible = false;
-                cmdF4.Visible = false;
-                lblCredit.Visible = false;
+                cmdF3.Visible = false;  lblCreditCard.Visible = false;
+                cmdF4.Visible = false; lblCredit.Visible = false;
                 grpDebit.Visible = false;
                 grpRewardCard.Visible = false;
 
@@ -1020,13 +1018,43 @@ namespace AceSoft.RetailPlus.Client.UI
                     lblChangeName.Text = "Deposit";
                 }
             }
-            // do not show cheque if Houseware
-            if (mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware
-                && isFromCreditPayment)
+
+            // 02Feb2014 : do not show cheque if Houseware
+            if (mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware && isFromCreditPayment)
             {
-                cmdF2.Visible = false;
-                lblCheque.Visible = false;
+                cmdF2.Visible = false; lblCheque.Visible = false;
             }
+
+            // 18Feb2014 : do not show cash and cheque if consignment
+            if (mclsSalesTransactionDetails.isConsignment)
+            {
+                cmdF1.Visible = false; lblCash.Visible = false;
+                cmdF2.Visible = false; lblCheque.Visible = false;
+                cmdF3.Visible = false; lblCreditCard.Visible = false;
+
+                cmdF4.Location = new Point(27, 20);
+                lblCredit.Location = new Point(112, 45);
+
+                if (!lblCredit.Visible) 
+                {
+                    MessageBox.Show("Sorry this Consignment transaction is not allowed coz the customer has no credit limit." + Environment.NewLine + "Please ask the approval of accounting office for this customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                grpDebit.Visible = false;
+                grpRewardCard.Visible = false;
+            }
+
+            // 25Feb2014 : show cash only if WALK_IN OR OUT_OF_STOCK
+            if (mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.WalkInCustomerCode ||
+                mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.OutOfStockCustomerCode)
+            {
+                cmdF1.Visible = true; lblCash.Visible = true;
+                cmdF2.Visible = false; lblCheque.Visible = false;
+                cmdF3.Visible = false; lblCreditCard.Visible = false;
+                cmdF4.Visible = false; lblCredit.Visible = false;
+                grpDebit.Visible = false;
+                grpRewardCard.Visible = false;
+            }
+
 
 			lblCash.Tag = "0.00";
 			lblCheque.Tag = "0.00";
@@ -1073,7 +1101,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			switch (e.KeyData)
 			{
 				case Keys.F1:
-					ShowCashPaymentWindow();
+                    if (cmdF1.Visible) ShowCashPaymentWindow();
 					break;
 
 				case Keys.F2:
@@ -1086,6 +1114,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				case Keys.F4:
                     if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Normal) ShowCreditPaymentWindow();
+                    else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.MPC) ShowCreditPaymentWindow();
                     else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware) ShowCreditCardPaymentWindow("f4");
 					break;
 
@@ -1111,11 +1140,17 @@ namespace AceSoft.RetailPlus.Client.UI
 						this.Hide();
 						break;
 					}
-					else
-					{
-						ShowCashPaymentWindow();
-						break;
-					}
+                    else if (mclsSalesTransactionDetails.isConsignment && !cmdF4.Visible)
+                    {
+                        dialog = DialogResult.Cancel;
+                        this.Hide();
+                        break;
+                    }
+                    else
+                    {
+                        if (cmdF1.Visible) ShowCashPaymentWindow();
+                        break;
+                    }
 			}
 		}
 		
@@ -1137,9 +1172,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 dialog = DialogResult.OK;
                 this.Hide();
             }
+            else if (mclsSalesTransactionDetails.isConsignment && !cmdF4.Visible)
+            {
+                dialog = DialogResult.Cancel;
+                this.Hide();
+            }
             else
             {
-                ShowCashPaymentWindow();
+                if (cmdF1.Visible) ShowCashPaymentWindow();
             }
         }
         private void cmdCancel_Click(object sender, EventArgs e)
@@ -1162,6 +1202,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private void cmdF4_Click(object sender, EventArgs e)
         {
             if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Normal) ShowCreditPaymentWindow();
+            else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.MPC) ShowCreditPaymentWindow();
             else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware) ShowCreditCardPaymentWindow("f4");
         }
         private void cmdF5_Click(object sender, EventArgs e)

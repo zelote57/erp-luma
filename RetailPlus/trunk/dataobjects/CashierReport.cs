@@ -118,6 +118,67 @@ namespace AceSoft.RetailPlus.Data
         public bool IsCashCountInitialized;
         public DateTime CreatedOn;
         public DateTime LastModified;
+
+        /// <summary>
+        /// 25Feb2015 : NoOfConsignmentTransactions
+        /// </summary>
+        public Int32 NoOfConsignmentTransactions;
+
+        /// <summary>
+        /// 25Feb2015 : NoOfConsignmentRefundTransactions
+        /// </summary>
+        public Int32 NoOfConsignmentRefundTransactions;
+
+        /// <summary>
+        /// 25Feb2015 : NoOfWalkInTransactions
+        /// </summary>
+        public Int32 NoOfWalkInTransactions;
+
+        /// <summary>
+        /// 25Feb2015 : NoOfWalkInRefundTransactions
+        /// </summary>
+        public Int32 NoOfWalkInRefundTransactions;
+
+        /// <summary>
+        /// 25Feb2015 : NoOfOutOfStockTransactions
+        /// </summary>
+        public Int32 NoOfOutOfStockTransactions;
+
+        /// <summary>
+        /// 25Feb2015 : NoOfOutOfStockRefundTransactions
+        /// </summary>
+        public Int32 NoOfOutOfStockRefundTransactions;
+
+        /// <summary>
+        /// 25Feb2015 : ConsignmentTransactions
+        /// </summary>
+        public decimal ConsignmentSales;
+
+        /// <summary>
+        /// 25Feb2015 : ConsignmentRefundSales
+        /// </summary>
+        public decimal ConsignmentRefundSales;
+
+        /// <summary>
+        /// 25Feb2015 : WalkInSales
+        /// </summary>
+        public decimal WalkInSales;
+
+        /// <summary>
+        /// 25Feb2015 : WalkInRefundSales
+        /// </summary>
+        public decimal WalkInRefundSales;
+
+        /// <summary>
+        /// 25Feb2015 : OutOfStockSales
+        /// </summary>
+        public decimal OutOfStockSales;
+
+        /// <summary>
+        /// 25Feb2015 : OutOfStockRefundSales
+        /// </summary>
+        public decimal OutOfStockRefundSales;
+
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -231,6 +292,20 @@ namespace AceSoft.RetailPlus.Data
 								"NoOfVoidTransactions, " +
                                 "NoOfRewardPointsPayment, " +
 								"NoOfTotalTransactions, " +
+
+                                "NoOfConsignmentTransactions, " +
+                                "NoOfConsignmentRefundTransactions, " +
+                                "NoOfWalkInTransactions, " +
+                                "NoOfWalkInRefundTransactions, " +
+                                "NoOfOutOfStockTransactions, " +
+                                "NoOfOutOfStockRefundTransactions, " +
+                                "ConsignmentSales, " +
+                                "ConsignmentRefundSales, " +
+                                "WalkInSales, " +
+                                "WalkInRefundSales, " +
+                                "OutOfStockSales, " +
+                                "OutOfStockRefundSales, " +
+
 								"CashCount, " +
 								"LastLoginDate " +
 							"FROM tblCashierReport " +
@@ -329,6 +404,18 @@ namespace AceSoft.RetailPlus.Data
                 Details.NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString());
                 Details.NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString());
                 Details.NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                Details.NoOfConsignmentTransactions = Int32.Parse(dr["NoOfConsignmentTransactions"].ToString());
+                Details.NoOfConsignmentRefundTransactions = Int32.Parse(dr["NoOfConsignmentRefundTransactions"].ToString());
+                Details.NoOfWalkInTransactions = Int32.Parse(dr["NoOfWalkInTransactions"].ToString());
+                Details.NoOfWalkInRefundTransactions = Int32.Parse(dr["NoOfWalkInRefundTransactions"].ToString());
+                Details.NoOfOutOfStockTransactions = Int32.Parse(dr["NoOfOutOfStockTransactions"].ToString());
+                Details.NoOfOutOfStockRefundTransactions = Int32.Parse(dr["NoOfOutOfStockRefundTransactions"].ToString());
+                Details.ConsignmentSales = decimal.Parse(dr["ConsignmentSales"].ToString());
+                Details.ConsignmentRefundSales = decimal.Parse(dr["ConsignmentRefundSales"].ToString());
+                Details.WalkInSales = decimal.Parse(dr["WalkInSales"].ToString());
+                Details.WalkInRefundSales = decimal.Parse(dr["WalkInRefundSales"].ToString());
+                Details.OutOfStockSales = decimal.Parse(dr["OutOfStockSales"].ToString());
+                Details.OutOfStockRefundSales = decimal.Parse(dr["OutOfStockRefundSales"].ToString());
                 Details.CashCount = decimal.Parse(dr["CashCount"].ToString());
                 Details.LastLoginDate = DateTime.Parse(dr["LastLoginDate"].ToString());
             }
@@ -475,6 +562,12 @@ namespace AceSoft.RetailPlus.Data
                                     "@NoOfDiscountedTransactions, " +
                                     "@NegativeAdjustments, " +
                                     "@NoOfNegativeAdjustmentTransactions, " +
+                                    "@NoOfConsignmentTransactions, " +
+                                    "@NoOfConsignmentRefundTransactions, " +
+                                    "@NoOfWalkInTransactions, " +
+                                    "@NoOfWalkInRefundTransactions, " +
+                                    "@NoOfOutOfStockTransactions, " +
+                                    "@NoOfOutOfStockRefundTransactions, " +
                                     "@PromotionalItems, " +
                                     "@CreditSalesTax);";
 
@@ -535,6 +628,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("NoOfDiscountedTransactions", Details.NoOfDiscountedTransactions);
                 cmd.Parameters.AddWithValue("NegativeAdjustments", Details.NegativeAdjustments);
                 cmd.Parameters.AddWithValue("NoOfNegativeAdjustmentTransactions", Details.NoOfNegativeAdjustmentTransactions);
+                cmd.Parameters.AddWithValue("NoOfConsignmentTransactions", Details.NoOfConsignmentTransactions);
+                cmd.Parameters.AddWithValue("NoOfConsignmentRefundTransactions", Details.NoOfConsignmentRefundTransactions);
+                cmd.Parameters.AddWithValue("NoOfWalkInTransactions", Details.NoOfWalkInTransactions);
+                cmd.Parameters.AddWithValue("NoOfWalkInRefundTransactions", Details.NoOfWalkInRefundTransactions);
+                cmd.Parameters.AddWithValue("NoOfOutOfStockTransactions", Details.NoOfOutOfStockTransactions);
+                cmd.Parameters.AddWithValue("NoOfOutOfStockRefundTransactions", Details.NoOfOutOfStockRefundTransactions);
                 cmd.Parameters.AddWithValue("PromotionalItems", Details.PromotionalItems);
                 cmd.Parameters.AddWithValue("CreditSalesTax", Details.CreditSalesTax);
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
@@ -831,6 +930,10 @@ namespace AceSoft.RetailPlus.Data
                                         "@NoOfRewardPointsPayment, @CreditPaymentCash, @CreditPaymentCheque," +
                                         "@CreditPaymentCreditCard, @CreditPaymentDebit, " +
                                         "@RefundCash, @RefundCheque, @RefundCreditCard, @RefundCredit, @RefundDebit, " +
+                                        "@NoOfConsignmentTransactions, @NoOfConsignmentRefundTransactions, @NoOfWalkInTransactions, " +
+                                        "@NoOfWalkInRefundTransactions, @NoOfOutOfStockTransactions, @NoOfOutOfStockRefundTransactions," +
+                                        "@ConsignmentSales, @ConsignmentRefundSales, @WalkInSales," +
+                                        "@WalkInRefundSales, @OutOfStockSales, @OutOfStockRefundSales," +
                                         "@CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
@@ -916,6 +1019,20 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("RefundCreditCard", Details.RefundCreditCard);
                 cmd.Parameters.AddWithValue("RefundCredit", Details.RefundCredit);
                 cmd.Parameters.AddWithValue("RefundDebit", Details.RefundDebit);
+
+                cmd.Parameters.AddWithValue("NoOfConsignmentTransactions", Details.NoOfConsignmentTransactions);
+                cmd.Parameters.AddWithValue("NoOfConsignmentRefundTransactions", Details.NoOfConsignmentRefundTransactions);
+                cmd.Parameters.AddWithValue("NoOfWalkInTransactions", Details.NoOfWalkInTransactions);
+                cmd.Parameters.AddWithValue("NoOfWalkInRefundTransactions", Details.NoOfWalkInRefundTransactions);
+                cmd.Parameters.AddWithValue("NoOfOutOfStockTransactions", Details.NoOfOutOfStockTransactions);
+                cmd.Parameters.AddWithValue("NoOfOutOfStockRefundTransactions", Details.NoOfOutOfStockRefundTransactions);
+                cmd.Parameters.AddWithValue("ConsignmentSales", Details.ConsignmentSales);
+                cmd.Parameters.AddWithValue("ConsignmentRefundSales", Details.ConsignmentRefundSales);
+                cmd.Parameters.AddWithValue("WalkInSales", Details.WalkInSales);
+                cmd.Parameters.AddWithValue("WalkInRefundSales", Details.WalkInRefundSales);
+                cmd.Parameters.AddWithValue("OutOfStockSales", Details.OutOfStockSales);
+                cmd.Parameters.AddWithValue("OutOfStockRefundSales", Details.OutOfStockRefundSales);
+
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 

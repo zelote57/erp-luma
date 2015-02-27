@@ -115,6 +115,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			clsDetails.DBPort = txtDBPort.Text;
 			clsDetails.Address = txtAddress.Text;
 			clsDetails.Remarks = txtRemarks.Text;
+            clsDetails.IncludeIneSales = chkIncludeIneSales.Checked;
 
 			int id = clsBranch.Insert(clsDetails);
 			

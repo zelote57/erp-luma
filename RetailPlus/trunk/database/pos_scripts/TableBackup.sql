@@ -1,27 +1,52 @@
 ﻿
-ALTER TABLE tblTransactionsBackup ADD `isConsignment` tinyint(1) unsigned NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionsBackup ADD DataSource VARCHAR(30) NULL;
-ALTER TABLE tblTransactionsBackup MODIFY DiscountCode VARCHAR(60);
-ALTER TABLE tblTransactionsBackup MODIFY ChargeCode VARCHAR(60);
-ALTER TABLE tblTransactionsBackup ADD CustomerGroupName VARCHAR(60) NULL;
-ALTER TABLE tblTransactionsBackup ADD `ORNo` VARCHAR(30);
-ALTER TABLE tblTransactionsBackup ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionsBackup ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
-ALTER TABLE tblTransactionsBackup ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
-ALTER TABLE tblTransactionsBackup ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
-ALTER TABLE tblTransactionsBackup ADD `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionsBackup ADD `SNRDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionsBackup ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionsBackup ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionsBackup ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
-ALTER TABLE tblTransactionsBackup ADD `ChargeType` INT(1) NOT NULL DEFAULT 0;
 
-ALTER TABLE tblTransactionItemsBackup ADD `TransactionDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'This is an applied discount computed evenly from transaction discount';
 
-ALTER TABLE tblTransactionItemsBackup ADD DataSource VARCHAR(30) NULL;
-ALTER TABLE tblTransactionItemsBackup ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
-ALTER TABLE tblTransactionItemsBackup ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
-ALTER TABLE tblTransactionItemsBackup ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
-ALTER TABLE tblTransactionItemsBackup ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
-ALTER TABLE tblTransactionItemsBackup ADD `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
+-- check how many rows per partition
+SELECT PARTITION_NAME, SUBPARTITION_NAME, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME = 'tblTransactions' AND TABLE_SCHEMA = 'posbooze';
+
+-- check create tabke 
+SHOW CREATE TABLE tblTransactions;
+
+-- create a table with the same schema as the original
+CREATE TABLE e2 LIKE tblTransactions;
+
+
+-- check indexes
+SHOW INDEX FROM tblTransactions;
+
+
+-- backup table
+CREATE DATABASE posback;
+CREATE TABLE IF NOT EXISTS posback.bktblTransactions LIKE tblTransactions;
+CREATE TABLE IF NOT EXISTS posback.bktblTransactionItems LIKE tblTransactionItems;
+
+INSERT INTO posback.bktblTransactions SELECT * FROM tblTransactions WHERE YEAR(TransactionDate) <= '2013';
+INSERT INTO posback.bktblTransactionItems SELECT a.* FROM tblTransactionItems a INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID WHERE YEAR(TransactionDate) <= '2013';
+
+SELECT COUNT(*) FROM tblTransactions;
+SELECT COUNT(*) FROM tblTransactionItems;
+
+SELECT COUNT(*) FROM tblTransactions WHERE YEAR(TransactionDate) <= '2013';
+SELECT COUNT(*) FROM posback.bktblTransactions WHERE YEAR(TransactionDate) <= '2013';
+
+DELETE a FROM tblTransactionItems a INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID WHERE YEAR(TransactionDate) <= '2013';
+DELETE FROM tblTransactions WHERE YEAR(TransactionDate) <= '2013';
+
+SELECT PARTITION_NAME, SUBPARTITION_NAME, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME = 'tblTransactions' AND TABLE_SCHEMA = 'pos';
+SELECT PARTITION_NAME, SUBPARTITION_NAME, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME = 'bktblTransactions' AND TABLE_SCHEMA = 'posback';
+
+
+RENAME TABLE tblProductInventoryAudit TO tblProductInventoryAudit_20150206;
+CREATE TABLE IF NOT EXISTS tblProductInventoryAudit LIKE tblProductInventoryAudit_20150206;
+
+RENAME TABLE tblProductInventoryDaily TO tblProductInventoryDaily_20150206;
+CREATE TABLE IF NOT EXISTS tblProductInventoryDaily LIKE tblProductInventoryDaily_20150206;
+
+RENAME TABLE tblProductInventoryMonthly TO tblProductInventoryMonthly_20150206;
+CREATE TABLE IF NOT EXISTS tblProductInventoryMonthly LIKE tblProductInventoryMonthly_20150206;
+
+
+-- update the new added column
+UPDATE sysAuditTrail SET CreatedON = ActivityDate WHERE DATE_FORMAT(CreatedON, '%Y-%m-%d') = '1900-01-01' OR DATE_FORMAT(CreatedON, '%Y-%m-%d') = '0001-01-01' OR DATE_FORMAT(CreatedON, '%Y-%m-%d') = '0000-00-00';
+UPDATE sysAuditTrail SET LastModified = ActivityDate WHERE DATE_FORMAT(LastModified, '%Y-%m-%d') = '1900-01-01' OR DATE_FORMAT(LastModified, '%Y-%m-%d') = '0001-01-01' OR DATE_FORMAT(LastModified, '%Y-%m-%d') = '0000-00-00';

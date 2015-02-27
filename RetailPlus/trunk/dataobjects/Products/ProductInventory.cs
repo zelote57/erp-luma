@@ -121,6 +121,32 @@ namespace AceSoft.RetailPlus.Data
             return dt;
         }
 
+        public System.Data.DataTable SummarizedInventory(SummarizedInventoryTypes InventoryType, Int32 BranchID = 0, Int64 SupplierID = 0, Int64 ProductGroupID = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procInventorySummary(@InventoryType, @BranchID, @SupplierID, @ProductGroupID)";
+
+                cmd.Parameters.AddWithValue("@InventoryType", InventoryType.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         /// <summary>
         /// Lemu - 06-20-2011
         /// </summary>

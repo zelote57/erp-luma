@@ -42,9 +42,10 @@ namespace AceSoft.RetailPlus.Rewards
 		{
             cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
-            //cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
             cboReportType.Items.Add(new ListItem(ReportTypes.RewardsHistory, ReportTypes.RewardsHistory));
             cboReportType.Items.Add(new ListItem(ReportTypes.RewardsSummary, ReportTypes.RewardsSummary));
+            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+            cboReportType.Items.Add(new ListItem(ReportTypes.RewardsSummaryStatistics, ReportTypes.RewardsSummaryStatistics));
 
             if (Request.QueryString["task"] == null)
             { 
@@ -60,6 +61,9 @@ namespace AceSoft.RetailPlus.Rewards
                         break;
                     case ReportTypes.RewardsSummary:
                         cboReportType.SelectedIndex = 2;
+                        break;
+                    case ReportTypes.RewardsSummaryStatistics:
+                        cboReportType.SelectedIndex = 4;
                         break;
                     default:
                         cboReportType.SelectedIndex = 0;
@@ -78,24 +82,31 @@ namespace AceSoft.RetailPlus.Rewards
 
             txtStartTransactionDate.Text = Common.ToShortDateString(DateTime.Now.AddDays(-1));
             txtEndTransactionDate.Text = Common.ToShortDateString(DateTime.Now);
+
+            cboReportType_SelectedIndexChanged(null, null);
 		}
 
         private ReportDocument getReportDocument()
         {
             ReportDocument rpt = new ReportDocument();
 
-            string strReportType = cboReportType.SelectedValue;
+            string strReportType = cboReportType.SelectedItem.Value;
 
-            if (strReportType == ReportTypes.REPORT_SELECTION)
-                return null;
-            else if (strReportType == ReportTypes.REPORT_SELECTION_SEPARATOR)
-                return null;
-            else if (strReportType == ReportTypes.RewardsHistory)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardsmovement.rpt"));
-            else if (strReportType == ReportTypes.RewardsSummary)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardssummary.rpt"));
-            else return null;
-
+            switch (strReportType)
+            {
+                case ReportTypes.RewardsHistory:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardsmovement.rpt"));
+                    break;
+                case ReportTypes.RewardsSummary:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardssummary.rpt"));
+                    break;
+                case ReportTypes.RewardsSummaryStatistics:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardssummarystatistics.rpt"));
+                    break;
+                default:
+                    return null;
+            }
+            
             return rpt;
         }
 
@@ -193,6 +204,25 @@ namespace AceSoft.RetailPlus.Rewards
 
                     break;
                     #endregion
+
+                case ReportTypes.RewardsSummaryStatistics:
+                    #region RewardsSummaryStatistics
+                    clsContactReward = new ContactReward();
+                    dt = clsContactReward.SummarizedStatistics();
+                    clsContactReward.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.RewardsSummary.NewRow();
+
+                        foreach (DataColumn dc in rptds.RewardsSummary.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.RewardsSummary.Rows.Add(drNew);
+                    }
+
+                    break;
+                    #endregion
                 
             }
 			Report.SetDataSource(rptds); 
@@ -223,53 +253,49 @@ namespace AceSoft.RetailPlus.Rewards
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
-            paramField = Report.DataDefinition.ParameterFields["CustomerName"];
-            discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = cboContactName.SelectedItem.Text;
-            currentValues = new ParameterValues();
-            currentValues.Add(discreteParam);
-            paramField.ApplyCurrentValues(currentValues);
+            switch (cboReportType.SelectedItem.Value)
+            {
+                case ReportTypes.RewardsHistory:
+                case ReportTypes.RewardsSummary:
+                    paramField = Report.DataDefinition.ParameterFields["CustomerName"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = cboContactName.SelectedItem.Text;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
 
-            paramField = Report.DataDefinition.ParameterFields["RewardCardNo"];
-            discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = cboContactName.SelectedItem.Text;
-            currentValues = new ParameterValues();
-            currentValues.Add(discreteParam);
-            paramField.ApplyCurrentValues(currentValues);
+                    paramField = Report.DataDefinition.ParameterFields["RewardCardNo"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = cboContactName.SelectedItem.Text;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
 
-            DateTime StartTransactionDate = DateTime.MinValue;
-            try
-            { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text); }
-            catch { }
-            paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
-            discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = StartTransactionDate;
-            currentValues = new ParameterValues();
-            currentValues.Add(discreteParam);
-            paramField.ApplyCurrentValues(currentValues);
+                    DateTime StartTransactionDate = DateTime.MinValue;
+                    try
+                    { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text); }
+                    catch { }
+                    paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = StartTransactionDate;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
 
-            DateTime EndTransactionDate = DateTime.MinValue;
-            try
-            { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text); }
-            catch { }
-            paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
-            discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = EndTransactionDate;
-            currentValues = new ParameterValues();
-            currentValues.Add(discreteParam);
-            paramField.ApplyCurrentValues(currentValues);
-
-            //switch (cboReportType.SelectedValue)
-            //{
-            //    case ReportTypes.RewardsHistory:
-            //        #region RewardsHistory
-
-                    
-
-            //        break;
-            //        #endregion
-
-            //}
+                    DateTime EndTransactionDate = DateTime.MinValue;
+                    try
+                    { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text); }
+                    catch { }
+                    paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = EndTransactionDate;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+                    break;
+                default:
+                    break;
+            }
 		}
 
 		#endregion
@@ -336,6 +362,22 @@ namespace AceSoft.RetailPlus.Rewards
             Response.Redirect(lblReferrer.Text);
         }
 
+        protected void cboReportType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panHolder.Visible = false;
+            switch (cboReportType.SelectedItem.Text)
+            {
+                case ReportTypes.RewardsHistory:
+                case ReportTypes.RewardsSummary:
+                    panHolder.Visible = true;
+                    break;
+                case ReportTypes.RewardsSummaryStatistics:
+                    panHolder.Visible = false;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         #endregion
 

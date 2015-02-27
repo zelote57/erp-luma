@@ -588,8 +588,8 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "procProductMovementSelect";
 
-                cmd.Parameters.AddWithValue("@lngProductID", ProductID);
-                cmd.Parameters.AddWithValue("@lngMatrixID", MatrixID);
+                cmd.Parameters.AddWithValue("@intProductID", ProductID);
+                cmd.Parameters.AddWithValue("@intMatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@intBranchID", intBranchID);

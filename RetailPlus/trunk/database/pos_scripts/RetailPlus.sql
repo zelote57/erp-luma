@@ -4856,7 +4856,7 @@ ALTER TABLE tblProductMovement ADD `CreatedBy` VARCHAR(100) NOT NULL DEFAULT '';
 
 DROP TABLE IF EXISTS sysTerminalkey;
 CREATE TABLE sysTerminalkey (
-	`HDSerialNo` VARCHAR(30) NOT NULL,
+	`HDSerialNo` VARCHAR(200) NOT NULL,
 	`RegistrationKey` VARCHAR(255) NOT NULL,
 INDEX `IX_sysTerminalkey`(`HDSerialNo`),
 INDEX `IX_sysTerminalkey1`(`HDSerialNo`, `RegistrationKey`)
@@ -8386,6 +8386,8 @@ UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Customer Rew
 UPDATE sysAccessTypes SET SequenceNo = 9, Category = '08: Backend - Customer Rewards' WHERE TypeID = 143;
 UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Customer Rewards' WHERE TypeID = 144;
 
+UPDATE tblTerminal SET DBVersion = '4.0.1.2';	-- start update of marzan
+
 ALTER TABLE tblTerminal ADD `WillPrintVoidItem` TINYINT (1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblContactCreditCardInfo ADD `CreditBeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Beginning Balance for Creditors w/ Guarantor';
@@ -8394,74 +8396,74 @@ ALTER TABLE tblTerminal MODIFY `IncludeCreditChargeAgreement` TINYINT(1) NOT NUL
 
 ALTER TABLE tblTerminal MODIFY `ShowCustomerSelection` TINYINT (1) NOT NULL DEFAULT 0 COMMENT 'Show customer selection or use swipe. If swipe, uses ContactAddDetWnd instead of ContactAddWnd. If Swipe credit will be disabled, only inhousecreditcard is enabled. ';
 
-/*****************************
-**	tblCreditPaymentCash
-*****************************/
-DROP TABLE IF EXISTS tblCreditPaymentCash;
-CREATE TABLE tblCreditPaymentCash (
-	`CreditPaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-	`CPRefTerminalNo` VARCHAR(5),
-	`CPRefBranchID` INT(4) NOT NULL DEFAULT 0,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-	`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Remarks` VARCHAR(255),
-	`TransactionNo` VARCHAR(30),
-	`CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`CreditPaymentCashID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`SyncID` BIGINT(20) NOT NULL DEFAULT 0,
-	`TerminalNo` VARCHAR(5),
-	`BranchID` INT(4) NOT NULL DEFAULT 0,
-INDEX `IX_tblCreditPaymentCash`(`TransactionID`),
-INDEX `IX1_tblCreditPaymentCash`(`Remarks`)
-);
+	/*****************************
+	**	tblCreditPaymentCash
+	*****************************/
+	DROP TABLE IF EXISTS tblCreditPaymentCash;
+	CREATE TABLE tblCreditPaymentCash (
+		`CreditPaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+		`CPRefTerminalNo` VARCHAR(5),
+		`CPRefBranchID` INT(4) NOT NULL DEFAULT 0,
+		`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+		`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
+		`Remarks` VARCHAR(255),
+		`TransactionNo` VARCHAR(30),
+		`CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+		`LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		`CreditPaymentCashID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		`SyncID` BIGINT(20) NOT NULL DEFAULT 0,
+		`TerminalNo` VARCHAR(5),
+		`BranchID` INT(4) NOT NULL DEFAULT 0,
+	INDEX `IX_tblCreditPaymentCash`(`TransactionID`),
+	INDEX `IX1_tblCreditPaymentCash`(`Remarks`)
+	);
 
-CREATE TRIGGER trgtblCreditPaymentCashCreatedOn BEFORE INSERT ON tblCreditPaymentCash FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE INDEX IX_tblCreditPaymentCash_IXSync ON tblCreditPaymentCash (SyncID);
+	CREATE TRIGGER trgtblCreditPaymentCashCreatedOn BEFORE INSERT ON tblCreditPaymentCash FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+	CREATE INDEX IX_tblCreditPaymentCash_IXSync ON tblCreditPaymentCash (SyncID);
 
-/*****************************
-**	tblCreditPaymentCheque
-*****************************/
-DROP TABLE IF EXISTS tblCreditPaymentCheque;
-CREATE TABLE tblCreditPaymentCheque (
-	`CreditPaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-	`CPRefTerminalNo` VARCHAR(5),
-	`CPRefBranchID` INT(4) NOT NULL DEFAULT 0,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-	`ChequeNo` VARCHAR(30) NOT NULL,
-	`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`ValidityDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`Remarks` VARCHAR(255),
-	`TransactionNo` VARCHAR(30),
-	`CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`CreditPaymentChequeID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`SyncID` BIGINT(20) NOT NULL DEFAULT 0,
-	`TerminalNo` VARCHAR(5),
-	`BranchID` INT(4) NOT NULL DEFAULT 0,
-INDEX `IX_tblCreditPaymentCheque`(`TransactionID`),
-INDEX `IX1_tblCreditPaymentCheque`(`ChequeNo`),
-INDEX `IX2_tblCreditPaymentCheque`(`ValidityDate`),
-INDEX `IX3_tblCreditPaymentCheque`(`Remarks`)
-);
+	/*****************************
+	**	tblCreditPaymentCheque
+	*****************************/
+	DROP TABLE IF EXISTS tblCreditPaymentCheque;
+	CREATE TABLE tblCreditPaymentCheque (
+		`CreditPaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+		`CPRefTerminalNo` VARCHAR(5),
+		`CPRefBranchID` INT(4) NOT NULL DEFAULT 0,
+		`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+		`ChequeNo` VARCHAR(30) NOT NULL,
+		`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
+		`ValidityDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+		`Remarks` VARCHAR(255),
+		`TransactionNo` VARCHAR(30),
+		`CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+		`LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		`CreditPaymentChequeID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		`SyncID` BIGINT(20) NOT NULL DEFAULT 0,
+		`TerminalNo` VARCHAR(5),
+		`BranchID` INT(4) NOT NULL DEFAULT 0,
+	INDEX `IX_tblCreditPaymentCheque`(`TransactionID`),
+	INDEX `IX1_tblCreditPaymentCheque`(`ChequeNo`),
+	INDEX `IX2_tblCreditPaymentCheque`(`ValidityDate`),
+	INDEX `IX3_tblCreditPaymentCheque`(`Remarks`)
+	);
 
-ALTER TABLE tblDebitPayment ADD `BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0;
-ALTER TABLE tblDebitPayment ADD `TerminalNo` VARCHAR(5);
+	ALTER TABLE tblDebitPayment ADD `BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0;
+	ALTER TABLE tblDebitPayment ADD `TerminalNo` VARCHAR(5);
 
-CREATE TRIGGER trgtblCreditPaymentChequeCreatedOn BEFORE INSERT ON tblCreditPaymentCheque FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE INDEX IX_tblCreditPaymentCheque_IXSync ON tblCreditPaymentCheque (SyncID);
+	CREATE TRIGGER trgtblCreditPaymentChequeCreatedOn BEFORE INSERT ON tblCreditPaymentCheque FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+	CREATE INDEX IX_tblCreditPaymentCheque_IXSync ON tblCreditPaymentCheque (SyncID);
 
-ALTER TABLE tblProductSubGroup ADD `BarCodeCounter` BIGINT NOT NULL DEFAULT 0;
+	ALTER TABLE tblProductSubGroup ADD `BarCodeCounter` BIGINT NOT NULL DEFAULT 0;
 
 -- Automatically deposit the change of CreditPayment
 -- selection: true, false
 DELETE FROM sysConfig WHERE ConfigName = 'WillDepositChangeOfCreditPayment';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDepositChangeOfCreditPayment',	'FE', 'true');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDepositChangeOfCreditPayment',	'FE', 'false');
 
 -- put the CreditPaymentType to be use in selecting creditpayment. Case sensitive
--- selection: Normal, Houseware
+-- selection: Normal, Houseware, MPC
 DELETE FROM sysConfig WHERE ConfigName = 'CreditPaymentType';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CreditPaymentType',	'FE', 'Houseware');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CreditPaymentType',	'FE', 'MPC');
 
 -- put the AllowDebitPayment to be use if debit payment is allowed
 -- selection: true, false
@@ -8812,7 +8814,7 @@ UPDATE tblTerminalReportHistory SET IncludeIneSales = 0 WHERE TerminalID >= 80;
 ALTER TABLE tblBranch ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
 
 
-/*********************************  v_4.0.1.32.sql END  *******************************************************/ 
+/*********************************  v_4.0.1.31.sql END  *******************************************************/ 
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.32';
 
@@ -8837,6 +8839,106 @@ DELETE FROM sysConfig WHERE ConfigName = 'AllowZeroAmountTransaction';
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('AllowZeroAmountTransaction',	'FE', 'true');
 -- INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('AllowZeroAmountTransaction',	'FE', 'false');
 
+-- put the AllowMoreThan1ItemIfConsignment to be use when closing transaction
+-- selection: 
+--		true	- allow
+--		false	- do not allow
+-- default true:
+DELETE FROM sysConfig WHERE ConfigName = 'AllowMoreThan1ItemIfConsignment';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('AllowMoreThan1ItemIfConsignment',	'FE', 'false');
+
+-- put the AllowMoreThan1ItemIfConsignment to be use when closing transaction
+-- selection: 
+--		true	- yes will process in program
+--		false	- no will process in event.sql
+-- default true:
+DELETE FROM sysConfig WHERE ConfigName = 'WillProcessCreditBillerInProgram';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillProcessCreditBillerInProgram',	'Biller', 'false');
+
+/*********************************  v_4.0.1.32.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.33';
+
+ALTER TABLE tblTransactions ADD `ModeOfTerms` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `Terms` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `CRNo` BIGINT(20) NOT NULL DEFAULT 0;
+
+
+DELETE FROM sysConfig WHERE ConfigName = 'OutOfStockCustomerCode';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('OutOfStockCustomerCode',		'FE',						'OUT OF STOCK');
+
+DELETE FROM sysConfig WHERE ConfigName = 'WalkInCustomerCode';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WalkInCustomerCode',			'FE',						'WALK-IN');
+
+
+-- 25Feb2015 :	As requested by MPC
+--				Consignment does not issue OR. Consignment is only Paid by CreditPayment
+--				Once consignment is collected it is paid using {Shift + Enter} or Credit Payment
+ALTER TABLE tblTerminalReport ADD `NoOfConsignmentTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `NoOfConsignmentRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+
+-- 25Feb2015 :	As requested by MPC
+--				WalkIn does not issue OR. WalkIn is only Paid by Cash
+--				WalkIn is not reflected as sales coz those are invalid transactions
+ALTER TABLE tblTerminalReport ADD `NoOfWalkInTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `NoOfWalkInRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+
+-- 25Feb2015 :	As requested by MPC
+--				OutOfStock does not issue OR. OutOfStock is only Paid by Cash
+--				WalkIn is not reflected as sales coz those are invalid transactions
+ALTER TABLE tblTerminalReport ADD `NoOfOutOfStockTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `NoOfOutOfStockRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReport ADD `ConsignmentSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `ConsignmentRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `WalkInSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `WalkInRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `OutOfStockSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `OutOfStockRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReportHistory ADD `NoOfConsignmentTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NoOfConsignmentRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NoOfWalkInTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NoOfWalkInRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NoOfOutOfStockTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NoOfOutOfStockRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReportHistory ADD `ConsignmentSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `ConsignmentRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `WalkInSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `WalkInRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `OutOfStockSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `OutOfStockRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `NoOfConsignmentTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NoOfConsignmentRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NoOfWalkInTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NoOfWalkInRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NoOfOutOfStockTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NoOfOutOfStockRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `ConsignmentSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `ConsignmentRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `WalkInSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `WalkInRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `OutOfStockSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `OutOfStockRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReportHistory ADD `NoOfConsignmentTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NoOfConsignmentRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NoOfWalkInTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NoOfWalkInRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NoOfOutOfStockTransactions` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NoOfOutOfStockRefundTransactions` INT(10) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReportHistory ADD `ConsignmentSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `ConsignmentRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `WalkInSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `WalkInRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `OutOfStockSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `OutOfStockRefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+UPDATE tblTransactions SET ORNo = TransactionNo WHERE TransactionStatus IN (1,5,11) AND IFNULL(ORNo,'') = '';
 
 -- Added  xxxxxx if credit card type is inhouse
 

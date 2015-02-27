@@ -57,6 +57,11 @@ namespace AceSoft.RetailPlus.Rewards
                             SearchIndex = SearchCategoryID.NotApplicable;
                             ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                             break;
+                        case ReportTypes.RewardsSummaryStatistics:
+                            stHeading = "Summarized Statistics";
+                            SearchIndex = SearchCategoryID.NotApplicable;
+                            ctrlReports.Visible = true; ctrlProcessing.Visible = false; ctrlProcessing.Dispose();
+                            break;
 					    default:
 						    break;
 				    }

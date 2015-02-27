@@ -121,6 +121,15 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.Label lblReportType;
         
         /// <summary>
+        /// divBranch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBranch;
+        
+        /// <summary>
         /// cboBranch control.
         /// </summary>
         /// <remarks>

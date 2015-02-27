@@ -28,8 +28,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
                     try
                     {
-                        lblStatus.Text = Request.QueryString["status"].ToString();
-                        cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
+                        string strStatus = Common.Decrypt(Request.QueryString["status"].ToString(), Session.SessionID);
+                        lblStatus.Text = strStatus;
+                        cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(strStatus));
                     }
                     catch { }
 
@@ -331,7 +332,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
 
-			SortOption sortoption = SortOption.Ascending;
+			SortOption sortoption = SortOption.Desscending;
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 

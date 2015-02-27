@@ -76,6 +76,15 @@ namespace AceSoft.RetailPlus.Credits {
         protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsLedgerSummary;
         
         /// <summary>
+        /// lnkSummarizedStatistics control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkSummarizedStatistics;
+        
+        /// <summary>
         /// lnkCreditorsWithGurantorPurchases control.
         /// </summary>
         /// <remarks>
@@ -101,6 +110,15 @@ namespace AceSoft.RetailPlus.Credits {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkGuarantorsLedger;
+        
+        /// <summary>
+        /// lnkSummarizedStatisticsWG control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkSummarizedStatisticsWG;
         
         /// <summary>
         /// lnkChangeCreditType control.

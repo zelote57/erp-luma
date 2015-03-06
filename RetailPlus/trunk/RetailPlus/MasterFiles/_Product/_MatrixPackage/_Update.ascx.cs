@@ -130,7 +130,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._MatrixPackage
             try { decMargin = decMargin / clsDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtMargin.Text = decMargin.ToString("#,##0.#0");
+            txtMargin.Text = decMargin.ToString("#,##0.##0");
 			txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
 			txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");

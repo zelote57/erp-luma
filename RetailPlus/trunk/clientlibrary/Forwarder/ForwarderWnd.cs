@@ -1,8 +1,13 @@
 using System;
 using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Linq;
+using System.Net;
+using System.Net.FtpClient;
+using System.Xml;
+using System.Diagnostics;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
@@ -571,42 +576,51 @@ namespace AceSoft.RetailPlus.Client.UI
             ListViewItem.ListViewSubItem lvsi;
             lstItems.Items.Clear();
 
-            FTP clsFTP = new FTP();
-            clsFTP.Connect(CONFIG.FTPIPAddress, CONFIG.FTPUsername, CONFIG.FTPPassword);
-            if (CONFIG.FTPDirectory != null && CONFIG.FTPDirectory != string.Empty)
-                clsFTP.ChangeDirectory(CONFIG.FTPDirectory);
+            int intPort = 21;
+            if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
+            {
+                try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
+                catch { }
+            }
 
+            FtpClient ftpClient = new FtpClient();
+            ftpClient.Host = CONFIG.FTPIPAddress;
+            ftpClient.Port = intPort;
+            ftpClient.Credentials = new NetworkCredential(CONFIG.FTPUsername, CONFIG.FTPPassword);
+
+            IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(CONFIG.FTPDirectory, FtpListOption.Modify | FtpListOption.Size);
+            
             grpRLC.Text = "RLC File Server Management: [DOUBLE CLICK TO RELOAD] : " + CONFIG.FTPDirectory;
 
+            //Int32 iCount = lstFtpListItem.Count();
+            //Int32 iCtr = 1;
             try
             {
-                foreach (FTP.File strFile in clsFTP.Files)
+                foreach (FtpListItem ftpListItem in lstFtpListItem)
                 {
-                    if (strFile.ToString() != string.Empty)
-                    {
-                        lvi = new ListViewItem();
-                        lvi.Text = strFile.FileName;
-                        //lvi.ImageIndex = 0;
-                        lvi.Tag = strFile.ToString();
+                    lvi = new ListViewItem();
+                    lvi.Text = ftpListItem.Name;
+                    //lvi.ImageIndex = 0;
+                    lvi.Tag = ftpListItem.FullName;
 
-                        lvsi = new ListViewItem.ListViewSubItem();
-                        lvsi.Text = strFile.FileSize.ToString() + " kb";
-                        lvi.SubItems.Add(lvsi);
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = ftpListItem.Size.ToString() + " kb";
+                    lvi.SubItems.Add(lvsi);
 
-                        lvsi = new ListViewItem.ListViewSubItem();
-                        lvsi.Text = strFile.FileDate.ToString("MM/dd/yyyy hh:mm tt");
-                        lvi.SubItems.Add(lvsi);
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = ftpListItem.Created.ToString("MM/dd/yyyy hh:mm tt");
+                    lvi.SubItems.Add(lvsi);
 
-                        lstItems.Items.Add(lvi);
-                    }
+                    lstItems.Items.Add(lvi);
                 }
             }
             catch (Exception ex) {
                 MessageBox.Show("Error encountered while loading file list. " + Environment.NewLine + "Err #: " + ex.Message, "RetailPlus", MessageBoxButtons.OK);
             }
 
-            clsFTP.Disconnect();
-            clsFTP = null;
+            ftpClient.Disconnect();
+            ftpClient.Dispose();
+            ftpClient = null;
         }
         
         #endregion

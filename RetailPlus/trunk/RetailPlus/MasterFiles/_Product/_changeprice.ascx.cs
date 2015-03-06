@@ -58,6 +58,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         {
             int intProductBaseUnitID = 0;
             decimal decCommision = 0;
+            lblProductSubGroupID.Text = "0";
 
             if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
             {
@@ -66,9 +67,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 {
                     ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedValue));
                     intProductBaseUnitID = clsDetails.BaseUnitID; decCommision = clsDetails.PercentageCommision;
+
+                    lblProductSubGroupID.Text = clsDetails.ProductSubGroupID.ToString();
                 }
                 catch { }
-
+                
                 txtProductCode.ToolTip = intProductBaseUnitID.ToString();
                 lblProductID.ToolTip = decCommision.ToString();
                 long ProductID = Convert.ToInt64(cboProductCode.SelectedValue);
@@ -100,6 +103,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 imgProductPriceHistory.Visible = true;
                 imgInventoryAdjustment.Visible = true;
                 imgEditNow.Visible = true;
+                lnkPackage.Visible = true;
+                imgVariationsMatrix.Visible = true;
+                imgUnitsMatrix.Visible = true;
+
+                string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedValue, Session.SessionID);
+                lnkPackage.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_Package/Default.aspx" + stParam;
+
                 lnkProductPackageAdd.ToolTip = "Add new package for " + cboProductCode.SelectedItem.Text;
                 lnkProductPackageAdd.NavigateUrl = "_Package/Default.aspx?task=" + Common.Encrypt("add", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedValue, Session.SessionID) + "&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
                 txtProductCode.Text = cboProductCode.SelectedItem.Text;
@@ -114,6 +124,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 imgProductPriceHistory.Visible = false;
                 imgInventoryAdjustment.Visible = false;
                 imgEditNow.Visible = false;
+                lnkPackage.Visible = false;
+                imgVariationsMatrix.Visible = false;
+                imgUnitsMatrix.Visible = false;
                 lblPurchasePriceHistory.Visible = false;
                 txtProductCode.ToolTip = intProductBaseUnitID.ToString();
                 lblProductID.ToolTip = decCommision.ToString(); 
@@ -182,7 +195,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 catch { decMargin = 1; }
                 decMargin = decMargin * 100;
                 TextBox txtMargin = (TextBox)e.Item.FindControl("txtMargin");
-                txtMargin.Text = decMargin.ToString("#,##0.#0");
+                txtMargin.Text = decMargin.ToString("#,##0.##0");
 
                 TextBox txtWSPrice = (TextBox)e.Item.FindControl("txtWSPrice");
                 txtWSPrice.Text = Convert.ToDecimal(dr["WSPrice"].ToString()).ToString("#,##0.#0");
@@ -192,7 +205,18 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 catch { decMargin = 1; }
                 decMargin = decMargin * 100;
                 TextBox txtWSPriceMarkUp = (TextBox)e.Item.FindControl("txtWSPriceMarkUp");
-                txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.#0");
+                txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.##0");
+
+                TextBox txtPrice1 = (TextBox)e.Item.FindControl("txtPrice1");
+                txtPrice1.Text = Convert.ToDecimal(dr["Price1"].ToString()).ToString("#,##0.#0");
+                TextBox txtPrice2 = (TextBox)e.Item.FindControl("txtPrice2");
+                txtPrice2.Text = Convert.ToDecimal(dr["Price2"].ToString()).ToString("#,##0.#0");
+                TextBox txtPrice3 = (TextBox)e.Item.FindControl("txtPrice3");
+                txtPrice3.Text = Convert.ToDecimal(dr["Price3"].ToString()).ToString("#,##0.#0");
+                TextBox txtPrice4 = (TextBox)e.Item.FindControl("txtPrice4");
+                txtPrice4.Text = Convert.ToDecimal(dr["Price4"].ToString()).ToString("#,##0.#0");
+                TextBox txtPrice5 = (TextBox)e.Item.FindControl("txtPrice5");
+                txtPrice5.Text = Convert.ToDecimal(dr["Price5"].ToString()).ToString("#,##0.#0");
 
                 TextBox txtCommision = (TextBox)e.Item.FindControl("txtCommision");
                 txtCommision.Text = lblProductID.ToolTip;
@@ -232,22 +256,22 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 }
 
                 if (txtBarCode1.Text == string.Empty) {
-                    cmdPrintShelvesBarCode1.Enabled = false; cmdPrintShelvesBarCode1.Visible = false; cmdPrintShelvesBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
-                    cmdPrintTagPriceBarCode1.Enabled = false; cmdPrintTagPriceBarCode1.Visible = false; cmdPrintTagPriceBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
+                    cmdPrintShelvesBarCode1.Enabled = false; cmdPrintShelvesBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    cmdPrintTagPriceBarCode1.Enabled = false; cmdPrintTagPriceBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
                 } else { 
                     cmdPrintShelvesBarCode1.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode1.Text;
                     cmdPrintTagPriceBarCode1.ToolTip = "Print Price Tag using barcode: " + txtBarCode1.Text; 
                 }
                 if (txtBarCode2.Text == string.Empty) {
-                    cmdPrintShelvesBarCode2.Enabled = false; cmdPrintShelvesBarCode2.Visible = false; cmdPrintShelvesBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
-                    cmdPrintTagPriceBarCode2.Enabled = false; cmdPrintTagPriceBarCode2.Visible = false; cmdPrintTagPriceBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
+                    cmdPrintShelvesBarCode2.Enabled = false; cmdPrintShelvesBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    cmdPrintTagPriceBarCode2.Enabled = false; cmdPrintTagPriceBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
                 } else { 
                     cmdPrintShelvesBarCode2.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode2.Text;
                     cmdPrintTagPriceBarCode2.ToolTip = "Print Price Tag using barcode: " + txtBarCode2.Text; 
                 }
                 if (txtBarCode3.Text == string.Empty) {
-                    cmdPrintShelvesBarCode3.Enabled = false; cmdPrintShelvesBarCode3.Visible = false; cmdPrintShelvesBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
-                    cmdPrintTagPriceBarCode3.Enabled = false; cmdPrintTagPriceBarCode3.Visible = false; cmdPrintTagPriceBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
+                    cmdPrintShelvesBarCode3.Enabled = false; cmdPrintShelvesBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    cmdPrintTagPriceBarCode3.Enabled = false; cmdPrintTagPriceBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
                 } else { 
                     cmdPrintShelvesBarCode3.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode3.Text;
                     cmdPrintTagPriceBarCode3.ToolTip = "Print Price Tag using barcode: " + txtBarCode3.Text; 
@@ -297,6 +321,17 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice3 = new ThermalBarCodePrinter();
                     clsThermalBarCodeTagPrice3.PrintTagPrice(cboProductCode.SelectedItem.Text, txtBarCode3.Text, Convert.ToDecimal(txtSellingPrice.Text).ToString("#,##0.#0"));
                     break;
+
+                // 02Mar2015 : Added to automatically generate Barcode
+                case "imgCreateBarCode1_Click":
+                    txtBarCode1.Text = CreateBarCode();
+                    break;
+                case "imgCreateBarCode2_Click":
+                    txtBarCode2.Text = CreateBarCode();
+                    break;
+                case "imgCreateBarCode3_Click":
+                    txtBarCode3.Text = CreateBarCode();
+                    break;
             }
         }
 
@@ -328,9 +363,18 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         }
         protected void imgEditNow_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) +
-                                "&id=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+            string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&id=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
             Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam);
+        }
+        protected void imgVariationsMatrix_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+            Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_VariationsMatrix/Default.aspx" + stParam);
+        }
+        protected void imgUnitsMatrix_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+            Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_UnitsMatrix/Default.aspx" + stParam);
         }
 
 		#endregion
@@ -340,6 +384,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		private void LoadOptions()
 		{
             lblProductID.ToolTip = "0"; //default zero for Commision
+            lblProductSubGroupID.Text = "0";
 
             string strproductcode = string.Empty;
             try { strproductcode = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID); }
@@ -384,6 +429,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 TextBox txtQuantity = (TextBox)e.FindControl("txtQuantity");
                 TextBox txtPurchasePrice = (TextBox)e.FindControl("txtPurchasePrice");
                 TextBox txtSellingPrice = (TextBox)e.FindControl("txtSellingPrice");
+                TextBox txtPrice1 = (TextBox)e.FindControl("txtPrice1");
+                TextBox txtPrice2 = (TextBox)e.FindControl("txtPrice2");
+                TextBox txtPrice3 = (TextBox)e.FindControl("txtPrice3");
+                TextBox txtPrice4 = (TextBox)e.FindControl("txtPrice4");
+                TextBox txtPrice5 = (TextBox)e.FindControl("txtPrice5");
                 TextBox txtWSPrice = (TextBox)e.FindControl("txtWSPrice");
                 Label lblVAT = (Label)e.FindControl("lblVAT");
                 Label lblEVAT = (Label)e.FindControl("lblEVAT");
@@ -394,6 +444,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 clsProductPackageDetails.ProductID = Convert.ToInt64(cboProductCode.SelectedValue);
                 clsProductPackageDetails.UnitID = Convert.ToInt32(lblUnitName.ToolTip);
                 clsProductPackageDetails.Price = Convert.ToDecimal(txtSellingPrice.Text);
+                clsProductPackageDetails.Price1 = Convert.ToDecimal(txtPrice1.Text);
+                clsProductPackageDetails.Price2 = Convert.ToDecimal(txtPrice2.Text);
+                clsProductPackageDetails.Price3 = Convert.ToDecimal(txtPrice3.Text);
+                clsProductPackageDetails.Price4 = Convert.ToDecimal(txtPrice4.Text);
+                clsProductPackageDetails.Price5 = Convert.ToDecimal(txtPrice5.Text);
                 clsProductPackageDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);
                 clsProductPackageDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
                 clsProductPackageDetails.Quantity = Convert.ToDecimal(txtQuantity.Text);
@@ -410,7 +465,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             clsProductPackage.CommitAndDispose();
 		}
-        
+
+        private string CreateBarCode()
+        {
+            string strRetValue = "";
+
+            Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup();
+            string strProductCode = clsProductSubGroup.getBarCodeCounter(Int64.Parse(lblProductSubGroupID.Text)).ToString().PadLeft(13 - (lblProductSubGroupID.Text.Length + 2), '0');
+            clsProductSubGroup.CommitAndDispose();
+
+            BarcodeHelper ean13 = new BarcodeHelper("99", lblProductSubGroupID.Text, strProductCode);
+            strRetValue = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
+            return strRetValue;
+        }
+
 		#endregion
 
     }

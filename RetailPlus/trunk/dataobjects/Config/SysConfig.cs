@@ -73,9 +73,13 @@ namespace AceSoft.RetailPlus.Data
         public bool AllowMoreThan1ItemIfConsignment;
 
         public bool WillProcessCreditBillerInProgram;
+        public bool WillConvertWeightMeasurementTo1InQtySold;
+        public string WeightMeasurement;
 
         public string OutOfStockCustomerCode;
         public string WalkInCustomerCode;
+
+        public Int32 ChequePaymentAcceptableNoOfDays;
 
         public string ORHeader;
 
@@ -281,6 +285,29 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        public bool get_WillConvertWeightMeasurementTo1InQtySold()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_CONVERT_WEIGHT_MEASUREMENT_TO1_IN_QTY_SOLD));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public string get_WeightMeasurement()
+        {
+            string strRetValue = "GAL,GALLON,KL,KILO,KG,KILOGRAM,GRM,GRAM,GRAMS";
+            try
+            {
+                strRetValue = get_Sysconfig(Constants.SYS_CONFIG_WILL_CONVERT_WEIGHT_MEASUREMENT);
+            }
+            catch { }
+            return strRetValue;
+        }
+        
+
         public bool get_isDefaultButtonYesInPrintTransaction()
         {
             bool boRetValue = true;
@@ -323,6 +350,17 @@ namespace AceSoft.RetailPlus.Data
             }
             catch { }
             return strRetValue;
+        }
+
+        public Int32 get_ChequePaymentAcceptableNoOfDays()
+        {
+            Int32 iRetValue = 180;
+            try
+            {
+                iRetValue = Int32.TryParse(get_Sysconfig(Constants.SYS_CONFIG_CHEQUE_PAYMENT_ACCEPTABLE_NO_OF_DAYS), out iRetValue) ? iRetValue : 180;
+            }
+            catch { }
+            return iRetValue;
         }
 
         public string get_ORHeader()
@@ -415,9 +453,12 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.AllowZeroAmountTransaction = get_AllowZeroAmountTransaction();
             clsSysConfigDetails.AllowMoreThan1ItemIfConsignment = get_AllowMoreThan1ItemIfConsignment();
             clsSysConfigDetails.WillProcessCreditBillerInProgram = get_WillProcessCreditBillerInProgram();
+            clsSysConfigDetails.WillConvertWeightMeasurementTo1InQtySold = get_WillConvertWeightMeasurementTo1InQtySold();
+            clsSysConfigDetails.WeightMeasurement = get_WeightMeasurement();
             clsSysConfigDetails.isDefaultButtonYesInPrintTransaction = get_isDefaultButtonYesInPrintTransaction();
             clsSysConfigDetails.OutOfStockCustomerCode = get_OutOfStockCustomerCode();
             clsSysConfigDetails.WalkInCustomerCode = get_WalkInCustomerCode();
+            clsSysConfigDetails.ChequePaymentAcceptableNoOfDays = get_ChequePaymentAcceptableNoOfDays();
             clsSysConfigDetails.ORHeader = get_ORHeader();
 
             return clsSysConfigDetails;

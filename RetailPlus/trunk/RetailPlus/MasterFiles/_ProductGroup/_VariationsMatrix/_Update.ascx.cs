@@ -141,7 +141,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
             try { decMargin = decMargin / clsBaseDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtMargin.Text = decMargin.ToString("#,##0.#0");
+            txtMargin.Text = decMargin.ToString("#,##0.##0");
             chkIncludeInSubtotalDiscount.Checked = clsBaseDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsBaseDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsBaseDetails.EVAT.ToString("#,##0.#0");

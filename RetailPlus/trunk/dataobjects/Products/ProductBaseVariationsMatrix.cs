@@ -28,6 +28,11 @@ namespace AceSoft.RetailPlus.Data
         public string BarCode2;
         public string BarCode3;
         public decimal Price;
+        public decimal Price1;
+        public decimal Price2;
+        public decimal Price3;
+        public decimal Price4;
+        public decimal Price5;
         public decimal WSPrice;
         public decimal PurchasePrice;
         public bool IncludeInSubtotalDiscount;

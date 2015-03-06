@@ -766,7 +766,7 @@ namespace AceSoft.RetailPlus.Data
 				     * Added April 28, 2010 4:20PM
                      * Update Selling Information when TransferIn is posted
 				     * ****************************************/
-                    clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsTransferInDetails.SupplierID, intProductUnitID, decimal.Parse(dr["SellingPrice"].ToString()));
+                    clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsTransferInDetails.SupplierID, intProductUnitID, decimal.Parse(dr["SellingPrice"].ToString()), -1, -1, -1, -1, -1);
                     //if (lngVariationMatrixID != 0)
                     //{
                     //    clsProductVariationsMatrix.UpdateSellingWithSameQuantityAndUnit(lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, decimal.Parse(myReader["SellingPrice");

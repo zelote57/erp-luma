@@ -63,6 +63,8 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 
         public Data.TerminalDetails TerminalDetails { get; set; }
+
+        public Data.SysConfigDetails SysConfigDetails { get; set; }
         
 		#endregion
 
@@ -592,7 +594,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						"Please type a valid validity date.","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					return false;
 				}
-                if (ValidityDate < DateTime.Now.AddDays(-180))
+                if (ValidityDate < DateTime.Now.AddDays(-SysConfigDetails.ChequePaymentAcceptableNoOfDays))
 				{
 					txtValidityDate.Focus();
 					MessageBox.Show("Cheque has been expired, please ask for a valid cheque.","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);

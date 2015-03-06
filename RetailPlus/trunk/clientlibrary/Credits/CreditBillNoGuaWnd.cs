@@ -22,7 +22,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private GroupBox grpContactDetails;
         private Label lblCaption;
         private TextBox txtCustomerName;
-        private TextBox txtSelectedTexBox;
+        //private TextBox txtSelectedTexBox;
         private Button cmdCancel;
         private Button cmdEnter;
         private GroupBox grpBillingDetails;

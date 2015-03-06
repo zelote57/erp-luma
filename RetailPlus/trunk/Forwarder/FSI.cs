@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.FtpClient;
 using System.Security.Permissions;
 
 namespace AceSoft.RetailPlus.Forwarder
@@ -229,9 +232,9 @@ namespace AceSoft.RetailPlus.Forwarder
             Event clsEvent = new Event();
             try
             {
-                if (pvtFileName != "")
+                if (!string.IsNullOrEmpty(pvtFileName))
                 {
-                    if (mclsFSIDetails.FTPIPAddress == null || mclsFSIDetails.FTPIPAddress == string.Empty)
+                    if (string.IsNullOrEmpty(mclsFSIDetails.FTPIPAddress))
                     {   clsEvent.AddEventLn("Cannot transfer file " + pvtFileName + ". FTP IPAddress is empty Automatic File transfer is disabled.", true); 
                         return; 
                     }
@@ -243,31 +246,61 @@ namespace AceSoft.RetailPlus.Forwarder
                     clsEvent.AddEventLn("Cannot transfer an blank file.", true); return;
                 }
 
-                FTP clsFTP = new FTP();
-                clsFTP.Connect(mclsFSIDetails.FTPIPAddress, mclsFSIDetails.FTPUsername, mclsFSIDetails.FTPPassword);
-                if (mclsFSIDetails.FTPDirectory != null && mclsFSIDetails.FTPDirectory != string.Empty)
-                    clsFTP.ChangeDirectory(mclsFSIDetails.FTPDirectory);
+                int intPort = 21;
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
+                {
+                    try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
+                    catch { }
+                }
+
+                FtpClient ftpClient = new FtpClient();
+                ftpClient.Host = mclsFSIDetails.FTPIPAddress;
+                ftpClient.Port = intPort;
+                ftpClient.Credentials = new NetworkCredential(mclsFSIDetails.FTPUsername, mclsFSIDetails.FTPPassword);
+
+                IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(mclsFSIDetails.FTPDirectory, FtpListOption.Modify | FtpListOption.Size);
 
                 bool bolIsFileExist = false;
-                foreach (FTP.File file in clsFTP.Files)
+                clsEvent.AddEventLn("Checking file if already exist...", true);
+                try
                 {
-                    if (file.FileName.ToUpper() == Path.GetFileName(pvtFileName).ToUpper())
-                    { bolIsFileExist = true; break; }
+                    foreach (FtpListItem ftpListItem in lstFtpListItem)
+                    {
+                        if (ftpListItem.Name.ToUpper() == Path.GetFileName(pvtFileName).ToUpper())
+                        { bolIsFileExist = true; break; }
+                    }
+                }
+                catch (Exception excheck)
+                {
+                    clsEvent.AddEventLn("checking error..." + excheck.Message, true);
                 }
 
-                if (bolIsFileExist == true)
-                    clsFTP.Files.Upload(Path.GetFileName(pvtFileName), pvtFileName, true);
+                if (bolIsFileExist)
+                {
+                    clsEvent.AddEventLn("exist...", true);
+                    clsEvent.AddEventLn("uploading now...", true);
+                }
                 else
-                    clsFTP.Files.Upload(Path.GetFileName(pvtFileName), pvtFileName);
-
-                while (!clsFTP.Files.UploadComplete)
                 {
-                    clsEvent.AddEventLn("Uploading: TotalBytes: " + clsFTP.Files.TotalBytes.ToString() + ", : PercentComplete: " + clsFTP.Files.PercentComplete.ToString(), true);
+                    clsEvent.AddEventLn("does not exist...", true);
+                    clsEvent.AddEventLn("uploading now...", true);
                 }
-                clsEvent.AddEventLn("Upload Complete: TotalBytes: " + clsFTP.Files.TotalBytes.ToString() + ", : PercentComplete: " + clsFTP.Files.PercentComplete.ToString(), true);
 
-                clsFTP.Disconnect();
-                clsFTP = null;
+                using (var fileStream = File.OpenRead(pvtFileName))
+                using (var ftpStream = ftpClient.OpenWrite(string.Format("{0}/{1}", Path.GetFileName(pvtFileName), Path.GetFileName(pvtFileName))))
+                {
+                    var buffer = new byte[8 * 1024];
+                    int count;
+                    while ((count = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        ftpStream.Write(buffer, 0, count);
+                    }
+                    clsEvent.AddEventLn("Upload Complete: TotalBytes: " + buffer.ToString(), true);
+                }
+
+                ftpClient.Disconnect();
+                ftpClient.Dispose();
+                ftpClient = null;
 
                 clsEvent.AddEventLn("Done.", true);
             }

@@ -31,6 +31,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.Label lblProductID;
         
         /// <summary>
+        /// lblProductSubGroupID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblProductSubGroupID;
+        
+        /// <summary>
         /// UpdatePanel3 control.
         /// </summary>
         /// <remarks>
@@ -110,6 +119,33 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgEditNow;
+        
+        /// <summary>
+        /// lnkPackage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkPackage;
+        
+        /// <summary>
+        /// imgVariationsMatrix control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgVariationsMatrix;
+        
+        /// <summary>
+        /// imgUnitsMatrix control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgUnitsMatrix;
         
         /// <summary>
         /// UpdatePanel5 control.

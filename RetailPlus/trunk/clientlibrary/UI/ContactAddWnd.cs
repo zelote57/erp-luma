@@ -48,6 +48,13 @@ namespace AceSoft.RetailPlus.Client.UI
         private CheckBox chkIsCreditAllowed;
         private Label label10;
         private TextBox txtContactCode;
+        private Label label16;
+        private TextBox txtRemarks;
+        private Label label11;
+        private TextBox txtLTONo;
+        private Label label12;
+        private TextBox txtTINNo;
+        private Button cmdGenerateCustomerCode;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -128,6 +135,15 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmdGenerateCustomerCode = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtLTONo = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtTINNo = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtRemarks = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtContactCode = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtTelNo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -152,8 +168,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCreditLimit = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtContactCode = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -184,6 +198,13 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.cmdGenerateCustomerCode);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.txtLTONo);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.txtTINNo);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.txtContactCode);
             this.groupBox1.Controls.Add(this.label3);
@@ -198,17 +219,113 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(9, 67);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1008, 237);
+            this.groupBox1.Size = new System.Drawing.Size(1008, 310);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contact Details";
+            // 
+            // cmdGenerateCustomerCode
+            // 
+            this.cmdGenerateCustomerCode.CausesValidation = false;
+            this.cmdGenerateCustomerCode.Location = new System.Drawing.Point(292, 51);
+            this.cmdGenerateCustomerCode.Name = "cmdGenerateCustomerCode";
+            this.cmdGenerateCustomerCode.Size = new System.Drawing.Size(27, 30);
+            this.cmdGenerateCustomerCode.TabIndex = 1;
+            this.cmdGenerateCustomerCode.Text = "...";
+            this.cmdGenerateCustomerCode.UseVisualStyleBackColor = true;
+            this.cmdGenerateCustomerCode.Click += new System.EventHandler(this.cmdGenerateCustomerCode_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label11.Location = new System.Drawing.Point(349, 90);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(104, 13);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "LTO No (BFAD No)";
+            // 
+            // txtLTONo
+            // 
+            this.txtLTONo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLTONo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLTONo.Location = new System.Drawing.Point(392, 108);
+            this.txtLTONo.MaxLength = 75;
+            this.txtLTONo.Name = "txtLTONo";
+            this.txtLTONo.Size = new System.Drawing.Size(310, 30);
+            this.txtLTONo.TabIndex = 5;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label12.Location = new System.Drawing.Point(71, 90);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(173, 13);
+            this.label12.TabIndex = 27;
+            this.label12.Text = "TIN No (Tax Identification No)";
+            // 
+            // txtTINNo
+            // 
+            this.txtTINNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTINNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTINNo.Location = new System.Drawing.Point(114, 108);
+            this.txtTINNo.MaxLength = 75;
+            this.txtTINNo.Name = "txtTINNo";
+            this.txtTINNo.Size = new System.Drawing.Size(205, 30);
+            this.txtTINNo.TabIndex = 4;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label16.Location = new System.Drawing.Point(71, 229);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(58, 13);
+            this.label16.TabIndex = 24;
+            this.label16.Text = "Remarks";
+            // 
+            // txtRemarks
+            // 
+            this.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemarks.Location = new System.Drawing.Point(114, 247);
+            this.txtRemarks.MaxLength = 150;
+            this.txtRemarks.Multiline = true;
+            this.txtRemarks.Name = "txtRemarks";
+            this.txtRemarks.Size = new System.Drawing.Size(887, 49);
+            this.txtRemarks.TabIndex = 8;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label10.Location = new System.Drawing.Point(71, 33);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(167, 13);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "Please enter Customer Code";
+            // 
+            // txtContactCode
+            // 
+            this.txtContactCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContactCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactCode.Location = new System.Drawing.Point(114, 51);
+            this.txtContactCode.MaxLength = 25;
+            this.txtContactCode.Name = "txtContactCode";
+            this.txtContactCode.Size = new System.Drawing.Size(176, 30);
+            this.txtContactCode.TabIndex = 0;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label3.Location = new System.Drawing.Point(513, 84);
+            this.label3.Location = new System.Drawing.Point(730, 90);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(165, 13);
             this.label3.TabIndex = 7;
@@ -218,11 +335,11 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtTelNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTelNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelNo.Location = new System.Drawing.Point(554, 102);
+            this.txtTelNo.Location = new System.Drawing.Point(771, 108);
             this.txtTelNo.MaxLength = 75;
             this.txtTelNo.Name = "txtTelNo";
-            this.txtTelNo.Size = new System.Drawing.Size(257, 30);
-            this.txtTelNo.TabIndex = 2;
+            this.txtTelNo.Size = new System.Drawing.Size(230, 30);
+            this.txtTelNo.TabIndex = 6;
             this.txtTelNo.GotFocus += new System.EventHandler(this.txtTelNo_GotFocus);
             // 
             // label2
@@ -230,7 +347,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label2.Location = new System.Drawing.Point(71, 84);
+            this.label2.Location = new System.Drawing.Point(728, 33);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(223, 13);
             this.label2.TabIndex = 5;
@@ -240,11 +357,11 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtBusinessName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBusinessName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBusinessName.Location = new System.Drawing.Point(114, 102);
+            this.txtBusinessName.Location = new System.Drawing.Point(771, 51);
             this.txtBusinessName.MaxLength = 75;
             this.txtBusinessName.Name = "txtBusinessName";
-            this.txtBusinessName.Size = new System.Drawing.Size(360, 30);
-            this.txtBusinessName.TabIndex = 1;
+            this.txtBusinessName.Size = new System.Drawing.Size(230, 30);
+            this.txtBusinessName.TabIndex = 3;
             this.txtBusinessName.GotFocus += new System.EventHandler(this.txtBusinessName_GotFocus);
             // 
             // label1
@@ -252,7 +369,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label1.Location = new System.Drawing.Point(71, 143);
+            this.label1.Location = new System.Drawing.Point(71, 152);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(183, 13);
             this.label1.TabIndex = 6;
@@ -262,12 +379,12 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAddress.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddress.Location = new System.Drawing.Point(114, 161);
+            this.txtAddress.Location = new System.Drawing.Point(114, 170);
             this.txtAddress.MaxLength = 150;
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(697, 39);
-            this.txtAddress.TabIndex = 3;
+            this.txtAddress.Size = new System.Drawing.Size(887, 48);
+            this.txtAddress.TabIndex = 7;
             this.txtAddress.GotFocus += new System.EventHandler(this.txtAddress_GotFocus);
             // 
             // lblCaption
@@ -275,7 +392,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCaption.AutoSize = true;
             this.lblCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCaption.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblCaption.Location = new System.Drawing.Point(71, 25);
+            this.lblCaption.Location = new System.Drawing.Point(349, 33);
             this.lblCaption.Name = "lblCaption";
             this.lblCaption.Size = new System.Drawing.Size(171, 13);
             this.lblCaption.TabIndex = 4;
@@ -285,11 +402,11 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtCustomerName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCustomerName.Location = new System.Drawing.Point(114, 43);
+            this.txtCustomerName.Location = new System.Drawing.Point(392, 51);
             this.txtCustomerName.MaxLength = 25;
             this.txtCustomerName.Name = "txtCustomerName";
-            this.txtCustomerName.Size = new System.Drawing.Size(360, 30);
-            this.txtCustomerName.TabIndex = 0;
+            this.txtCustomerName.Size = new System.Drawing.Size(310, 30);
+            this.txtCustomerName.TabIndex = 2;
             this.txtCustomerName.GotFocus += new System.EventHandler(this.txtCustomerName_GotFocus);
             // 
             // cmdCancel
@@ -302,7 +419,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.Location = new System.Drawing.Point(765, 618);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(106, 83);
-            this.cmdCancel.TabIndex = 2;
+            this.cmdCancel.TabIndex = 14;
             this.cmdCancel.Text = "CANCEL";
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
@@ -317,7 +434,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.Location = new System.Drawing.Point(877, 618);
             this.cmdEnter.Name = "cmdEnter";
             this.cmdEnter.Size = new System.Drawing.Size(106, 83);
-            this.cmdEnter.TabIndex = 1;
+            this.cmdEnter.TabIndex = 13;
             this.cmdEnter.Text = "ENTER";
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
@@ -340,7 +457,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox2.Controls.Add(this.txtCreditLimit);
             this.groupBox2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.ForeColor = System.Drawing.Color.Blue;
-            this.groupBox2.Location = new System.Drawing.Point(7, 314);
+            this.groupBox2.Location = new System.Drawing.Point(7, 382);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1008, 206);
             this.groupBox2.TabIndex = 13;
@@ -366,7 +483,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.chkIsCreditAllowed.Location = new System.Drawing.Point(688, 136);
             this.chkIsCreditAllowed.Name = "chkIsCreditAllowed";
             this.chkIsCreditAllowed.Size = new System.Drawing.Size(240, 30);
-            this.chkIsCreditAllowed.TabIndex = 16;
+            this.chkIsCreditAllowed.TabIndex = 12;
             this.chkIsCreditAllowed.Text = "( If uncheck credit will not be allowed \r\n  even if he/she has available credit b" +
     "alance)";
             this.chkIsCreditAllowed.UseVisualStyleBackColor = true;
@@ -400,7 +517,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cboTerms.Location = new System.Drawing.Point(443, 136);
             this.cboTerms.Name = "cboTerms";
             this.cboTerms.Size = new System.Drawing.Size(185, 31);
-            this.cboTerms.TabIndex = 13;
+            this.cboTerms.TabIndex = 11;
             // 
             // label8
             // 
@@ -422,7 +539,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTerms.MaxLength = 75;
             this.txtTerms.Name = "txtTerms";
             this.txtTerms.Size = new System.Drawing.Size(257, 30);
-            this.txtTerms.TabIndex = 11;
+            this.txtTerms.TabIndex = 10;
             this.txtTerms.Text = "0";
             this.txtTerms.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtTerms.GotFocus += new System.EventHandler(this.txtTerms_GotFocus);
@@ -450,6 +567,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAvailableCredit.ReadOnly = true;
             this.txtAvailableCredit.Size = new System.Drawing.Size(185, 30);
             this.txtAvailableCredit.TabIndex = 8;
+            this.txtAvailableCredit.TabStop = false;
             this.txtAvailableCredit.Text = "0.00";
             this.txtAvailableCredit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -475,6 +593,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit.ReadOnly = true;
             this.txtCredit.Size = new System.Drawing.Size(185, 30);
             this.txtCredit.TabIndex = 2;
+            this.txtCredit.TabStop = false;
             this.txtCredit.Text = "0.00";
             this.txtCredit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -499,32 +618,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit.MaxLength = 75;
             this.txtCreditLimit.Name = "txtCreditLimit";
             this.txtCreditLimit.Size = new System.Drawing.Size(257, 30);
-            this.txtCreditLimit.TabIndex = 1;
+            this.txtCreditLimit.TabIndex = 9;
             this.txtCreditLimit.Text = "0.00";
             this.txtCreditLimit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtCreditLimit.GotFocus += new System.EventHandler(this.txtCreditLimit_GotFocus);
             this.txtCreditLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCreditLimit_KeyPress);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label10.Location = new System.Drawing.Point(511, 25);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(167, 13);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Please enter Customer Code";
-            // 
-            // txtContactCode
-            // 
-            this.txtContactCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtContactCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContactCode.Location = new System.Drawing.Point(554, 43);
-            this.txtContactCode.MaxLength = 25;
-            this.txtContactCode.Name = "txtContactCode";
-            this.txtContactCode.Size = new System.Drawing.Size(257, 30);
-            this.txtContactCode.TabIndex = 8;
             // 
             // ContactAddWnd
             // 
@@ -748,6 +846,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtBusinessName.Text = mContactDetails.BusinessName;
                 txtTelNo.Text = mContactDetails.TelephoneNo;
                 txtAddress.Text = mContactDetails.Address;
+                txtTINNo.Text = mContactDetails.TINNo;
+                txtLTONo.Text = mContactDetails.LTONo;
 
                 txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
                 txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
@@ -778,6 +878,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 clsDetails.ContactCode = txtContactCode.Text;
                 clsDetails.ContactName = txtCustomerName.Text;
+                clsDetails.TINNo = txtTINNo.Text;
+                clsDetails.LTONo = txtLTONo.Text;
                 clsDetails.Address = txtAddress.Text;
                 clsDetails.BusinessName = txtBusinessName.Text;
                 clsDetails.TelephoneNo = txtTelNo.Text;
@@ -820,6 +922,14 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         #endregion
+
+        private void cmdGenerateCustomerCode_Click(object sender, EventArgs e)
+        {
+            Data.ERPConfig clsERPConfig = new Data.ERPConfig();
+            BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
+            txtContactCode.Text = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+            clsERPConfig.CommitAndDispose();
+        }
 
     }
 }

@@ -295,7 +295,10 @@ namespace AceSoft.RetailPlus
         ChangeOSPrinter = 172,
         PrintShlevesTagPrice = 173,
 
-        ZeroOutBranchInventory = 174
+        ZeroOutBranchInventory = 174,
+        SummarizedDailySalesWithTFDetailed = 175,
+        PrintCheckOutBill = 176,
+        ResumeSuspendedOpenTransaction = 177
     }
 
     /// <summary>

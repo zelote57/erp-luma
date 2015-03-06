@@ -103,6 +103,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         protected global::System.Web.UI.WebControls.Label lblProductID;
         
         /// <summary>
+        /// lblProductSubGroupID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblProductSubGroupID;
+        
+        /// <summary>
         /// lnkVariations control.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         protected global::System.Web.UI.WebControls.TextBox txtBarcode;
         
         /// <summary>
+        /// imgCreateBarCode1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCreateBarCode1;
+        
+        /// <summary>
         /// txtBarcode2 control.
         /// </summary>
         /// <remarks>
@@ -139,6 +157,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         protected global::System.Web.UI.WebControls.TextBox txtBarcode2;
         
         /// <summary>
+        /// imgCreateBarCode2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCreateBarCode2;
+        
+        /// <summary>
         /// txtBarcode3 control.
         /// </summary>
         /// <remarks>
@@ -146,6 +173,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBarcode3;
+        
+        /// <summary>
+        /// imgCreateBarCode3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCreateBarCode3;
         
         /// <summary>
         /// txtPurchasePrice control.
@@ -254,6 +290,141 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkIncludeInSubtotalDiscount;
+        
+        /// <summary>
+        /// txtPrice1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrice1;
+        
+        /// <summary>
+        /// txtPrice2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrice2;
+        
+        /// <summary>
+        /// Requiredfieldvalidator18 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator18;
+        
+        /// <summary>
+        /// RegularExpressionValidator11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator11;
+        
+        /// <summary>
+        /// Requiredfieldvalidator17 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator17;
+        
+        /// <summary>
+        /// RegularExpressionValidator10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator10;
+        
+        /// <summary>
+        /// txtPrice3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrice3;
+        
+        /// <summary>
+        /// txtPrice4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrice4;
+        
+        /// <summary>
+        /// Requiredfieldvalidator19 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator19;
+        
+        /// <summary>
+        /// RegularExpressionValidator12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator12;
+        
+        /// <summary>
+        /// Requiredfieldvalidator20 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator20;
+        
+        /// <summary>
+        /// RegularExpressionValidator13 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator13;
+        
+        /// <summary>
+        /// txtPrice5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrice5;
+        
+        /// <summary>
+        /// Requiredfieldvalidator21 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator21;
+        
+        /// <summary>
+        /// RegularExpressionValidator14 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator14;
         
         /// <summary>
         /// txtVAT control.

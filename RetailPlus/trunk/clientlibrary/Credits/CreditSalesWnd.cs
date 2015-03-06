@@ -47,11 +47,11 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mclsSysConfigDetails = value; }
         }
 
-        private DataGridViewSelectedRowCollection mdgvItemsSelectedRows;
-        public DataGridViewSelectedRowCollection dgvItemsSelectedRows
-        {
-            get { return mdgvItemsSelectedRows; }
-        }
+        //private DataGridViewSelectedRowCollection mdgvItemsSelectedRows;
+        //public DataGridViewSelectedRowCollection dgvItemsSelectedRows
+        //{
+        //    get { return mdgvItemsSelectedRows; }
+        //}
 
 		#region Constructors and Destuctors
 

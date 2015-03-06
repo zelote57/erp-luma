@@ -4405,6 +4405,24 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (result == DialogResult.OK)
                     {
+                        if (details.TransactionStatus == TransactionStatus.SuspendedOpen)
+                        {
+                            if (MessageBox.Show("This transaction is already open in another terminal. Please suspend in the other terminal first before opening." + Environment.NewLine + "Would you like to force open this transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                DialogResult resResumeSuspendedOpenTransaction = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.ResumeSuspendedOpenTransaction);
+
+                                if (resResumeSuspendedOpenTransaction != System.Windows.Forms.DialogResult.OK)
+                                {
+                                    clsEvent.AddEvent("[" + lblCashier.Text + "] Resuming transaction no. " + details.TransactionNo + " cancelled. SuspendedOpen");
+                                    return;
+                                }
+                            }
+                        }
+
                         clsEvent.AddEvent("[" + lblCashier.Text + "] Resuming transaction no. " + details.TransactionNo);
 
                         mclsSalesTransactionDetails = details;
@@ -7360,6 +7378,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsEvent.AddEvent("[" + lblCashier.Text + "] Issuing reward card no to " + clsContactDetails.ContactName);
 
                     ContactRewardWnd clsContactRewardWnd = new ContactRewardWnd();
+                    clsContactRewardWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactRewardWnd.Caption = "Reward Card Issuance";
                     clsContactRewardWnd.ContactDetails = clsContactDetails;
                     clsContactRewardWnd.RewardCardStatus = RewardCardStatus.New;
@@ -7462,6 +7481,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsEvent.AddEvent("[" + lblCashier.Text + "] Renewing reward card #: " + clsContactDetails.RewardDetails.RewardCardNo + " of " + clsContactDetails.ContactName + ".");
 
                     ContactRewardWnd clsContactRewardWnd = new ContactRewardWnd();
+                    clsContactRewardWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactRewardWnd.Caption = "Reward Card Renewal";
                     clsContactRewardWnd.ContactDetails = clsContactDetails;
                     clsContactRewardWnd.RewardCardStatus = RewardCardStatus.ReNew;
@@ -7563,6 +7583,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     string strOldRewardCardNo = clsContactDetails.RewardDetails.RewardCardNo;
                     ContactRewardWnd clsContactRewardWnd = new ContactRewardWnd();
+                    clsContactRewardWnd.TerminalDetails = mclsTerminalDetails;
                     if (pvtRewardCardStatus == RewardCardStatus.Replaced_Lost)
                         clsContactRewardWnd.Caption = "Reward Card Replacement of LOST CARD ";
                     else if (pvtRewardCardStatus == RewardCardStatus.Replaced_Expired)
@@ -7667,6 +7688,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     string strOldRewardCardNo = clsContactDetails.RewardDetails.RewardCardNo;
                     ContactRewardWnd clsContactRewardWnd = new ContactRewardWnd();
+                    clsContactRewardWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactRewardWnd.Caption = "OVERRIDE: Reward Card Reactivation / Change Expiry";
                     clsContactRewardWnd.ContactDetails = clsContactDetails;
                     clsContactRewardWnd.RewardCardStatus = RewardCardStatus.Reactivated_Lost;
@@ -7741,6 +7763,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
 
                     ContactRewardWnd clsContactRewardWnd = new ContactRewardWnd();
+                    clsContactRewardWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactRewardWnd.Caption = "Reward Card Declaration as LOST";
                     clsContactRewardWnd.ContactDetails = clsContactDetails;
                     clsContactRewardWnd.RewardCardStatus = RewardCardStatus.Lost;
@@ -10737,7 +10760,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					string strProductCode = dr[Data.ProductColumnNames.ProductCode].ToString();
 					if (strProductCode.Length > 12)
 					{
-						string strTempProductCode = "";
+                        //string strTempProductCode = "";
 						string[] strCodes = strProductCode.Split(' ');
                         int ixCtr = 0;
 						foreach (string strCode in strCodes)

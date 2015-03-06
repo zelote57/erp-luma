@@ -809,7 +809,7 @@ namespace AceSoft.RetailPlus.Data
 				 * Added Jan 1, 2010 4:20PM
                  * Update Selling Information when PO is posted
 				 * ****************************************/
-                clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, Convert.ToDecimal(dr["SellingPrice"]));
+                clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, Convert.ToDecimal(dr["SellingPrice"]), -1, -1, -1, -1, -1);
 
                 /*******************************************
 				 * Added Mar 8, 2010 4:20PM

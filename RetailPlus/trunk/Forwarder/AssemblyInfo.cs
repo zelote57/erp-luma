@@ -16,6 +16,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("2.0.0.3")]
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+//[assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
 [assembly: AssemblyFileVersionAttribute("2.0.0.3")]

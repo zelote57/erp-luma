@@ -42,11 +42,16 @@ namespace AceSoft.RetailPlus.Reports
 		{
             Int64 UID = Convert.ToInt64(Session["UID"]);
             Security.AccessRights clsAccessRights = new Security.AccessRights();
+            Security.AccessRightsDetails clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SummarizedDailySalesWithTFDetailed);
+            clsAccessRights.CommitAndDispose();
 
             cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
             cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySales, ReportTypes.SummarizeDailySales));
+
+            if (clsDetails.Read)
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
+
 			cboReportType.SelectedIndex = 0;
 
             cboConsignment.Items.Clear();

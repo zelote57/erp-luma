@@ -495,7 +495,7 @@ namespace AceSoft.RetailPlus.Client.UI
             lblHeader.Text = mstCaption + " for customer : " + mContactDetails.ContactName;
 
             txtDOB.Text = DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd");
-            txtRewardCardNo.Text = mContactDetails.ContactCode;
+            txtRewardCardNo.Text = mContactDetails.ContactCode.Substring(0,15);
             txtRewardCardExpiryDate.Text = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd");
 
             Data.ContactReward clsContactReward = new Data.ContactReward();
@@ -506,7 +506,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtDOB.Text = clsContactRewardDetails.BirthDate.ToString("yyyy-MM-dd");
                 txtRewardCardExpiryDate.Text = clsContactRewardDetails.ExpiryDate.ToString("yyyy-MM-dd");
             }
-            if (TerminalDetails.AutoGenerateRewardCardNo == true)
+            if (TerminalDetails.AutoGenerateRewardCardNo)
             {
                 if ((mRewardCardStatus == RewardCardStatus.New && clsContactRewardDetails.ContactID == Constants.ZERO) ||
                         mRewardCardStatus == RewardCardStatus.Replaced_Lost)

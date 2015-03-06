@@ -92,7 +92,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 		{
 			Response.Redirect(lblReferrer.Text);
 		}
-		
+
+        protected void imgCreateBarCode1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarCode1.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarCode2.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarCode3.Text = CreateBarCode();
+        }
 		
 		#endregion
 
@@ -113,8 +127,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 
             Products clsProduct = new Products(clsUnit.Connection, clsUnit.Transaction);
             ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
-            clsUnit.CommitAndDispose();	
-
+            clsUnit.CommitAndDispose();
+            lblProductSubGroupID.Text = clsDetails.ProductSubGroupID.ToString();
             cboUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitName, clsDetails.BaseUnitID.ToString()));
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
@@ -130,8 +144,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			
 			clsDetails.ProductID = Convert.ToInt64(lblProductID.Text);
 			clsDetails.UnitID = Convert.ToInt32(cboUnit.SelectedItem.Value);
-			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
-			clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
+            clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
+            clsDetails.Price1 = Convert.ToDecimal(txtPrice1.Text);
+            clsDetails.Price2 = Convert.ToDecimal(txtPrice2.Text);
+            clsDetails.Price3 = Convert.ToDecimal(txtPrice3.Text);
+            clsDetails.Price4 = Convert.ToDecimal(txtPrice4.Text);
+            clsDetails.Price5 = Convert.ToDecimal(txtPrice5.Text);
+            clsDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);
+            clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
 			clsDetails.Quantity = Convert.ToDecimal(txtQuantity.Text);
 			clsDetails.VAT = Convert.ToDecimal(txtVAT.Text);
 			clsDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
@@ -142,12 +162,24 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 
 			ProductPackage clsProductPackage = new ProductPackage();
 			clsProductPackage.Insert(clsDetails);
-
 			clsProductPackage.CommitAndDispose();
 
 			return true;
 		}
 
+        private string CreateBarCode()
+        {
+            string strRetValue = "";
+
+            Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup();
+            string strProductCode = clsProductSubGroup.getBarCodeCounter(Int64.Parse(lblProductSubGroupID.Text)).ToString().PadLeft(13 - (lblProductSubGroupID.Text.Length + 2), '0');
+            clsProductSubGroup.CommitAndDispose();
+
+            BarcodeHelper ean13 = new BarcodeHelper("99", lblProductSubGroupID.Text, strProductCode);
+            strRetValue = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
+            return strRetValue;
+        }
 
 		#endregion
 	}

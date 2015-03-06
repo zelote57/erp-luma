@@ -2318,61 +2318,75 @@ DROP PROCEDURE IF EXISTS procProductPackageSave
 GO
 
 create procedure procProductPackageSave(
-	IN pvtPackageID BIGINT(20),
-	IN pvtProductID BIGINT(20),
-	IN pvtMatrixID BIGINT(20),
-	IN pvtUnitID INT(10),
-	IN pvtPurchasePrice DECIMAL(18,3),
-	IN pvtSellingPrice DECIMAL(18,3),
-	IN pvtWSPrice DECIMAL(18,3),
-	IN pvtQuantity DECIMAL(18,3), 
-	IN pvtVAT DECIMAL(18,3), 
-	IN pvtEVAT DECIMAL(18,3), 
-	IN pvtLocalTax DECIMAL(18,3),
-	IN pvtBarCode1 VARCHAR(30),
-	IN pvtBarCode2 VARCHAR(30),
-	IN pvtBarCode3 VARCHAR(30))
+	IN intPackageID BIGINT(20),
+	IN intProductID BIGINT(20),
+	IN intMatrixID BIGINT(20),
+	IN intUnitID INT(10),
+	IN decPurchasePrice DECIMAL(18,3),
+	IN decSellingPrice DECIMAL(18,3),
+	IN decPrice1 DECIMAL(18,3),
+	IN decPrice2 DECIMAL(18,3),
+	IN decPrice3 DECIMAL(18,3),
+	IN decPrice4 DECIMAL(18,3),
+	IN decPrice5 DECIMAL(18,3),
+	IN decWSPrice DECIMAL(18,3),
+	IN decQuantity DECIMAL(18,3), 
+	IN decVAT DECIMAL(18,3), 
+	IN decEVAT DECIMAL(18,3), 
+	IN decLocalTax DECIMAL(18,3),
+	IN strBarCode1 VARCHAR(30),
+	IN strBarCode2 VARCHAR(30),
+	IN strBarCode3 VARCHAR(30))
 BEGIN
-	IF pvtPackageID = 0 THEN
-		IF pvtUnitID = 0 THEN
-			SET pvtPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND Quantity = 1),0);
+	IF intPackageID = 0 THEN
+		IF intUnitID = 0 THEN
+			SET intPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = intProductID AND MatrixID = intMatrixID AND Quantity = 1),0);
 		ELSE
-			SET pvtPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND UnitID = pvtUnitID AND Quantity = pvtQuantity),0);
+			SET intPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = intProductID AND MatrixID = intMatrixID AND UnitID = intUnitID AND Quantity = decQuantity),0);
 		END IF;
 	END IF;
 
-	IF pvtPackageID = 0 THEN
+	IF intPackageID = 0 THEN
 		INSERT INTO tblProductPackage(
-			ProductID, MatrixID, UnitID, PurchasePrice, Price, WSPrice, Quantity,
+			ProductID, MatrixID, UnitID, PurchasePrice, 
+			Price, Price1, Price2, Price3, Price4, Price5, 
+			WSPrice, Quantity,
 			VAT, EVAT, LocalTax, BarCode1, BarCode2, BarCode3)
 		VALUES(
-			pvtProductID, pvtMatrixID, pvtUnitID, pvtPurchasePrice, pvtSellingPrice, pvtWSPrice, pvtQuantity,
-			pvtVAT, pvtEVAT, pvtLocalTax, pvtBarCode1, pvtBarCode2, pvtBarCode3);
+			intProductID, intMatrixID, intUnitID, decPurchasePrice, 
+			decSellingPrice, decPrice1, decPrice2, decPrice3, decPrice4, decPrice5, 
+			decWSPrice, decQuantity,
+			decVAT, decEVAT, decLocalTax, strBarCode1, strBarCode2, strBarCode3);
 	ELSE
 		UPDATE tblProductPackage SET
-			UnitID			=	pvtUnitID,
-			PurchasePrice	=	pvtPurchasePrice,
-			Price			=	pvtSellingPrice,
-			WSPrice			=	pvtWSPrice,
-			Quantity		=	pvtQuantity,
-			VAT				=	pvtVAT,
-			EVAT			=	pvtEVAT,
-			LocalTax		=	pvtLocalTax,
-			BarCode1		=	pvtBarCode1,
-			BarCode2		=	pvtBarCode2,
-			BarCode3		=	pvtBarCode3
-		WHERE PackageID		=	pvtPackageID;
+			UnitID			=	intUnitID,
+			PurchasePrice	=	decPurchasePrice,
+			Price			=	decSellingPrice,
+			Price1			=	decPrice1,
+			Price2			=	decPrice2,
+			Price3			=	decPrice3,
+			Price4			=	decPrice4,
+			Price5			=	decPrice5,
+			WSPrice			=	decWSPrice,
+			Quantity		=	decQuantity,
+			VAT				=	decVAT,
+			EVAT			=	decEVAT,
+			LocalTax		=	decLocalTax,
+			BarCode1		=	strBarCode1,
+			BarCode2		=	strBarCode2,
+			BarCode3		=	strBarCode3
+		WHERE PackageID		=	intPackageID;
 	END IF;
 
 	UPDATE tblProductPackage SET 
 		BarCode4 = REPLACE(CONCAT(IFNULL(BarCode1,''), Quantity, ProductID, MatrixID),'.','')
-	WHERE MatrixID = 0 AND PackageID=pvtPackageID;
+	WHERE MatrixID = 0 AND PackageID=intPackageID;
 
-	IF pvtQuantity = 1 THEN
+	IF decQuantity = 1 THEN
 		UPDATE tblProductPackage prd 
 		INNER JOIN tblProductPackage mtrx ON prd.ProductID = mtrx.ProductID AND mtrx.MatrixID <> 0 SET 
 			mtrx.BarCode4 = REPLACE(CONCAT(IFNULL(prd.BarCode1,''), mtrx.Quantity, prd.ProductID, mtrx.MatrixID),'.','')
-		WHERE prd.ProductID	=pvtProductID;
+		WHERE prd.ProductID	=intProductID;
 	END IF;
 	
 END;
@@ -2392,27 +2406,39 @@ DROP PROCEDURE IF EXISTS procProductPackagePriceHistoryInsert
 GO
 
 create procedure procProductPackagePriceHistoryInsert(
-	IN pvtUID BIGINT(20),
-	IN pvtPackageID BIGINT(20),
-	IN pvtChangeDate DATETIME,
-	IN pvtPurchasePriceNow DECIMAL(18,3), 
-	IN pvtSellingPriceNow DECIMAL(18,3),
-	IN pvtVATNow DECIMAL(18,3), 
-	IN pvtEVATNow DECIMAL(18,3), 
-	IN pvtLocalTaxNow DECIMAL(18,3),
-	IN pvtRemarks VARCHAR(150))
+	IN intUID BIGINT(20),
+	IN intPackageID BIGINT(20),
+	IN dteChangeDate DATETIME,
+	IN decPurchasePriceNow DECIMAL(18,3), 
+	IN decSellingPriceNow DECIMAL(18,3),
+	IN decPrice1Now DECIMAL(18,3),
+	IN decPrice2Now DECIMAL(18,3),
+	IN decPrice3Now DECIMAL(18,3),
+	IN decPrice4Now DECIMAL(18,3),
+	IN decPrice5Now DECIMAL(18,3),
+	IN decVATNow DECIMAL(18,3), 
+	IN decEVATNow DECIMAL(18,3), 
+	IN decLocalTaxNow DECIMAL(18,3),
+	IN strRemarks VARCHAR(150))
 BEGIN
 
 	INSERT INTO tblProductPackagePriceHistory(UID, PackageID, ChangeDate, 
 		PurchasePriceBefore, PurchasePriceNow, SellingPriceBefore, SellingPriceNow, 
-		VATBefore, VATNow, EVATBefore, EVATNow, LocalTaxBefore, LocalTaxNow, Remarks)
-	SELECT pvtUID, pvtPackageID, pvtChangeDate, 
-		PurchasePrice, IF(pvtPurchasePriceNow=-1,PurchasePrice,pvtPurchasePriceNow), 
-		Price, IF(pvtSellingPriceNow=-1,Price,pvtSellingPriceNow), 
-		VAT, IF(pvtVATNow=-1,VAT,pvtVATNow), EVAT, IF(pvtEVATNow=-1,EVAT,pvtEVATNow), 
-		LocalTax, IF(pvtLocalTaxNow=-1,LocalTax,pvtLocalTaxNow), pvtRemarks 
+		Price1Now, Price2Now, Price3Now, Price4Now, Price5Now,
+		VATBefore, VATNow, EVATBefore, EVATNow, 
+		LocalTaxBefore, LocalTaxNow, Remarks)
+	SELECT intUID, intPackageID, dteChangeDate, 
+		PurchasePrice, IF(decPurchasePriceNow=-1,PurchasePrice,decPurchasePriceNow), 
+		Price, IF(decSellingPriceNow=-1,Price,decSellingPriceNow), 
+		IF(decPrice1Now=-1,Price1,decPrice1Now) Price1Now, 
+		IF(decPrice2Now=-1,Price2,decPrice2Now) Price2Now, 
+		IF(decPrice3Now=-1,Price3,decPrice3Now) Price3Now, 
+		IF(decPrice4Now=-1,Price4,decPrice4Now) Price4Now, 
+		IF(decPrice5Now=-1,Price5,decPrice5Now) Price5Now, 
+		VAT, IF(decVATNow=-1,VAT,decVATNow), EVAT, IF(decEVATNow=-1,EVAT,decEVATNow), 
+		LocalTax, IF(decLocalTaxNow=-1,LocalTax,decLocalTaxNow), strRemarks 
 	FROM tblProductPackage pkg
-	WHERE PackageID = pvtPackageID;
+	WHERE PackageID = intPackageID;
 		
 END;
 GO
@@ -2962,22 +2988,6 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procDebitPaymentInsert
 GO
 
-create procedure procDebitPaymentInsert(
-	IN intBranchID			  int(4),
-	IN strTerminalNo		  varchar(5),
-	IN intTransactionID BIGINT(20),
-	IN strTransactionNo VARCHAR(30),
-	IN decAmount DECIMAL(18,3),
-	IN intContactID BIGINT,
-	IN strRemarks VARCHAR(255))
-BEGIN
-
-	INSERT INTO tblDebitPayment(BranchID, TerminalNo, TransactionID, TransactionNo, Amount, ContactID, Remarks)
-				VALUES (intBranchID, strTerminalNo, intTransactionID, strTransactionNo, decAmount, intContactID, strRemarks);
-		
-END;
-GO
-delimiter ;
 
 /*********************************
 	procContactAddCredit
@@ -3112,29 +3122,14 @@ delimiter ;
 	Lemuel E. Aceron
 	CALL procDebitPaymentUpdateDebit();
 	
-	[09/01/2009] - create this procedure
+	01Sep2009 : create this procedure
+	02Mar2015 : Deleted coz it's redundant. Changed with procSaveDebitPayment()
+
 *********************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procDebitPaymentUpdateDebit
 GO
 
-create procedure procDebitPaymentUpdateDebit(
-	IN intBranchID BIGINT, 
-	IN strTerminalNo VARCHAR(20),
-	IN intCreditPaymentID BIGINT(20),
-	IN pvtAmount DECIMAL(18,3),
-	IN pvtRemarks VARCHAR(255))
-BEGIN
-
-	UPDATE tblDebitPayment SET 
-		AmountPaid = AmountPaid + pvtAmount,
-		Remarks = CONCAT(Remarks,';',pvtRemarks)
-	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-		AND CreditPaymentID = intCreditPaymentID;
-		
-END;
-GO
-delimiter ;
 
 /*********************************
 	procCreditPaymentSyncTransactionNo
@@ -4808,7 +4803,7 @@ BEGIN
 		ELSE
 			UPDATE tblContactRewards SET
 				RewardCardNo = strRewardCardNo,
-				RewardActive = intRewardActive,
+				RewardActive = intRewardActive,	
 				RewardAwardDate = dteRewardAwardDate,
 				RewardCardStatus = intRewardCardStatus,
 				ExpiryDate = dteExpiryDate,
@@ -5890,6 +5885,7 @@ BEGIN
 
 							,prd.IsItemSold
 							,prd.Price
+							,prd.Price1 ,prd.Price2 ,prd.Price3 ,prd.Price4 ,prd.Price5 
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
@@ -5931,7 +5927,8 @@ BEGIN
 							,',IF(isSummary=1,'''All''','IFNULL(brnch.BranchCode,''All'')'),' AS BranchCode
 						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
-									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+									,pkg.Price ,pkg.Price1 ,pkg.Price2 ,pkg.Price3 ,pkg.Price4 ,pkg.Price5 
+									,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND pkg.Quantity = 1 ');
@@ -6165,6 +6162,7 @@ BEGIN
 
 							,prd.IsItemSold
 							,prd.Price
+							,prd.Price1 ,prd.Price2 ,prd.Price3 ,prd.Price4 ,prd.Price5 
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
@@ -6208,7 +6206,8 @@ BEGIN
 							,',IF(isSummary=1,'''All''','IFNULL(brnch.BranchCode,''All'')'),' AS BranchCode
 						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,IFNULL(pkg.BarCode4,'''') BarCode4
-									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+									,pkg.Price ,pkg.Price1 ,pkg.Price2 ,pkg.Price3 ,pkg.Price4 ,pkg.Price5 
+									,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND pkg.Quantity = 1 ');
@@ -6478,6 +6477,7 @@ BEGIN
 							,prd.ContactName SupplierName
 
 							,prd.Price
+							,prd.Price1 ,prd.Price2 ,prd.Price3 ,prd.Price4 ,prd.Price5 
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
@@ -6507,8 +6507,8 @@ BEGIN
                             ,IFNULL(MAX(inv.IsLock),0) IsLock
 						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
-									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
-
+									,pkg.Price ,pkg.Price1 ,pkg.Price2 ,pkg.Price3 ,pkg.Price4 ,pkg.Price5 
+									,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 									,prdsg.ProductSubGroupCode ,prdsg.ProductSubGroupName 
 									,prdsg.ProductGroupID ,prdg.ProductGroupCode ,prdg.ProductGroupName
 									,supp.ContactCode ,supp.ContactName
@@ -6758,6 +6758,7 @@ BEGIN
 
 							,prd.IsItemSold
 							,prd.Price
+							,prd.Price1 ,prd.Price2 ,prd.Price3 ,prd.Price4 ,prd.Price5 
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
@@ -6813,6 +6814,7 @@ BEGIN
 									,pkg.BarCode4
 									
 									,pkg.Price
+									,pkg.Price1 ,pkg.Price2 ,pkg.Price3 ,pkg.Price4 ,pkg.Price5 
 									,pkg.WSPrice
 									,pkg.PurchasePrice
 									,pkg.VAT
@@ -7034,6 +7036,7 @@ BEGIN
 
 							,prd.IsItemSold
 							,prd.Price
+							,prd.Price1 ,prd.Price2 ,prd.Price3 ,prd.Price4 ,prd.Price5 
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
@@ -7074,7 +7077,8 @@ BEGIN
 							,prd.Description AS MatrixDescription
 						FROM (SELECT prd.* ,pkg.PackageID ,pkg.MatrixID
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
-									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice
+									,pkg.Price ,pkg.Price1 ,pkg.Price2 ,pkg.Price3 ,pkg.Price4 ,pkg.Price5 
+									,pkg.WSPrice ,pkg.PurchasePrice
 									,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 									,mtrx.Description ,mtrx.MinThreshold mtrxMinThreshold, mtrx.MaxThreshold mtrxMaxThreshold
 							  FROM tblProducts prd 
@@ -7237,6 +7241,11 @@ BEGIN
 							,unt.UnitName
 
 							,pkg.Price
+							,pkg.Price1
+							,pkg.Price2
+							,pkg.Price3
+							,pkg.Price4
+							,pkg.Price5
 							,pkg.WSPrice
 							,pkg.PurchasePrice
 							,pkg.Quantity
@@ -7320,6 +7329,11 @@ BEGIN
 							,hst.PurchasePriceNow
 							,hst.SellingPriceBefore
 							,hst.SellingPriceNow
+							,hst.Price1Now
+							,hst.Price2Now
+							,hst.Price3Now
+							,hst.Price4Now
+							,hst.Price5Now
 							,hst.VATBefore
 							,hst.VATNow
 							,hst.EVATBefore
@@ -8424,7 +8438,7 @@ BEGIN
 							,BusinessPhoneNo ,HomePhoneNo ,MobileNo ,FaxNo ,EmailAddress 
 							,RewardCardNo ,RewardActive, RewardPoints, RewardAwardDate, TotalPurchases, RedeemedPoints, RewardCardStatus, ExpiryDate
 							,IFNULL(addon.BirthDate,rwrd.BirthDate) BirthDate 
-							,LastCheckInDate
+							,LastCheckInDate ,TINNo ,LTONo
 						FROM tblContacts cntct
 							INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
 							INNER JOIN tblDepartments dept ON cntct.DepartmentID = dept.DepartmentID
@@ -9639,7 +9653,7 @@ BEGIN
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 						FROM tblTransactions trx
 						LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
-						WHERE trx.TransactionStatus = 2 '; -- 2=SuspendedTransactionStatus		13=SuspendedOpenTransactionStatus
+						WHERE trx.TransactionStatus = 2 OR trx.TransactionStatus = 13 '; -- 2=SuspendedTransactionStatus		13=SuspendedOpenTransactionStatus
 	ELSEIF boWithTF = 0 THEN
 		SET @SQL := 'SELECT trx.BranchID, trx.TerminalNo,
 							trx.TransactionID,

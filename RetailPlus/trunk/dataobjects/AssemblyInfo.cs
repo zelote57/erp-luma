@@ -54,6 +54,6 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+//[assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
 [assembly: AssemblyFileVersionAttribute("2.0.1.2")]

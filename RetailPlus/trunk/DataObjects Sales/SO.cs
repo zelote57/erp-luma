@@ -680,7 +680,7 @@ namespace AceSoft.RetailPlus.Data
                 int iBaseUnitID = clsProduct.get_BaseUnitID(lngProductID);
                 if (iBaseUnitID != intProductUnitID)
                 {
-                    clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsSODetails.CustomerID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity); // Price should be the sugegsted selling price
+                    clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsSODetails.CustomerID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity, -1, -1, -1,- 1, -1); // Price should be the sugegsted selling price
                 }
                 clsProduct.UpdateSellingWSPrice(lngProductID, lngVariationMatrixID, clsSODetails.CustomerID, intProductUnitID, decUnitCost); // WS Price should be the unit cost
 

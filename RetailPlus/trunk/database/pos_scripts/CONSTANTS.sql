@@ -153,5 +153,6 @@ INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, 
 INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
 ('OUT OF STOCK', 'OUT OF STOCK', 1, 0, 'RBS', 'RBS', '', '', NOW());
 
+
 /*!40000 ALTER TABLE `tblProducts` ENABLE KEYS */;
 SET FOREIGN_KEY_CHECKS = 1;

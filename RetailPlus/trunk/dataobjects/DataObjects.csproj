@@ -149,6 +149,7 @@
     </Compile>
     <Compile Include="CashierReportHistories.cs" />
     <Compile Include="MergeTable.cs" />
+    <Compile Include="Payments\DebitPayments.cs" />
     <Compile Include="SplitPayment.cs" />
     <Compile Include="Payments\CashPayments.cs" />
     <Compile Include="Payments\ChequePayments.cs" />

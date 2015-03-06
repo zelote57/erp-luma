@@ -186,9 +186,13 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_ALLOW_ZERO_AMOUNT_TRANSACTION = "AllowZeroAmountTransaction";
         public const string SYS_CONFIG_ALLOW_MORE_THAN_1ITEM_IF_CONSIGNMENT = "AllowMoreThan1ItemIfConsignment";
         public const string SYS_CONFIG_WILL_PROCESS_CREDIT_BILLER_IN_PROGRAM = "WillProcessCreditBillerInProgram";
+        public const string SYS_CONFIG_WILL_CONVERT_WEIGHT_MEASUREMENT_TO1_IN_QTY_SOLD = "WillConvertWeightMeasurementTo1InQtySold";
+        public const string SYS_CONFIG_WILL_CONVERT_WEIGHT_MEASUREMENT = "WeightMeasurement";
         public const string SYS_CONFIG_IS_DEFAULT_BUTTON_YES_INPRINTTRANSACTION = "isDefaultButtonYesInPrintTransaction";
         public const string SYS_CONFIG_OUT_OF_STOCK_CUSTOMER_CODE = "OutOfStockCustomerCode";
         public const string SYS_CONFIG_WALKIN_CUSTOMER_CODE = "WalkInCustomerCode";
+        public const string SYS_CONFIG_CHEQUE_PAYMENT_ACCEPTABLE_NO_OF_DAYS = "ChequePaymentAcceptableNoOfDays";
+        
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
 
 

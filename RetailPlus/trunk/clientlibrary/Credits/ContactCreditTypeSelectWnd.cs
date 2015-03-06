@@ -48,7 +48,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 
         public Data.CardTypeDetails CardTypeDetails { get; set; }
-        private Data.ContactDetails mclsGuarantor;
+        //private Data.ContactDetails mclsGuarantor;
 
         public Data.TerminalDetails TerminalDetails { get; set; }
 
@@ -616,7 +616,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         groupBox1.Height = 248;
                         grpCardInfo.Height = 125; //this height should hide the 15th charges
 
-                        mclsGuarantor = new Data.ContactDetails();
+                        //mclsGuarantor = new Data.ContactDetails();
                     }
                     else
                     {

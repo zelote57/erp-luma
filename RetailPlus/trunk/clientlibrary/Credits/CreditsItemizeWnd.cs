@@ -1,7 +1,9 @@
 using System;
 using System.Drawing;
+using System.IO;
 using System.Collections;
 using System.ComponentModel;
+using System.Management;
 using System.Windows.Forms;
 
 namespace AceSoft.RetailPlus.Client.UI
@@ -117,6 +119,7 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         public Int64 CashierID { get; set; }
+        public string CashierName { get; set; }
 
         private Data.ContactDetails mclsCustomerDetails;
         public Data.ContactDetails CustomerDetails
@@ -145,10 +148,13 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label3;
         private TextBox txtTrxEndDate;
         private TextBox txtTrxStartDate;
-        private Label label1;
-        private Label label2;
+        private Label labelF11;
+        private Label lblF11;
 
         private Keys mKeyData;
+        private Label labelF12;
+        private Label lblF12;
+    
         public Keys KeyData
         {
             get
@@ -238,8 +244,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label3 = new System.Windows.Forms.Label();
             this.txtTrxEndDate = new System.Windows.Forms.TextBox();
             this.txtTrxStartDate = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelF11 = new System.Windows.Forms.Label();
+            this.lblF11 = new System.Windows.Forms.Label();
+            this.labelF12 = new System.Windows.Forms.Label();
+            this.lblF12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
@@ -620,28 +628,51 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTrxStartDate.Size = new System.Drawing.Size(136, 23);
             this.txtTrxStartDate.TabIndex = 2;
             // 
-            // label1
+            // labelF11
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label1.Location = new System.Drawing.Point(657, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 13);
-            this.label1.TabIndex = 116;
-            this.label1.Text = "Reprint selected transaction";
-            this.label1.Visible = false;
+            this.labelF11.AutoSize = true;
+            this.labelF11.BackColor = System.Drawing.Color.Transparent;
+            this.labelF11.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.labelF11.Location = new System.Drawing.Point(657, 25);
+            this.labelF11.Name = "labelF11";
+            this.labelF11.Size = new System.Drawing.Size(139, 13);
+            this.labelF11.TabIndex = 116;
+            this.labelF11.Text = "Print Statement Of Account";
+            this.labelF11.Visible = false;
             // 
-            // label2
+            // lblF11
             // 
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(618, 22);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 13);
-            this.label2.TabIndex = 115;
-            this.label2.Text = "[F12]";
-            this.label2.Visible = false;
+            this.lblF11.BackColor = System.Drawing.Color.Transparent;
+            this.lblF11.ForeColor = System.Drawing.Color.Red;
+            this.lblF11.Location = new System.Drawing.Point(618, 25);
+            this.lblF11.Name = "lblF11";
+            this.lblF11.Size = new System.Drawing.Size(34, 13);
+            this.lblF11.TabIndex = 115;
+            this.lblF11.Text = "[F11]";
+            this.lblF11.Visible = false;
+            // 
+            // labelF12
+            // 
+            this.labelF12.AutoSize = true;
+            this.labelF12.BackColor = System.Drawing.Color.Transparent;
+            this.labelF12.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.labelF12.Location = new System.Drawing.Point(657, 9);
+            this.labelF12.Name = "labelF12";
+            this.labelF12.Size = new System.Drawing.Size(142, 13);
+            this.labelF12.TabIndex = 118;
+            this.labelF12.Text = "Reprint selected transaction";
+            this.labelF12.Visible = false;
+            // 
+            // lblF12
+            // 
+            this.lblF12.BackColor = System.Drawing.Color.Transparent;
+            this.lblF12.ForeColor = System.Drawing.Color.Red;
+            this.lblF12.Location = new System.Drawing.Point(618, 9);
+            this.lblF12.Name = "lblF12";
+            this.lblF12.Size = new System.Drawing.Size(34, 13);
+            this.lblF12.TabIndex = 117;
+            this.lblF12.Text = "[F12]";
+            this.lblF12.Visible = false;
             // 
             // CreditsItemizeWnd
             // 
@@ -649,8 +680,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelF12);
+            this.Controls.Add(this.lblF12);
+            this.Controls.Add(this.labelF11);
+            this.Controls.Add(this.lblF11);
             this.Controls.Add(this.labelF5);
             this.Controls.Add(this.lblF5);
             this.Controls.Add(this.label14);
@@ -785,6 +818,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.F5:
+                    if (!lblF5.Visible) return;
                     grpSearch.Visible = !grpSearch.Visible;
                     if (grpSearch.Visible)
                     {
@@ -797,18 +831,25 @@ namespace AceSoft.RetailPlus.Client.UI
                         cmdEnter.Text = "Enter";
                     }
                     break;
+                case Keys.F11:
+                    if (!lblF11.Visible) return;
+                    if (dgvItems.Rows.Count > 0)
+                    {
+                        PrintSOA();
+                    }
+                    break;
                 case Keys.F12:
+                    if (!lblF12.Visible) return;
                     TransactionNoToReprint = ""; TerminalNoToReprint = "";
                     foreach (DataGridViewRow dr in dgvItems.SelectedRows)
                     {
                         TransactionNoToReprint = dr.Cells["TransactionNo"].Value.ToString();
                         TerminalNoToReprint = dr.Cells["TerminalNo"].Value.ToString();
                         dialog = System.Windows.Forms.DialogResult.OK;
-                        mKeyData = Keys.F12; 
+                        mKeyData = Keys.F12;
                         this.Hide();
                         break;
                     }
-
                     break;
 
 			}
@@ -863,15 +904,16 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void LoadOptions()
 		{
+            lblF12.Visible = true; labelF12.Visible = true;
             switch (mclsSysConfigDetails.CreditPaymentType)
             {
                 case CreditPaymentType.MPC:
                 case CreditPaymentType.Normal:
                 default:
+                    lblF11.Visible = true; labelF11.Visible = true;
                     lblF5.Visible = true; labelF5.Visible = true;
                     txtTrxStartDate.Text = DateTime.Now.AddYears(-2).ToString("yyyy-MM-dd");
                     txtTrxEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
-
                     break;
             }
         }
@@ -925,6 +967,8 @@ namespace AceSoft.RetailPlus.Client.UI
                     default:
                         dgvItems.Columns["Terms"].Visible = true;
                         dgvItems.Columns["ModeOfTermsCode"].Visible = true;
+                        dgvItems.Columns["AgingDate"].Visible = true;
+                        dgvItems.Columns["AgeTerms"].Visible = true;
                         break;
                 }
                 //
@@ -932,7 +976,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.Columns["Credit"].Visible = true;
                 dgvItems.Columns["CreditPaid"].Visible = true;
                 dgvItems.Columns["Balance"].Visible = true;
-
+                
                 dgvItems.Columns["TransactionNo"].Width = 120;
                 dgvItems.Columns["TransactionDate"].Width = 120;
                 // do an override
@@ -948,9 +992,12 @@ namespace AceSoft.RetailPlus.Client.UI
                     case CreditPaymentType.MPC:
                     case CreditPaymentType.Normal:
                     default:
-                        dgvItems.Columns["Terms"].Width = 90;
-                        if (dt.Rows.Count < 14) dgvItems.Columns["ModeOfTermsCode"].Width = 150; else dgvItems.Columns["ModeOfTermsCode"].Width = 120;
-                        iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["Terms"].Width - dgvItems.Columns["ModeOfTermsCode"].Width) / 4;
+                        dgvItems.Columns["Terms"].Width = 60;
+                        dgvItems.Columns["ModeOfTermsCode"].Width = 75;
+                        dgvItems.Columns["AgingDate"].Width = 120;
+                        if (dt.Rows.Count < 14) dgvItems.Columns["AgeTerms"].Width = 90; else dgvItems.Columns["AgeTerms"].Width = 60;
+
+                        iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["Terms"].Width - dgvItems.Columns["ModeOfTermsCode"].Width - dgvItems.Columns["AgingDate"].Width - dgvItems.Columns["AgeTerms"].Width) / 4;
                         if (dt.Rows.Count >= 14) iWidth = iWidth - 5;
                         break;
                 }
@@ -971,9 +1018,18 @@ namespace AceSoft.RetailPlus.Client.UI
                     default:
                         dgvItems.Columns["Terms"].HeaderText = "Terms";
                         dgvItems.Columns["ModeOfTermsCode"].HeaderText = "ModeOfTerms";
+                        dgvItems.Columns["AgingDate"].HeaderText = "Due Date";
+                        dgvItems.Columns["AgeTerms"].HeaderText = "Age";
+
                         dgvItems.Columns["Terms"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                         dgvItems.Columns["Terms"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                         dgvItems.Columns["Terms"].DefaultCellStyle.Format = "#,##0";
+
+                        dgvItems.Columns["AgingDate"].DefaultCellStyle.Format = "yyyy-MM-dd hh:mm tt";
+
+                        dgvItems.Columns["AgeTerms"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvItems.Columns["AgeTerms"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvItems.Columns["AgeTerms"].DefaultCellStyle.Format = "#,##0";
                         break;
                 }
                 dgvItems.Columns["SubTotal"].HeaderText = "Subtotal";
@@ -1085,6 +1141,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
 			}
 		}
+
 		private DialogResult ShowPayment()
 		{
 			DialogResult paymentResult = DialogResult.Cancel;
@@ -1092,7 +1149,18 @@ namespace AceSoft.RetailPlus.Client.UI
 			if (Convert.ToDecimal(lblBalanceSelected.Text) > 0)
 			{
                 Data.SalesTransactionDetails clsSalesTransactionDetails = new Data.SalesTransactionDetails();
-                clsSalesTransactionDetails.SubTotal = Convert.ToDecimal(lblAmountDue.Text) == 0 ? Convert.ToDecimal(lblBalanceSelected.Text) : Convert.ToDecimal(lblAmountDue.Text);
+                switch (mclsSysConfigDetails.CreditPaymentType)
+                {
+                    case CreditPaymentType.Houseware:
+                        clsSalesTransactionDetails.SubTotal = Convert.ToDecimal(lblAmountDue.Text);
+                        break;
+                    case CreditPaymentType.Normal:
+                    case CreditPaymentType.MPC:
+                    default:
+                        clsSalesTransactionDetails.SubTotal = Convert.ToDecimal(lblBalanceSelected.Text);
+                        break;
+                }
+                
                 clsSalesTransactionDetails.TransactionStatus = TransactionStatus.CreditPayment;
 
                 PaymentsWnd payment = new PaymentsWnd();
@@ -1136,326 +1204,185 @@ namespace AceSoft.RetailPlus.Client.UI
 			return paymentResult;
 		}
 
+        private void PrintSOA()
+        {
+            Cursor.Current = Cursors.WaitCursor;
+
+            try
+            {
+                CRSReports.SOA rpt = new CRSReports.SOA();
+
+                AceSoft.RetailPlus.Client.ReportDataset rptds = new AceSoft.RetailPlus.Client.ReportDataset();
+                System.Data.DataRow drNew;
+
+                /****************************report logo *****************************/
+                try
+                {
+                    System.IO.FileStream fs = new System.IO.FileStream(Application.StartupPath + "/images/ReportLogo.jpg", System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                    System.IO.FileInfo fi = new System.IO.FileInfo(Application.StartupPath + "/images/ReportLogo.jpg");
+
+                    byte[] propimg = new byte[fi.Length];
+                    fs.Read(propimg, 0, Convert.ToInt32(fs.Length));
+                    fs.Close();
+
+                    drNew = rptds.CompanyLogo.NewRow(); drNew["Picture"] = propimg;
+                    rptds.CompanyLogo.Rows.Add(drNew);
+                }
+                catch { }
+
+                /****************************datatable*****************************/
+
+                Data.Contacts clsContacts = new Data.Contacts();
+                System.Data.DataTable dt = clsContacts.ListAsDataTable(ContactID: mclsCustomerDetails.ContactID);
+                clsContacts.CommitAndDispose();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    drNew = rptds.Customer.NewRow();
+
+                    foreach (System.Data.DataColumn dc in rptds.Customer.Columns)
+                        drNew[dc] = dr[dc.ColumnName];
+
+                    rptds.Customer.Rows.Add(drNew);
+                }
+
+                dt = (System.Data.DataTable) dgvItems.DataSource;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    drNew = rptds.CustomerCredit.NewRow();
+
+                    foreach (System.Data.DataColumn dc in rptds.CustomerCredit.Columns)
+                        drNew[dc] = dr[dc.ColumnName];
+
+                    rptds.CustomerCredit.Rows.Add(drNew);
+                }
+
+                rpt.SetDataSource(rptds);
+
+                CrystalDecisions.CrystalReports.Engine.ParameterFieldDefinition paramField;
+                CrystalDecisions.Shared.ParameterValues currentValues;
+                CrystalDecisions.Shared.ParameterDiscreteValue discreteParam;
+
+                paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
+                discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                discreteParam.Value = CompanyDetails.CompanyName;
+                currentValues = new CrystalDecisions.Shared.ParameterValues();
+                currentValues.Add(discreteParam);
+                paramField.ApplyCurrentValues(currentValues);
+
+                paramField = rpt.DataDefinition.ParameterFields["PrintedBy"];
+                discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                discreteParam.Value = CashierName;
+                currentValues = new CrystalDecisions.Shared.ParameterValues();
+                currentValues.Add(discreteParam);
+                paramField.ApplyCurrentValues(currentValues);
+
+                paramField = rpt.DataDefinition.ParameterFields["PackedBy"];
+                discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                discreteParam.Value = CashierName;
+                currentValues = new CrystalDecisions.Shared.ParameterValues();
+                currentValues.Add(discreteParam);
+                paramField.ApplyCurrentValues(currentValues);
+
+                paramField = rpt.DataDefinition.ParameterFields["CompanyAddress"];
+                discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                discreteParam.Value = CompanyDetails.Address1 +
+                    ((!string.IsNullOrEmpty(CompanyDetails.Address2) ? Environment.NewLine + CompanyDetails.Address2 + ", " : " ")) +
+                    CompanyDetails.City + " " + CompanyDetails.Country +
+                    ((!string.IsNullOrEmpty(CompanyDetails.OfficePhone) ? Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " " : " ")) +
+                    ((!string.IsNullOrEmpty(CompanyDetails.OfficePhone) ? Environment.NewLine + "FaxPhone #: " + CompanyDetails.FaxPhone + " " : " "));
+                currentValues = new CrystalDecisions.Shared.ParameterValues();
+                currentValues.Add(discreteParam);
+                paramField.ApplyCurrentValues(currentValues);
+
+                paramField = rpt.DataDefinition.ParameterFields["BIRInfo"];
+                discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                discreteParam.Value = "";
+                currentValues = new CrystalDecisions.Shared.ParameterValues();
+                currentValues.Add(discreteParam);
+                paramField.ApplyCurrentValues(currentValues);
+
+                //foreach (CrystalDecisions.CrystalReports.Engine.ReportObject objPic in rpt.Section1.ReportObjects)
+                //{
+                //    if (objPic.Name.ToUpper() == "PICLOGO1")
+                //    {
+                //        objPic = new Bitmap(Application.StartupPath + "/images/ReportLogo.jpg");
+                //    }
+                //}
+
+                //CRViewer.Visible = true;
+                //CRViewer.ReportSource = rpt;
+                //CRViewer.Show();
+
+                try
+                {
+                    DateTime logdate = DateTime.Now;
+                    string logsdir = System.Configuration.ConfigurationManager.AppSettings["logsdir"].ToString();
+
+                    if (!Directory.Exists(logsdir + logdate.ToString("MMM")))
+                    {
+                        Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
+                    }
+                    string logFile = logsdir + logdate.ToString("MMM") + "/SOA_" + logdate.ToString("yyyyMMddhhmmss") + ".doc";
+
+                    rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
+                }
+                catch { }
+
+                if (isPrinterOnline(TerminalDetails.SalesInvoicePrinterName))
+                {
+                    rpt.PrintOptions.PrinterName = TerminalDetails.SalesInvoicePrinterName;
+                    rpt.PrintToPrinter(1, false, 0, 0);
+
+                    rpt.Close();
+                    rpt.Dispose();
+
+                    Cursor.Current = Cursors.Default;
+                    MessageBox.Show("Statement Of Account for " + mclsCustomerDetails.ContactName + " has been printed.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    rpt.Close();
+                    rpt.Dispose();
+
+                    Cursor.Current = Cursors.Default;
+                    MessageBox.Show("Sorry, will not print sales invoice. printer is offline.", "RetailPlus");
+                }
+            }
+            catch (Exception ex)
+            {
+                Cursor.Current = Cursors.Default;
+                MessageBox.Show("Sorry an error was encountered during printing, please reprint again." + Environment.NewLine + "Details: " + ex.Message, "RetailPlus");
+            }
+        }
+
+        public bool isPrinterOnline(string objPrinterName)
+        {
+            bool boretValue = false;
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer");
+
+                foreach (ManagementObject printer in searcher.Get())
+                {
+                    string printerName = printer["Name"].ToString().ToLower();
+
+                    if (printerName == objPrinterName.ToLower())
+                    {
+                        boretValue = true;
+                        break;  // exit the for loops
+                    }
+                    //Console.WriteLine("Printer".PadRight(15) + ":" + printerName);
+                }
+            }
+            catch { }
+            return boretValue;
+        }
+
 		#endregion
 
 		#region Save Payments
 
-        //private void SavePayments(decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal DebitPayment, ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrDebitPaymentDetails)
-        //{
-        //    Data.Payment clsPayment = new Data.Payment();
-
-        //    if (CashPayment > 0)
-        //        SaveCashPayment(clsPayment, arrCashPaymentDetails);
-			
-        //    if (ChequePayment > 0)
-        //        SaveChequePayment(clsPayment, arrChequePaymentDetails);
-
-        //    if (CreditCardPayment > 0)
-        //        SaveCreditCardPayment(clsPayment, arrCreditCardPaymentDetails);
-
-        //    if (DebitPayment > 0)
-        //        SaveDebitPayment(clsPayment, arrDebitPaymentDetails);
-
-        //    clsPayment.CommitAndDispose();
-        //}
-        //private void SaveCashPayment(Data.Payment clsPayment, ArrayList pvtarrCashPaymentDetails)
-        //{
-        //    Data.CashPaymentDetails[] CashPaymentDetails = new Data.CashPaymentDetails[0];
-        //    if (pvtarrCashPaymentDetails != null)
-        //    {
-        //        CashPaymentDetails = new Data.CashPaymentDetails[pvtarrCashPaymentDetails.Count];
-        //        pvtarrCashPaymentDetails.CopyTo(CashPaymentDetails);
-        //    }
-        //    foreach (Data.CashPaymentDetails det in CashPaymentDetails)
-        //    {
-        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + "  PAYMENTTYPE:Cash DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-        //        if (!string.IsNullOrEmpty(det.Remarks)) strRemarks += Environment.NewLine + det.Remarks;
-
-        //        decimal decRemainingAmountPaid = det.Amount;
-                
-        //        foreach (DataGridViewRow dr in dgvItems.SelectedRows)
-        //        {
-
-        //            Int64 intCreditPaymentID = Convert.ToInt64(dr.Cells["CreditPaymentID"].Value.ToString());
-        //            Int32 intCPRefBranchID = Convert.ToInt32(dr.Cells["BranchID"].Value.ToString());
-        //            string strCPRefTerminalNo = dr.Cells["TerminalNo"].Value.ToString();
-        //            Int64 intTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
-
-        //            if (decRemainingAmountPaid >= decBalance)
-        //            {
-        //                InsertCashPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, intCreditPaymentID, intTransactionID, strTransactionNo, decBalance, strRemarks);
-
-        //                dr.Cells["CreditPaid"].Value = decBalance;
-        //                dr.Cells["Balance"].Value = 0;
-
-        //                decRemainingAmountPaid -= decBalance;
-        //            }
-        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-        //            {
-        //                InsertCashPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, intCreditPaymentID, intTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
-
-        //                //dgvItems.Select(itemIndex);
-        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-        //                decRemainingAmountPaid = 0;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-        //private void InsertCashPayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
-        //{
-        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
-        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
-
-        //    //Data.CashPaymentDetails Details = new Data.CashPaymentDetails();
-        //    //Details.BranchDetails = TerminalDetails.BranchDetails;
-        //    //Details.TerminalNo = TerminalDetails.TerminalNo;
-        //    //Details.TransactionID = intTransactionID;
-        //    //Details.TransactionNo = strTransactionNo;
-        //    //Details.Amount = decAmount;
-        //    //Details.Remarks = strRemarks;
-
-        //    //new Data.CashPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
-
-        //    // insert creditpayment cash as log
-        //    Data.CreditPaymentCashDetails clsCreditPaymentCashDetails = new Data.CreditPaymentCashDetails();
-        //    clsCreditPaymentCashDetails.BranchDetails = TerminalDetails.BranchDetails;
-        //    clsCreditPaymentCashDetails.TerminalNo = TerminalDetails.TerminalNo;
-        //    clsCreditPaymentCashDetails.CreditPaymentID = intCreditPaymentID;
-        //    clsCreditPaymentCashDetails.TransactionID = intTransactionID;
-        //    clsCreditPaymentCashDetails.TransactionNo = strTransactionNo;
-        //    clsCreditPaymentCashDetails.Amount = decAmount;
-        //    clsCreditPaymentCashDetails.Remarks = strRemarks;
-        //    clsCreditPaymentCashDetails.CreatedOn = DateTime.Now;
-        //    clsCreditPaymentCashDetails.LastModified = DateTime.Now;
-        //    new Data.CreditPaymentCash(clsPayment.Connection, clsPayment.Transaction).Insert(clsCreditPaymentCashDetails);
-
-        //    clsPayment.UpdateCredit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
-        //}
-        //private void SaveChequePayment(Data.Payment clsPayment, ArrayList pvtarrChequePaymentDetails)
-        //{
-        //    Data.ChequePaymentDetails[] ChequePaymentDetails = new Data.ChequePaymentDetails[0];
-        //    if (pvtarrChequePaymentDetails != null)
-        //    {
-        //        ChequePaymentDetails = new Data.ChequePaymentDetails[pvtarrChequePaymentDetails.Count];
-        //        pvtarrChequePaymentDetails.CopyTo(ChequePaymentDetails);
-        //    }
-        //    foreach (Data.ChequePaymentDetails det in ChequePaymentDetails)
-        //    {
-        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + "  PAYMENTTYPE:Cheque DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-        //        if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
-
-        //        decimal decRemainingAmountPaid = det.Amount;
-				
-        //        foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
-        //        {
-        //            Int32 intCPRefBranchID = Convert.ToInt32(dr.Cells["BranchID"].Value.ToString());
-        //            string strCPRefTerminalNo = dr.Cells["TerminalNo"].Value.ToString();
-        //            Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
-
-        //            if (decRemainingAmountPaid >= decBalance)
-        //            {
-        //                InsertChequePayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, det.ChequeNo, decBalance, det.ValidityDate, strRemarks);
-
-        //                dr.Cells["CreditPaid"].Value = decBalance;
-        //                dr.Cells["Balance"].Value = 0;
-
-        //                decRemainingAmountPaid -= decBalance;
-        //            }
-        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-        //            {
-        //                InsertChequePayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, det.ChequeNo, decRemainingAmountPaid, det.ValidityDate, strRemarks);
-
-        //                //dgItems.Select(itemIndex);
-        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-        //                decRemainingAmountPaid =0;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-        //private void InsertChequePayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, string strChequeNo, decimal decAmount, DateTime dteValidityDate, string strRemarks)
-        //{
-        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
-        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
-
-        //    //Data.ChequePaymentDetails Details = new Data.ChequePaymentDetails();
-        //    //Details.BranchDetails = TerminalDetails.BranchDetails;
-        //    //Details.TerminalNo = TerminalDetails.TerminalNo;
-        //    //Details.TransactionID = intTransactionID;
-        //    //Details.TransactionNo = strTransactionNo;
-        //    //Details.ChequeNo = strChequeNo;
-        //    //Details.Amount = decAmount;
-        //    //Details.ValidityDate = dteValidityDate;
-        //    //Details.Remarks = strRemarks;
-
-        //    //new Data.ChequePayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
-
-        //    // insert creditpayment cheque as log
-        //    Data.CreditPaymentChequeDetails clsCreditPaymentChequeDetails = new Data.CreditPaymentChequeDetails();
-        //    clsCreditPaymentChequeDetails.BranchDetails = TerminalDetails.BranchDetails;
-        //    clsCreditPaymentChequeDetails.TerminalNo = TerminalDetails.TerminalNo;
-        //    clsCreditPaymentChequeDetails.TransactionID = intTransactionID;
-        //    clsCreditPaymentChequeDetails.TransactionNo = strTransactionNo;
-        //    clsCreditPaymentChequeDetails.ChequeNo = strChequeNo;
-        //    clsCreditPaymentChequeDetails.Amount = decAmount;
-        //    clsCreditPaymentChequeDetails.ValidityDate = dteValidityDate;
-        //    clsCreditPaymentChequeDetails.Remarks = strRemarks;
-        //    clsCreditPaymentChequeDetails.CreatedOn = DateTime.Now;
-        //    clsCreditPaymentChequeDetails.LastModified = DateTime.Now;
-
-        //    new Data.CreditPaymentCheque(clsPayment.Connection, clsPayment.Transaction).Insert(clsCreditPaymentChequeDetails);
-
-        //    clsPayment.UpdateCredit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
-        //}
-        //private void SaveCreditCardPayment(Data.Payment clsPayment, ArrayList pvtarrCreditCardPaymentDetails)
-        //{
-        //    Data.CreditCardPaymentDetails[] CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[0];
-        //    if (pvtarrCreditCardPaymentDetails != null)
-        //    {
-        //        CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[pvtarrCreditCardPaymentDetails.Count];
-        //        pvtarrCreditCardPaymentDetails.CopyTo(CreditCardPaymentDetails);
-        //    }
-        //    foreach (Data.CreditCardPaymentDetails det in CreditCardPaymentDetails)
-        //    {
-        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + " PAYMENTTYPE:CreditCard DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-        //        if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
-
-        //        decimal decRemainingAmountPaid = det.Amount;
-				
-        //        foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
-        //        {
-        //            Int32 intCPRefBranchID = Convert.ToInt32(dr.Cells["BranchID"].Value.ToString());
-        //            string strCPRefTerminalNo = dr.Cells["TerminalNo"].Value.ToString();
-        //            Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
-
-        //            if (decRemainingAmountPaid >= decBalance)
-        //            {
-        //                InsertCreditCardPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, decBalance, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
-
-        //                //dgItems.Select(itemIndex);
-        //                dr.Cells["CreditPaid"].Value = decBalance;
-        //                dr.Cells["Balance"].Value = 0;
-
-        //                decRemainingAmountPaid -= decBalance;
-        //            }
-        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-        //            {
-        //                InsertCreditCardPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, decRemainingAmountPaid, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
-
-        //                //dgItems.Select(itemIndex);
-        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-        //                decRemainingAmountPaid =0;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-        //private void InsertCreditCardPayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, decimal decAmount, Int16 intCardTypeID, string strCardNo, string strCardHolder, string strValidityDates, string strRemarks)
-        //{
-        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
-        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
-
-        //    //Data.CardType clsCardType = new Data.CardType(clsPayment.Connection, clsPayment.Transaction);
-        //    //Data.CardTypeDetails clsCardTypeDetails = clsCardType.Details(intCardTypeID);
-
-        //    //Data.CreditCardPaymentDetails Details = new Data.CreditCardPaymentDetails();
-        //    //Details.BranchDetails = TerminalDetails.BranchDetails;
-        //    //Details.TerminalNo = TerminalDetails.TerminalNo;
-        //    //Details.TransactionID = intTransactionID;
-        //    //Details.TransactionNo = strTransactionNo;
-        //    //Details.Amount = decAmount;
-        //    //Details.CardTypeID = intCardTypeID;
-        //    //Details.CardNo = strCardNo;
-        //    //Details.CardTypeCode = clsCardTypeDetails.CardTypeCode;
-        //    //Details.CardTypeName = clsCardTypeDetails.CardTypeName;
-        //    //Details.CardHolder = strCardHolder;
-        //    //Details.ValidityDates = strValidityDates;
-        //    //Details.Remarks = strRemarks;
-
-        //    //new Data.CreditCardPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
-        //    clsPayment.UpdateCredit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
-        //}
-        //private void SaveDebitPayment(Data.Payment clsPayment, ArrayList pvtarrDebitPaymentDetails)
-        //{
-        //    int itemIndex = 0;
-
-        //    Data.DebitPaymentDetails[] DebitPaymentDetails = new Data.DebitPaymentDetails[0];
-        //    if (pvtarrDebitPaymentDetails != null)
-        //    {
-        //        DebitPaymentDetails = new Data.DebitPaymentDetails[pvtarrDebitPaymentDetails.Count];
-        //        pvtarrDebitPaymentDetails.CopyTo(DebitPaymentDetails);
-        //    }
-        //    foreach (Data.DebitPaymentDetails det in DebitPaymentDetails)
-        //    {
-        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + " PAYMENTTYPE:Debit DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-        //        if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
-
-        //        decimal decRemainingAmountPaid = det.Amount;
-
-        //        foreach (DataGridViewRow dr in dgvItems.SelectedRows)
-        //        {
-        //            Int64 intCreditPaymentID = Convert.ToInt64(dr.Cells["CreditPaymentID"].Value.ToString());
-        //            Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
-
-        //            if (decRemainingAmountPaid >= decBalance)
-        //            {
-        //                InsertDebitPayment(clsPayment,  CreditPaymentID, lngTransactionID, strTransactionNo, decBalance, strRemarks);
-
-        //                //dgItems.Select(itemIndex);
-        //                dr.Cells["CreditPaid"].Value = decBalance;
-        //                dr.Cells["Balance"].Value = 0;
-
-        //                decRemainingAmountPaid -= decBalance;
-        //            }
-        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-        //            {
-        //                InsertDebitPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
-
-        //                //dgItems.Select(itemIndex);
-        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-        //                decRemainingAmountPaid =0;
-        //                break;
-        //            }
-        //            itemIndex++;
-        //        }
-
-        //        //this.dgStyle.MappingName = dt.TableName;
-        //        //dgItems.DataSource = dt;
-        //        //if (dt.Rows.Count > 0)
-        //        //{
-        //        //    dgItems.Select(0);
-        //        //    dgItems.CurrentRowIndex=0;
-        //        //}
-        //    }
-        //}
-        //private void InsertDebitPayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
-        //{
-        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
-        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
-
-        //    //Data.DebitPaymentDetails Details = new Data.DebitPaymentDetails();
-        //    //Details.TransactionID = intTransactionID;
-        //    //Details.TransactionNo = strTransactionNo;
-        //    //Details.Amount = decAmount;
-        //    //Details.CustomerDetails = mclsCustomerDetails;
-        //    //Details.Remarks = strRemarks;
-
-        //    //clsPayment.InsertDebitPayment(Details);
-        //    clsPayment.UpdateDebit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
-        //}
+        
 		
 		#endregion
 

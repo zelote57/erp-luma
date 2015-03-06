@@ -66,15 +66,11 @@ namespace AceSoft.RetailPlus.VersionChecker
                         strFileToDelete != "retailplus.versionchecker.exe.config")
                     {
                         try { System.IO.File.Delete(strFile); }
-                        catch (Exception exDel)
-                        { }
+                        catch { }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch { }
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -103,7 +99,7 @@ namespace AceSoft.RetailPlus.VersionChecker
                 string strFTPDirectory = "retailplusclient";
 
                 string destinationDirectory = Application.StartupPath;
-                string strConstantRemarks = "Please contact your system administrator immediately.";
+                //string strConstantRemarks = "Please contact your system administrator immediately.";
 
                 mstStatus = "getting ftp server configuration...";
                 worker.ReportProgress(1);
@@ -168,12 +164,8 @@ namespace AceSoft.RetailPlus.VersionChecker
                 System.Threading.Thread.Sleep(100);
                 System.Diagnostics.Process.Start(ExecutableSender);
                 Application.Exit();
-
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch { }
         }
 
         // This event handler deals with the results of the 

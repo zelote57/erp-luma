@@ -19,6 +19,11 @@ namespace AceSoft.RetailPlus.Data
 		public Int64 PackageID;
         public DateTime ChangeDate;
 		public decimal Price;
+        public decimal Price1;
+        public decimal Price2;
+        public decimal Price3;
+        public decimal Price4;
+        public decimal Price5;
         public decimal WSPrice;
 		public decimal PurchasePrice;
 		public decimal Quantity;
@@ -59,7 +64,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-                string SQL = "CALL procProductPackagePriceHistoryInsert(@UID, @PackageID, @ChangeDate, @PurchasePriceNow, @SellingPriceNow, @VAT, @EVAT, @LocalTax, @Remarks);";
+                string SQL = "CALL procProductPackagePriceHistoryInsert(@UID, @PackageID, @ChangeDate, @PurchasePriceNow, @SellingPriceNow, " +
+                                                                       "@Price1Now, @Price2Now, @Price3Now, @Price4Now, @Price5Now, " +
+                                                                       "@VAT, @EVAT, @LocalTax, @Remarks);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -70,6 +77,11 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@ChangeDate", Details.ChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@PurchasePriceNow", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@SellingPriceNow", Details.Price);
+                cmd.Parameters.AddWithValue("@Price1Now", Details.Price1);
+                cmd.Parameters.AddWithValue("@Price2Now", Details.Price2);
+                cmd.Parameters.AddWithValue("@Price3Now", Details.Price3);
+                cmd.Parameters.AddWithValue("@Price4Now", Details.Price4);
+                cmd.Parameters.AddWithValue("@Price5Now", Details.Price5);
                 cmd.Parameters.AddWithValue("@VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
                 cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);

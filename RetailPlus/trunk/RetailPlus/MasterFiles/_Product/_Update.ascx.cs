@@ -210,6 +210,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Int64 prdID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
 			Products clsProduct = new Products();
             ProductDetails clsDetails = clsProduct.Details(prdID);
+
+            ProductUnitsMatrix clsProductUnitsMatrix = new ProductUnitsMatrix(clsProduct.Connection, clsProduct.Transaction);
+            System.Data.DataTable dtUnits = clsProductUnitsMatrix.ListAsDataTable(clsDetails.ProductID);
+
 			clsProduct.CommitAndDispose();
 
 			lblProductID.Text = clsDetails.ProductID.ToString();
@@ -223,6 +227,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			txtProductDesc.Text = clsDetails.ProductDesc;
 			cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf(cboProductUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
+            txtPrice1.Text = clsDetails.Price1.ToString("#,##0.#0");
+            txtPrice2.Text = clsDetails.Price2.ToString("#,##0.#0");
+            txtPrice3.Text = clsDetails.Price3.ToString("#,##0.#0");
+            txtPrice4.Text = clsDetails.Price4.ToString("#,##0.#0");
+            txtPrice5.Text = clsDetails.Price5.ToString("#,##0.#0");
             txtWSPrice.Text = clsDetails.WSPrice.ToString("#,##0.#0");
             txtPurchasePrice.Text = clsDetails.PurchasePrice.ToString("#,##0.#0");
             txtPercentageCommision.Text = clsDetails.PercentageCommision.ToString("#,##0.#0");
@@ -230,13 +239,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             try { decMargin = decMargin / clsDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtMargin.Text = decMargin.ToString("#,##0.#0");
+            txtMargin.Text = decMargin.ToString("#,##0.##0");
 
             decMargin = clsDetails.WSPrice - clsDetails.PurchasePrice;
             try { decMargin = decMargin / clsDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.#0");
+            txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.##0");
 
             chkIncludeInSubtotalDiscount.Checked = clsDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
@@ -252,7 +261,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             txtRID.Text = clsDetails.RID.ToString("###0");
             txtSequenceNo.Text = clsDetails.SequenceNo.ToString("###0");
 
-            cboProductUnit.Enabled = clsDetails.Quantity != 0 ? false : true;
+            cboProductUnit.Enabled = dtUnits.Rows.Count >= 1 ? false : true;
 		}
         private bool VerifyRecord()
         {
@@ -283,6 +292,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			clsDetails.ProductSubGroupID  = Convert.ToInt64(cboProductSubGroup.SelectedItem.Value);
 			clsDetails.BaseUnitID  = Convert.ToInt32(cboProductUnit.SelectedItem.Value); 
 			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
+            clsDetails.Price1 = Convert.ToDecimal(txtPrice1.Text);
+            clsDetails.Price2 = Convert.ToDecimal(txtPrice2.Text);
+            clsDetails.Price3 = Convert.ToDecimal(txtPrice3.Text);
+            clsDetails.Price4 = Convert.ToDecimal(txtPrice4.Text);
+            clsDetails.Price5 = Convert.ToDecimal(txtPrice5.Text);
             clsDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);
 			clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
             clsDetails.PercentageCommision = Convert.ToDecimal(txtPercentageCommision.Text);

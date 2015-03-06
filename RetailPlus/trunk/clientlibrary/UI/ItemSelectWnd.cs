@@ -671,8 +671,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 else
                 {
                     dgStyle.GridColumnStyles["BarCode"].Width = 0;
-                    dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495;
-                    dgStyle.GridColumnStyles["MatrixDescription"].Width = 350;
+                    dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 495;
+                    dgStyle.GridColumnStyles["MatrixDescription"].Width = 150;
                 }
                 
                 //dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 480;
@@ -728,7 +729,6 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     else
                     {
-
                         ProductModel.ProductID = Int64.Parse(dgItems[dgItems.CurrentRowIndex, 1].ToString());
                         ProductModel.MatrixID = Int64.Parse(dgItems[dgItems.CurrentRowIndex, 2].ToString());
 

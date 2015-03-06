@@ -41,22 +41,40 @@ namespace AceSoft.RetailPlus.Data
         public int PositionID;
         public string PositionName;
 
-        // Sep 14, 2011 : Lemu for reward points details
+        /// <summary>
+        /// 14Sep2011 : RewardPoint details
+        /// </summary>
         public ContactRewardDetails RewardDetails;
 
-        // Nov 2, 2011 : Lemu for credit details
+        /// <summary>
+        /// 02Nov2011 : Credit details
+        /// </summary>
         public ContactCreditCardInfoDetails CreditDetails;
 
-        // May 14, 2013
+        /// <summary>
+        /// 14May2013 : Lock the items to buy under this supplier when closing an inventory by supplier.
+        /// </summary>
         public bool isLock;
 
-        // Sep 15, 2013 : for additional contact info
+        /// <summary>
+        /// 15Sep2013 : for additional contact info
+        /// </summary>
         public ContactAddOnDetails AdditionalDetails;
 
         /// <summary>
-        /// sep 24, 2014 : For RestoPlus to monitor how long a customer is already sitting in a table.
+        /// 24Sep2014 : For RestoPlus to monitor how long a customer is already sitting in a table.
         /// </summary>
         public DateTime LastCheckInDate;
+
+        /// <summary>
+        /// 03Mar2015 : LTO No for BFAD, this is only applicable if ShowLTNo = true
+        /// </summary>
+        public string LTONo;
+
+        /// <summary>
+        /// 03Mar2015 : TIN No for BIR
+        /// </summary>
+        public string TINNo;
 
         public DateTime CreatedOn;
         public DateTime LastModified;
@@ -88,6 +106,8 @@ namespace AceSoft.RetailPlus.Data
         public bool PositionID;
         public bool PositionName;
         public bool LastCheckInDate;
+        public bool TINNo;
+        public bool LTPNo;
         public bool RewardDetails;
         public bool CreditDetails;
     }
@@ -117,6 +137,8 @@ namespace AceSoft.RetailPlus.Data
         public const string PositionID = "DepartmentName";
         public const string PositionName = "PositionName";
         public const string LastCheckInDate = "LastCheckInDate";
+        public const string TINNo = "TINNo";
+        public const string LTONo = "LTONo";
     }
 
 	#endregion
@@ -160,8 +182,11 @@ namespace AceSoft.RetailPlus.Data
 
 		public long Insert(ContactDetails Details)
 		{
-			try  
-			{
+			try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL="INSERT INTO tblContacts (" +
                                 "SequenceNo, " + 
 					            "ContactCode, " + 
@@ -179,7 +204,9 @@ namespace AceSoft.RetailPlus.Data
 					            "IsCreditAllowed, " +
 					            "DateCreated," +
                                 "DepartmentID," +
-                                "PositionID" +
+                                "PositionID," +
+                                "TINNo," +
+                                "LTONo" +
 					        ") VALUES (" +
                                 "@SequenceNo, " +
 					            "@ContactCode, " +
@@ -197,14 +224,11 @@ namespace AceSoft.RetailPlus.Data
 					            "@IsCreditAllowed, " +
 					            "@DateCreated," +
                                 "@DepartmentID," +
-                                "@PositionID" +
+                                "@PositionID," +
+                                "@TINNo," +
+                                "@LTONo" +
 					        ");";
 				  	 			
-				MySqlCommand cmd = new MySqlCommand();
-
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("@SequenceNo", Details.SequenceNo);
                 cmd.Parameters.AddWithValue("@ContactCode", Details.ContactCode);
                 cmd.Parameters.AddWithValue("@ContactName", Details.ContactName);
@@ -221,28 +245,16 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@IsCreditAllowed", Details.IsCreditAllowed);
                 cmd.Parameters.AddWithValue("@DepartmentID", Details.DepartmentID);
                 cmd.Parameters.AddWithValue("@PositionID", Details.PositionID);
+                cmd.Parameters.AddWithValue("@TINNo", Details.TINNo);
+                cmd.Parameters.AddWithValue("@LTONo", Details.LTONo);
                 cmd.Parameters.AddWithValue("@DateCreated", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
+                cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
+				Int64 iID = Int64.Parse(base.getLAST_INSERT_ID(this));
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				long iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
-
-				myReader.Close();
-
-                //Sep 15, 2013 Include the sepecific details if there's any
-                
+                // 15Sep2013 : Include the sepecific details if there's any
                 if (!string.IsNullOrEmpty(Details.AdditionalDetails.Salutation))
                 {
                     Details.AdditionalDetails.ContactID = iID;
@@ -264,7 +276,6 @@ namespace AceSoft.RetailPlus.Data
 
 				return iID;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -293,7 +304,9 @@ namespace AceSoft.RetailPlus.Data
 					            "CreditLimit	=	@CrdtLimit, " +
 					            "IsCreditAllowed =	@IsCreditAllowed, " +
                                 "DepartmentID   =   @DepartmentID, " +
-                                "PositionID     =   @PositionID " +
+                                "PositionID     =   @PositionID, " +
+                                "TINNo          =   @TINNo, " +
+                                "LTONo          =   @LTONo " +
 					        "WHERE ContactID = @ContactID;";
 
 
@@ -313,6 +326,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@IsCreditAllowed", Details.IsCreditAllowed);
                 cmd.Parameters.AddWithValue("@DepartmentID", Details.DepartmentID);
                 cmd.Parameters.AddWithValue("@PositionID", Details.PositionID);
+                cmd.Parameters.AddWithValue("@TINNo", Details.TINNo);
+                cmd.Parameters.AddWithValue("@LTONo", Details.LTONo);
                 cmd.Parameters.AddWithValue("@ContactID", Details.ContactID);
 
                 cmd.CommandText = SQL;
@@ -331,6 +346,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblContacts SET " + 
 								"Deleted		=	1, " +
 								"ContactCode	=	@NewContact, " +
@@ -338,11 +356,6 @@ namespace AceSoft.RetailPlus.Data
 							"WHERE ContactID	=	@ContactID	" +
 								"AND Remarks	=	@Remarks";
 				  
-                MySqlCommand cmd = new MySqlCommand();
-			
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
 				MySqlParameter prmNewContact = new MySqlParameter("@NewContact",MySqlDbType.String);			
 				prmNewContact.Value = ContactCode + "-" + TransactionNo;
 				cmd.Parameters.Add(prmNewContact);
@@ -355,9 +368,9 @@ namespace AceSoft.RetailPlus.Data
 				prmRemarks.Value = DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT;
 				cmd.Parameters.Add(prmRemarks);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -389,14 +402,13 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procSaveContact(@ContactID, @SequenceNo, @ContactCode, @ContactName, @ContactGroupID, @ModeOfTerms," +
                                             "@Terms, @Address, @BusinessName, @TelephoneNo, @Remarks, @Debit, @Credit," +
                                             "@CreditLimit, @IsCreditAllowed, @DateCreated, @Deleted, @DepartmentID," +
                                             "@PositionID, @isLock, @CreatedOn, @LastModified);";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("ContactID", Details.ContactID);
                 cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo);
@@ -421,9 +433,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -487,6 +499,8 @@ namespace AceSoft.RetailPlus.Data
                                 "a.PositionID, " +
                                 "PositionName, " +
                                 "LastCheckInDate, " +
+                                "TINNo, " +
+                                "LTONo, " +
                                 "isLock " +
                             "FROM tblContacts a " +
                             "INNER JOIN tblContactGroup b ON a.ContactGroupID = b.ContactGroupID " +
@@ -552,6 +566,8 @@ namespace AceSoft.RetailPlus.Data
                         "tblCardTypes.CardTypeName, ";
             }
             stSQL += "tblContacts.LastCheckInDate, ";
+            stSQL += "tblContacts.TINNo, ";
+            stSQL += "tblContacts.LTONo, ";
             stSQL += "tblContacts.ContactID ";
             stSQL += "FROM tblContacts ";
 
@@ -587,7 +603,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return clsContactDetails;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -628,7 +643,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return clsContactDetails;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -658,7 +672,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return clsContactDetails;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -696,6 +709,8 @@ namespace AceSoft.RetailPlus.Data
                     Details.PositionID = Int16.Parse(dr["PositionID"].ToString());
                     Details.PositionName = "" + dr["PositionName"].ToString();
                     Details.LastCheckInDate = DateTime.Parse(dr["LastCheckInDate"].ToString());
+                    Details.TINNo = "" + dr["TINNo"].ToString();
+                    Details.LTONo = "" + dr["LTONo"].ToString();
 
                     Details.isLock = bool.Parse(dr["isLock"].ToString());
                 }
@@ -760,6 +775,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = SQLSelect() + "WHERE 1=1 AND deleted = '0' " +
 					            "AND (ContactCode LIKE @SearchKey " +
 					            "OR ContactName LIKE @SearchKey) ";
@@ -774,10 +792,6 @@ namespace AceSoft.RetailPlus.Data
 
 				if (Limit != 0)
 					SQL += "LIMIT " + Limit;
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 				
 				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
 				prmSearchKey.Value = SearchKey + "%";
@@ -791,6 +805,7 @@ namespace AceSoft.RetailPlus.Data
 				prmBothCategory.Value = ContactGroupCategory.BOTH.ToString("d");
 				cmd.Parameters.Add(prmBothCategory);
 
+                cmd.CommandText = SQL;
 				return base.ExecuteReader(cmd);
 			}
 			catch (Exception ex)

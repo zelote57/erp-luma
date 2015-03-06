@@ -49,6 +49,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
         private Label label4;
         private TextBox txtContactName;
+        private Button cmdCopyCustomerName;
+        private Button cmdGenerateCustomerCode;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -129,6 +131,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtContactName = new System.Windows.Forms.TextBox();
             this.cboSalutation = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
@@ -153,9 +157,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtContactCode = new System.Windows.Forms.TextBox();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
+            this.cmdGenerateCustomerCode = new System.Windows.Forms.Button();
+            this.cmdCopyCustomerName = new System.Windows.Forms.Button();
             this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtContactName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -185,6 +189,8 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.cmdCopyCustomerName);
+            this.groupBox1.Controls.Add(this.cmdGenerateCustomerCode);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtContactName);
             this.groupBox1.Controls.Add(this.cboSalutation);
@@ -217,6 +223,27 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contact Details";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label4.Location = new System.Drawing.Point(432, 25);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(171, 13);
+            this.label4.TabIndex = 24;
+            this.label4.Text = "Please enter Customer Name";
+            // 
+            // txtContactName
+            // 
+            this.txtContactName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContactName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactName.Location = new System.Drawing.Point(435, 43);
+            this.txtContactName.MaxLength = 25;
+            this.txtContactName.Name = "txtContactName";
+            this.txtContactName.Size = new System.Drawing.Size(518, 30);
+            this.txtContactName.TabIndex = 1;
             // 
             // cboSalutation
             // 
@@ -455,7 +482,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtContactCode.Location = new System.Drawing.Point(114, 43);
             this.txtContactCode.MaxLength = 25;
             this.txtContactCode.Name = "txtContactCode";
-            this.txtContactCode.Size = new System.Drawing.Size(313, 30);
+            this.txtContactCode.Size = new System.Drawing.Size(280, 30);
             this.txtContactCode.TabIndex = 0;
             this.txtContactCode.GotFocus += new System.EventHandler(this.txtCustomerName_GotFocus);
             // 
@@ -489,6 +516,28 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
+            // cmdGenerateCustomerCode
+            // 
+            this.cmdGenerateCustomerCode.CausesValidation = false;
+            this.cmdGenerateCustomerCode.Location = new System.Drawing.Point(400, 44);
+            this.cmdGenerateCustomerCode.Name = "cmdGenerateCustomerCode";
+            this.cmdGenerateCustomerCode.Size = new System.Drawing.Size(27, 30);
+            this.cmdGenerateCustomerCode.TabIndex = 25;
+            this.cmdGenerateCustomerCode.Text = "...";
+            this.cmdGenerateCustomerCode.UseVisualStyleBackColor = true;
+            this.cmdGenerateCustomerCode.Click += new System.EventHandler(this.cmdGenerateCustomerCode_Click);
+            // 
+            // cmdCopyCustomerName
+            // 
+            this.cmdCopyCustomerName.CausesValidation = false;
+            this.cmdCopyCustomerName.Location = new System.Drawing.Point(959, 103);
+            this.cmdCopyCustomerName.Name = "cmdCopyCustomerName";
+            this.cmdCopyCustomerName.Size = new System.Drawing.Size(27, 30);
+            this.cmdCopyCustomerName.TabIndex = 26;
+            this.cmdCopyCustomerName.Text = "...";
+            this.cmdCopyCustomerName.UseVisualStyleBackColor = true;
+            this.cmdCopyCustomerName.Click += new System.EventHandler(this.cmdCopyCustomerName_Click);
+            // 
             // keyboardSearchControl1
             // 
             this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
@@ -499,27 +548,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.keyboardSearchControl1.TabStop = false;
             this.keyboardSearchControl1.Tag = "";
             this.keyboardSearchControl1.Visible = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label4.Location = new System.Drawing.Point(432, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(171, 13);
-            this.label4.TabIndex = 24;
-            this.label4.Text = "Please enter Customer Name";
-            // 
-            // txtContactName
-            // 
-            this.txtContactName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtContactName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContactName.Location = new System.Drawing.Point(435, 43);
-            this.txtContactName.MaxLength = 25;
-            this.txtContactName.Name = "txtContactName";
-            this.txtContactName.Size = new System.Drawing.Size(518, 30);
-            this.txtContactName.TabIndex = 1;
             // 
             // ContactAddDetWnd
             // 
@@ -710,6 +738,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtBusinessName.Text = mContactDetails.BusinessName;
                 txtTelephoneNo.Text = mContactDetails.TelephoneNo;
                 txtRemarks.Text = mContactDetails.Remarks;
+                txtTelephoneNo.Tag = mContactDetails.TINNo;
+                txtRemarks.Tag = mContactDetails.LTONo;
 
                 //txtDebit.Text = mContactDetails.Debit.ToString("###0.#0");
                 //chkIsCreditAllowed.Checked = mContactDetails.IsCreditAllowed;
@@ -770,6 +800,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsDetails.ContactGroupID = Convert.ToInt32(Constants.CONTACT_GROUP_CUSTOMER);
                 clsDetails.ModeOfTerms = ModeOfTerms.Days;
                 clsDetails.Terms = Convert.ToInt32("0");
+                clsDetails.TINNo = txtTelephoneNo.Tag.ToString();
+                clsDetails.LTONo = txtRemarks.Tag.ToString();
                 clsDetails.Address = txtAddress.Text;
                 clsDetails.BusinessName = txtBusinessName.Text;
                 clsDetails.TelephoneNo = txtTelephoneNo.Text;
@@ -831,6 +863,19 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         #endregion
+
+        private void cmdGenerateCustomerCode_Click(object sender, EventArgs e)
+        {
+            Data.ERPConfig clsERPConfig = new Data.ERPConfig();
+            BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
+            txtContactCode.Text = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+            clsERPConfig.CommitAndDispose();
+        }
+
+        private void cmdCopyCustomerName_Click(object sender, EventArgs e)
+        {
+            txtContactName.Text = txtLastName.Text + ", " + txtFirstName.Text + " " + txtMiddleName.Text;
+        }
 
         
     }

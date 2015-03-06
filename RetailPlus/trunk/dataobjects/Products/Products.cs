@@ -38,6 +38,11 @@ namespace AceSoft.RetailPlus.Data
 		public DateTime DateCreated;
 		public bool Deleted;
 		public decimal Price;
+        public decimal Price1;
+        public decimal Price2;
+        public decimal Price3;
+        public decimal Price4;
+        public decimal Price5;
 		public decimal PurchasePrice;
 		public bool IncludeInSubtotalDiscount;
         public bool IsCreditChargeExcluded;
@@ -149,6 +154,11 @@ namespace AceSoft.RetailPlus.Data
 		public bool DateCreated;
 		public bool Deleted;
 		public bool Price;
+        public bool Price1;
+        public bool Price2;
+        public bool Price3;
+        public bool Price4;
+        public bool Price5;
 		public bool PurchasePrice;
 		public bool IncludeInSubtotalDiscount;
         public bool IsCreditChargeExcluded;
@@ -214,6 +224,11 @@ namespace AceSoft.RetailPlus.Data
 		public const string DateCreated = "DateCreated";
 		public const string Deleted = "Deleted";
 		public const string Price = "Price";
+        public const string Price1 = "Price1";
+        public const string Price2 = "Price2";
+        public const string Price3 = "Price3";
+        public const string Price4 = "Price4";
+        public const string Price5 = "Price5";
 		public const string PurchasePrice = "PurchasePrice";
 		public const string IncludeInSubtotalDiscount = "IncludeInSubtotalDiscount";
         public const string IsCreditChargeExcluded = "IsCreditChargeExcluded";
@@ -478,6 +493,11 @@ namespace AceSoft.RetailPlus.Data
 
                 clsDetails.BaseUnitID = Unit.DEFAULT_UNIT_ID;
                 clsDetails.Price = 1;
+                clsDetails.Price1 = 1;
+                clsDetails.Price2 = 1;
+                clsDetails.Price3 = 1;
+                clsDetails.Price4 = 1;
+                clsDetails.Price5 = 1;
                 clsDetails.WSPrice = 1;
                 clsDetails.PurchasePrice = 1;
                 clsDetails.PercentageCommision = 0;
@@ -615,6 +635,11 @@ namespace AceSoft.RetailPlus.Data
 				clsProductPackageDetails.BarCode3 = Details.BarCode3;
 				clsProductPackageDetails.UnitID = Details.BaseUnitID;
 				clsProductPackageDetails.Price = Details.Price;
+                clsProductPackageDetails.Price1 = Details.Price1;
+                clsProductPackageDetails.Price2 = Details.Price2;
+                clsProductPackageDetails.Price3 = Details.Price3;
+                clsProductPackageDetails.Price4 = Details.Price4;
+                clsProductPackageDetails.Price5 = Details.Price5;
 				clsProductPackageDetails.WSPrice = Details.WSPrice;
                 clsProductPackageDetails.PurchasePrice = Details.PurchasePrice;
                 clsProductPackageDetails.Quantity = 1;
@@ -701,6 +726,11 @@ namespace AceSoft.RetailPlus.Data
 				clsDetails.ProductID = Details.ProductID;
 				clsDetails.Quantity = 1;
 				clsDetails.Price = Details.Price;
+                clsDetails.Price1 = Details.Price1;
+                clsDetails.Price2 = Details.Price2;
+                clsDetails.Price3 = Details.Price3;
+                clsDetails.Price4 = Details.Price4;
+                clsDetails.Price5 = Details.Price5;
 				clsDetails.WSPrice = Details.WSPrice;
                 clsDetails.PurchasePrice = Details.PurchasePrice;
 				clsDetails.VAT = Details.VAT;
@@ -868,12 +898,12 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public void UpdateSellingPrice(long ProductID, long MatrixID, long SupplierID, int BaseUnitID, decimal SellingPrice)
+        public void UpdateSellingPrice(long ProductID, long MatrixID, long SupplierID, int BaseUnitID, decimal SellingPrice, decimal Price1, decimal Price2, decimal Price3, decimal Price4, decimal Price5)
 		{
 			try 
 			{
 				ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
-                clsProductPackage.UpdateSelling(ProductID, MatrixID, BaseUnitID, 1, SellingPrice);
+                clsProductPackage.UpdateSelling(ProductID, MatrixID, BaseUnitID, 1, SellingPrice, Price1, Price2, Price3, Price4, Price5);
 			}
 
 			catch (Exception ex)
@@ -2210,6 +2240,11 @@ namespace AceSoft.RetailPlus.Data
                                     "a.Deleted, " +
                                     "a.Active, " +
                                     "pkg.Price, " +
+                                    "pkg.Price1, " +
+                                    "pkg.Price2, " +
+                                    "pkg.Price3, " +
+                                    "pkg.Price4, " +
+                                    "pkg.Price5, " +
                                     "pkg.WSPrice, " +
                                     "pkg.PurchasePrice, " +
                                     "a.PercentageCommision, " +
@@ -2286,6 +2321,11 @@ namespace AceSoft.RetailPlus.Data
                                     "a.Deleted, " +
                                     "a.Active, " +
                                     "pkg.Price, " +
+                                    "pkg.Price1, " +
+                                    "pkg.Price2, " +
+                                    "pkg.Price3, " +
+                                    "pkg.Price4, " +
+                                    "pkg.Price5, " +
                                     "pkg.WSPrice, " +
                                     "pkg.PurchasePrice, " +
                                     "a.PercentageCommision, " +
@@ -2339,37 +2379,38 @@ namespace AceSoft.RetailPlus.Data
 
 			return stSQL;
 		}
-		private string SQLSelectSimple()
-		{
-            string stSQL = "SELECT " +
-                                    "a.ProductID, " +
-                                    "a.ProductCode, " +
-                                    "a.BarCode1, " +
-                                    "a.BarCode2, " +
-                                    "a.BarCode3, " +
-                                    "a.ProductDesc, " +
-                                    "a.ProductSubGroupID, " +
-                                    "a.BaseUnitID, " +
-                                    "a.DateCreated, " +
-                                    "a.Deleted, " +
-                                    "a.Active, " +
-                                    "a.Price, " +
-                                    "a.WSPrice, " +
-                                    "a.PurchasePrice, " +
-                                    "a.PercentageCommision, " +
-                                    "a.IncludeInSubtotalDiscount, " +
-                                    "a.IsCreditChargeExcluded, " + 
-                                    "a.VAT, " +
-                                    "a.EVAT, " +
-                                    "a.LocalTax, " +
-                                    "a.Quantity, " +
-                                    "a.SupplierID, " +
-                                    "a.ActualQuantity, " +
-                                    "a.RewardPoints " +
-                                "FROM tblProducts a " +
-                                "INNER JOIN tblProductPackage b ON a.ProductID = b.ProductID AND ";
-			return stSQL;
-		}
+        //private string SQLSelectSimple()
+        //{
+        //    string stSQL = "SELECT " +
+        //                            "a.ProductID, " +
+        //                            "a.ProductCode, " +
+        //                            "a.BarCode1, " +
+        //                            "a.BarCode2, " +
+        //                            "a.BarCode3, " +
+        //                            "a.ProductDesc, " +
+        //                            "a.ProductSubGroupID, " +
+        //                            "a.BaseUnitID, " +
+        //                            "a.DateCreated, " +
+        //                            "a.Deleted, " +
+        //                            "a.Active, " +
+        //                            "a.Price, " +
+
+        //                            "a.WSPrice, " +
+        //                            "a.PurchasePrice, " +
+        //                            "a.PercentageCommision, " +
+        //                            "a.IncludeInSubtotalDiscount, " +
+        //                            "a.IsCreditChargeExcluded, " + 
+        //                            "a.VAT, " +
+        //                            "a.EVAT, " +
+        //                            "a.LocalTax, " +
+        //                            "a.Quantity, " +
+        //                            "a.SupplierID, " +
+        //                            "a.ActualQuantity, " +
+        //                            "a.RewardPoints " +
+        //                        "FROM tblProducts a " +
+        //                        "INNER JOIN tblProductPackage b ON a.ProductID = b.ProductID AND ";
+        //    return stSQL;
+        //}
 		private string SQLSelectSimple(int BranchID)
 		{
             string stSQL = "SELECT " +
@@ -2460,6 +2501,11 @@ namespace AceSoft.RetailPlus.Data
 			if (clsProductColumns.Active) stSQL += "tblProducts." + ProductColumnNames.Active+ ", ";
 
             if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price + ", ";
+            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price1 + ", ";
+            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price2 + ", ";
+            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price3 + ", ";
+            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price4 + ", ";
+            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price5 + ", ";
             if (clsProductColumns.WSPrice) stSQL += "tblProductPackage." + ProductColumnNames.WSPrice + ", ";
             if (clsProductColumns.PurchasePrice) stSQL += "tblProductPackage." + ProductColumnNames.PurchasePrice + ", ";
 
@@ -2849,6 +2895,11 @@ namespace AceSoft.RetailPlus.Data
                     Details.Deleted = Boolean.Parse(dr["Deleted"].ToString());
                     Details.Active = Boolean.Parse(dr["Active"].ToString());
                     Details.Price = Decimal.Parse(dr["Price"].ToString());
+                    Details.Price1 = Decimal.Parse(dr["Price1"].ToString());
+                    Details.Price2 = Decimal.Parse(dr["Price2"].ToString());
+                    Details.Price3 = Decimal.Parse(dr["Price3"].ToString());
+                    Details.Price4 = Decimal.Parse(dr["Price4"].ToString());
+                    Details.Price5 = Decimal.Parse(dr["Price5"].ToString());
                     Details.WSPrice = Decimal.Parse(dr["WSPrice"].ToString());
                     Details.PurchasePrice = Decimal.Parse(dr["PurchasePrice"].ToString());
                     Details.PercentageCommision = Decimal.Parse(dr["PercentageCommision"].ToString());
@@ -3579,86 +3630,86 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable SearchDataTableSimple(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelectSimple() + "WHERE a.Deleted = 0 ";
+        //public System.Data.DataTable SearchDataTableSimple(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelectSimple() + "WHERE a.Deleted = 0 ";
 
-				if (CheckIItemisSold) SQL += "AND a.IsItemSold = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+        //        if (CheckIItemisSold) SQL += "AND a.IsItemSold = 1 ";
+        //        if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
+        //        if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
 
-				if (SearchKey != string.Empty)
-				{
-					SQL += "AND (Barcode LIKE @SearchKey " +
-											"OR ProductCode LIKE @SearchKey " +
-											"OR ProductDesc LIKE @SearchKey) ";
-				}
-				if (SupplierID != 0)
-					SQL += "AND (SupplierID = " + SupplierID + " OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = " + SupplierID + ")) ";
+        //        if (SearchKey != string.Empty)
+        //        {
+        //            SQL += "AND (Barcode LIKE @SearchKey " +
+        //                                    "OR ProductCode LIKE @SearchKey " +
+        //                                    "OR ProductDesc LIKE @SearchKey) ";
+        //        }
+        //        if (SupplierID != 0)
+        //            SQL += "AND (SupplierID = " + SupplierID + " OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = " + SupplierID + ")) ";
 
-				if (ProductGroupID != Constants.ZERO)
-				{ SQL += "AND a.ProductGroupID = " + ProductGroupID + " "; }
+        //        if (ProductGroupID != Constants.ZERO)
+        //        { SQL += "AND a.ProductGroupID = " + ProductGroupID + " "; }
 
-				//if (ProductGroupName != "" && ProductGroupName != null)
-				//{ SQL += "AND a.ProductGroupID = (SELECT ProductGroupName = '" + ProductGroupName + "') "; }
-				//else { SQL += "AND ProductGroupName <> '' "; }
+        //        //if (ProductGroupName != "" && ProductGroupName != null)
+        //        //{ SQL += "AND a.ProductGroupID = (SELECT ProductGroupName = '" + ProductGroupName + "') "; }
+        //        //else { SQL += "AND ProductGroupName <> '' "; }
 
-				//if (ProductSubGroupID != Constants.ZERO)
-				//{ SQL += "AND a.ProductSubGroupID = " + ProductSubGroupID + " "; }
+        //        //if (ProductSubGroupID != Constants.ZERO)
+        //        //{ SQL += "AND a.ProductSubGroupID = " + ProductSubGroupID + " "; }
 
-				//if (ProductSubGroupName != "" && ProductSubGroupName != null)
-				//{ SQL += "AND ProductSubGroupName = '" + ProductSubGroupName + "' "; }
-				//else { SQL += "AND ProductSubGroupName <> '' "; }
+        //        //if (ProductSubGroupName != "" && ProductSubGroupName != null)
+        //        //{ SQL += "AND ProductSubGroupName = '" + ProductSubGroupName + "' "; }
+        //        //else { SQL += "AND ProductSubGroupName <> '' "; }
 
-				if (isQuantityGreaterThanZERO == true)
-					SQL += "AND a.Quantity > 0 ";
+        //        if (isQuantityGreaterThanZERO == true)
+        //            SQL += "AND a.Quantity > 0 ";
 
-				if (SortField == string.Empty) SortField = "ProductCode";
-				SQL += "ORDER BY " + SortField;
+        //        if (SortField == string.Empty) SortField = "ProductCode";
+        //        SQL += "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC ";
-				else
-					SQL += " DESC ";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC ";
+        //        else
+        //            SQL += " DESC ";
 
-				if (limit != 0)
-					SQL += "LIMIT " + limit + " ";
+        //        if (limit != 0)
+        //            SQL += "LIMIT " + limit + " ";
 
 				
 
-				MySqlCommand cmd = new MySqlCommand();
+        //        MySqlCommand cmd = new MySqlCommand();
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
 
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
 
-				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-				base.MySqlDataAdapterFill(cmd, dt);
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
 				
 
-				return dt;
-			}
-			catch (Exception ex)
-			{
+        //        return dt;
+        //    }
+        //    catch (Exception ex)
+        //    {
 				
 				
-				{
+        //        {
 					
 					
 					
 					
-				}
+        //        }
 
-				throw base.ThrowException(ex);
-			}
-		}
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 		public System.Data.DataTable SearchDataTableSimple(int BranchID, ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
 		{
 			try

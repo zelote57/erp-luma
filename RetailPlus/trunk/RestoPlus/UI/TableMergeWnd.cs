@@ -15,7 +15,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private DialogResult dialog;
 		private bool mboShowAvailableTableOnly;
-		private Data.TerminalDetails mclsTerminalDetails;
 		private GroupBox grpItems;
 		private TableLayoutPanel tblLayout;
 		private Button cmdTableRight;
@@ -418,10 +417,10 @@ namespace AceSoft.RetailPlus.Client.UI
                         cmdTable.Controls.Add(lblLastCheckInDate);
                     }
 
-                    string stTransactionNo = clsSalesTransactions.getSuspendedTransactionNo(long.Parse(dr[Data.ContactColumnNames.ContactID].ToString()), mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                    string stTransactionNo = clsSalesTransactions.getSuspendedTransactionNo(long.Parse(dr[Data.ContactColumnNames.ContactID].ToString()), TerminalDetails.TerminalNo, TerminalDetails.BranchID);
 					if (stTransactionNo != string.Empty)
 					{
-						clsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                        clsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, TerminalDetails.TerminalNo, TerminalDetails.BranchID);
                         cmdTable.Text = dr[Data.ContactColumnNames.ContactCode].ToString();
 
 						decimal decAmountDue = Convert.ToDecimal(clsSalesTransactionDetails.SubTotal + clsSalesTransactionDetails.Charge - clsSalesTransactionDetails.Discount);

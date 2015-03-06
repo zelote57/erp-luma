@@ -151,7 +151,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
             try { decMargin = decMargin / clsDetails.WSPrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtMargin.Text = decMargin.ToString("#,##0.#0");
+            txtMargin.Text = decMargin.ToString("#,##0.##0");
             txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
             txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
             txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");
@@ -190,7 +190,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
                 try { decMargin = decMargin / clsDetails.WSPrice; }
                 catch { decMargin = 1; }
                 decMargin = decMargin * 100;
-                txtMargin.Text = decMargin.ToString("#,##0.#0");
+                txtMargin.Text = decMargin.ToString("#,##0.##0");
                 txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
                 txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
                 txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");

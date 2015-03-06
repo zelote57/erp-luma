@@ -698,8 +698,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     clsEvent.AddEventLn("      printing sales invoice & delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
 
-                    PrintSalesInvoice();
-
+                    if (mclsSalesTransactionDetails.TransactionStatus != TransactionStatus.Void)
+                    {
+                        clsEvent.AddEventLn("      will not print sales invoice. trx is void...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintSalesInvoice();
+                    }
                     PrintDeliveryReceipt();
                 }
                 // 10Feb2010 : print sales invoice to LX as required by Wireless Link
@@ -1083,6 +1086,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
                     string itemDiscountCode = dr["DiscountCode"].ToString();
+                    string strProductUnitCode = dr["ProductUnitCode"].ToString();
                     decimal itemTrueAmt = Convert.ToDecimal(dr["Amount"]);
                     decimal itemVAT = Convert.ToDecimal(dr["VAT"]);
                     decItemsDiscount += Convert.ToDecimal(dr["Discount"]);
@@ -1112,7 +1116,18 @@ namespace AceSoft.RetailPlus.Client.UI
                     else if (dr["Quantity"].ToString().IndexOf("VOID") == -1)
                     {
                         decItemSold += 1;
-                        decQuantitySold += Convert.ToDecimal(dr["Quantity"]);
+
+                        if (mclsSysConfigDetails.WillConvertWeightMeasurementTo1InQtySold)
+                        {
+                            if (mclsSysConfigDetails.WeightMeasurement.IndexOf(strProductUnitCode.ToUpper()) > -1)
+                                decQuantitySold += 1;
+                            else
+                                decQuantitySold += Convert.ToDecimal(dr["Quantity"]);
+                        }
+                        else
+                        {
+                            decQuantitySold += Convert.ToDecimal(dr["Quantity"]);
+                        }
                     }
 
                     if (DiscountType != DiscountTypes.NotApplicable)
@@ -1365,6 +1380,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         case AccessTypes.Contacts: strHeader = "Update customer information"; break;
                         case AccessTypes.SuspendTransaction: strHeader = "Suspend Transaction No. " + mclsSalesTransactionDetails.TransactionNo; break;
                         case AccessTypes.ResumeTransaction: strHeader = "Resume Suspended Transaction"; break;
+                        case AccessTypes.ResumeSuspendedOpenTransaction: strHeader = "Resume Suspended Open Transaction"; break;
                         case AccessTypes.VoidTransaction: strHeader = "Void Transaction No. " + mclsSalesTransactionDetails.TransactionNo; break;
                         case AccessTypes.Withhold: strHeader = "WithHold Amount"; break;
                         case AccessTypes.Disburse: strHeader = "Disburse Amount"; break;
@@ -1395,6 +1411,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         case AccessTypes.PrintGroupReport: strHeader = "Print Group/Dept. Report Access Validation"; break;
                         case AccessTypes.PrintPLUReport: strHeader = "Print PLU Report Access Validation"; break;
                         case AccessTypes.PrintElectronicJournal: strHeader = "Print EJournal Report Access Validation"; break;
+                        default: strHeader = AccessType.ToString(); break;
                     }
                 }
                 LogInWnd login = new LogInWnd();
@@ -2353,60 +2370,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (printerName == objPrinterName.ToLower())
                     {
-                        //string PrinterStatus = printer["PrinterStatus"].ToString().ToLower();
-                        //ExtendedPrinterStatus ExtendedPrinterStatus = (ExtendedPrinterStatus) Enum.Parse(typeof(ExtendedPrinterStatus) ,printer["ExtendedPrinterStatus"].ToString().ToLower());
-
-                        //switch (ExtendedPrinterStatus)
-                        //{
-                        //    case ExtendedPrinterStatus.Other:
-                        //    case ExtendedPrinterStatus.Unknown:
-                        //    case ExtendedPrinterStatus.Offline:
-                        //    case ExtendedPrinterStatus.Error:
-                        //    case ExtendedPrinterStatus.NotAvailable:
-                        //    case ExtendedPrinterStatus.PendingDeletion:
-                        //        boretValue = false;
-                        //        break;
-                        //    case ExtendedPrinterStatus.Idle:
-                        //    case ExtendedPrinterStatus.Printing:
-                        //    case ExtendedPrinterStatus.WarmingUp:
-                        //    case ExtendedPrinterStatus.StoppedPrinting:
-                        //    case ExtendedPrinterStatus.Paused:
-                        //    case ExtendedPrinterStatus.Busy:
-                        //    case ExtendedPrinterStatus.Waiting:
-                        //    case ExtendedPrinterStatus.Processing:
-                        //    case ExtendedPrinterStatus.Initialization:
-                        //    case ExtendedPrinterStatus.PowerSave:
-                        //    case ExtendedPrinterStatus.IOActive:
-                        //    case ExtendedPrinterStatus.ManualFeed:
-                        //        boretValue = true;
-                        //        break;
-                        //}
-
-                        //PrintProps(printer, "Caption");
-                        //PrintProps(printer, "ExtendedPrinterStatus");
-                        //PrintProps(printer, "Availability");
-                        //PrintProps(printer, "Default");
-                        //PrintProps(printer, "DetectedErrorState");
-                        //PrintProps(printer, "ExtendedDetectedErrorState");
-                        //PrintProps(printer, "ExtendedPrinterStatus");
-                        //PrintProps(printer, "LastErrorCode");
-                        //PrintProps(printer, "PrinterState");
-                        //PrintProps(printer, "PrinterStatus");
-                        //PrintProps(printer, "Status");
-                        //PrintProps(printer, "WorkOffline");
-                        //PrintProps(printer, "Local");
-
-                        //try
-                        //{
-                        //    System.Drawing.Printing.PrintDocument printDocument = new System.Drawing.Printing.PrintDocument();
-                        //    printDocument.PrinterSettings.PrinterName = printerName;
-                        //    boretValue = printDocument.PrinterSettings.IsValid;
-                        //}
-                        //catch
-                        //{
-                        //    boretValue = false;
-                        //}
-
                         boretValue = true;
                         break;  // exit the for loops
                     }
@@ -2429,7 +2392,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 MessageBox.Show("No active transaction is found! Please transact first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 return;
             }
-            DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.CloseTransaction);
+            DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.PrintCheckOutBill);
 
             if (loginresult == DialogResult.None)
             {
@@ -3234,6 +3197,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
                     drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
                     drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                    drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
                     drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
                     drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
                     drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
@@ -3429,6 +3393,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
                     drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
                     drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                    drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
                     drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
                     drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
                     drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
@@ -3624,6 +3589,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
                     drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
                     drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                    drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
                     drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
                     drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
                     drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
@@ -3845,6 +3811,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
                         drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
                         drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                        drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
                         drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
                         drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
                         drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
@@ -4053,6 +4020,8 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
                         drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
                         drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
+                        drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                        drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
                         drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
                         drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
                         drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
@@ -4283,6 +4252,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
                         drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
                         drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                        drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
                         drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
                         drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
                         drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
@@ -6667,7 +6637,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             msbToPrint.Append("Debit  Payment".PadRight(15) + ":" + trandetails.DebitPayment.ToString("###,##0.#0").Trim().PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15) + Environment.NewLine);
 
-                            arrDebitPaymentDetails = clspayment.arrDebitPaymentDetails(trandetails.TransactionID);
+                            arrDebitPaymentDetails = new Data.DebitPayments(clspayment.Connection, clspayment.Transaction).Details(trandetails.BranchID, trandetails.TerminalNo, trandetails.TransactionID);
                             if (arrDebitPaymentDetails != null)
                             {
                                 foreach (Data.DebitPaymentDetails debitpaymentdet in arrDebitPaymentDetails)

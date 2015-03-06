@@ -205,7 +205,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         {
                             lblError.Text += clsBranchProductDetails.BarCode + " already exist.<br /><br />";
                             clsBranchProduct.UpdatePurchasing(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.PurchasePrice);
-                            clsBranchProduct.UpdateSellingPrice(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.Price);
+                            clsBranchProduct.UpdateSellingPrice(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.Price, clsBranchProductDetails.Price1, clsBranchProductDetails.Price2, clsBranchProductDetails.Price3, clsBranchProductDetails.Price4, clsBranchProductDetails.Price5);
                         }
                         else
                         {
@@ -215,7 +215,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 lblError.Text += clsBranchProductDetails.ProductCode + " already exist.<br /><br />";
                                 clsBranchProduct.UpdateBarcode(clsBranchProductDetails.ProductID, clsBranchProductDetails.BarCode);
                                 clsBranchProduct.UpdatePurchasing(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.PurchasePrice);
-                                clsBranchProduct.UpdateSellingPrice(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.Price);
+                                clsBranchProduct.UpdateSellingPrice(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.Price, clsBranchProductDetails.Price1, clsBranchProductDetails.Price2, clsBranchProductDetails.Price3, clsBranchProductDetails.Price4, clsBranchProductDetails.Price5);
                             }
                             else
                             {
@@ -346,7 +346,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         {
                             lblError.Text += clsProductDetails.BarCode + " already exist.<br /><br />";
                             clsProduct.UpdatePurchasing(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.PurchasePrice);
-                            clsProduct.UpdateSellingPrice(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.Price);
+                            clsProduct.UpdateSellingPrice(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.Price, clsProductDetails.Price1, clsProductDetails.Price2, clsProductDetails.Price3, clsProductDetails.Price4, clsProductDetails.Price5);
                         }
                         else
                         {
@@ -356,7 +356,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 lblError.Text += clsProductDetails.ProductCode + " already exist.<br /><br />";
                                 clsProduct.UpdateBarcode(clsProductDetails.ProductID, clsProductDetails.BarCode);
                                 clsProduct.UpdatePurchasing(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.PurchasePrice);
-                                clsProduct.UpdateSellingPrice(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.Price);
+                                clsProduct.UpdateSellingPrice(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.Price, clsProductDetails.Price1, clsProductDetails.Price2, clsProductDetails.Price3, clsProductDetails.Price4, clsProductDetails.Price5);
                             }
                             else
                             {

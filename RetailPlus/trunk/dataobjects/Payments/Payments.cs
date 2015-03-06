@@ -5,18 +5,6 @@ using MySql.Data.MySqlClient;
 
 namespace AceSoft.RetailPlus.Data
 {
-	public struct DebitPaymentDetails
-	{
-        public BranchDetails BranchDetails;
-        public string TerminalNo;
-		public Int64 TransactionID;
-        public bool IsRefund;
-        public string TransactionNo;
-		public decimal Amount;
-        public ContactDetails CustomerDetails;
-		public string Remarks;
-	}
-
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
 		 PublicKey = "002400000480000094000000060200000024000" +
 		 "052534131000400000100010053D785642F9F960B43157E0380" +
@@ -86,7 +74,7 @@ namespace AceSoft.RetailPlus.Data
 				}
 				foreach (DebitPaymentDetails debitpaymentdet in Details.arrDebitPaymentDetails)
 				{
-                    InsertDebitPayment(debitpaymentdet);
+                    new DebitPayments(base.Connection, base.Transaction).Insert(debitpaymentdet); 
 				}
 			}
 			catch (Exception ex)
@@ -95,35 +83,46 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public void InsertDebitPayment(DebitPaymentDetails Details)
-        {
-            try
-            {
-                string SQL = "CALL procDebitPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @TransactionNo, @Amount, @ContactID, @Remarks);";
+        //public void InsertDebitPayment(DebitPaymentDetails Details)
+        //{
+        //    try
+        //    {
+        //        string SQL = "CALL procDebitPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @TransactionNo, @Amount, @ContactID, @Remarks);";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@BranchID", Details.BranchDetails.BranchID);
-                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
-                cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
-                cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
-                cmd.Parameters.AddWithValue("@Amount", Details.Amount);
-                cmd.Parameters.AddWithValue("@ContactID", Details.CustomerDetails.ContactID);
-                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
+        //        cmd.Parameters.AddWithValue("@BranchID", Details.BranchDetails.BranchID);
+        //        cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
+        //        cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
+        //        cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
+        //        cmd.Parameters.AddWithValue("@Amount", Details.Amount);
+        //        cmd.Parameters.AddWithValue("@ContactID", Details.CustomerDetails.ContactID);
+        //        cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
 
-                base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-                Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-                clsContact.SubtractDebit(Details.CustomerDetails.ContactID, Details.Amount);
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //        Contacts clsContact = new Contacts(base.Connection, base.Transaction);
+        //        clsContact.SubtractDebit(Details.CustomerDetails.ContactID, Details.Amount);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
+        /// <summary>
+        /// Update CreditPayment, when paying credits.
+        /// Use CreditPaymentID as reference.
+        /// </summary>
+        /// <param name="BranchID"></param>
+        /// <param name="TerminalNo"></param>
+        /// <param name="ContactID"></param>
+        /// <param name="CreditPaymentID"></param>
+        /// <param name="AmountPaid"></param>
+        /// <param name="Remarks"></param>
+        /// <param name="ActivateSuspendedAccount"></param>
         public void UpdateCredit(Int32 BranchID, string TerminalNo, Int64 ContactID, long CreditPaymentID, decimal AmountPaid, string Remarks, bool ActivateSuspendedAccount = true)
 		{
 			try 
@@ -150,32 +149,32 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-        public void UpdateDebit(Int32 BranchID, string TerminalNo, Int64 ContactID, Int64 CreditPaymentID, decimal AmountPaid, string Remarks)
-		{
-			try 
-			{
-                string SQL = "CALL procDebitPaymentUpdateDebit(@BranchID, @TerminalNo, @CreditPaymentID, @Amount, @Remarks);";
+        //public void UpdateDebit(Int32 BranchID, string TerminalNo, Int64 ContactID, Int64 CreditPaymentID, decimal AmountPaid, string Remarks)
+        //{
+        //    try 
+        //    {
+        //        string SQL = "CALL procDebitPaymentUpdateDebit(@BranchID, @TerminalNo, @CreditPaymentID, @Amount, @Remarks);";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@BranchID", BranchID);
-                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
-                cmd.Parameters.AddWithValue("@CreditPaymentID", CreditPaymentID);
-                cmd.Parameters.AddWithValue("@Amount", AmountPaid);
-                cmd.Parameters.AddWithValue("@Remarks", Remarks);
+        //        cmd.Parameters.AddWithValue("@BranchID", BranchID);
+        //        cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+        //        cmd.Parameters.AddWithValue("@CreditPaymentID", CreditPaymentID);
+        //        cmd.Parameters.AddWithValue("@Amount", AmountPaid);
+        //        cmd.Parameters.AddWithValue("@Remarks", Remarks);
 
-				base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-				Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-                clsContact.SubtractDebit(ContactID, AmountPaid);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        Contacts clsContact = new Contacts(base.Connection, base.Transaction);
+        //        clsContact.SubtractDebit(ContactID, AmountPaid);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 		
 		#endregion
 
@@ -217,7 +216,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.arrChequePaymentDetails = new ChequePayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
                 Details.arrCreditCardPaymentDetails = new CreditCardPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
                 Details.arrCreditPaymentDetails = new CreditPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
-                Details.arrDebitPaymentDetails = arrDebitPaymentDetails(TransactionID); 
+                Details.arrDebitPaymentDetails = new DebitPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
 
 				return Details;
 			}
@@ -228,106 +227,9 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public DebitPaymentDetails[] arrDebitPaymentDetails(Int64 TransactionID)
-		{
-			try
-			{
-				string SQL = "SELECT " +
-								"TransactionID, " +
-								"Amount, " +
-								"ContactID, " +
-								"Remarks " +
-							"FROM tblDebitPayment " +
-							"WHERE TransactionID = @TransactionID;";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);			
-				prmTransactionID.Value = TransactionID;
-				cmd.Parameters.Add(prmTransactionID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				ArrayList items = new ArrayList();
-                Customer clsCustomer = new Customer(base.Connection, base.Transaction);
-
-				while (myReader.Read()) 
-				{
-					Data.DebitPaymentDetails Details = new Data.DebitPaymentDetails();
-
-					Details.TransactionID = myReader.GetInt64("TransactionID");
-					
-					Details.Amount = myReader.GetDecimal("Amount");
-                    Details.CustomerDetails = clsCustomer.Details(myReader.GetInt64("ContactID"));
-					Details.Remarks = "" + myReader["Remarks"].ToString();
-
-					items.Add(Details);
-				}
-
-				myReader.Close();
-
-				DebitPaymentDetails[] arrDebitDetails = new DebitPaymentDetails[0];
-
-				if (items != null)
-				{
-					arrDebitDetails = new DebitPaymentDetails[items.Count];
-					items.CopyTo(arrDebitDetails);
-				}
-
-				return arrDebitDetails;
-			}
-
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		
 		#endregion
 		
 		#region Streams
-
-        //public MySqlDataReader List(Int64 TransactionID, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT " +
-        //            "PaymentID, " +
-        //            "TransactionID, " +
-        //            "SubTotal, " +
-        //            "Discount, " +
-        //            "AmountPaid, " +
-        //            "Balance, " +
-        //            "Change, " +
-        //            "DatePaid " +
-        //            "FROM tblPayment " +
-        //            "WHERE 1=1 AND TransactionID = @TransactionID ORDER BY " + SortField; 
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Decimal);			
-        //        prmTransactionID.Value = TransactionID;
-        //        cmd.Parameters.Add(prmTransactionID);
-
-				
-				
-        //        return base.ExecuteReader(cmd);			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
 
 
 		#endregion

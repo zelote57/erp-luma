@@ -1141,6 +1141,16 @@ namespace AceSoft.RetailPlus.Data
                                        "    WHEN 1 THEN 'Months' " +
                                        "    WHEN 2 THEN 'Years' " +
                                        "END ModeOfTermsCode, " +
+                                       "CASE ModeOfTerms " +
+                                       "    WHEN 0 THEN DATE_ADD(a.TransactionDate, INTERVAL a.Terms DAY) " +
+                                       "    WHEN 1 THEN DATE_ADD(a.TransactionDate, INTERVAL a.Terms MONTH) " +
+                                       "    WHEN 2 THEN DATE_ADD(a.TransactionDate, INTERVAL a.Terms YEAR) " +
+                                       "END AgingDate, " +
+                                       "CASE ModeOfTerms " +
+                                       "    WHEN 0 THEN CONCAT(DATEDIFF(NOW(), a.TransactionDate), 'Days') " +
+                                       "    WHEN 1 THEN CONCAT(DATEDIFF(NOW(), a.TransactionDate)/30, 'Months') " +
+                                       "    WHEN 2 THEN CONCAT(DATEDIFF(NOW(), a.TransactionDate)/365, 'Years') " +
+                                       "END AgeTerms, " +
                                        "a.CustomerID, " +
 									   "a.CustomerName, " +
 									   "a.TransactionDate, " +
@@ -1199,6 +1209,7 @@ namespace AceSoft.RetailPlus.Data
 							"TransactionDate, " +
                             "CreditReason, CreditReasonID, " +
                             "ModeOfTerms, Terms, ModeOfTermsCode, " +
+                            "AgingDate, AgeTerms, " +
 							"GrossSales, " +
                             "SubTotal, " +
                             "NetSales, " +
@@ -2332,7 +2343,7 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = "SELECT " +
 								"COUNT(TransactionID) " +
 							"FROM  tblTransactions " +
-								"WHERE TransactionStatus = @TransactionStatus " +
+                                "WHERE (TransactionStatus = @Suspended OR TransactionStatus = @SuspendedOpen) " +
 								"AND TerminalNo = @TerminalNo ";
 				if (CashierID != 0)
 				{
@@ -2346,8 +2357,9 @@ namespace AceSoft.RetailPlus.Data
 				}
 
 				SQL = "SELECT (" + SQL + ") AS TranCount";
-				
-                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Suspended.ToString("d"));
+
+                cmd.Parameters.AddWithValue("@Suspended", TransactionStatus.Suspended.ToString("d"));
+                cmd.Parameters.AddWithValue("@SuspendedOpen", TransactionStatus.SuspendedOpen.ToString("d"));
                 cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
                 cmd.CommandText = SQL;

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections;
 using System.Windows.Forms;
 using AceSoft.RetailPlus.Data;
+using AceSoft.RetailPlus.Security;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
@@ -40,6 +41,8 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			get {	return mDetails;	}
 		}
+
+        public Int64 CashierID { get; set; }
 
         public Data.ContactGroupCategory ContactGroupCategory { get; set; }
 
@@ -447,12 +450,18 @@ namespace AceSoft.RetailPlus.Client.UI
                         if (mboShowAvailableTableOnly || clsSalesTransactionDetails.TransactionStatus == TransactionStatus.SuspendedOpen)
 						{
 							cmdTable.BackColor = System.Drawing.Color.DarkGray;
-							cmdTable.GradientBottom = System.Drawing.Color.DarkGray;
-							cmdTable.GradientTop = System.Drawing.Color.LightGray;
+                            cmdTable.GradientBottom = System.Drawing.Color.DarkGray;
+                            cmdTable.GradientTop = System.Drawing.Color.DarkGray;
 							cmdTable.Enabled = false;
 
                             if (clsSalesTransactionDetails.TransactionStatus == TransactionStatus.SuspendedOpen)
+                            {
+                                cmdTable.BackColor = System.Drawing.Color.Gray;
+                                cmdTable.GradientBottom = System.Drawing.Color.Gray;
+                                cmdTable.GradientTop = System.Drawing.Color.Gray;
+                                cmdTable.Enabled = true;
                                 cmdTable.Text += Environment.NewLine + "(open in other terminal)";
+                            }
 						}
 						else
 						{
@@ -519,12 +528,22 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 if (!string.IsNullOrEmpty(stTransactionNo) && clsSalesTransactionDetails.TransactionStatus == TransactionStatus.SuspendedOpen)
                 {
-                    MessageBox.Show("Sorry the table is already open in another terminal. Please select another table.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information); 
-                    LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
-                    return;
+                    if (MessageBox.Show("This transaction is already open in another terminal. Please suspend in the other terminal first before opening." + Environment.NewLine + "Would you like to force open this transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                    {
+                        //LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
+                        return;
+                    }
+                    else
+                    {
+                        DialogResult resResumeSuspendedOpenTransaction = GetWriteAccessAndLogin(CashierID, AccessTypes.ResumeSuspendedOpenTransaction);
+
+                        if (resResumeSuspendedOpenTransaction != System.Windows.Forms.DialogResult.OK)
+                        {
+                            //LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
+                            return;
+                        }
+                    }
                 }
-
-
 				dialog = DialogResult.OK;
 				this.Hide();
 			}
@@ -548,5 +567,94 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        public DialogResult GetWriteAccessAndLogin(Int64 UID, AccessTypes AccessType, string OverridingHeader = "")
+        {
+            DialogResult loginresult = GetWriteAccess(CashierID, AccessType);
+
+            if (loginresult == DialogResult.None)
+            {
+                string strHeader = OverridingHeader;
+
+                if (string.IsNullOrEmpty(strHeader))
+                {
+                    switch (AccessType)
+                    {
+                        case AccessTypes.PrintTransactionHeader: strHeader = "Print Transaction Header"; break;
+                        case AccessTypes.ChangeQuantity: strHeader = "Change Quantity"; break;
+                        case AccessTypes.ChangePrice: strHeader = "Change Price"; break;
+                        case AccessTypes.ReturnItem: strHeader = "Return Item Access"; break;
+                        case AccessTypes.ApplyItemDiscount: strHeader = "Apply Item Discount"; break;
+                        case AccessTypes.Contacts: strHeader = "Update customer information"; break;
+                        case AccessTypes.SuspendTransaction: strHeader = "Suspend Transaction No. "; break;
+                        case AccessTypes.ResumeTransaction: strHeader = "Resume Suspended Transaction"; break;
+                        case AccessTypes.ResumeSuspendedOpenTransaction: strHeader = "Resume Suspended Open Transaction"; break;
+                        case AccessTypes.VoidTransaction: strHeader = "Void Transaction No. "; break;
+                        case AccessTypes.Withhold: strHeader = "WithHold Amount"; break;
+                        case AccessTypes.Disburse: strHeader = "Disburse Amount"; break;
+                        case AccessTypes.PaidOut: strHeader = "Paid-Out Amount"; break;
+                        case AccessTypes.MallForwarder: strHeader = "Mall Data Forwarder"; break;
+                        case AccessTypes.VoidItem: strHeader = "Void Item"; break;
+                        case AccessTypes.CashCount: strHeader = "Issue Cash Count"; break;
+                        case AccessTypes.EnterFloat: strHeader = "Enter Float or Beginning Balance"; break;
+                        case AccessTypes.InitializeZRead: strHeader = "Initialize Z-Read"; break;
+                        case AccessTypes.CreateTransaction: strHeader = "Create Transaction"; break;
+                        case AccessTypes.CloseTransaction: strHeader = "Close Transaction"; break;
+                        case AccessTypes.ReleaseItems: strHeader = "Release Items"; break;
+                        case AccessTypes.LogoutFE: strHeader = "Logout"; break;
+                        case AccessTypes.ApplyTransDiscount: strHeader = "Apply Transaction Discount"; break;
+                        case AccessTypes.ChargeType: strHeader = "Apply Transaction Charge"; break;
+                        case AccessTypes.OpenDrawer: strHeader = "Open Drawer"; break;
+                        case AccessTypes.CreditPayment: strHeader = "Enter Credit Payment"; break;
+                        case AccessTypes.RefundTransaction: strHeader = "Refund Transaction"; break;
+                        case AccessTypes.RewardCardIssuance: strHeader = "Issue new Reward Card"; break;
+                        case AccessTypes.RewardCardChange: strHeader = "Reward Card Replacement"; break;
+                        case AccessTypes.CreditCardIssuance: strHeader = "Issue new Credit Card"; break;
+                        case AccessTypes.CreditCardChange: strHeader = "Credit Card Replacement"; break;
+                        case AccessTypes.PackUnpackTransaction: strHeader = "Pack/Unpack Transaction Access Validation"; break;
+                        case AccessTypes.ReprintTransaction: strHeader = "Reprint Transaction Access Validation"; break;
+                        case AccessTypes.PrintZRead: strHeader = "Print ZRead Access Validation"; break;
+                        case AccessTypes.PrintXRead: strHeader = "Print XRead Access Validation"; break;
+                        case AccessTypes.PrintHourlyReport: strHeader = "Print Hourly Report Access Validation"; break;
+                        case AccessTypes.PrintGroupReport: strHeader = "Print Group/Dept. Report Access Validation"; break;
+                        case AccessTypes.PrintPLUReport: strHeader = "Print PLU Report Access Validation"; break;
+                        case AccessTypes.PrintElectronicJournal: strHeader = "Print EJournal Report Access Validation"; break;
+                        default: strHeader = AccessType.ToString(); break;
+                    }
+                }
+                LogInWnd login = new LogInWnd();
+
+                login.AccessType = AccessType;
+                login.Header = strHeader;
+                login.TerminalDetails = mclsTerminalDetails;
+                login.ShowDialog(this);
+                loginresult = login.Result;
+                login.Close();
+                login.Dispose();
+
+                if (loginresult != System.Windows.Forms.DialogResult.OK)
+                    loginresult = System.Windows.Forms.DialogResult.Cancel;
+
+            }
+            return loginresult;
+        }
+
+        public DialogResult GetWriteAccess(Int64 UID, AccessTypes accesstype)
+        {
+            DialogResult resRetValue = DialogResult.None;
+
+            AccessRights clsAccessRights = new AccessRights();
+            AccessRightsDetails clsDetails = new AccessRightsDetails();
+
+            clsDetails = clsAccessRights.Details(UID, (Int16)accesstype);
+
+            if (clsDetails.Write)
+            {
+                resRetValue = DialogResult.OK;
+            }
+
+            clsAccessRights.CommitAndDispose();
+
+            return resRetValue;
+        }
 	}
 }

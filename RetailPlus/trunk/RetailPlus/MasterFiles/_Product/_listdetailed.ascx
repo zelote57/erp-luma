@@ -311,8 +311,8 @@
 								        <asp:HyperLink id="lnkGroup" Runat="server"></asp:HyperLink></td>
 							        <td class="ms-vb2">
 								        <asp:HyperLink id="lnkUnit" Runat="server"></asp:HyperLink></td>
-							        <td class="ms-vb2"><A class="DropDown" id="a1" href="" runat="server" visible=false>
-									        <asp:Image id="Image1" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" ToolTip="Show"></asp:Image></A>
+							        <td class="ms-vb2"><a class="DropDown" id="a1" href="" runat="server" visible="false">
+									        <asp:Image id="Image1" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" ToolTip="Show"></asp:Image></a>
 							        </td>
 						        </tr>
 						        <tr>
@@ -321,7 +321,7 @@
 							        </td>
 							        <td class="ms-vb2">
 							            <A class="DropDown" id="imgVariationsAdd" href="" runat="server" target="_blank">
-							                <asp:Label runat=server ToolTip="Add new Product Variation Type" Text="+"></asp:Label></A>
+							                <asp:Label runat="server" ToolTip="Add new Product Variation Type" Text="+"></asp:Label></A>
 							        </td>
 							        <td class="ms-vb2">
 								        <asp:ImageButton id="imgVariationsMatrixAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Variations Matrix" CommandName="imgVariationsMatrixAddClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></td>

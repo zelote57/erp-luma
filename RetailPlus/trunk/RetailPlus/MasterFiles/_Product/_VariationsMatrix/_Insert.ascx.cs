@@ -90,6 +90,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			}
 		}
 
+        protected void imgCreateBarCode1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode2.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode3.Text = CreateBarCode();
+        }
+
 		#endregion
 
 		#region Private Methods
@@ -113,22 +128,29 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
 			Products clsProduct = new Products();
             ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+            lblProductSubGroupID.Text = clsProductDetails.ProductSubGroupID.ToString();
+
 			cboUnit.Items.Add(new ListItem(clsProductDetails.BaseUnitName, clsProductDetails.BaseUnitID.ToString()));
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsProductDetails.Price.ToString("#,##0.#0");
+            txtPrice1.Text = clsProductDetails.Price1.ToString("#,##0.#0");
+            txtPrice2.Text = clsProductDetails.Price2.ToString("#,##0.#0");
+            txtPrice3.Text = clsProductDetails.Price3.ToString("#,##0.#0");
+            txtPrice4.Text = clsProductDetails.Price4.ToString("#,##0.#0");
+            txtPrice5.Text = clsProductDetails.Price5.ToString("#,##0.#0");
             txtWSPrice.Text = clsProductDetails.WSPrice.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsProductDetails.PurchasePrice.ToString("#,##0.#0");
             decimal decMargin = clsProductDetails.Price - clsProductDetails.PurchasePrice;
             try { decMargin = decMargin / clsProductDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtMargin.Text = decMargin.ToString("#,##0.#0");
+            txtMargin.Text = decMargin.ToString("#,##0.##0");
 
             decMargin = clsProductDetails.WSPrice - clsProductDetails.PurchasePrice;
             try { decMargin = decMargin / clsProductDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.#0");
+            txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.##0");
 
             chkIncludeInSubtotalDiscount.Checked = clsProductDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsProductDetails.VAT.ToString("#,##0.#0");
@@ -139,6 +161,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
             lnkVariations.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_Variations/Default.aspx" + stParam;
 
 		}
+
 		private bool SaveRecord()
 		{
             foreach (DataListItem item in lstItem.Items)
@@ -184,7 +207,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
             clsBaseDetails.BarCode3 = txtBarcode3.Text;
             clsBaseDetails.Description = stringVariationDesc;
 			clsBaseDetails.UnitID = Convert.ToInt32(cboUnit.SelectedItem.Value);
-			clsBaseDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
+            clsBaseDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
+            clsBaseDetails.Price1 = Convert.ToDecimal(txtPrice1.Text);
+            clsBaseDetails.Price2 = Convert.ToDecimal(txtPrice2.Text);
+            clsBaseDetails.Price3 = Convert.ToDecimal(txtPrice3.Text);
+            clsBaseDetails.Price4 = Convert.ToDecimal(txtPrice4.Text);
+            clsBaseDetails.Price5 = Convert.ToDecimal(txtPrice5.Text);
+            clsBaseDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);
             clsBaseDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text); 
             clsBaseDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
 			clsBaseDetails.IncludeInSubtotalDiscount = chkIncludeInSubtotalDiscount.Checked;
@@ -215,6 +244,20 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
 			return true;
 		}
+
+        private string CreateBarCode()
+        {
+            string strRetValue = "";
+
+            Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup();
+            string strProductCode = clsProductSubGroup.getBarCodeCounter(Int64.Parse(lblProductSubGroupID.Text)).ToString().PadLeft(13 - (lblProductSubGroupID.Text.Length + 2), '0');
+            clsProductSubGroup.CommitAndDispose();
+
+            BarcodeHelper ean13 = new BarcodeHelper("99", lblProductSubGroupID.Text, strProductCode);
+            strRetValue = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
+            return strRetValue;
+        }
 
 		#endregion
     }

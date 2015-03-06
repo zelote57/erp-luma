@@ -1277,6 +1277,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private void ShowChequePaymentWindow()
 		{
             ChequesPaymentWnd clsChequesPaymentWnd = new ChequesPaymentWnd();
+            clsChequesPaymentWnd.SysConfigDetails = SysConfigDetails;
             clsChequesPaymentWnd.TerminalDetails = TerminalDetails;
             clsChequesPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
             clsChequesPaymentWnd.BalanceAmount = Convert.ToDecimal(lblBalance.Text);

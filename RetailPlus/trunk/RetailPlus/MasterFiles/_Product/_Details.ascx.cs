@@ -241,13 +241,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             try { decMargin = decMargin / clsDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtMargin.Text = decMargin.ToString("#,##0.#0");
+            txtMargin.Text = decMargin.ToString("#,##0.##0");
 
             decMargin = clsDetails.WSPrice - clsDetails.PurchasePrice;
             try { decMargin = decMargin / clsDetails.PurchasePrice; }
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
-            txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.#0");
+            txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.##0");
 
             chkIncludeInSubtotalDiscount.Checked = clsDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");

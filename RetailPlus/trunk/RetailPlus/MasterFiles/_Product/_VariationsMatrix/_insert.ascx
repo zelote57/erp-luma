@@ -48,6 +48,7 @@
 			</table>
 			<asp:Label id="lblReferrer" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblProductID" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblProductSubGroupID" runat="server" Visible="False"></asp:Label>
 		</td>
 		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
@@ -95,14 +96,14 @@
 							</HeaderTemplate>
 							<ItemTemplate>
 								<table id="Table5" cellspacing="0" cellpadding="0" width="100%" border="0">
-									<COLGROUP>
-										<COL width="4%">
-										<COL align="left" width="30%">
-										<COL align="left" width="66%">
-									</COLGROUP>
+									<colgroup>
+										<col width="4%">
+										<col align="left" width="30%">
+										<col align="left" width="66%">
+									</colgroup>
 									<tr>
 										<td class="ms-vb-user">
-											<INPUT id="chkList" type="checkbox" name="chkList" runat="server" visible="false">
+											<input id="chkList" type="checkbox" name="chkList" runat="server" visible="false" />
 										</td>
 										<td class="ms-vb-user">
 											<asp:HyperLink id="lnkVariationType" Runat="server"></asp:HyperLink></td>
@@ -129,7 +130,7 @@
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="90%" border="0">
                             <tr>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Barcode (Primary)</td>
+                                    <label>Barcode (Primary)</label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Barcode (Secondary)</label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
@@ -142,10 +143,12 @@
                                 <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox ID="txtBarcode" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                    &nbsp&nbsp<asp:imagebutton id="imgCreateBarCode1" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" onclick="imgCreateBarCode1_Click" CausesValidation="False"></asp:imagebutton>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox ID="txtBarcode2" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                    &nbsp<asp:imagebutton id="imgCreateBarCode2" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" onclick="imgCreateBarCode2_Click" CausesValidation="False"></asp:imagebutton>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
@@ -153,6 +156,7 @@
                                 <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox ID="txtBarcode3" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                    &nbsp<asp:imagebutton id="imgCreateBarCode3" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" onclick="imgCreateBarCode3_Click" CausesValidation="False"></asp:imagebutton>
                                 </td>
                                 <td></td>
                             </tr>
@@ -197,6 +201,74 @@
 							<tr>
 								<td class="ms-formspacer" height=20></td>
 							</tr>
+                            <tr>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Price: Level1 / Level2</label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Price: Level3 / Level4 / Level5<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer">
+                                    <img alt="" src="../../../_layouts/images/trans.gif" style="width:10" /></td>
+                                <td class="ms-authoringcontrols">
+                                </td>
+                                <td class="ms-formspacer">
+                                    <img alt="" src="../../../_layouts/images/trans.gif" style="width:10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:TextBox ID="txtPrice1" runat="server" AccessKey="P" BorderStyle="Groove"
+                                        CssClass="ms-short-numeric" MaxLength="20" onkeypress="AllNum()" style="width:75px">0.00</asp:TextBox>
+                                    <asp:TextBox ID="txtPrice2" runat="server" AccessKey="P" BorderStyle="Groove"
+                                        CssClass="ms-short-numeric" MaxLength="20" onkeypress="AllNum()" style="width:75px">0.00</asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="Requiredfieldvalidator18" runat="server" ControlToValidate="txtPrice1"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level1 Price' must not be left blank."
+                                        ForeColor=" "></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator11" runat="server" ControlToValidate="txtPrice2"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level1 Price' must be in number, max of 3 decimal places."
+                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                    <asp:RequiredFieldValidator ID="Requiredfieldvalidator17" runat="server" ControlToValidate="txtPrice1"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level2 Price' must not be left blank."
+                                        ForeColor=" "></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" ControlToValidate="txtPrice2"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level2 Price' must be in number, max of 3 decimal places."
+                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                </td>
+                                <td class="ms-formspacer"></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:TextBox ID="txtPrice3" runat="server" AccessKey="P" BorderStyle="Groove"
+                                        CssClass="ms-short-numeric" MaxLength="20" onkeypress="AllNum()" style="width:75px">0.00</asp:TextBox>
+                                    <asp:TextBox ID="txtPrice4" runat="server" AccessKey="P" BorderStyle="Groove"
+                                        CssClass="ms-short-numeric" MaxLength="20" onkeypress="AllNum()" style="width:75px">0.00</asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="Requiredfieldvalidator19" runat="server" ControlToValidate="txtPrice3"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level3 Price' must not be left blank."
+                                        ForeColor=" "></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator12" runat="server" ControlToValidate="txtPrice4"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level3 Price' must be in number, max of 3 decimal places."
+                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                    <asp:RequiredFieldValidator ID="Requiredfieldvalidator20" runat="server" ControlToValidate="txtPrice3"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level4 Price' must not be left blank."
+                                        ForeColor=" "></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator13" runat="server" ControlToValidate="txtPrice4"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level4 Price' must be in number, max of 3 decimal places."
+                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                    <asp:TextBox ID="txtPrice5" runat="server" AccessKey="P" BorderStyle="Groove"
+                                        CssClass="ms-short-numeric" MaxLength="20" onkeypress="AllNum()" 
+                                        style="width:75px" Height="22px">0.00</asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="Requiredfieldvalidator21" runat="server" ControlToValidate="txtPrice5"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level5 Price' must not be left blank."
+                                        ForeColor=" "></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator14" runat="server" ControlToValidate="txtPrice5"
+                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Level5 Price' must be in number, max of 3 decimal places."
+                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer" height="20">
+                                </td>
+                            </tr>
 							<tr>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">
 								    <label>VAT (in percent)<font color="red">*</font></label></td>

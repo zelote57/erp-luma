@@ -6853,7 +6853,7 @@ DELETE FROM sysAccessTypes WHERE TypeID = 149;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (149, 'Summarized Daily Sales With TF');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 149, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 149, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 7, Category = '11: Backend - Sales Reports' WHERE TypeID = 149;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '11: Backend - eSales Reports' WHERE TypeID = 149;
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 150; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 150;
 DELETE FROM sysAccessTypes WHERE TypeID = 150;
@@ -8940,18 +8940,96 @@ ALTER TABLE tblCashierReportHistory ADD `OutOfStockRefundSales` DECIMAL(18,3) NO
 
 UPDATE tblTransactions SET ORNo = TransactionNo WHERE TransactionStatus IN (1,5,11) AND IFNULL(ORNo,'') = '';
 
--- Added  xxxxxx if credit card type is inhouse
+ALTER TABLE tblProductPackage ADD Price1 DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackage ADD Price2 DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackage ADD Price3 DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackage ADD Price4 DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackage ADD Price5 DECIMAL(18,3) DEFAULT 0;
+
+
+ALTER TABLE tblProductPackagePriceHistory ADD Price1Before DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price2Before DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price3Before DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price4Before DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price5Before DECIMAL(18,3) DEFAULT 0;
+
+ALTER TABLE tblProductPackagePriceHistory ADD Price1Now DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price2Now DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price3Now DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price4Now DECIMAL(18,3) DEFAULT 0;
+ALTER TABLE tblProductPackagePriceHistory ADD Price5Now DECIMAL(18,3) DEFAULT 0;
+
+/*********************************  v_4.0.1.33.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.34';
+
+-- 02Mar2015 :	Change the way DebitPayment is handled. 
+--				DebitPayment is currently use by MPC.
+ALTER TABLE tblDebitPayment ADD DebitPaymentID BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblDebitPayment ADD SyncID BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblDebitPayment SET SyncID = DebitPaymentID WHERE SyncID = 0;
+UPDATE tblDebitPayment SET BranchID = 1 WHERE BranchID = 0;
+UPDATE tblDebitPayment SET TerminalNo = '01' WHERE IFNULL(TerminalNo,'') = '';
+
+-- 02Mar2015 :	Modify the ProductGroup from VARCHAR(20) to VARCHAR(50)
+--				some items will encounter error if this is not set.
+ALTER TABLE tblTransactionItems MODIFY ProductGroup VARCHAR(50) NOT NULL DEFAULT '';
+
+-- 03Mar2015 :	Add to hold the TIN and LTO No (BFAD No)
+--				this should only be asked if customer is drugstore.
+ALTER TABLE tblContacts ADD TINNo VARCHAR(20) NOT NULL DEFAULT '';
+ALTER TABLE tblContacts ADD LTONo VARCHAR(20) NOT NULL DEFAULT '';
+
+/*********************************  v_4.0.1.34.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.35';
+
+-- 05Mar2015 : HP; put KG, KILO as 1 Quantity Only
+-- put the WillConvertWeightMeasurementTo1InQtySold to be use when printing the Qty Sold
+-- selection: 
+--		true	- if will convert
+--		false	- if will not convert
+-- default true:
+DELETE FROM sysConfig WHERE ConfigName = 'WillConvertWeightMeasurementTo1InQtySold';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillConvertWeightMeasurementTo1InQtySold',	'FE', 'true');
+
+DELETE FROM sysConfig WHERE ConfigName = 'WeightMeasurement';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WeightMeasurement',	'FE', 'GAL,GALLON,KL,KILO,KG,KILOGRAM,GRM,GRAM,GRAMS');
+
+
+-- 05Mar2015 : MPC; put the acceptable no of days for cheque payment
+--				default is 180 days and below meaning if today is March 5, 2015 valid is from October 6, 2014 onwards
+DELETE FROM sysConfig WHERE ConfigName = 'ChequePaymentAcceptableNoOfDays';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ChequePaymentAcceptableNoOfDays',	'FE', '180');
+
+
+DELETE FROM sysAccessTypes WHERE TypeID = 175;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (175, 'Summarized DailySales WithTF Detailed', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 175, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 175, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '11: Backend - eSales Reports' WHERE TypeID = 175;
+
+UPDATE sysAccessTypes SET SequenceNo = 2, Category = '11: Backend - eSales Reports' WHERE TypeID = 149;
+
+DELETE FROM sysAccessTypes WHERE TypeID = 176;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (176, 'Print Check Out Bill', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 176, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 176, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '14: Frontend - Cashiering' WHERE TypeID = 176;
+
+DELETE FROM sysAccessTypes WHERE TypeID = 177;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (177, 'Resume SuspendedOpen Transaction', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 177, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 177, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '14: Frontend - Cashiering' WHERE TypeID = 177;
 
 -- Notes: Please read
 -- run the retailplus_proc.sql
--- run this to fixed the previous reports.
--- need to change the date
--- CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-01 00:00');
 
 -- make sure to create a cerberus ftp with the following credintials
 -- ftp username: ftprbsuser
 -- ftp password: ftprbspwd
--- directory: subgroupimages	for subgroupsimahes
+-- directory: subgroupimages	for subgroupsimages
 -- directory: retailplusclient	for updated executable file
 
 -- Add POSAuditUser see above
@@ -8960,4 +9038,3 @@ UPDATE tblTransactions SET ORNo = TransactionNo WHERE TransactionStatus IN (1,5,
 -- FLUSH PRIVILEGES;
 
 -- add RetailPlusTagPricePrinter same as RetailPlusBarcodePrinter (TSCLIB)
-

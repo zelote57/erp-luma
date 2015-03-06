@@ -514,11 +514,15 @@ namespace AceSoft.RetailPlus.Client.UI
                 MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for debit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            mDetails.BranchDetails = TerminalDetails.BranchDetails;
+            mDetails.TerminalNo = TerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
             mDetails.CustomerDetails = mclsCustomerDetails;
             mDetails.Amount = Amount;
             mDetails.Remarks = txtRemarks.Text;
+            mDetails.IsRefund = mboIsRefund;
+            mDetails.CreatedOn = mclsSalesTransactionDetails.TransactionDate;
 
             return true;
         }

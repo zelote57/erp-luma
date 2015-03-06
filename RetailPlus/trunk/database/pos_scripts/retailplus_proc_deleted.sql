@@ -613,3 +613,61 @@ BEGIN
 END;
 GO
 delimiter ;
+
+
+/*********************************
+	procDebitPaymentInsert
+	Lemuel E. Aceron
+	CALL procDebitPaymentInsert();
+	
+	September 01, 2009 - create this procedure
+*********************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procDebitPaymentInsert
+GO
+
+create procedure procDebitPaymentInsert(
+	IN intBranchID			  int(4),
+	IN strTerminalNo		  varchar(5),
+	IN intTransactionID BIGINT(20),
+	IN strTransactionNo VARCHAR(30),
+	IN decAmount DECIMAL(18,3),
+	IN intContactID BIGINT,
+	IN strRemarks VARCHAR(255))
+BEGIN
+
+	INSERT INTO tblDebitPayment(BranchID, TerminalNo, TransactionID, TransactionNo, Amount, ContactID, Remarks)
+				VALUES (intBranchID, strTerminalNo, intTransactionID, strTransactionNo, decAmount, intContactID, strRemarks);
+		
+END;
+GO
+delimiter ;
+
+/*********************************
+	procDebitPaymentUpdateDebit
+	Lemuel E. Aceron
+	CALL procDebitPaymentUpdateDebit();
+	
+	[09/01/2009] - create this procedure
+*********************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procDebitPaymentUpdateDebit
+GO
+
+create procedure procDebitPaymentUpdateDebit(
+	IN intBranchID BIGINT, 
+	IN strTerminalNo VARCHAR(20),
+	IN intCreditPaymentID BIGINT(20),
+	IN pvtAmount DECIMAL(18,3),
+	IN pvtRemarks VARCHAR(255))
+BEGIN
+
+	UPDATE tblDebitPayment SET 
+		AmountPaid = AmountPaid + pvtAmount,
+		Remarks = CONCAT(Remarks,';',pvtRemarks)
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+		AND CreditPaymentID = intCreditPaymentID;
+		
+END;
+GO
+delimiter ;

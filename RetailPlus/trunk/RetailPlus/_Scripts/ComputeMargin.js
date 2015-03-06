@@ -120,7 +120,7 @@ function ChangePriceComputeMarginPP(obj)
             
             // txtPrice -- Purchase price for PO
             if (tb[i].id.indexOf("txtPrice")!=-1)
-            {   txtPurchasePrice = tb[i];    }
+            {   txtPrice = tb[i]; }
             
             // txtMargin
             if (tb[i].id.indexOf("txtMargin")!=-1)
@@ -135,20 +135,20 @@ function ChangePriceComputeMarginPP(obj)
             {   txtWSPrice = tb[i];    }
         }
     }
-	
-	purchaseprice = txtPurchasePrice.value;
+
+    purchaseprice = txtPurchasePrice.value;
 	margin = txtMargin.value;
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
-	txtSellingPrice.value = saleprice.toFixed(3);
+	txtSellingPrice.value = saleprice.toFixed(2);
 	
 	purchaseprice = txtPurchasePrice.value;
 	margin = txtWSPriceMarkUp.value;
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
-	txtWSPrice.value = saleprice.toFixed(3);
+	txtWSPrice.value = saleprice.toFixed(2);
 }
 
 function ChangePriceComputeMarginByPricePP(obj)
@@ -156,11 +156,14 @@ function ChangePriceComputeMarginByPricePP(obj)
 	var margin = 0; 
 	var purchaseprice = 0; 
 	var saleprice = 0;
-	
-	var txtSellingPrice;  
-	var txtPurchasePrice; 
+
+	var txtPurchasePrice;
 	var txtMargin;
+	var txtSellingPrice;  
 	
+	var txtWSPriceMarkUp;
+	var txtWSPrice;
+
 	var row = obj.parentNode.parentNode;
     var tb = row.getElementsByTagName("input");
 	for (var i=0;i<tb.length;i++)
@@ -168,20 +171,28 @@ function ChangePriceComputeMarginByPricePP(obj)
         if (tb[i].type=="text")
         {
             // txtSellingPrice
-            if (tb[i].id.indexOf("txtSellingPrice")!=-1)
-            {   txtSellingPrice = tb[i];    }
-            
+            if (tb[i].id.indexOf("txtSellingPrice") != -1)
+            { txtSellingPrice = tb[i]; }
+
             // txtPurchasePrice
-            if (tb[i].id.indexOf("txtPurchasePrice")!=-1)
-            {   txtPurchasePrice = tb[i];    }
-            
+            if (tb[i].id.indexOf("txtPurchasePrice") != -1)
+            { txtPurchasePrice = tb[i]; }
+
             // txtPrice -- Purchase price for PO
-            if (tb[i].id.indexOf("txtPrice")!=-1)
-            {   txtPurchasePrice = tb[i];    }
-            
+            if (tb[i].id.indexOf("txtPrice") != -1)
+            { txtPrice = tb[i]; }
+
             // txtMargin
-            if (tb[i].id.indexOf("txtMargin")!=-1)
-            {   txtMargin = tb[i];    }
+            if (tb[i].id.indexOf("txtMargin") != -1)
+            { txtMargin = tb[i]; }
+
+            // txtWSPriceMarkUp
+            if (tb[i].id.indexOf("txtWSPriceMarkUp") != -1)
+            { txtWSPriceMarkUp = tb[i]; }
+
+            // txtWSPrice
+            if (tb[i].id.indexOf("txtWSPrice") != -1)
+            { txtWSPrice = tb[i]; }
         }
     }
 	
@@ -191,6 +202,13 @@ function ChangePriceComputeMarginByPricePP(obj)
 	margin = margin / purchaseprice;
 	margin = margin * 100;
 	txtMargin.value = margin.toFixed(3);
+
+	saleprice = txtWSPrice.value;
+	purchaseprice = txtPurchasePrice.value;
+	margin = saleprice - purchaseprice;
+	margin = margin / purchaseprice;
+	margin = margin * 100;
+	txtWSPriceMarkUp.value = margin.toFixed(3);
 }
 
 function ChangePriceComputeMarginMP(obj)
@@ -223,9 +241,7 @@ function ChangePriceComputeMarginMP(obj)
             
             // txtPrice -- Purchase price for PO
             if (tb[i].id.indexOf("txtPrice")!=-1)
-            {   txtPrice = tb[i];    
-                purchaseprice = txtPrice.value;
-            }
+            {   txtPrice = tb[i];  }
             
             // txtMargin
             if (tb[i].id.indexOf("txtMargin")!=-1)
@@ -283,7 +299,7 @@ function ChangePriceComputeMarginByPriceMP(obj)
             
             // txtPrice -- Purchase price for PO
             if (tb[i].id.indexOf("txtPrice")!=-1)
-            {   txtPurchasePrice = tb[i];    }
+            {   txtPrice = tb[i]; }
             
             // txtMargin
             if (tb[i].id.indexOf("txtMargin")!=-1)

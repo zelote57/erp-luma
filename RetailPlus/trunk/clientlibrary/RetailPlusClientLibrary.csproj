@@ -139,6 +139,9 @@
       <Name>System.EnterpriseServices</Name>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.FtpClient">
+      <HintPath>..\referencedll\System.Net.FtpClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
@@ -170,6 +173,12 @@
     </Compile>
     <Compile Include="ChangeQtyAmtPrice\ChangeItemRemarksWnd.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CRSReports\SOA.cs">
+      <DependentUpon>SOA.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CRSReports\OS.cs">
       <DependentUpon>OS.rpt</DependentUpon>
@@ -464,6 +473,10 @@
     <EmbeddedResource Include="ChangeQtyAmtPrice\ChangeItemRemarksWnd.resx">
       <DependentUpon>ChangeItemRemarksWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\SOA.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SOA.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CRSReports\OS.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

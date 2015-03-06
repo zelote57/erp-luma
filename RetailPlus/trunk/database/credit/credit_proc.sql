@@ -1049,9 +1049,9 @@ BEGIN
 			WHERE CreditBillID = lngCreditBillID;
 
 			-- 02Feb2015 update the current amountdue; as per request by Dan. if ending balance < EndingBalance
-			UPDATE tblCreditBillHeader 
-			SET  CurrentDueAmount = 0, MinimumAmountDue = 0 -- CurrMonthCreditAmt = 0, 
-			WHERE CreditBillID = lngCreditBillID AND EndingBalance < 0 AND MinimumAmountDue < 0 AND CurrentDueAmount < 0;
+			-- UPDATE tblCreditBillHeader 
+			-- SET  CurrentDueAmount = 0, MinimumAmountDue = 0 -- CurrMonthCreditAmt = 0, 
+			-- WHERE CreditBillID = lngCreditBillID AND EndingBalance < 0 AND MinimumAmountDue < 0 AND CurrentDueAmount < 0;
 
 			-- update the credit of contact
 			UPDATE tblContacts AS CON

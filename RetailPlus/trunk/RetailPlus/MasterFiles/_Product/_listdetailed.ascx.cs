@@ -159,12 +159,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
                 Label lblMargin = (Label)e.Item.FindControl("lblMargin");
                 decimal decMargin = Convert.ToDecimal(dr[ProductColumnNames.Price].ToString()) - Convert.ToDecimal(dr[ProductColumnNames.PurchasePrice].ToString());
-                lblMargin.Text = decMargin.ToString("#,##0.#0");
+                lblMargin.Text = decMargin.ToString("#,##0.##0");
 
                 try { decMargin = decMargin / Convert.ToDecimal(dr[ProductColumnNames.PurchasePrice].ToString()); }
                 catch { decMargin = 1; }
                 decMargin = decMargin * 100;
-                lblMargin.Text += " (" + decMargin.ToString("#,##0.#0") + "%)";
+                lblMargin.Text += " (" + decMargin.ToString("#,##0.##0") + "%)";
 
                 Label lnkSubGroup = (Label)e.Item.FindControl("lnkSubGroup");
                 lnkSubGroup.Text = dr[ProductColumnNames.ProductSubGroupCode].ToString();
@@ -497,6 +497,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
             if (rdoShowInactiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
             if (rdoShowActiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
+            if (rdoShowAll.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
 
             int intLimit = 0;
             try { intLimit = int.Parse(txtLimit.Text); }

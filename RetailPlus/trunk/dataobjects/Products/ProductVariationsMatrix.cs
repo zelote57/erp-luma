@@ -195,6 +195,14 @@ namespace AceSoft.RetailPlus.Data
 				clsDetails.MatrixID = Details.MatrixID;
 				clsDetails.UnitID = Details.UnitID;
 				clsDetails.Price = Details.Price;
+
+                // 02Mar2015 : Added Price1...Price5
+                clsDetails.Price1 = Details.Price1;
+                clsDetails.Price2 = Details.Price2;
+                clsDetails.Price3 = Details.Price3;
+                clsDetails.Price4 = Details.Price4;
+                clsDetails.Price5 = Details.Price5;
+
                 clsDetails.WSPrice = Details.WSPrice;
 				clsDetails.PurchasePrice = Details.PurchasePrice;
 				clsDetails.Quantity = 1;
@@ -202,7 +210,7 @@ namespace AceSoft.RetailPlus.Data
 				clsDetails.EVAT = Details.EVAT;
 				clsDetails.LocalTax = Details.LocalTax;
 
-                // may 27, 2014: Added barcode details
+                // 27May2014: Added barcode details
                 clsDetails.BarCode1 = Details.BarCode1;
                 clsDetails.BarCode2 = Details.BarCode2;
                 clsDetails.BarCode3 = Details.BarCode3;

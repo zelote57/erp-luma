@@ -19,19 +19,26 @@
 	                <td class="ms-authoringcontrols" style="padding-bottom: 2px; PADDING-TOP: 10px" colspan="3">
                         <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                             <tr>
-                                <td nowrap="nowrap"><label>Select Product Code<font color="red">*</font></label><asp:label id="lblProductID" runat="server" CssClass="ms-error" Visible="False">0</asp:label></td>
+                                <td nowrap="nowrap"><label>Select Product Code<font color="red">*</font></label>
+                                    <asp:label id="lblProductID" runat="server" Visible="False">0</asp:label>
+                                    <asp:label id="lblProductSubGroupID" runat="server" Visible="False">0</asp:label>
+                                </td>
                                 <td> : </td>
                                 <td nowrap="nowrap">
                                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" >
                                         <ContentTemplate >
                                             <asp:DropDownList ID="cboProductCode" runat="server" AutoPostBack="True" CssClass="ms-long" OnSelectedIndexChanged="cboProductCode_SelectedIndexChanged"> </asp:DropDownList>
-                                            <asp:TextBox ID="txtProductCode" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short"></asp:TextBox>
+                                            <asp:TextBox ID="txtProductCode" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short" style="min-width: 250px"></asp:TextBox>
                                             <asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product code' must not be left blank." Display="Dynamic" ControlToValidate="cboProductCode"></asp:requiredfieldvalidator>
                                             <asp:ImageButton ID="cmdProductCode" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" ToolTip="Execute search" CausesValidation="False" Style="cursor: hand" OnClick="cmdProductCode_Click" />
-                                            <asp:ImageButton id="imgProductHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgInventoryAdjustment" runat="server" visible="false" ImageUrl="../../_layouts/images/invadj.gif" ToolTip="Adjust inventory count" CausesValidation="false" Style="cursor: hand" OnClick="imgInventoryAdjustment_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgEditNow" runat="server" visible="false" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation="false" Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgProductHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductHistory_Click" OnClientClick="NewWindow();"></asp:ImageButton>
+                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductPriceHistory_Click" OnClientClick="NewWindow();"></asp:ImageButton>
+                                            <asp:ImageButton id="imgInventoryAdjustment" runat="server" visible="false" ImageUrl="../../_layouts/images/invadj.gif" ToolTip="Adjust inventory count" CausesValidation="false" Style="cursor: hand" OnClick="imgInventoryAdjustment_Click" OnClientClick="NewWindow();"></asp:ImageButton>
+                                            <asp:ImageButton id="imgEditNow" runat="server" visible="false" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation="false" Style="cursor: hand" OnClick="imgEditNow_Click" OnClientClick="NewWindow();"></asp:ImageButton>
+
+                                            <asp:HyperLink id="lnkPackage" runat="server" visible="false" ToolTip="Setup Product Packages" Font-Underline="true" Target="_blank" CausesValidation="false" >&nbsp;p&nbsp;</asp:HyperLink>
+                                            <asp:ImageButton id="imgVariationsMatrix" runat="server" visible="false" ImageUrl="../../_layouts/images/varmatrix.gif" ToolTip="Show Variations Matrix" CommandName="imgVariationsMatrixClick" CausesValidation="false" OnClick="imgVariationsMatrix_Click" OnClientClick="NewWindow();"></asp:ImageButton>
+                                            <asp:ImageButton id="imgUnitsMatrix" runat="server" visible="false" ImageUrl="../../_layouts/images/unitmatrix.gif" ToolTip="Show Units Matrix" CommandName="imgUnitsMatrixClick" CausesValidation="false" OnClick="imgUnitsMatrix_Click"  OnClientClick="NewWindow();"></asp:ImageButton>
                                         </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cboProductCode" Eventname="SelectedIndexChanged" />
@@ -44,7 +51,7 @@
                             </tr>
                         </table>
                     </td>
-	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer" colspan="5"></td>
@@ -66,7 +73,7 @@
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
-	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" /></td>
@@ -77,49 +84,89 @@
 		                            <HeaderTemplate>
 			                            <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 				                            <colgroup>
+                                                <col width="10">
 					                            <col width="10">
 					                            <col width="10">
-					                            <col width="10">
-					                            <col width="12%" align="left">
-                                                <col width="9%" align="left">
-                                                <col width="8%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="9%" align="left">
-                                                <col width="8%" align="left">
-                                                <col width="8%" align="left">
-                                                <col width="8%" align="left">
+					                            <col width="135px" align="left">
+                                                <col width="90px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="150px" align="left">
+                                                <col width="150px" align="left">
+                                                <col width="150px" align="left">
 					                            <col width="1%">
+					                            <%--<col width="10">
+					                            <col width="10">
+					                            <col width="10">
+					                            <col width="15%" align="left">
+                                                <col width="9%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+                                                <col width="5%" align="left">
+					                            <col width="1%">--%>
 				                            </colgroup>
 				                            <tr>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-                                                <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortByProductDesc" runat="server">Description</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortByUnit" runat="server">Unit</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortByPurchasePrice" runat="server">Purchase Price</asp:hyperlink></TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="Hyperlink1" runat="server">Retail %Margin</asp:hyperlink> /
-						                            <asp:hyperlink id="Hyperlink2" runat="server">Selling Price</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="Hyperlink3" runat="server">Wholesale %Margin</asp:hyperlink> /
-						                            <asp:hyperlink id="SortByPrice" runat="server">Selling Price</asp:hyperlink></TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="Hyperlink5" runat="server">%Comm</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortBarCode1" runat="server">BarCode1</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortBarCode2" runat="server">BarCode2</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                            <asp:hyperlink id="SortByBarCode3" runat="server">BarCode3</asp:hyperlink></TH>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-					                            </TH>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">&nbsp;&nbsp;&nbsp;</th>
+						                        <th class="ms-vh2" style="padding-bottom: 4px">&nbsp;&nbsp;&nbsp;</th>
+						                        <th class="ms-vh2" style="padding-bottom: 4px">&nbsp;&nbsp;&nbsp;</th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortByProductDesc" runat="server">Description</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortByUnit" runat="server">Unit</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortByPurchasePrice" runat="server">Purchase Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink4" runat="server">Retail %Margin</asp:hyperlink></th>
+						                        <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink2" runat="server">Selling Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink3" runat="server">Level1 Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink6" runat="server">Level2 Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink7" runat="server">Level3 Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink8" runat="server">Level4 Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink9" runat="server">Level5 Price</asp:hyperlink></th>
+                                                <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink1" runat="server">Wholesale %Margin</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortByPrice" runat="server">Selling Price</asp:hyperlink></th>
+						                        <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="Hyperlink5" runat="server">%Comm</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortBarCode1" runat="server">BarCode1</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortBarCode2" runat="server">BarCode2</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+						                            <asp:hyperlink id="SortByBarCode3" runat="server">BarCode3</asp:hyperlink></th>
+					                            <th class="ms-vh2" style="padding-bottom: 4px">
+					                            </th>
 				                            </tr>
 			                            </table>
 		                            </HeaderTemplate>
@@ -129,21 +176,28 @@
 					                            <col width="10">
 					                            <col width="10">
 					                            <col width="10">
-					                            <col width="12%" align="left">
-                                                <col width="9%" align="left">
-                                                <col width="8%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="9%" align="left">
-                                                <col width="8%" align="left">
-                                                <col width="8%" align="left">
-                                                <col width="8%" align="left">
+					                            <col width="135px" align="left">
+                                                <col width="90px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="75px" align="left">
+                                                <col width="150px" align="left">
+                                                <col width="150px" align="left">
+                                                <col width="150px" align="left">
 					                            <col width="1%">
 				                            </colgroup>
 				                            <tr>
 					                            <td class="ms-vb-user" align="right">
-						                            <input type="checkbox" id="chkProductPackageID" runat="server" name="chkProductPackageID" visible="false">
+						                            <input type="checkbox" id="chkProductPackageID" runat="server" name="chkProductPackageID" visible="false" />
 						                            &nbsp;<asp:ImageButton id="cmdDelProductPackage" runat="server" ImageUrl="../../_layouts/images/delitem.gif" height="16" width="16" ToolTip="Delete this Package" Commandname="cmdDelProductPackage" CausesValidation="false"></asp:ImageButton>
 					                            </td>
 					                            <td class="ms-vb-user" align="right">
@@ -154,40 +208,62 @@
 					                                <asp:ImageButton id="cmdPrintTagPriceBarCode1" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode1" CausesValidation="false"></asp:ImageButton>
                                                     <asp:ImageButton id="cmdPrintTagPriceBarCode2" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode2" CausesValidation="false"></asp:ImageButton>
                                                     <asp:ImageButton id="cmdPrintTagPriceBarCode3" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode3" CausesValidation="false"></asp:ImageButton></td>
-					                            <td class="ms-vb-user" nowrap="nowrap">
+					                            <td class="ms-vb-user">
 						                            <asp:Label ID="lblProductDesc" Runat="server"></asp:Label>
 					                            </td>
                                                 <td class="ms-vb-user" nowrap="nowrap">
 					                                <asp:Label ID="lblProductPackageID" Runat="server" Visible="false"></asp:Label>
 						                            <asp:Label ID="lblUnitName" Runat="server"></asp:Label>
 					                            </td>
-                                                <td>
-						                            <asp:TextBox accessKey="C" id="txtQuantity" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" Enabled="false" Width="95%"></asp:TextBox>
+                                                <td class="ms-vb-user">
+						                            <asp:TextBox accessKey="C" id="txtQuantity" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" Enabled="false" style="width:75px"></asp:TextBox>
 					                            </td>
 					                            <td class="ms-vb-user">
-					                                <asp:TextBox accessKey="C" id="txtPurchasePrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short" BorderStyle="Groove" Width="95%">0</asp:TextBox>
+					                                <asp:TextBox accessKey="C" id="txtPurchasePrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+                                                    <asp:TextBox accessKey="C" id="txtMargin" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen" style="width:75px">0</asp:TextBox>
+                                                </td>
+					                            <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtSellingPrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginByPricePP(this)" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtPrice1" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0.00</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtPrice2" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0.00</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtPrice3" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0.00</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtPrice4" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0.00</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtPrice5" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0.00</asp:TextBox>
+					                            </td>
+                                                <td class="ms-vb-user">
+                                                    <asp:TextBox accessKey="C" id="txtWSPriceMarkUp" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen" style="width:75px">0</asp:TextBox>
+                                                </td>
+					                            <td class="ms-vb-user">
+					                                <asp:TextBox accessKey="C" id="txtWSPrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginByPricePP(this)" CssClass="ms-short-numeric" BorderStyle="Groove" style="width:75px">0</asp:TextBox>
 					                            </td>
 					                            <td class="ms-vb-user">
-					                                <asp:TextBox accessKey="C" id="txtMargin" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short" BorderStyle="Groove" BackColor="YellowGreen" Width="45%">0</asp:TextBox>
-					                                <asp:TextBox accessKey="C" id="txtSellingPrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginByPricePP(this)" CssClass="ms-short" BorderStyle="Groove" Width="45%">0</asp:TextBox>
+					                                <asp:TextBox accessKey="C" id="txtCommision" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="Yellow" style="width:75px">0</asp:TextBox>
 					                            </td>
 					                            <td class="ms-vb-user">
-					                                <asp:TextBox accessKey="C" id="txtWSPriceMarkUp" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short" BorderStyle="Groove" BackColor="YellowGreen" Width="45%">0</asp:TextBox>
-					                                <asp:TextBox accessKey="C" id="txtWSPrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginByPricePP(this)" CssClass="ms-short" BorderStyle="Groove" Width="45%">0</asp:TextBox>
-					                            </td>
-					                            <td class="ms-vb-user">
-					                                <asp:TextBox accessKey="C" id="txtCommision" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" BackColor="Yellow" Width=95%>0</asp:TextBox>
-					                            </td>
-					                            <td class="ms-vb-user">
-					                                <asp:TextBox accessKey="C" id="txtBarCode1" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="15" Width=95%></asp:TextBox>
+					                                <asp:TextBox accessKey="C" id="txtBarCode1" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" MaxLength="15" style="width:100px"></asp:TextBox>
+                                                    <asp:imagebutton id="imgCreateBarCode1" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" CommandName="imgCreateBarCode1_Click" CausesValidation="False"></asp:imagebutton>
 						                            <asp:Label id="lblVAT" runat="server" Visible="false"></asp:Label>
 					                            </td>
 					                            <td class="ms-vb-user">
-						                            <asp:TextBox accessKey="C" id="txtBarCode2" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="15" Width=95%></asp:TextBox>
+						                            <asp:TextBox accessKey="C" id="txtBarCode2" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" MaxLength="15" style="width:100px"></asp:TextBox>
+                                                    <asp:imagebutton id="imgCreateBarCode2" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" CommandName="imgCreateBarCode2_Click" CausesValidation="False"></asp:imagebutton>
 						                            <asp:Label id="lblEVAT" runat="server" Visible="false"></asp:Label>
 					                            </td>
 					                            <td class="ms-vb-user">
-						                            <asp:TextBox accessKey="C" id="txtBarCode3" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="15" Width=95%></asp:TextBox>
+						                            <asp:TextBox accessKey="C" id="txtBarCode3" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" MaxLength="15" style="width:100px"></asp:TextBox>
+                                                    <asp:imagebutton id="imgCreateBarCode3" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" CommandName="imgCreateBarCode3_Click" CausesValidation="False"></asp:imagebutton>
 						                            <asp:Label id="lblLocalTax" runat="server" Visible="false"></asp:Label>
 					                            </td>
 					                            <td class="ms-vb2"><A class="DropDown" id="anchorDown" href="" runat="server">
@@ -207,7 +283,7 @@
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
-	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer" colspan="5" style="height: 21px"></td>

@@ -22,6 +22,11 @@ namespace AceSoft.RetailPlus.Data
 		public string UnitCode;
 		public string UnitName;
         public decimal Price;
+        public decimal Price1;
+        public decimal Price2;
+        public decimal Price3;
+        public decimal Price4;
+        public decimal Price5;
         public decimal WSPrice;
         public decimal PurchasePrice;
 		public decimal Quantity;
@@ -47,6 +52,11 @@ namespace AceSoft.RetailPlus.Data
         public bool UnitCode;
         public bool UnitName;
         public bool Price;
+        public bool Price1;
+        public bool Price2;
+        public bool Price3;
+        public bool Price4;
+        public bool Price5;
         public bool WSPrice;
         public bool PurchasePrice;
         public bool Quantity;
@@ -68,6 +78,11 @@ namespace AceSoft.RetailPlus.Data
         public const string UnitName = "UnitName";
         public const string PurchasePrice = "PurchasePrice";
         public const string Price = "Price";
+        public const string Price1 = "Price1";
+        public const string Price2 = "Price2";
+        public const string Price3 = "Price3";
+        public const string Price4 = "Price4";
+        public const string Price5 = "Price5";
         public const string WSPrice = "WSPrice";
         public const string Quantity = "Quantity";
         public const string VAT = "VAT";
@@ -129,6 +144,11 @@ namespace AceSoft.RetailPlus.Data
                 clsProductPackagePriceHistoryDetails.ChangeDate = pvtChangeDate;
                 clsProductPackagePriceHistoryDetails.PurchasePrice = Details.PurchasePrice;
                 clsProductPackagePriceHistoryDetails.Price = Details.Price;
+                clsProductPackagePriceHistoryDetails.Price1 = Details.Price1;
+                clsProductPackagePriceHistoryDetails.Price2 = Details.Price2;
+                clsProductPackagePriceHistoryDetails.Price3 = Details.Price3;
+                clsProductPackagePriceHistoryDetails.Price4 = Details.Price4;
+                clsProductPackagePriceHistoryDetails.Price5 = Details.Price5;
                 clsProductPackagePriceHistoryDetails.VAT = Details.VAT;
                 clsProductPackagePriceHistoryDetails.EVAT = Details.EVAT;
                 clsProductPackagePriceHistoryDetails.LocalTax = Details.LocalTax;
@@ -150,7 +170,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procProductPackageSave(@PackageID, @ProductID, @MatrixID, @UnitID, @PurchasePrice, @Price, @WSPrice, @Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
+                string SQL = "CALL procProductPackageSave(@PackageID, @ProductID, @MatrixID, @UnitID, @PurchasePrice, " +
+                                                         "@Price, @Price1, @Price2, @Price3, @Price4, @Price5, " +
+                                                         "@WSPrice, @Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -162,6 +184,11 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
                 cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@Price", Details.Price);
+                cmd.Parameters.AddWithValue("@Price1", Details.Price1);
+                cmd.Parameters.AddWithValue("@Price2", Details.Price2);
+                cmd.Parameters.AddWithValue("@Price3", Details.Price3);
+                cmd.Parameters.AddWithValue("@Price4", Details.Price4);
+                cmd.Parameters.AddWithValue("@Price5", Details.Price5);
                 cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
                 cmd.Parameters.AddWithValue("@VAT", Details.VAT);
@@ -251,13 +278,31 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-		
-		public void UpdateSelling(long ProductID, long MatrixID, int UnitID, decimal Quantity, decimal SellingPrice)
+
+        /// <summary>
+        /// If Price1..Price5 value is -1, Price1..Price5 will not change.
+        /// </summary>
+        /// <param name="ProductID"></param>
+        /// <param name="MatrixID"></param>
+        /// <param name="UnitID"></param>
+        /// <param name="Quantity"></param>
+        /// <param name="SellingPrice"></param>
+        /// <param name="Price1"></param>
+        /// <param name="Price2"></param>
+        /// <param name="Price3"></param>
+        /// <param name="Price4"></param>
+        /// <param name="Price5"></param>
+        public void UpdateSelling(long ProductID, long MatrixID, int UnitID, decimal Quantity, decimal SellingPrice, decimal Price1, decimal Price2, decimal Price3, decimal Price4, decimal Price5)
 		{
 			try  
 			{
 				string SQL="UPDATE tblProductPackage SET " +
-								"Price			=	@Price " +
+								"Price			=	@Price, " +
+                                "Price1			=	IF(@Price1=-1, Price1, @Price1), " +
+                                "Price2			=	IF(@Price2=-1, Price2, @Price2), " +
+                                "Price3			=	IF(@Price3=-1, Price3, @Price3), " +
+                                "Price4			=	IF(@Price4=-1, Price4, @Price4), " +
+                                "Price5			=	IF(@Price5=-1, Price5, @Price5) " +
 							"WHERE ProductID	=	@ProductID " +
                                 "AND MatrixID	=	@MatrixID " +
 							    "AND UnitID		=	@UnitID " +
@@ -271,6 +316,11 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
                 cmd.Parameters.AddWithValue("@Price", SellingPrice);
+                cmd.Parameters.AddWithValue("@Price1", Price1);
+                cmd.Parameters.AddWithValue("@Price2", Price2);
+                cmd.Parameters.AddWithValue("@Price3", Price3);
+                cmd.Parameters.AddWithValue("@Price4", Price4);
+                cmd.Parameters.AddWithValue("@Price5", Price5);
                 cmd.Parameters.AddWithValue("@Quantity", Quantity);
 				
 				base.ExecuteNonQuery(cmd);
@@ -471,7 +521,8 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSaveProductPackage(@PackageID, @ProductID, @MatrixID, @UnitID, @Price, @PurchasePrice," +
+                string SQL = "CALL procSaveProductPackage(@PackageID, @ProductID, @MatrixID, @UnitID, " +
+                                                    "@Price, @Price1, @Price2, @Price3, @Price4, @Price5, @PurchasePrice," +
                                                     "@Quantity, @VAT, @EVAT, @LocalTax, @WSPrice, @Barcode1, " +
                                                     "@Barcode2, @Barcode3, @BarCode4, @CreatedOn, @LastModified);";
 
@@ -484,6 +535,11 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("MatrixID", Details.MatrixID);
                 cmd.Parameters.AddWithValue("UnitID", Details.UnitID);
                 cmd.Parameters.AddWithValue("Price", Details.Price);
+                cmd.Parameters.AddWithValue("Price1", Details.Price1);
+                cmd.Parameters.AddWithValue("Price2", Details.Price2);
+                cmd.Parameters.AddWithValue("Price3", Details.Price3);
+                cmd.Parameters.AddWithValue("Price4", Details.Price4);
+                cmd.Parameters.AddWithValue("Price5", Details.Price5);
                 cmd.Parameters.AddWithValue("PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("Quantity", Details.Quantity);
                 cmd.Parameters.AddWithValue("VAT", Details.VAT);
@@ -544,6 +600,11 @@ namespace AceSoft.RetailPlus.Data
                                 "c.UnitCode, " +
                                 "c.UnitName, " +
                                 "a.Price, " +
+                                "a.Price1, " +
+                                "a.Price2, " +
+                                "a.Price3, " +
+                                "a.Price4, " +
+                                "a.Price5, " +
                                 "a.WSPrice, " +
                                 "a.PurchasePrice, " +
                                 "a.Quantity, " +
@@ -570,6 +631,11 @@ namespace AceSoft.RetailPlus.Data
             if (clsProductPackageColumns.UnitCode) stSQL += "tblUnit.UnitCode, ";
             if (clsProductPackageColumns.UnitName) stSQL += "tblUnit.UnitName, ";
             if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price, ";
+            if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price1, ";
+            if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price2, ";
+            if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price3, ";
+            if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price4, ";
+            if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price5, ";
             if (clsProductPackageColumns.WSPrice) stSQL += "tblProductPackage.WSPrice, ";
             if (clsProductPackageColumns.PurchasePrice) stSQL += "tblProductPackage.PurchasePrice, ";
             if (clsProductPackageColumns.Quantity) stSQL += "tblProductPackage.Quantity, ";
@@ -606,6 +672,12 @@ namespace AceSoft.RetailPlus.Data
             clsProductPackageColumns.UnitName = true;
             clsProductPackageColumns.PurchasePrice = true;
             clsProductPackageColumns.Price = true;
+            clsProductPackageColumns.Price1 = true;
+            clsProductPackageColumns.Price2 = true;
+            clsProductPackageColumns.Price3 = true;
+            clsProductPackageColumns.Price4 = true;
+            clsProductPackageColumns.Price5 = true;
+            clsProductPackageColumns.WSPrice = true;
             clsProductPackageColumns.Quantity = true;
             clsProductPackageColumns.VAT = true;
             clsProductPackageColumns.EVAT = true;
@@ -832,31 +904,36 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        private ProductPackageDetails setDetails(MySqlDataReader myReader)
-        {
-            ProductPackageDetails clsDetails = new ProductPackageDetails(); ;
+        //private ProductPackageDetails setDetails(MySqlDataReader myReader)
+        //{
+        //    ProductPackageDetails clsDetails = new ProductPackageDetails(); ;
 
-            while (myReader.Read())
-            {
-                clsDetails.PackageID = Convert.ToInt64(myReader[ProductPackageColumnNames.PackageID].ToString());
-                clsDetails.ProductID = Convert.ToInt64(myReader[ProductPackageColumnNames.ProductID].ToString());
-                clsDetails.UnitID = Convert.ToInt32(myReader[ProductPackageColumnNames.UnitID].ToString());
-                clsDetails.UnitCode = "" + myReader[ProductPackageColumnNames.UnitCode].ToString();
-                clsDetails.UnitName = "" + myReader[ProductPackageColumnNames.UnitName].ToString();
-                clsDetails.Price = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price].ToString());
-                clsDetails.Quantity = Convert.ToDecimal(myReader[ProductPackageColumnNames.Quantity].ToString());
-                clsDetails.VAT = Convert.ToDecimal(myReader[ProductPackageColumnNames.VAT].ToString());
-                clsDetails.EVAT = Convert.ToDecimal(myReader[ProductPackageColumnNames.EVAT].ToString());
-                clsDetails.LocalTax = Convert.ToDecimal(myReader[ProductPackageColumnNames.LocalTax].ToString());
-                clsDetails.BarCode1 = "" + myReader[ProductPackageColumnNames.BarCode1].ToString();
-                clsDetails.BarCode2 = "" + myReader[ProductPackageColumnNames.BarCode2].ToString();
-                clsDetails.BarCode3 = "" + myReader[ProductPackageColumnNames.BarCode3].ToString();
-            }
+        //    while (myReader.Read())
+        //    {
+        //        clsDetails.PackageID = Convert.ToInt64(myReader[ProductPackageColumnNames.PackageID].ToString());
+        //        clsDetails.ProductID = Convert.ToInt64(myReader[ProductPackageColumnNames.ProductID].ToString());
+        //        clsDetails.UnitID = Convert.ToInt32(myReader[ProductPackageColumnNames.UnitID].ToString());
+        //        clsDetails.UnitCode = "" + myReader[ProductPackageColumnNames.UnitCode].ToString();
+        //        clsDetails.UnitName = "" + myReader[ProductPackageColumnNames.UnitName].ToString();
+        //        clsDetails.Price = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price].ToString());
+        //        clsDetails.Price1 = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price1].ToString());
+        //        clsDetails.Price2 = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price2].ToString());
+        //        clsDetails.Price3 = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price3].ToString());
+        //        clsDetails.Price4 = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price4].ToString());
+        //        clsDetails.Price5 = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price5].ToString());
+        //        clsDetails.Quantity = Convert.ToDecimal(myReader[ProductPackageColumnNames.Quantity].ToString());
+        //        clsDetails.VAT = Convert.ToDecimal(myReader[ProductPackageColumnNames.VAT].ToString());
+        //        clsDetails.EVAT = Convert.ToDecimal(myReader[ProductPackageColumnNames.EVAT].ToString());
+        //        clsDetails.LocalTax = Convert.ToDecimal(myReader[ProductPackageColumnNames.LocalTax].ToString());
+        //        clsDetails.BarCode1 = "" + myReader[ProductPackageColumnNames.BarCode1].ToString();
+        //        clsDetails.BarCode2 = "" + myReader[ProductPackageColumnNames.BarCode2].ToString();
+        //        clsDetails.BarCode3 = "" + myReader[ProductPackageColumnNames.BarCode3].ToString();
+        //    }
 
-            myReader.Close();
+        //    myReader.Close();
 
-            return clsDetails;
-        }
+        //    return clsDetails;
+        //}
 
         private ProductPackageDetails setDetails(System.Data.DataTable dt)
         {
@@ -872,6 +949,13 @@ namespace AceSoft.RetailPlus.Data
                 clsDetails.UnitName = "" + dr[ProductPackageColumnNames.UnitName].ToString();
                 clsDetails.PurchasePrice = Convert.ToDecimal(dr[ProductPackageColumnNames.PurchasePrice].ToString());
                 clsDetails.Price = Convert.ToDecimal(dr[ProductPackageColumnNames.Price].ToString());
+                clsDetails.Price1 = Convert.ToDecimal(dr[ProductPackageColumnNames.Price1].ToString());
+                clsDetails.Price2 = Convert.ToDecimal(dr[ProductPackageColumnNames.Price2].ToString());
+                clsDetails.Price3 = Convert.ToDecimal(dr[ProductPackageColumnNames.Price3].ToString());
+                clsDetails.Price4 = Convert.ToDecimal(dr[ProductPackageColumnNames.Price4].ToString());
+                clsDetails.Price5 = Convert.ToDecimal(dr[ProductPackageColumnNames.Price5].ToString());
+                clsDetails.WSPrice = Convert.ToDecimal(dr[ProductPackageColumnNames.WSPrice].ToString());
+                
                 clsDetails.Quantity = Convert.ToDecimal(dr[ProductPackageColumnNames.Quantity].ToString());
                 clsDetails.VAT = Convert.ToDecimal(dr[ProductPackageColumnNames.VAT].ToString());
                 clsDetails.EVAT = Convert.ToDecimal(dr[ProductPackageColumnNames.EVAT].ToString());
@@ -888,50 +972,55 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder, string ProductIDs)
-		{
-			try
-			{
-				string SQL = "SELECT " +
-								"a.PackageID, " +
-								"a.ProductID, " +
-								"ProductDesc, " +
-								"a.UnitID, " +
-								"c.UnitCode, " +
-								"c.UnitName, " +
-								"a.Price, " +
-								"a.Quantity, " +
-								"a.VAT, " +
-								"a.EVAT, " +
-								"a.LocalTax " +
-							"FROM tblProductPackage a " +
-							"INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
-							"INNER JOIN tblUnit c ON a.UnitID = c.UnitID " +
-							"INNER JOIN tblProductSubGroup d ON b.ProductSubGroupID = d.ProductSubGroupID " +
-							"INNER JOIN tblProductGroup e ON d.ProductGroupID = e.ProductGroupID " +	
-							"WHERE 1=1 ";
+        //public MySqlDataReader List(string SortField, SortOption SortOrder, string ProductIDs)
+        //{
+        //    try
+        //    {
+        //        string SQL = "SELECT " +
+        //                        "a.PackageID, " +
+        //                        "a.ProductID, " +
+        //                        "ProductDesc, " +
+        //                        "a.UnitID, " +
+        //                        "c.UnitCode, " +
+        //                        "c.UnitName, " +
+        //                        "a.Price, " +
+        //                        "a.Price1, " +
+        //                        "a.Price2, " +
+        //                        "a.Price3, " +
+        //                        "a.Price4, " +
+        //                        "a.Price5, " +
+        //                        "a.Quantity, " +
+        //                        "a.VAT, " +
+        //                        "a.EVAT, " +
+        //                        "a.LocalTax " +
+        //                    "FROM tblProductPackage a " +
+        //                    "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
+        //                    "INNER JOIN tblUnit c ON a.UnitID = c.UnitID " +
+        //                    "INNER JOIN tblProductSubGroup d ON b.ProductSubGroupID = d.ProductSubGroupID " +
+        //                    "INNER JOIN tblProductGroup e ON d.ProductGroupID = e.ProductGroupID " +	
+        //                    "WHERE 1=1 ";
 
-				if (ProductIDs != "" && ProductIDs != null)
-					SQL += "AND a.ProductID in (" + ProductIDs + ") ";
+        //        if (ProductIDs != "" && ProductIDs != null)
+        //            SQL += "AND a.ProductID in (" + ProductIDs + ") ";
 
-				SQL += "ORDER BY " + SortField; 
+        //        SQL += "ORDER BY " + SortField; 
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return base.ExecuteReader(cmd);			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
         public System.Data.DataTable ListAsDataTable(Int64 ProductID, string BarCode = "", string ProductGroupName = "", string ProductSubGroupName = "", int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
         {

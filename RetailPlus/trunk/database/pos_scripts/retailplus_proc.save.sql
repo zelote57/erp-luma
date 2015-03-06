@@ -2368,6 +2368,11 @@ create procedure procSaveProductPackage(
 	IN intMatrixID bigint(20),
 	IN intUnitID int(3),
 	IN decPrice decimal(18,2),
+	IN decPrice1 DECIMAL(18,3),
+	IN decPrice2 DECIMAL(18,3),
+	IN decPrice3 DECIMAL(18,3),
+	IN decPrice4 DECIMAL(18,3),
+	IN decPrice5 DECIMAL(18,3),
 	IN decPurchasePrice decimal(18,2),
 	IN decQuantity decimal(18,2),
 	IN decVAT decimal(18,2),
@@ -2391,10 +2396,15 @@ BEGIN
 
 	IF EXISTS(SELECT PackageID FROM tblProductPackage WHERE PackageID = intPackageID) THEN 
 		UPDATE tblProductPackage SET
-			ProductID				= intProductID,
-			MatrixID				= intMatrixID,
-			UnitID					= intUnitID,
-			Price					= decPrice,
+			ProductID		= intProductID,
+			MatrixID		= intMatrixID,
+			UnitID			= intUnitID,
+			Price			= decPrice,
+			Price1			=	decPrice1,
+			Price2			=	decPrice2,
+			Price3			=	decPrice3,
+			Price4			=	decPrice4,
+			Price5			=	decPrice5,
 			PurchasePrice			= decPurchasePrice,
 			Quantity				= decQuantity,
 			VAT						= decVAT,
@@ -2408,10 +2418,12 @@ BEGIN
 			LastModified			= dteLastModified
 		WHERE PackageID = intPackageID;
 	ELSE
-		INSERT INTO tblProductPackage(PackageID, ProductID, MatrixID, UnitID, Price, PurchasePrice,
+		INSERT INTO tblProductPackage(PackageID, ProductID, MatrixID, UnitID, 
+									Price, Price1, Price2, Price3, Price4, Price5, PurchasePrice,
 									Quantity, VAT, EVAT, LocalTax, WSPrice, Barcode1, 
 									Barcode2, Barcode3, BarCode4, CreatedOn, LastModified)
-			VALUES(intPackageID, intProductID, intMatrixID, intUnitID, decPrice, decPurchasePrice,
+			VALUES(intPackageID, intProductID, intMatrixID, intUnitID, 
+									decPrice, decPrice1, decPrice2, decPrice3, decPrice4, decPrice5, decPurchasePrice,
 									decQuantity, decVAT, decEVAT, decLocalTax, decWSPrice, strBarcode1, 
 									strBarcode2, strBarcode3, strBarCode4, dteCreatedOn, dteLastModified);
 	END IF;
@@ -4060,6 +4072,62 @@ BEGIN
 			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, dteTransactionDate, strCashierName, decAmount, decAdditionalCharge, intContactID, intGuarantorID, intCardTypeID, strCardTypeCode, strCardTypeName, strCardNo, strCardHolder, strValidityDates, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
 
 		UPDATE tblCreditCardPayment SET SyncID = CreditCardPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveDebitPayment
+	02Aug2014
+
+	CALL procSaveDebitPayment(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveDebitPayment
+GO
+
+create procedure procSaveDebitPayment(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID	    bigint(20),
+	IN intDebitPaymentID bigint(20),
+	IN intTransactionID bigint(20),
+	IN intContactID bigint(20),
+	IN decAmount        decimal(18,2),
+	IN strRemarks       varchar(255),
+	IN strTransactionNo varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intDebitPaymentID; END IF;
+	
+	IF EXISTS(SELECT DebitPaymentID FROM tblDebitPayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblDebitPayment SET
+			Amount					= decAmount,
+			Remarks					= strRemarks,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblDebitPayment(BranchID, TerminalNo, SyncID, TransactionID, ContactID, Amount, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, DebitPaymentID, intTransactionID, intContactID, decAmount, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+
+		UPDATE tblDebitPayment SET SyncID = DebitPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
 	END IF;
 				
 END;

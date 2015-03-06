@@ -130,6 +130,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\referencedll\System.Net.FtpClient.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services">
       <Name>System.Web.Services</Name>
     </Reference>

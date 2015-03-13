@@ -72,17 +72,17 @@
                                     <label>Vendor Name<font color="red">*</font></label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:dropdownlist id="cboGroup" CssClass="ms-short" runat="server" Width="157px"></asp:dropdownlist>
 									<asp:RequiredFieldValidator id="RequiredFieldValidator14" runat="server" CssClass="ms-error" ForeColor=" " ControlToValidate="cboGroup" Display="Dynamic" ErrorMessage="'Group' must not be left blank."></asp:RequiredFieldValidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox id="txtVendorCode" accessKey="C" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="25"></asp:textbox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Vendor code.' must not be left blank." Display="Dynamic" ControlToValidate="txtVendorCode" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:textbox id="txtVendorName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                     <asp:requiredfieldvalidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="txtVendorName" Display="Dynamic" ErrorMessage="'Vendor name.' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
@@ -98,28 +98,30 @@
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Position<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    </td>
+                                    <label>Tax Identification No (TIN)</label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    </td>
+                                    <label>LTO No</label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:dropdownlist id="cboDepartment" CssClass="ms-short" runat="server">
 									</asp:dropdownlist>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Department.' must not be left blank." Display="Dynamic" ControlToValidate="cboDepartment" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:dropdownlist id="cboPosition" CssClass="ms-short" runat="server">
 									</asp:dropdownlist>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Position.' must not be left blank." Display="Dynamic" ControlToValidate="cboPosition" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
+                                    <asp:TextBox id="txtTINNo" runat="server" accesskey="G" CssClass="ms-short" MaxLength="20" BorderStyle="Groove"></asp:TextBox>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
+                                    <asp:TextBox id="txtLTONo" runat="server" accesskey="G" CssClass="ms-short" MaxLength="20" BorderStyle="Groove"></asp:TextBox>                                    
                                 </td>
                             </tr>
                             <tr>
@@ -137,7 +139,7 @@
                                     <label>Credit<font color="red">*</font></label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:dropdownlist id="cboModeOfTerms" CssClass="ms-short" runat="server">
 										<asp:ListItem Value="0" Selected="True">Daily</asp:ListItem>
@@ -146,7 +148,7 @@
 									</asp:dropdownlist>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator15" runat="server" CssClass="ms-error" ErrorMessage="'Mode of terms.' must not be left blank." Display="Dynamic" ControlToValidate="cboModeOfTerms" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtTerms" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator16" runat="server" CssClass="ms-error" ErrorMessage="'Terms.' must not be left blank." Display="Dynamic" ControlToValidate="txtTerms" ForeColor=" "></asp:requiredfieldvalidator>
@@ -154,7 +156,7 @@
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Terms' must be in number, max of 3 decimal places."
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtDebit" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator11" runat="server" CssClass="ms-error" ForeColor=" " ControlToValidate="txtDebit" Display="Dynamic" ErrorMessage="'Debit.' must not be left blank." DESIGNTIMEDRAGDROP="77"></asp:requiredfieldvalidator>
@@ -162,7 +164,7 @@
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Debit' must be in number, max of 3 decimal places."
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtCredit" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator12" runat="server" CssClass="ms-error" ErrorMessage="'Credit.' must not be left blank." Display="Dynamic" ControlToValidate="txtCredit" ForeColor=" "></asp:requiredfieldvalidator>
@@ -186,19 +188,19 @@
                                     <label>Credit limit<font color="red">*</font></label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox id="txtBusinessName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox id="txtTelephoneNo" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:CheckBox id="chkIsCreditAllowed" runat="server" Text="Check to allow credit." CssClass="ms-short"></asp:CheckBox>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtCreditLimit" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator13" runat="server" CssClass="ms-error" ErrorMessage="'Credit Limit' must not be left blank." Display="Dynamic" ControlToValidate="txtCreditLimit" ForeColor=" "></asp:requiredfieldvalidator>
@@ -219,12 +221,12 @@
                             </tr>
                             <tr>
                                 <td class="ms-formspacer">
-                                    <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                    <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:TextBox id="txtAddress" runat="server" CssClass="ms-long" MaxLength="120" BorderStyle="Groove"></asp:TextBox>
                                 </td>
                                 <td class="ms-formspacer">
-                                    <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                    <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:TextBox id="txtRemarks" runat="server" CssClass="ms-long" MaxLength="120" BorderStyle="Groove"></asp:TextBox>
                                 </td>

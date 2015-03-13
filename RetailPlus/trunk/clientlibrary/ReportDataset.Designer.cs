@@ -499,6 +499,8 @@ namespace AceSoft.RetailPlus.Client {
             
             private global::System.Data.DataColumn columnisConsignment;
             
+            private global::System.Data.DataColumn columnCRNo;
+            
             private global::System.Data.DataColumn columnAgentName;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -856,6 +858,14 @@ namespace AceSoft.RetailPlus.Client {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CRNoColumn {
+                get {
+                    return this.columnCRNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn AgentNameColumn {
                 get {
                     return this.columnAgentName;
@@ -940,6 +950,7 @@ namespace AceSoft.RetailPlus.Client {
                         decimal Charge, 
                         string CreatedByName, 
                         bool isConsignment, 
+                        string CRNo, 
                         string AgentName) {
                 TransactionsRow rowTransactionsRow = ((TransactionsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
@@ -983,6 +994,7 @@ namespace AceSoft.RetailPlus.Client {
                         Charge,
                         CreatedByName,
                         isConsignment,
+                        CRNo,
                         AgentName};
                 rowTransactionsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionsRow);
@@ -1046,6 +1058,7 @@ namespace AceSoft.RetailPlus.Client {
                 this.columnCharge = base.Columns["Charge"];
                 this.columnCreatedByName = base.Columns["CreatedByName"];
                 this.columnisConsignment = base.Columns["isConsignment"];
+                this.columnCRNo = base.Columns["CRNo"];
                 this.columnAgentName = base.Columns["AgentName"];
             }
             
@@ -1132,6 +1145,8 @@ namespace AceSoft.RetailPlus.Client {
                 base.Columns.Add(this.columnCreatedByName);
                 this.columnisConsignment = new global::System.Data.DataColumn("isConsignment", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnisConsignment);
+                this.columnCRNo = new global::System.Data.DataColumn("CRNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCRNo);
                 this.columnAgentName = new global::System.Data.DataColumn("AgentName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAgentName);
                 this.columnItemsDiscount.Caption = "PaymentType";
@@ -3850,6 +3865,22 @@ namespace AceSoft.RetailPlus.Client {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CRNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactions.CRNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CRNo\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.CRNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string AgentName {
                 get {
                     try {
@@ -4342,6 +4373,18 @@ namespace AceSoft.RetailPlus.Client {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetisConsignmentNull() {
                 this[this.tableTransactions.isConsignmentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCRNoNull() {
+                return this.IsNull(this.tableTransactions.CRNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCRNoNull() {
+                this[this.tableTransactions.CRNoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

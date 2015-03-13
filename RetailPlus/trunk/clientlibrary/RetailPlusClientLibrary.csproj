@@ -174,6 +174,12 @@
     <Compile Include="ChangeQtyAmtPrice\ChangeItemRemarksWnd.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CRSReports\CR.cs">
+      <DependentUpon>CR.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="CRSReports\SOA.cs">
       <DependentUpon>SOA.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -473,6 +479,10 @@
     <EmbeddedResource Include="ChangeQtyAmtPrice\ChangeItemRemarksWnd.resx">
       <DependentUpon>ChangeItemRemarksWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\CR.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CR.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CRSReports\SOA.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

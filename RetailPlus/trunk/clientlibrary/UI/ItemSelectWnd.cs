@@ -22,6 +22,12 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.Windows.Forms.DataGridTextBoxColumn ProductUnitID;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductUnitName;
 		private System.Windows.Forms.DataGridTextBoxColumn Price;
+        private System.Windows.Forms.DataGridTextBoxColumn Price1;
+        private System.Windows.Forms.DataGridTextBoxColumn Price2;
+        private System.Windows.Forms.DataGridTextBoxColumn Price3;
+        private System.Windows.Forms.DataGridTextBoxColumn Price4;
+        private System.Windows.Forms.DataGridTextBoxColumn Price5;
+        private System.Windows.Forms.DataGridTextBoxColumn WSPrice;
 		private System.Windows.Forms.DataGridTextBoxColumn VAT;
 		private System.Windows.Forms.DataGridTextBoxColumn LocalTax;
         private DataGridQuantityTextBoxColumn Quantity;
@@ -73,6 +79,8 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         public Data.TerminalDetails TerminalDetails { get; set; }
+
+        public ContactDetails ContactDetails { get; set; }
         
         // Aug 6, 2011  :Lemu
         // Include InActive products during refund
@@ -146,6 +154,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductUnitID = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductUnitName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.Price = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Price1 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Price2 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Price3 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Price4 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Price5 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.WSPrice = new System.Windows.Forms.DataGridTextBoxColumn();
             this.VAT = new System.Windows.Forms.DataGridTextBoxColumn();
             this.LocalTax = new System.Windows.Forms.DataGridTextBoxColumn();
             this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
@@ -230,6 +244,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductUnitID,
             this.ProductUnitName,
             this.Price,
+            this.Price1,
+            this.Price2,
+            this.Price3,
+            this.Price4,
+            this.Price5,
+            this.WSPrice,
             this.VAT,
             this.LocalTax,
             this.Quantity,
@@ -361,6 +381,66 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Price.NullText = "0";
             this.Price.ReadOnly = true;
             this.Price.Width = 0;
+            // 
+            // Price1
+            // 
+            this.Price1.Format = "";
+            this.Price1.FormatInfo = null;
+            this.Price1.HeaderText = "Price1";
+            this.Price1.MappingName = "Price1";
+            this.Price1.NullText = "0";
+            this.Price1.ReadOnly = true;
+            this.Price1.Width = 0;
+            // 
+            // Price2
+            // 
+            this.Price2.Format = "";
+            this.Price2.FormatInfo = null;
+            this.Price2.HeaderText = "Price2";
+            this.Price2.MappingName = "Price2";
+            this.Price2.NullText = "0";
+            this.Price2.ReadOnly = true;
+            this.Price2.Width = 0;
+            // 
+            // Price3
+            // 
+            this.Price3.Format = "";
+            this.Price3.FormatInfo = null;
+            this.Price3.HeaderText = "Price3";
+            this.Price3.MappingName = "Price3";
+            this.Price3.NullText = "0";
+            this.Price3.ReadOnly = true;
+            this.Price3.Width = 0;
+            // 
+            // Price4
+            // 
+            this.Price4.Format = "";
+            this.Price4.FormatInfo = null;
+            this.Price4.HeaderText = "Price4";
+            this.Price4.MappingName = "Price4";
+            this.Price4.NullText = "0";
+            this.Price4.ReadOnly = true;
+            this.Price4.Width = 0;
+            // 
+            // Price5
+            // 
+            this.Price5.Format = "";
+            this.Price5.FormatInfo = null;
+            this.Price5.HeaderText = "Price5";
+            this.Price5.MappingName = "Price5";
+            this.Price5.NullText = "0";
+            this.Price5.ReadOnly = true;
+            this.Price5.Width = 0;
+            // 
+            // WSPrice
+            // 
+            this.WSPrice.Format = "";
+            this.WSPrice.FormatInfo = null;
+            this.WSPrice.HeaderText = "WSPrice";
+            this.WSPrice.MappingName = "WSPrice";
+            this.WSPrice.NullText = "0";
+            this.WSPrice.ReadOnly = true;
+            this.WSPrice.Width = 0;
             // 
             // VAT
             // 
@@ -646,7 +726,35 @@ namespace AceSoft.RetailPlus.Client.UI
                     dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 590;
                     dgStyle.GridColumnStyles["MatrixDescription"].Width = 150;
                 }
-				dgStyle.GridColumnStyles["Price"].Width = 100;
+
+                switch (ContactDetails.PriceLevel)
+                {
+                    case PriceLevel.SRP:
+                        dgStyle.GridColumnStyles["Price"].Width = 100;
+                        break;
+                    case PriceLevel.One:
+                        dgStyle.GridColumnStyles["Price1"].Width = 100;
+                        break;
+                    case PriceLevel.Two:
+                        dgStyle.GridColumnStyles["Price2"].Width = 100;
+                        break;
+                    case PriceLevel.Three:
+                        dgStyle.GridColumnStyles["Price3"].Width = 100;
+                        break;
+                    case PriceLevel.Four:
+                        dgStyle.GridColumnStyles["Price4"].Width = 100;
+                        break;
+                    case PriceLevel.Five:
+                        dgStyle.GridColumnStyles["Price5"].Width = 100;
+                        break;
+                    case PriceLevel.WSPrice:
+                        dgStyle.GridColumnStyles["WSPrice"].Width = 100;
+                        break;
+                    default:
+                        dgStyle.GridColumnStyles["Price"].Width = 100;
+                        break;
+                }
+				
 				dgStyle.GridColumnStyles["Quantity"].Width = 120;
                 this.lblHeader.Text = "Price Inquiry. Enter search criteria:";
 			}

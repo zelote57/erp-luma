@@ -25,11 +25,17 @@ FLUSH PRIVILEGES;
 
 GRANT ALL PRIVILEGES ON pos.* TO POSUser IDENTIFIED BY 'pospwd' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
-DELETE FROM user WHERE user = '' OR user = null;
-UPDATE user SET password = OLD_PASSWORD('pospwd') WHERE user = 'POSUser';
-FLUSH PRIVILEGES;
 
-UPDATE user SET password = 'pospwd' WHERE user = 'root';
+DELETE FROM mysql.user WHERE user = '' OR user = null;
+UPDATE mysql.user SET password = PASSWORD('pospwd') WHERE user = 'POSUser';
+
+UPDATE mysql.user SET password = PASSWORD('pospwd') WHERE user = 'root';
+
+UPDATE mysql.user SET host = '%' WHERE user = 'root' and host ='127.0.0.1';
+
+
+DELETE FROM  mysql.user WHERE host = 'localhost';
+FLUSH PRIVILEGES;
 
 USE pos;
 
@@ -6726,9 +6732,11 @@ ALTER TABLE tblContactAddon MODIFY MiddleName VARCHAR(85) NULL;
 -- see also changes in inventory.sql
 
 -- COLLATE ILLEGAL MIX ISSUE
+-- YOU NEED TO RE-RUN THE PROC TO SOLVE THIS ISSUE
 ALTER DATABASE pos CHARACTER SET utf8;
 
 SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
+
 
 -- additional in sysConfig this will override the .config
 DELETE FROM sysConfig;
@@ -8977,8 +8985,8 @@ ALTER TABLE tblTransactionItems MODIFY ProductGroup VARCHAR(50) NOT NULL DEFAULT
 
 -- 03Mar2015 :	Add to hold the TIN and LTO No (BFAD No)
 --				this should only be asked if customer is drugstore.
-ALTER TABLE tblContacts ADD TINNo VARCHAR(20) NOT NULL DEFAULT '';
-ALTER TABLE tblContacts ADD LTONo VARCHAR(20) NOT NULL DEFAULT '';
+ALTER TABLE tblContacts ADD TINNo VARCHAR(20) DEFAULT '';
+ALTER TABLE tblContacts ADD LTONo VARCHAR(20) DEFAULT '';
 
 /*********************************  v_4.0.1.34.sql END  *******************************************************/ 
 
@@ -9000,7 +9008,7 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WeightMeasure
 -- 05Mar2015 : MPC; put the acceptable no of days for cheque payment
 --				default is 180 days and below meaning if today is March 5, 2015 valid is from October 6, 2014 onwards
 DELETE FROM sysConfig WHERE ConfigName = 'ChequePaymentAcceptableNoOfDays';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ChequePaymentAcceptableNoOfDays',	'FE', '180');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ChequePaymentAcceptableNoOfDays',	'FE', '365');
 
 
 DELETE FROM sysAccessTypes WHERE TypeID = 175;
@@ -9022,6 +9030,36 @@ INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (177, 'Resume Susp
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 177, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 177, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 4, Category = '14: Frontend - Cashiering' WHERE TypeID = 177;
+
+/*********************************  v_4.0.1.35.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.36';
+
+ALTER TABLE tblContacts ADD PriceLevel INT(2) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblContacts MODIFY TINNo VARCHAR(20) DEFAULT '';
+ALTER TABLE tblContacts MODIFY LTONo VARCHAR(20) DEFAULT '';
+
+
+/*********************************  v_4.0.1.36.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.37';
+
+DELETE FROM sysAccessTypes WHERE TypeID = 178;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (178, 'Change Customer''s Price Level', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 178, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 178, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '04: Backend - MasterFiles' WHERE TypeID = 178;
+
+-- 13Mar2015 : MPC; EnablePriceLevel so that when a customer is selected, it will get the price level of each punched product again
+-- default		- false
+-- selection: 
+--		true	- will refetch then recompute
+--		false	- will not refetch
+DELETE FROM sysConfig WHERE ConfigName = 'EnablePriceLevel';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLevel',	'FE', 'false');
+
+
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

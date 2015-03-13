@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../../_PageHeader.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlList" Src="_List.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlPriceLevel" Src="_PriceLevel.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._Contact._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInsert" Src="_Insert.ascx" %>
@@ -109,6 +110,7 @@
 						<table class="ms-tztable" id="ZoneTable" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr id="TopRow">
 								<td class="ms-tztop" id="TopCell" valign="top" width="100%">
+                                    <CTRL:ctrlPriceLevel id="ctrlPriceLevel" runat="server" Visible="False"></CTRL:ctrlPriceLevel>
 									<CTRL:ctrlList id="ctrlList" runat="server" Visible="False"></CTRL:ctrlList>
 									<CTRL:ctrlInsert id="ctrlInsert" runat="server" Visible="False"></CTRL:ctrlInsert>
 									<CTRL:ctrlUpdate id="ctrlUpdate" runat="server" Visible="False"></CTRL:ctrlUpdate>

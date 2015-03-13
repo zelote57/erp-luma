@@ -67,14 +67,19 @@ namespace AceSoft.RetailPlus.Data
         public DateTime LastCheckInDate;
 
         /// <summary>
+        /// 03Mar2015 : TIN No for BIR
+        /// </summary>
+        public string TINNo;
+
+        /// <summary>
         /// 03Mar2015 : LTO No for BFAD, this is only applicable if ShowLTNo = true
         /// </summary>
         public string LTONo;
 
         /// <summary>
-        /// 03Mar2015 : TIN No for BIR
+        /// 06Mar2015 : Price Level per customer
         /// </summary>
-        public string TINNo;
+        public PriceLevel PriceLevel;
 
         public DateTime CreatedOn;
         public DateTime LastModified;
@@ -107,7 +112,8 @@ namespace AceSoft.RetailPlus.Data
         public bool PositionName;
         public bool LastCheckInDate;
         public bool TINNo;
-        public bool LTPNo;
+        public bool LTONo;
+        public bool PriceLevel;
         public bool RewardDetails;
         public bool CreditDetails;
     }
@@ -139,6 +145,7 @@ namespace AceSoft.RetailPlus.Data
         public const string LastCheckInDate = "LastCheckInDate";
         public const string TINNo = "TINNo";
         public const string LTONo = "LTONo";
+        public const string PriceLevel = "PriceLevel";
     }
 
 	#endregion
@@ -356,17 +363,9 @@ namespace AceSoft.RetailPlus.Data
 							"WHERE ContactID	=	@ContactID	" +
 								"AND Remarks	=	@Remarks";
 				  
-				MySqlParameter prmNewContact = new MySqlParameter("@NewContact",MySqlDbType.String);			
-				prmNewContact.Value = ContactCode + "-" + TransactionNo;
-				cmd.Parameters.Add(prmNewContact);
-
-				MySqlParameter prmContactID = new MySqlParameter("@ContactID",MySqlDbType.Int16);			
-				prmContactID.Value = ContactID;
-				cmd.Parameters.Add(prmContactID);
-
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);			
-				prmRemarks.Value = DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT;
-				cmd.Parameters.Add(prmRemarks);
+				cmd.Parameters.AddWithValue("@NewContact", ContactCode + "-" + TransactionNo);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+				cmd.Parameters.AddWithValue("@Remarks", DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT);
 
                 cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
@@ -388,6 +387,29 @@ namespace AceSoft.RetailPlus.Data
 
                 cmd.Parameters.AddWithValue("ContactID", ContactID);
                 cmd.Parameters.AddWithValue("LastCheckInDate", CheckInDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public void UpdatePriceLevel(Int64 ContactID, PriceLevel PriceLevel)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblContacts SET " +
+                                "PriceLevel		=	@PriceLevel " +
+                            "WHERE ContactID	=	@ContactID ";
+
+                cmd.Parameters.AddWithValue("PriceLevel", PriceLevel.ToString("d"));
+                cmd.Parameters.AddWithValue("ContactID", ContactID);
 
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
@@ -501,6 +523,7 @@ namespace AceSoft.RetailPlus.Data
                                 "LastCheckInDate, " +
                                 "TINNo, " +
                                 "LTONo, " +
+                                "a.PriceLevel, " +
                                 "isLock " +
                             "FROM tblContacts a " +
                             "INNER JOIN tblContactGroup b ON a.ContactGroupID = b.ContactGroupID " +
@@ -568,6 +591,7 @@ namespace AceSoft.RetailPlus.Data
             stSQL += "tblContacts.LastCheckInDate, ";
             stSQL += "tblContacts.TINNo, ";
             stSQL += "tblContacts.LTONo, ";
+            stSQL += "tblContacts.PriceLevel, ";
             stSQL += "tblContacts.ContactID ";
             stSQL += "FROM tblContacts ";
 
@@ -711,6 +735,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.LastCheckInDate = DateTime.Parse(dr["LastCheckInDate"].ToString());
                     Details.TINNo = "" + dr["TINNo"].ToString();
                     Details.LTONo = "" + dr["LTONo"].ToString();
+                    Details.PriceLevel = (PriceLevel)Enum.Parse(typeof(PriceLevel), dr["PriceLevel"].ToString());
 
                     Details.isLock = bool.Parse(dr["isLock"].ToString());
                 }
@@ -979,59 +1004,59 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}		
-		public MySqlDataReader AdvanceSearch(string ContactCode, string ContactName, Int16 Deleted, Int32 ContactGroupID, bool HasCreditOnly, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+        //public MySqlDataReader AdvanceSearch(string ContactCode, string ContactName, Int16 Deleted, Int32 ContactGroupID, bool HasCreditOnly, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
 
-				string SQL =  SQLSelect() + "WHERE 1=1 ";
+        //        string SQL =  SQLSelect() + "WHERE 1=1 ";
 
-                if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0" && ContactName != Constants.ALL)
-				{
-					SQL += " AND a.ContactCode = @ContactCode ";
-                    cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
-				}
-                if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0" && ContactName != Constants.ALL)
-				{
-					SQL += " AND a.ContactName = @ContactName ";
-                    cmd.Parameters.AddWithValue("@ContactName", ContactName);
-				}
+        //        if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0" && ContactName != Constants.ALL)
+        //        {
+        //            SQL += " AND a.ContactCode = @ContactCode ";
+        //            cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
+        //        }
+        //        if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0" && ContactName != Constants.ALL)
+        //        {
+        //            SQL += " AND a.ContactName = @ContactName ";
+        //            cmd.Parameters.AddWithValue("@ContactName", ContactName);
+        //        }
 				
-				if (ContactGroupID != 0)
-				{
-					SQL += "AND a.ContactGroupID = @ContactGroupID ";
-                    cmd.Parameters.AddWithValue("@ContactGroupID", ContactGroupID);
-				}
-				if (HasCreditOnly == true)
-					SQL += "AND Credit > 0 ";
+        //        if (ContactGroupID != 0)
+        //        {
+        //            SQL += "AND a.ContactGroupID = @ContactGroupID ";
+        //            cmd.Parameters.AddWithValue("@ContactGroupID", ContactGroupID);
+        //        }
+        //        if (HasCreditOnly == true)
+        //            SQL += "AND Credit > 0 ";
 
-				if (Deleted != 2)
-				{
-					SQL += "AND a.Deleted = @Deleted ";
+        //        if (Deleted != 2)
+        //        {
+        //            SQL += "AND a.Deleted = @Deleted ";
 
-					MySqlParameter prmDeleted = new MySqlParameter("@Deleted",MySqlDbType.Byte);
-					prmDeleted.Value = Deleted;
-					cmd.Parameters.Add(prmDeleted);
-				}
+        //            MySqlParameter prmDeleted = new MySqlParameter("@Deleted",MySqlDbType.Byte);
+        //            prmDeleted.Value = Deleted;
+        //            cmd.Parameters.Add(prmDeleted);
+        //        }
 
-				SQL += "ORDER BY " + SortField;
+        //        SQL += "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 				
-				cmd.CommandText = SQL;
+        //        cmd.CommandText = SQL;
 				
-				return base.ExecuteReader(cmd);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return base.ExecuteReader(cmd);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
         public System.Data.DataTable AdvanceSearchDataTable(ContactGroupCategory ContactGroupCategory, string ContactCode, string ContactName, Int16 Deleted, Int32 ContactGroupID, bool HasCreditOnly, string SortField, SortOption SortOrder)
         {
             try
@@ -1614,14 +1639,14 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DataTable ListAsDataTable(ContactGroupCategory groupCategory = ContactGroupCategory.BOTH, long ContactID = 0, string ContactCode = "", string ContactName = "", string ContactGroupCode = "", string RewardCardNo = "", string Name = "", bool hasCreditOnly = false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending, string BirthDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string BirthDateTo = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateTo = Constants.C_DATE_MIN_VALUE_STRING, int BirthMonth = 0, int AnniversaryMonth = 0)
+        public DataTable ListAsDataTable(ContactGroupCategory groupCategory = ContactGroupCategory.BOTH, long ContactID = 0, string ContactCode = "", string ContactName = "", string ContactGroupCode = "", string RewardCardNo = "", string Name = "", bool hasCreditOnly = false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending, string BirthDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string BirthDateTo = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateTo = Constants.C_DATE_MIN_VALUE_STRING, int BirthMonth = 0, int AnniversaryMonth = 0, int ModeOfTerms = -1)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @BirthMonth, @AnniversaryMonth, @BirthDateFrom, @BirthDateTo, @AnniversaryDateFrom, @AnniversaryDateTo, @hasCreditOnly, @intDeleted, @lngLimit, @SortField, @SortOrder)";
+                string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @BirthMonth, @AnniversaryMonth, @BirthDateFrom, @BirthDateTo, @AnniversaryDateFrom, @AnniversaryDateTo, @hasCreditOnly, @intDeleted, @intModeOfTerms, @lngLimit, @SortField, @SortOrder)";
 
                 cmd.Parameters.AddWithValue("@ContactGroupCategory", groupCategory.ToString("d"));
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
@@ -1638,6 +1663,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@AnniversaryDateTo", AnniversaryDateTo);
                 cmd.Parameters.AddWithValue("@hasCreditOnly", hasCreditOnly);
                 cmd.Parameters.AddWithValue("@intDeleted", intDeleted);
+                cmd.Parameters.AddWithValue("@intModeOfTerms", ModeOfTerms);
                 cmd.Parameters.AddWithValue("@lngLimit", Limit);
                 cmd.Parameters.AddWithValue("@SortField", SortField);
                 cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");

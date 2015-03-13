@@ -224,6 +224,13 @@
 								<li>Change Product Price</li></asp:HyperLink>
 						</td>
 					</tr>
+                    <tr>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
+						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
+							<asp:HyperLink id="lnkChangePriceLevel" runat="server" title="Change customer's price level">
+								<li>Change Customer's Price Level</li></asp:HyperLink>
+						</td>
+					</tr>
 					<tr>
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">

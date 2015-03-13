@@ -132,6 +132,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
             txtCreditLimit.Text = clsDetails.CreditLimit.ToString("###0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));
+            txtTINNo.Text = clsDetails.TINNo;
+            txtLTONo.Text = clsDetails.LTONo;
         }
         private void SaveRecord()
 		{
@@ -158,6 +160,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
 			clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+
+            // 13Mar2015 : Added for Pharmaceuticals
+            clsDetails.TINNo = txtTINNo.Text;
+            clsDetails.LTONo = txtLTONo.Text;
 
 			clsContact.Update(clsDetails);
 

@@ -538,6 +538,20 @@
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_changepricelevel.ascx.cs">
+      <DependentUpon>_changepricelevel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_changepricelevel.ascx.designer.cs">
+      <DependentUpon>_changepricelevel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_pricelevel.ascx.cs">
+      <DependentUpon>_pricelevel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_pricelevel.ascx.designer.cs">
+      <DependentUpon>_pricelevel.ascx</DependentUpon>
+    </Compile>
     <Compile Include="MasterFiles\_Product\_AddProductVariation.ascx.cs">
       <DependentUpon>_AddProductVariation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3675,6 +3689,8 @@
     <Content Include="Inventory\_closeinventorysubgroup.ascx" />
     <Content Include="Inventory\_closeinventoryproduct.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
+    <Content Include="MasterFiles\_ContactGroup\_changepricelevel.ascx" />
+    <Content Include="MasterFiles\_Contact\_pricelevel.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
     <Content Include="MasterFiles\_Product\_changeosprinter.ascx" />
     <Content Include="packages.config" />

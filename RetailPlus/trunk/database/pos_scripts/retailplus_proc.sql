@@ -1763,6 +1763,9 @@ BEGIN
 		NewGrandTotal =  OldGrandTotal + (GrossSales * (100-TrustFund)/100)
 	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 
+	-- 05Mar2015 Automatically Void the suspended or suspended open transaction
+	UPDATE tblTransactions SET TransactionStatus = 20 WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND TransactionStatus IN (2,13);
+
 	INSERT INTO tblTerminalReportHistory (
 					BranchID, TerminalID, TerminalNo, IncludeIneSales, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
@@ -8420,6 +8423,7 @@ create procedure procContactSelect(
 			IN AnniversaryDateTo datetime,
 			IN hasCreditOnly tinyint(1),
 			IN intDeleted int,
+			IN intModeOfTerms int,
 			IN lngLimit int,
 			IN SortField varchar(60),
 			IN SortOrder varchar(4))
@@ -8438,7 +8442,7 @@ BEGIN
 							,BusinessPhoneNo ,HomePhoneNo ,MobileNo ,FaxNo ,EmailAddress 
 							,RewardCardNo ,RewardActive, RewardPoints, RewardAwardDate, TotalPurchases, RedeemedPoints, RewardCardStatus, ExpiryDate
 							,IFNULL(addon.BirthDate,rwrd.BirthDate) BirthDate 
-							,LastCheckInDate ,TINNo ,LTONo
+							,LastCheckInDate ,TINNo ,LTONo ,PriceLevel
 						FROM tblContacts cntct
 							INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
 							INNER JOIN tblDepartments dept ON cntct.DepartmentID = dept.DepartmentID
@@ -8513,10 +8517,14 @@ BEGIN
 		SET @SQL = CONCAT(@SQL, 'AND addon.AnniversaryDate <= ''',DATE_FORMAT(AnniversaryDateTo, '%Y-%m-%d'),''' ');
 	END IF;
 	
+	IF IFNULL(intModeOfTerms,-1) <> -1 THEN
+		SET @SQL = CONCAT(@SQL, 'AND ModeOfTerms = ',intModeOfTerms,' ');
+	END IF;
 
 	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','ContactCode, ContactName, LastName',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
 
 	SET @SQL = CONCAT(@SQL,IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
+
 
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
@@ -8848,6 +8856,7 @@ delimiter ;
 
 -- COLLATE ILLEGAL MIX ISSUE
 ALTER DATABASE pos CHARACTER SET utf8;
+ALTER DATABASE pos DEFAULT COLLATE utf8_general_ci;
 
 SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
 

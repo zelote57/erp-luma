@@ -651,161 +651,164 @@ namespace AceSoft.RetailPlus.Client.UI
              * print the transaction
              ***/
             #region printing
-            try
+            if (mclsTerminalDetails.AutoPrint != PrintingPreference.AskFirst)
             {
-                if (mclsSalesTransactionDetails.isConsignment)
+                try
                 {
-                    // 18Feb2015 : Print DR only if the transaction is consignment
-                    clsEvent.AddEventLn("      printing delivery receipt as consginment...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintDeliveryReceipt();
-                }
-                else if (mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.OutOfStockCustomerCode &&
+                    if (mclsSalesTransactionDetails.isConsignment)
+                    {
+                        // 18Feb2015 : Print DR only if the transaction is consignment
+                        clsEvent.AddEventLn("      printing delivery receipt as consginment...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintDeliveryReceipt();
+                    }
+                    else if (mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.OutOfStockCustomerCode &&
+                        (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice ||
+                         mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt ||
+                        mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR))
+                    {
+                        clsEvent.AddEventLn("      printing out of stock orders...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintOSReceipt();
+                    }
+                    else if (mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.WalkInCustomerCode &&
                     (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice ||
                      mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt ||
                     mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR))
-                {
-                    clsEvent.AddEventLn("      printing out of stock orders...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintOSReceipt();
-                }
-                else if (mclsSalesTransactionDetails.CustomerDetails.ContactCode == mclsSysConfigDetails.WalkInCustomerCode &&
-                (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice ||
-                 mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt ||
-                mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR))
-                {
-                    clsEvent.AddEventLn("      printing walk-in customer quote form...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintWalkInReceipt();
-                }
-                else if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment && 
-                    mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
-                {
-                    // do another report for credit payment if HP
-                    PrintCreditPayment();
-
-                    // do this twice as per request of CN trader's and CS
-                    PrintCreditPayment();
-                }
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
-                {
-                    clsEvent.AddEventLn("      printing sales invoice...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintSalesInvoice();
-                }
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt)
-                {
-                    clsEvent.AddEventLn("      printing delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintDeliveryReceipt();
-                }
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR)
-                {
-                    clsEvent.AddEventLn("      printing sales invoice & delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
-
-                    if (mclsSalesTransactionDetails.TransactionStatus != TransactionStatus.Void)
                     {
-                        clsEvent.AddEventLn("      will not print sales invoice. trx is void...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        clsEvent.AddEventLn("      printing walk-in customer quote form...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintWalkInReceipt();
+                    }
+                    else if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment &&
+                        mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
+                    {
+                        // do another report for credit payment if HP
+                        PrintCreditPayment();
+
+                        // do this twice as per request of CN trader's and CS
+                        PrintCreditPayment();
+                    }
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
+                    {
+                        clsEvent.AddEventLn("      printing sales invoice...", true, mclsSysConfigDetails.WillWriteSystemLog);
                         PrintSalesInvoice();
                     }
-                    PrintDeliveryReceipt();
-                }
-                // 10Feb2010 : print sales invoice to LX as required by Wireless Link
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300Printer)
-                {
-                    clsEvent.AddEventLn("      printing sales invoice for LX300...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300Printer);
-                }
-                //Added May 11, 2010
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceOrDR)
-                {
-                    clsEvent.AddEventLn("      printing sales invoice or OR...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    if (mclsSalesTransactionDetails.CashPayment != 0 || mclsSalesTransactionDetails.CreditCardPayment != 0)
-                        PrintSalesInvoice();
-                    if (mclsSalesTransactionDetails.ChequePayment != 0 || mclsSalesTransactionDetails.CreditPayment != 0)
-                        PrintDeliveryReceipt();
-                }
-                //Added January 17, 2011
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusPrinter)
-                {
-                    clsEvent.AddEventLn("      printing sales invoice for LX300 Plus...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusPrinter);
-                }
-                //Added February 22, 2011
-                else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusAmazon)
-                {
-                    clsEvent.AddEventLn("      printing sales invoice for LX300 Plus Amazon...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusAmazon);
-                }
-                else if (!mboIsRefund) // do not print if refund coz its already printed above
-                {
-                    // Sep 14, 2014 Control printing in mclsFilePrinter.Write
-                    //if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
-                    //{
-                    clsEvent.AddEventLn("      printing items to POS printer...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                    foreach (System.Data.DataRow dr in ItemDataTable.Rows)
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt)
                     {
-                        string stItemNo = "" + dr["ItemNo"].ToString();
-                        string stProductUnitCode = "" + dr["ProductUnitCode"].ToString();
-                        decimal decPrice = Convert.ToDecimal(dr["Price"]);
-                        decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
-                        decimal decAmount = Convert.ToDecimal(dr["Amount"]);
-                        decimal decVAT = Convert.ToDecimal(dr["VAT"]);
-                        decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
-                        decimal decPromoApplied = Convert.ToDecimal(dr["PromoApplied"]);
-                        string stProductCode = "" + dr["ProductCode"].ToString();
-                        if (dr["MatrixDescription"].ToString() != string.Empty && dr["MatrixDescription"].ToString() != null) stProductCode += "-" + dr["MatrixDescription"].ToString();
-                        decimal decQuantity = 0;
-                        string stDiscountCode = "" + dr["DiscountCode"].ToString();
-                        DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
+                        clsEvent.AddEventLn("      printing delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintDeliveryReceipt();
+                    }
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR)
+                    {
+                        clsEvent.AddEventLn("      printing sales invoice & delivery receipt...", true, mclsSysConfigDetails.WillWriteSystemLog);
 
-                        if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
+                        if (mclsSalesTransactionDetails.TransactionStatus != TransactionStatus.Void)
                         {
-                            stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
-                            decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
-                            decAmount = -decAmount;
+                            clsEvent.AddEventLn("      will not print sales invoice. trx is void...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                            PrintSalesInvoice();
                         }
-                        else if (dr["Quantity"].ToString() != "VOID")
+                        PrintDeliveryReceipt();
+                    }
+                    // 10Feb2010 : print sales invoice to LX as required by Wireless Link
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300Printer)
+                    {
+                        clsEvent.AddEventLn("      printing sales invoice for LX300...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300Printer);
+                    }
+                    //Added May 11, 2010
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceOrDR)
+                    {
+                        clsEvent.AddEventLn("      printing sales invoice or OR...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        if (mclsSalesTransactionDetails.CashPayment != 0 || mclsSalesTransactionDetails.CreditCardPayment != 0)
+                            PrintSalesInvoice();
+                        if (mclsSalesTransactionDetails.ChequePayment != 0 || mclsSalesTransactionDetails.CreditPayment != 0)
+                            PrintDeliveryReceipt();
+                    }
+                    //Added January 17, 2011
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusPrinter)
+                    {
+                        clsEvent.AddEventLn("      printing sales invoice for LX300 Plus...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusPrinter);
+                    }
+                    //Added February 22, 2011
+                    else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusAmazon)
+                    {
+                        clsEvent.AddEventLn("      printing sales invoice for LX300 Plus Amazon...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusAmazon);
+                    }
+                    else if (!mboIsRefund) // do not print if refund coz its already printed above
+                    {
+                        // Sep 14, 2014 Control printing in mclsFilePrinter.Write
+                        //if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
+                        //{
+                        clsEvent.AddEventLn("      printing items to POS printer...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                        foreach (System.Data.DataRow dr in ItemDataTable.Rows)
                         {
-                            decQuantity = Convert.ToDecimal(dr["Quantity"]);
-                        }
+                            string stItemNo = "" + dr["ItemNo"].ToString();
+                            string stProductUnitCode = "" + dr["ProductUnitCode"].ToString();
+                            decimal decPrice = Convert.ToDecimal(dr["Price"]);
+                            decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
+                            decimal decAmount = Convert.ToDecimal(dr["Amount"]);
+                            decimal decVAT = Convert.ToDecimal(dr["VAT"]);
+                            decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
+                            decimal decPromoApplied = Convert.ToDecimal(dr["PromoApplied"]);
+                            string stProductCode = "" + dr["ProductCode"].ToString();
+                            if (dr["MatrixDescription"].ToString() != string.Empty && dr["MatrixDescription"].ToString() != null) stProductCode += "-" + dr["MatrixDescription"].ToString();
+                            decimal decQuantity = 0;
+                            string stDiscountCode = "" + dr["DiscountCode"].ToString();
+                            DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
 
-                        if (dr["Quantity"].ToString().IndexOf("VOID") != -1)
-                        {
-                            if (mclsTerminalDetails.WillPrintVoidItem)
+                            if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
+                            {
+                                stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
+                                decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
+                                decAmount = -decAmount;
+                            }
+                            else if (dr["Quantity"].ToString() != "VOID")
+                            {
+                                decQuantity = Convert.ToDecimal(dr["Quantity"]);
+                            }
+
+                            if (dr["Quantity"].ToString().IndexOf("VOID") != -1)
+                            {
+                                if (mclsTerminalDetails.WillPrintVoidItem)
+                                    if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
+                                        PrintItem(stItemNo, stProductCode, stProductUnitCode, decQuantity, decPrice, decDiscount, decPromoApplied, decAmount, decVAT, decEVAT, stDiscountCode, ItemDiscountType);
+                            }
+                            else
+                            {
                                 if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
                                     PrintItem(stItemNo, stProductCode, stProductUnitCode, decQuantity, decPrice, decDiscount, decPromoApplied, decAmount, decVAT, decEVAT, stDiscountCode, ItemDiscountType);
+                            }
+
                         }
-                        else
+                        if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
                         {
-                            if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-                                PrintItem(stItemNo, stProductCode, stProductUnitCode, decQuantity, decPrice, decDiscount, decPromoApplied, decAmount, decVAT, decEVAT, stDiscountCode, ItemDiscountType);
-                        }
+                            PrintReportFooterSection(true, clsTransactionStatus, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
-                    }
-                    if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-                    {
-                        PrintReportFooterSection(true, clsTransactionStatus, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
-
-                        // print the charge slip if not refund and will print
-                        if (mclsTerminalDetails.WillPrintChargeSlip && !mboIsRefund)
-                        {
-                            clsEvent.AddEventLn("      printing charge slip...", true, mclsSysConfigDetails.WillWriteSystemLog);
-
-                            // Nov 05, 2011 : Print Charge Slip
-                            PrintChargeSlip(ChargeSlipType.Customer);
-                            PrintChargeSlip(ChargeSlipType.Original);
-
-                            if (mclsTerminalDetails.IncludeCreditChargeAgreement && mclsSalesTransactionDetails.CustomerDetails.CreditDetails.CardTypeDetails.WithGuarantor)
-                            //if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is no agreement printed
+                            // print the charge slip if not refund and will print
+                            if (mclsTerminalDetails.WillPrintChargeSlip && !mboIsRefund)
                             {
-                                PrintChargeSlip(ChargeSlipType.Guarantor);
+                                clsEvent.AddEventLn("      printing charge slip...", true, mclsSysConfigDetails.WillWriteSystemLog);
+
+                                // Nov 05, 2011 : Print Charge Slip
+                                PrintChargeSlip(ChargeSlipType.Customer);
+                                PrintChargeSlip(ChargeSlipType.Original);
+
+                                if (mclsTerminalDetails.IncludeCreditChargeAgreement && mclsSalesTransactionDetails.CustomerDetails.CreditDetails.CardTypeDetails.WithGuarantor)
+                                //if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is no agreement printed
+                                {
+                                    PrintChargeSlip(ChargeSlipType.Guarantor);
+                                }
                             }
                         }
+                        //}
+                        // Sep 14, 2014 Control printing in mclsFilePrinter.Write
                     }
-                    //}
-                    // Sep 14, 2014 Control printing in mclsFilePrinter.Write
                 }
-            }
-            catch (Exception ex)
-            {
-                clsEvent.AddErrorEventLn(ex);
-                clsEvent.AddEventLn("Error printing transaction no: " + mclsSalesTransactionDetails.TransactionNo + ". Already commited in the database.", true);
+                catch (Exception ex)
+                {
+                    clsEvent.AddErrorEventLn(ex);
+                    clsEvent.AddEventLn("Error printing transaction no: " + mclsSalesTransactionDetails.TransactionNo + ". Already commited in the database.", true);
+                }
             }
             #endregion
 
@@ -3204,6 +3207,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
                     drNew["Charge"] = clsSalesTransactionDetails.Charge;
                     drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
+                    drNew["CRNo"] = clsSalesTransactionDetails.CRNo;
 
                     rptds.Transactions.Rows.Add(drNew);
 
@@ -3400,6 +3404,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
                     drNew["Charge"] = clsSalesTransactionDetails.Charge;
                     drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
+                    drNew["CRNo"] = clsSalesTransactionDetails.CRNo;
 
                     rptds.Transactions.Rows.Add(drNew);
 
@@ -3596,6 +3601,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
                     drNew["Charge"] = clsSalesTransactionDetails.Charge;
                     drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
+                    drNew["CRNo"] = clsSalesTransactionDetails.CRNo;
 
                     rptds.Transactions.Rows.Add(drNew);
 
@@ -3818,6 +3824,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
                         drNew["Charge"] = clsSalesTransactionDetails.Charge;
                         drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
+                        drNew["CRNo"] = clsSalesTransactionDetails.CRNo;
 
                         rptds.Transactions.Rows.Add(drNew);
 
@@ -4259,6 +4266,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
                         drNew["Charge"] = clsSalesTransactionDetails.Charge;
                         drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
+                        drNew["CRNo"] = clsSalesTransactionDetails.CRNo;
 
                         rptds.Transactions.Rows.Add(drNew);
 
@@ -4350,6 +4358,226 @@ namespace AceSoft.RetailPlus.Client.UI
                             Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
                         }
                         string logFile = logsdir + logdate.ToString("MMM") + "/DR_" + clsSalesTransactionDetails.TransactionNo + logdate.ToString("yyyyMMddhhmmss") + ".doc";
+
+                        rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
+                    }
+                    catch { }
+
+                    if (isPrinterOnline(mclsTerminalDetails.SalesInvoicePrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        clsEvent.AddEventLn("will not print delivery receipt. printer is offline.", true, mclsSysConfigDetails.WillWriteSystemLog);
+                    }
+
+                    rpt.Close();
+                    rpt.Dispose();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex);
+            }
+        }
+
+        public delegate void PrintCollectionReceiptDelegate();
+        public void PrintCollectionReceipt()
+        {
+            try
+            {
+                if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
+                {
+                    MessageBox.Show("Sorry this option is not applicable for Auto-Print receipt.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    return;
+                }
+                if (!mboIsInTransaction)
+                {
+                    MessageBox.Show("No active transaction is found! Please transact first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    return;
+                }
+                DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.CloseTransaction);
+
+                if (loginresult == DialogResult.None)
+                {
+                    LogInWnd login = new LogInWnd();
+
+                    login.AccessType = AccessTypes.CloseTransaction;
+                    login.Header = "Print Collection Receipt";
+                    login.TerminalDetails = mclsTerminalDetails;
+                    login.ShowDialog(this);
+                    loginresult = login.Result;
+                    login.Close();
+                    login.Dispose();
+                }
+                if (loginresult == DialogResult.OK)
+                {
+                    CRSReports.CR rpt = new CRSReports.CR();
+
+                    AceSoft.RetailPlus.Client.ReportDataset rptds = new AceSoft.RetailPlus.Client.ReportDataset();
+                    System.Data.DataRow drNew;
+
+                    /****************************sales transaction *****************************/
+                    Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
+                    mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
+
+                    Data.SalesTransactionDetails clsSalesTransactionDetails = clsSalesTransactions.Details(mclsSalesTransactionDetails.TransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+
+                    Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
+                    Data.ContactDetails clsContactDetails = clsContact.Details(clsSalesTransactionDetails.CustomerID);
+
+                    if (clsSalesTransactionDetails.isExist)
+                    {
+                        drNew = rptds.Transactions.NewRow();
+
+                        drNew["TransactionID"] = clsSalesTransactionDetails.TransactionID;
+                        drNew["TransactionNo"] = clsSalesTransactionDetails.TransactionNo;
+                        drNew["ORNo"] = clsSalesTransactionDetails.ORNo;
+                        drNew["CustomerName"] = clsSalesTransactionDetails.CustomerName;
+                        drNew["CustomerAddress"] = clsContactDetails.Address;
+                        drNew["CustomerTerms"] = clsSalesTransactionDetails.Terms;
+                        drNew["CustomerModeOfterms"] = clsSalesTransactionDetails.ModeOfTerms;
+                        drNew["CustomerBusinessName"] = clsContactDetails.BusinessName;
+                        drNew["CustomerTelNo"] = clsContactDetails.TelephoneNo;
+                        drNew["CashierName"] = clsSalesTransactionDetails.CashierName;
+                        drNew["CreatedByName"] = clsSalesTransactionDetails.CreatedByName;
+                        drNew["AgentName"] = clsSalesTransactionDetails.AgentName;
+                        drNew["TerminalNo"] = clsSalesTransactionDetails.TerminalNo;
+                        drNew["TransactionDate"] = clsSalesTransactionDetails.TransactionDate;
+                        drNew["DateSuspended"] = clsSalesTransactionDetails.DateSuspended.ToString();
+                        drNew["DateResumed"] = clsSalesTransactionDetails.DateResumed;
+                        drNew["TransactionStatus"] = clsSalesTransactionDetails.TransactionStatus;
+                        drNew["SubTotal"] = clsSalesTransactionDetails.SubTotal;
+                        drNew["ItemsDiscount"] = clsSalesTransactionDetails.ItemsDiscount;
+                        //drNew["SNRItemsDiscount"] = clsSalesTransactionDetails.SNRItemsDiscount;
+                        //drNew["PWDItemsDiscount"] = clsSalesTransactionDetails.PWDItemsDiscount;
+                        //drNew["OtherItemsDiscount"] = clsSalesTransactionDetails.OtherItemsDiscount;
+                        drNew["Discount"] = clsSalesTransactionDetails.Discount;
+                        drNew["VAT"] = clsSalesTransactionDetails.VAT;
+                        drNew["VATableAmount"] = clsSalesTransactionDetails.VATableAmount;
+                        //drNew["ZeroRatedSales"] = clsSalesTransactionDetails.ZeroRatedSales;
+                        drNew["LocalTax"] = clsSalesTransactionDetails.LocalTax;
+                        drNew["AmountPaid"] = clsSalesTransactionDetails.AmountPaid;
+                        drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
+                        drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
+                        drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
+                        drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
+                        drNew["DebitPayment"] = clsSalesTransactionDetails.DebitPayment;
+                        drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
+                        drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
+                        drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
+                        drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
+                        drNew["Charge"] = clsSalesTransactionDetails.Charge;
+                        drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
+                        drNew["CRNo"] = clsSalesTransactionDetails.CRNo.ToString().PadLeft(15, '0');
+
+                        rptds.Transactions.Rows.Add(drNew);
+
+                        /****************************sales transaction items*****************************/
+                        Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(mConnection, mTransaction);
+                        mConnection = clsSalesTransactionItems.Connection; mTransaction = clsSalesTransactionItems.Transaction;
+
+                        System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+
+                        foreach (System.Data.DataRow dr in dt.Rows)
+                        {
+                            drNew = rptds.SalesTransactionItems.NewRow();
+
+                            foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
+                                drNew[dc] = dr[dc.ColumnName];
+
+                            rptds.SalesTransactionItems.Rows.Add(drNew);
+                        }
+                    }
+
+                    clsSalesTransactions.CommitAndDispose();
+
+                    rpt.SetDataSource(rptds);
+
+                    CrystalDecisions.CrystalReports.Engine.ParameterFieldDefinition paramField;
+                    CrystalDecisions.Shared.ParameterValues currentValues;
+                    CrystalDecisions.Shared.ParameterDiscreteValue discreteParam;
+
+                    paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = CompanyDetails.CompanyName;
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = rpt.DataDefinition.ParameterFields["PrintedBy"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = mclsSalesTransactionDetails.CashierName;
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = rpt.DataDefinition.ParameterFields["PackedBy"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = mclsSalesTransactionDetails.WaiterName; // grpItems.Text.Remove(0, 11);
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = rpt.DataDefinition.ParameterFields["CompanyAddress"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = CompanyDetails.Address1 +
+                        ((!string.IsNullOrEmpty(CompanyDetails.Address2) ? Environment.NewLine + CompanyDetails.Address2 + ", " : " ")) +
+                        CompanyDetails.City + " " + CompanyDetails.Country +
+                        ((!string.IsNullOrEmpty(CompanyDetails.OfficePhone) ? Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " " : " ")) +
+                        ((!string.IsNullOrEmpty(CompanyDetails.OfficePhone) ? Environment.NewLine + "FaxPhone #: " + CompanyDetails.FaxPhone + " " : " "));
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = rpt.DataDefinition.ParameterFields["BIRInfo"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = "TIN : " + CompanyDetails.TIN + "      VAT Reg." +
+                                            Environment.NewLine + "BIR Acc #: " + CONFIG.AccreditationNo + " SN#: " + CONFIG.MachineSerialNo +
+                                            Environment.NewLine + "Permit No: FP102014-064-0015149-00000";
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = rpt.DataDefinition.ParameterFields["TINNo"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = mclsSalesTransactionDetails.CustomerDetails.TINNo; 
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = rpt.DataDefinition.ParameterFields["LTONo"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = mclsSalesTransactionDetails.CustomerDetails.LTONo; 
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    //foreach (CrystalDecisions.CrystalReports.Engine.ReportObject objPic in rpt.Section1.ReportObjects)
+                    //{
+                    //    if (objPic.Name.ToUpper() == "PICLOGO1")
+                    //    {
+                    //        objPic = new Bitmap(Application.StartupPath + "/images/ReportLogo.jpg");
+                    //    }
+                    //}
+
+                    //CRViewer.Visible = true;
+                    //CRViewer.ReportSource = rpt;
+                    //CRViewer.Show();
+
+                    try
+                    {
+                        DateTime logdate = DateTime.Now;
+                        string logsdir = System.Configuration.ConfigurationManager.AppSettings["logsdir"].ToString();
+
+                        if (!Directory.Exists(logsdir + logdate.ToString("MMM")))
+                        {
+                            Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
+                        }
+                        string logFile = logsdir + logdate.ToString("MMM") + "/CR_" + clsSalesTransactionDetails.TransactionNo + logdate.ToString("yyyyMMddhhmmss") + ".doc";
 
                         rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
                     }

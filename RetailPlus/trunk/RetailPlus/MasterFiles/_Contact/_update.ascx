@@ -100,9 +100,9 @@
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Position<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    </td>
+                                    <label>Tax Identification No (TIN)</label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    </td>
+                                    <label>LTO No</label></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -119,9 +119,11 @@
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
+                                    <asp:TextBox id="txtTINNo" runat="server" accesskey="G" CssClass="ms-short" MaxLength="20" BorderStyle="Groove"></asp:TextBox>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
+                                    <asp:TextBox id="txtLTONo" runat="server" accesskey="G" CssClass="ms-short" MaxLength="20" BorderStyle="Groove"></asp:TextBox>                                    
                                 </td>
                             </tr>
                             <tr>

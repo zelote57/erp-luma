@@ -4286,6 +4286,7 @@ namespace AceSoft.RetailPlus.Data
                                     "IFNULL(prd.BarCode1,prd.BarCode4) BarCode, " +
 
                                     "prd.Price, " +
+                                    "prd.Price1, prd.Price2, prd.Price3, prd.Price4, prd.Price5, " +
                                     "prd.WSPrice, " +
                                     "prd.PurchasePrice, " +
                                     "prd.VAT, " +
@@ -4300,7 +4301,7 @@ namespace AceSoft.RetailPlus.Data
 
                 SQL += "        FROM (SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, prd.ProductSubGroupID, prd.BaseUnitID, prd.DateCreated, prd.PercentageCommision, prd.IncludeInSubtotalDiscount, prd.IsCreditChargeExcluded " +
                        "                ,prd.SupplierID, prd.RewardPoints, prd.MinThreshold, prd.MaxThreshold " +
-                       "                ,pkg.PackageID, pkg.MatrixID ,pkg.BarCode1, pkg.BarCode2, pkg.BarCode3, pkg.BarCode4, pkg.Price, pkg.WSPrice, pkg.PurchasePrice, pkg.VAT, pkg.EVAT, pkg.LocalTax " +
+                       "                ,pkg.PackageID, pkg.MatrixID ,pkg.BarCode1, pkg.BarCode2, pkg.BarCode3, pkg.BarCode4, pkg.Price, pkg.Price1, pkg.Price2, pkg.Price3, pkg.Price4, pkg.Price5, pkg.WSPrice, pkg.PurchasePrice, pkg.VAT, pkg.EVAT, pkg.LocalTax " +
                        "              FROM tblProducts prd INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1 " +
                        "                    LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
                        "                    LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND inv.BranchID=" + BranchID.ToString() + " " +
@@ -4350,6 +4351,7 @@ namespace AceSoft.RetailPlus.Data
                                 "prd.BarCode3, " +
                                 "IFNULL(prd.BarCode1,prd.BarCode4), " +
                                 "prd.Price, " +
+                                "prd.Price1, prd.Price2, prd.Price3, prd.Price4, prd.Price5, " +
                                 "prd.WSPrice, " +
                                 "prd.PurchasePrice, " +
                                 "prd.VAT, " +

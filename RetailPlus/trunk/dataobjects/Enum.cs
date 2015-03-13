@@ -44,6 +44,7 @@ namespace AceSoft.RetailPlus
         ClosedWalkInRefund = 17,
         ClosedOutOfStockRefund = 18,
         ConsignmentRefund = 19,
+        SuspendedVoid       = 20
 	}
 	
 	public enum TransactionItemStatus
@@ -366,6 +367,17 @@ namespace AceSoft.RetailPlus
         Days = 0,
         Months = 1,
         Years = 2
+    }
+
+    public enum PriceLevel
+    {
+        SRP = 0,
+        One = 1,
+        Two = 2,
+        Three = 3,
+        Four = 4,
+        Five = 5,
+        WSPrice = 6
     }
 
     public enum TerminalReceiptType

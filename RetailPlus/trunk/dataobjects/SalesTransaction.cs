@@ -1552,7 +1552,31 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        
+        public void UpdateCRNo(Int32 BranchID, string TerminalNo, Int64 TransactionID, Int64 CRNo)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblTransactions SET " +
+                                "CRNo =	@CRNo " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                                "AND TransactionID	=	@TransactionID ";
+
+                cmd.Parameters.AddWithValue("CRNo", CRNo);
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("TransactionID", TransactionID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		public void UpdateCreditChargeAmount(Int32 BranchID, string TerminalNo, Int64 TransactionID, decimal CreditChargeAmount)
 		{

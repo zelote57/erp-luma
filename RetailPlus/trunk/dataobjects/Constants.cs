@@ -192,7 +192,8 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_OUT_OF_STOCK_CUSTOMER_CODE = "OutOfStockCustomerCode";
         public const string SYS_CONFIG_WALKIN_CUSTOMER_CODE = "WalkInCustomerCode";
         public const string SYS_CONFIG_CHEQUE_PAYMENT_ACCEPTABLE_NO_OF_DAYS = "ChequePaymentAcceptableNoOfDays";
-        
+        public const string SYS_CONFIG_ENABLE_PRICE_LEVEL = "EnablePriceLevel";
+
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
 
 

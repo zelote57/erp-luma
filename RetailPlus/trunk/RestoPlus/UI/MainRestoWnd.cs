@@ -3964,6 +3964,61 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         this.LoadOptions();
                         LoadContact(ContactGroupCategory.CUSTOMER, details);
+
+                        // 13Mar2015 : MPC, override the price using the PriceLevel
+                        //             For PriceLevel1...5
+                        if (mclsSysConfigDetails.EnablePriceLevel)
+                        {
+                            Cursor.Current = Cursors.WaitCursor;
+
+                            Int32 iOldRow = dgItems.CurrentRowIndex;
+                            Data.SalesTransactionItemDetails Details = new Data.SalesTransactionItemDetails();
+
+                            Data.ProductPackage clsProductPackage = new Data.ProductPackage(mConnection, mTransaction);
+                            mConnection = clsProductPackage.Connection; mTransaction = clsProductPackage.Transaction;
+
+                            Data.ProductPackageDetails clsProductPackageDetails = new Data.ProductPackageDetails();
+
+                            System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
+                            for (int x = 0; x < dt.Rows.Count; x++)
+                            {
+                                dgItems.CurrentRowIndex = x;
+                                Details = getCurrentRowItemDetails();
+
+                                dgItems.UnSelect(x);
+                                if (Details.TransactionItemStatus != TransactionItemStatus.Void)
+                                {
+                                    clsProductPackageDetails = clsProductPackage.Details(Details.ProductPackageID);
+
+                                    switch (mclsContactDetails.PriceLevel)
+                                    {
+                                        case PriceLevel.SRP: Details.Price = clsProductPackageDetails.Price; break;
+                                        case PriceLevel.One: Details.Price = clsProductPackageDetails.Price1 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price1; break;
+                                        case PriceLevel.Two: Details.Price = clsProductPackageDetails.Price2 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price2; break;
+                                        case PriceLevel.Three: Details.Price = clsProductPackageDetails.Price3 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price3; break;
+                                        case PriceLevel.Four: Details.Price = clsProductPackageDetails.Price4 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price4; break;
+                                        case PriceLevel.Five: Details.Price = clsProductPackageDetails.Price5 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price5; break;
+                                        case PriceLevel.WSPrice: Details.Price = clsProductPackageDetails.WSPrice == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.WSPrice; break;
+                                        default: Details.Price = clsProductPackageDetails.Price; break;
+                                    }
+                                    Details = ApplyPromo(Details);
+
+                                    ApplyChangeQuantityPriceAmountDetails(x, Details, "Change Price: Change Contact");
+                                }
+                            }
+
+                            dgItems.CurrentRowIndex = iOldRow;
+                            dgItems.Select(iOldRow);
+
+                            clsProductPackage.CommitAndDispose();
+
+                            Details = getCurrentRowItemDetails();
+                            DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
+                            DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                            InsertAuditLog(AccessTypes.ChangePrice, "Change price: change contact : for item " + Details.ProductCode + " to " + Details.Price.ToString("#,##0.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                            mbodgItemRowClick = false;
+                            Cursor.Current = Cursors.Default;
+                        }
                     }
                     clsSalesTransactions.CommitAndDispose();
 				}
@@ -5504,7 +5559,23 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (clsProductDetails.ProductID != 0)
                     {
-                        // 21Jul2013 Include getting of rates for parking
+                        // 06Mar2015 : Override the price base on the Price Level
+                        if (mclsSysConfigDetails.EnablePriceLevel)
+                        {
+                            switch (mclsContactDetails.PriceLevel)
+                            {
+                                case PriceLevel.SRP: clsProductDetails.Price = clsProductPackageDetails.Price; break;
+                                case PriceLevel.One: clsProductDetails.Price = clsProductPackageDetails.Price1 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price1; break;
+                                case PriceLevel.Two: clsProductDetails.Price = clsProductPackageDetails.Price2 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price2; break;
+                                case PriceLevel.Three: clsProductDetails.Price = clsProductPackageDetails.Price3 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price3; break;
+                                case PriceLevel.Four: clsProductDetails.Price = clsProductPackageDetails.Price4 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price4; break;
+                                case PriceLevel.Five: clsProductDetails.Price = clsProductPackageDetails.Price5 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price5; break;
+                                case PriceLevel.WSPrice: clsProductDetails.Price = clsProductPackageDetails.WSPrice == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.WSPrice; break;
+                                default: clsProductDetails.Price = clsProductPackageDetails.Price; break;
+                            }
+                        }
+
+                        // 21Jul2013 : Include getting of rates for parking
                         if (mclsTerminalDetails.IsParkingTerminal)
                         {
                             Data.ParkingRates clsParkingRate = new Data.ParkingRates(mConnection, mTransaction);
@@ -5593,6 +5664,26 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         if (!mclsTerminalDetails.IsParkingTerminal)
                         {
+                            // 06Mar2015 : Override the price base on the Price Level
+                            if (mclsSysConfigDetails.EnablePriceLevel)
+                            {
+                                switch (mclsContactDetails.PriceLevel)
+                                {
+                                    case PriceLevel.SRP: clsItemDetails.Price = clsProductPackageDetails.Price; break;
+                                    case PriceLevel.One: clsItemDetails.Price = clsProductPackageDetails.Price1 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price1; break;
+                                    case PriceLevel.Two: clsItemDetails.Price = clsProductPackageDetails.Price2 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price2; break;
+                                    case PriceLevel.Three: clsItemDetails.Price = clsProductPackageDetails.Price3 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price3; break;
+                                    case PriceLevel.Four: clsItemDetails.Price = clsProductPackageDetails.Price4 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price4; break;
+                                    case PriceLevel.Five: clsItemDetails.Price = clsProductPackageDetails.Price5 == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.Price5; break;
+                                    case PriceLevel.WSPrice: clsItemDetails.Price = clsProductPackageDetails.WSPrice == 0 ? clsProductPackageDetails.Price : clsProductPackageDetails.WSPrice; break;
+                                    default: clsItemDetails.Price = clsProductPackageDetails.Price; break;
+                                }
+                                if (mclsContactDetails.PriceLevel != PriceLevel.SRP)
+                                {
+                                    InsertAuditLog(AccessTypes.ChangePrice, "Barcode: " + clsItemDetails.BarCode + " ... Product Code:" + clsItemDetails.ProductCode + " ... Price Level:" + mclsContactDetails.PriceLevel.ToString("G") + "... SRP: " + clsProductPackageDetails.Price.ToString("#,###.#0") + " NewPrice: " + clsItemDetails.Price.ToString("#,###.#0"));
+                                }
+                            }
+
                             clsItemDetails.Price = clsProductPackageDetails.Price;
                             clsItemDetails.PackageQuantity = clsProductPackageDetails.Quantity;
                             clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);

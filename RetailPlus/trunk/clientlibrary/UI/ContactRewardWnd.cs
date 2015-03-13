@@ -495,7 +495,7 @@ namespace AceSoft.RetailPlus.Client.UI
             lblHeader.Text = mstCaption + " for customer : " + mContactDetails.ContactName;
 
             txtDOB.Text = DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd");
-            txtRewardCardNo.Text = mContactDetails.ContactCode.Substring(0,15);
+            txtRewardCardNo.Text = mContactDetails.ContactCode.Length > 15 ? mContactDetails.ContactCode.Substring(0, 15) : mContactDetails.ContactCode;
             txtRewardCardExpiryDate.Text = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd");
 
             Data.ContactReward clsContactReward = new Data.ContactReward();

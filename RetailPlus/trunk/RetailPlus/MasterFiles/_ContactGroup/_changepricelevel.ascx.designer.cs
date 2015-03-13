@@ -7,153 +7,126 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.MasterFiles._Contact {
+namespace AceSoft.RetailPlus.MasterFiles._ContactGroup {
     
     
-    public partial class _Default {
+    public partial class @__ChangePriceLevel {
         
         /// <summary>
-        /// frmDefaultID control.
+        /// lblReferrer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm frmDefaultID;
+        protected global::System.Web.UI.WebControls.Label lblReferrer;
         
         /// <summary>
-        /// ToolkitScriptManager1 control.
+        /// lblProductGroupID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
+        protected global::System.Web.UI.WebControls.Label lblProductGroupID;
         
         /// <summary>
-        /// ctrlProcessing control.
+        /// UpdatePanel4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__Processing ctrlProcessing;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
         
         /// <summary>
-        /// PageHeader control.
+        /// cboGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__PageHeader PageHeader;
+        protected global::System.Web.UI.WebControls.DropDownList cboGroup;
         
         /// <summary>
-        /// HorizontalNavBar control.
+        /// txtGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__HorizontalNavBar HorizontalNavBar;
+        protected global::System.Web.UI.WebControls.TextBox txtGroup;
         
         /// <summary>
-        /// ctrlExpiry control.
+        /// cmdGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__Expiry ctrlExpiry;
+        protected global::System.Web.UI.WebControls.ImageButton cmdGroup;
         
         /// <summary>
-        /// SiteTitle control.
+        /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__SiteTitle SiteTitle;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
-        /// LargeHeading control.
+        /// cboPriceLevel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__LargeHeading LargeHeading;
+        protected global::System.Web.UI.WebControls.DropDownList cboPriceLevel;
         
         /// <summary>
-        /// RightBodySectionSearch control.
+        /// updSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__RightBodySectionSearch RightBodySectionSearch;
+        protected global::System.Web.UI.UpdatePanel updSave;
         
         /// <summary>
-        /// ctrlMenu control.
+        /// imgSavePriceLevel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.MasterFiles.@__Menu ctrlMenu;
+        protected global::System.Web.UI.WebControls.ImageButton imgSavePriceLevel;
         
         /// <summary>
-        /// PageLevelError control.
+        /// cmdSavePriceLevel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__PageLevelError PageLevelError;
+        protected global::System.Web.UI.WebControls.LinkButton cmdSavePriceLevel;
         
         /// <summary>
-        /// ctrlPriceLevel control.
+        /// imgCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.MasterFiles._Contact.@__PriceLevel ctrlPriceLevel;
+        protected global::System.Web.UI.WebControls.ImageButton imgCancel;
         
         /// <summary>
-        /// ctrlList control.
+        /// cmdCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.MasterFiles._Contact.@__List ctrlList;
-        
-        /// <summary>
-        /// ctrlInsert control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AceSoft.RetailPlus.MasterFiles._Contact.@__Insert ctrlInsert;
-        
-        /// <summary>
-        /// ctrlUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AceSoft.RetailPlus.MasterFiles._Contact.@__Update ctrlUpdate;
-        
-        /// <summary>
-        /// ctrlDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AceSoft.RetailPlus.MasterFiles._Contact.@__Details ctrlDetails;
+        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
     }
 }

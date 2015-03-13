@@ -182,8 +182,13 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
                     break;
             }
         }
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
+        }
 
         #endregion
+
 
 		#region Private Methods
 
@@ -205,6 +210,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
 			clsAccessRights.CommitAndDispose();
 		}
+
 		private void LoadSortFieldOptions(DataListItemEventArgs e)
 		{
 			string stParam = null;		
@@ -288,6 +294,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
             cboAnniversaryMonth.SelectedIndex = 0;
 
         }
+
 		private void LoadList()
 		{	
 			Contacts clsContact = new Contacts();
@@ -360,6 +367,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 			}
 			lblDataCount.Text = " of " + " " + PageData.PageCount;
 		}
+
 		private bool Delete()
 		{
 			bool boRetValue = false;
@@ -386,6 +394,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
 			return boRetValue;
 		}
+
 		private void Update()
 		{
 			if (isChkListSingle() == true)
@@ -405,6 +414,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 				Response.Write(stScript);	
 			}
 		}
+
 		private string GetFirstID()
 		{
 			foreach(DataListItem item in lstItem.Items)
@@ -420,6 +430,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 			}
 			return null;
 		}
+
 		private bool isChkListSingle()
 		{
 			bool boChkListSingle = true;
@@ -442,10 +453,5 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 		}
 
 		#endregion
-
-        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            LoadList();
-        }
     }
 }

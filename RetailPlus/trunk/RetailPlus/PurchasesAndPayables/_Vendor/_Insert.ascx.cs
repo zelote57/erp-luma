@@ -26,7 +26,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 			
 			cboGroup.DataTextField = "ContactGroupName";
 			cboGroup.DataValueField = "ContactGroupID";
-			cboGroup.DataSource = clsDataClass.DataReaderToDataTable(clsContactGroup.List("ContactGroupName",SortOption.Ascending)).DefaultView;
+			cboGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.SUPPLIER).DefaultView;
 			cboGroup.DataBind();
 			cboGroup.SelectedIndex = ((int) ContactGroupCategory.SUPPLIER) - 1; //cboGroup.Items.Count - 1;
 
@@ -94,6 +94,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 			clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+            // 13Mar2015 : Added for Pharmaceuticals
+            clsDetails.TINNo = txtTINNo.Text;
+            clsDetails.LTONo = txtLTONo.Text;
 
 			Contacts clsContact = new Contacts();
 			Int64 id = clsContact.Insert(clsDetails);

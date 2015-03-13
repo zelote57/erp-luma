@@ -84,7 +84,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 
             cboGroup.DataTextField = "ContactGroupName";
             cboGroup.DataValueField = "ContactGroupID";
-            cboGroup.DataSource = clsContactGroup.ListAsDataTable().DefaultView;
+            cboGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.SUPPLIER).DefaultView;
             cboGroup.DataBind();
             cboGroup.SelectedIndex = cboGroup.Items.Count - 1;
 
@@ -104,6 +104,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 
             clsContactGroup.CommitAndDispose();
         }
+
         private void LoadRecord()
         {
             Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
@@ -132,6 +133,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
             txtCreditLimit.Text = clsDetails.CreditLimit.ToString("#,##0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));
+            txtTINNo.Text = clsDetails.TINNo;
+            txtLTONo.Text = clsDetails.LTONo;
         }
         private void SaveRecord()
         {
@@ -158,6 +161,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
             clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+
+            // 13Mar2015 : Added for Pharmaceuticals
+            clsDetails.TINNo = txtTINNo.Text;
+            clsDetails.LTONo = txtLTONo.Text;
+
             clsContact.Update(clsDetails);
 
             clsContact.CommitAndDispose();

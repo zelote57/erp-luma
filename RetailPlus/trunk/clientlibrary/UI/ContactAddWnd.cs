@@ -55,6 +55,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label12;
         private TextBox txtTINNo;
         private Button cmdGenerateCustomerCode;
+        private Label label13;
+        private TextBox txtPriceLevel;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -168,6 +170,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCreditLimit = new System.Windows.Forms.TextBox();
+            this.txtPriceLevel = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -198,6 +202,8 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.txtPriceLevel);
+            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.cmdGenerateCustomerCode);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.txtLTONo);
@@ -383,7 +389,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAddress.MaxLength = 150;
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(887, 48);
+            this.txtAddress.Size = new System.Drawing.Size(588, 48);
             this.txtAddress.TabIndex = 7;
             this.txtAddress.GotFocus += new System.EventHandler(this.txtAddress_GotFocus);
             // 
@@ -624,6 +630,32 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit.GotFocus += new System.EventHandler(this.txtCreditLimit_GotFocus);
             this.txtCreditLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCreditLimit_KeyPress);
             // 
+            // txtPriceLevel
+            // 
+            this.txtPriceLevel.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtPriceLevel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPriceLevel.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPriceLevel.Location = new System.Drawing.Point(771, 167);
+            this.txtPriceLevel.MaxLength = 75;
+            this.txtPriceLevel.Name = "txtPriceLevel";
+            this.txtPriceLevel.ReadOnly = true;
+            this.txtPriceLevel.Size = new System.Drawing.Size(230, 30);
+            this.txtPriceLevel.TabIndex = 18;
+            this.txtPriceLevel.TabStop = false;
+            this.txtPriceLevel.Text = "SRP";
+            this.txtPriceLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label13.Location = new System.Drawing.Point(730, 152);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(68, 13);
+            this.label13.TabIndex = 19;
+            this.label13.Text = "Price Level";
+            // 
             // ContactAddWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
@@ -848,6 +880,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtAddress.Text = mContactDetails.Address;
                 txtTINNo.Text = mContactDetails.TINNo;
                 txtLTONo.Text = mContactDetails.LTONo;
+                txtPriceLevel.Text = mContactDetails.PriceLevel.ToString("G").ToUpper();
 
                 txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
                 txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");

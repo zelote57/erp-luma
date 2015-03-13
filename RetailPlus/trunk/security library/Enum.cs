@@ -298,7 +298,10 @@ namespace AceSoft.RetailPlus
         ZeroOutBranchInventory = 174,
         SummarizedDailySalesWithTFDetailed = 175,
         PrintCheckOutBill = 176,
-        ResumeSuspendedOpenTransaction = 177
+        ResumeSuspendedOpenTransaction = 177,
+
+        // 13Mar2015 : use only for manager's MPC
+        ChangePriceLevel = 178
     }
 
     /// <summary>

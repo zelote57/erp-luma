@@ -54,7 +54,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
 						stHeading = "Contacts List";		
 						SearchIndex = SearchCategoryID.Contacts;
 						ctrlList.Visible = true;
-						break;					
+						break;		
+			        case "pricelevel":
+                        stHeading = "Price Level";		
+						SearchIndex = SearchCategoryID.NotApplicable;
+						ctrlPriceLevel.Visible = true;
+                        break;
 					default:	
 						break;
 				}

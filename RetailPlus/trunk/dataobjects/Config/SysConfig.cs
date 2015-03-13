@@ -81,6 +81,8 @@ namespace AceSoft.RetailPlus.Data
 
         public Int32 ChequePaymentAcceptableNoOfDays;
 
+        public bool EnablePriceLevel;
+
         public string ORHeader;
 
         
@@ -363,6 +365,17 @@ namespace AceSoft.RetailPlus.Data
             return iRetValue;
         }
 
+        public bool get_EnablePriceLevel()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ENABLE_PRICE_LEVEL));
+            }
+            catch { }
+            return boRetValue;
+        }
+
         public string get_ORHeader()
         {
             string strRetValue = "SALES INVOICE";
@@ -459,6 +472,7 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.OutOfStockCustomerCode = get_OutOfStockCustomerCode();
             clsSysConfigDetails.WalkInCustomerCode = get_WalkInCustomerCode();
             clsSysConfigDetails.ChequePaymentAcceptableNoOfDays = get_ChequePaymentAcceptableNoOfDays();
+            clsSysConfigDetails.EnablePriceLevel = get_EnablePriceLevel();
             clsSysConfigDetails.ORHeader = get_ORHeader();
 
             return clsSysConfigDetails;

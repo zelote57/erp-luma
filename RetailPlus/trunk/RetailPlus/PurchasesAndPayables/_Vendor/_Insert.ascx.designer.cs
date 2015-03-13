@@ -175,6 +175,24 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator4;
         
         /// <summary>
+        /// txtTINNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTINNo;
+        
+        /// <summary>
+        /// txtLTONo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLTONo;
+        
+        /// <summary>
         /// cboModeOfTerms control.
         /// </summary>
         /// <remarks>

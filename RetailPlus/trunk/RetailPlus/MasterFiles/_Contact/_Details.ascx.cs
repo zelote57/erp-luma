@@ -110,6 +110,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
             txtCreditLimit.Text = clsDetails.CreditLimit.ToString("#,##0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));
+            txtTINNo.Text = clsDetails.TINNo;
+            txtLTONo.Text = clsDetails.LTONo;
         }
 
         #endregion

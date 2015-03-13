@@ -23,6 +23,7 @@ namespace AceSoft.RetailPlus.MasterFiles
                 lnkAddvariationType.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("addproductvariation", Session.SessionID);
                 lnkChangeRewardPoints.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changerewardpoints", Session.SessionID);
                 lnkChangeProductPrice.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changeprice", Session.SessionID);
+                lnkChangePriceLevel.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Contact/Default.aspx?task=" + Common.Encrypt("pricelevel", Session.SessionID);
                 lnkChangeOSPrinter.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changeosprinter", Session.SessionID);
                 lnkChangeTax.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changetax", Session.SessionID);
 
@@ -115,9 +116,11 @@ namespace AceSoft.RetailPlus.MasterFiles
             lnkChargeType.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ChargeType);
-            lnkChargeType.Visible = clsDetails.Read; 
+            lnkChargeType.Visible = clsDetails.Read;
 
-			
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ChangePriceLevel);
+            lnkChangePriceLevel.Visible = clsDetails.Read;
+
 			clsAccessRights.CommitAndDispose();
 		}
 

@@ -969,25 +969,23 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT RegistrationKey FROM sysTerminalkey WHERE HDSerialNo = @HDSerialNo;";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+                
+                string SQL = "SELECT RegistrationKey FROM sysTerminalkey WHERE HDSerialNo = @HDSerialNo;";
+
+                cmd.Parameters.AddWithValue("@HDSerialNo", HDSerialNo);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmHDSerialNo = new MySqlParameter("@HDSerialNo",MySqlDbType.String);
-                prmHDSerialNo.Value = HDSerialNo;
-                cmd.Parameters.Add(prmHDSerialNo);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 string strRetvalue = string.Empty;
 
-                while (myReader.Read())
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    strRetvalue = "" + myReader["RegistrationKey"].ToString();
+                    strRetvalue = "" + dr["RegistrationKey"].ToString();
                 }
-                myReader.Close();
 
                 return strRetvalue;
             }

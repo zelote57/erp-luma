@@ -1,3 +1,8 @@
+-- COLLATE ILLEGAL MIX ISSUE
+ALTER DATABASE pos CHARACTER SET utf8;
+ALTER DATABASE pos DEFAULT COLLATE utf8_general_ci;
+
+SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
 
 /********************************************
 	trgr_tblContacts_Insert
@@ -501,13 +506,36 @@ BEGIN
 	DECLARE dteActualZReadDate DATETIME DEFAULT NULL;
 	DECLARE dteNextZReadDate DATETIME DEFAULT NULL;
 	DECLARE boIsProcessed TINYINT(1) DEFAULT 0;
-	
+	DECLARE decSNRPercent DECIMAL(5,2) DEFAULT 0.20;
+	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(10) DEFAULT 'SNR';
+
 	SET boIsProcessed = (SELECT IsProcessed FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 
 	IF (boIsProcessed = 0) THEN
 		
+		SET strSNRDiscountCode = (IFNULL((SELECT SeniorCitizenDiscountCode FROM tblTerminal WHERE TerminalNo='01' LIMIT 1), 'SNR'));
+		SET strPWDDiscountCode = (IFNULL((SELECT PWDDiscountCode FROM tblTerminal WHERE TerminalNo='01' LIMIT 1), 'PWD'));
+		SET decSNRPercent = (IFNULL((SELECT DiscountPrice FROM tblDiscount WHERE DiscountCode = strSNRDiscountCode), 20) / 100);
+
 		SET dteActualZReadDate = (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 		SET dteNextZReadDate = NOW();
+
+		-- update the vat to make sure everything is correct
+		UPDATE tblTransactions SET
+			VATExempt = CASE DiscountCode WHEN strSNRDiscountCode THEN Discount / decSNRPercent ELSE 0 END,
+			SNRDiscount = CASE DiscountCode WHEN strSNRDiscountCode THEN Discount ELSE 0 END,
+			PWDDiscount = CASE DiscountCode WHEN strPWDDiscountCode THEN Discount ELSE 0 END,
+			OtherDiscount = CASE DiscountCode WHEN strSNRDiscountCode THEN 0 WHEN strPWDDiscountCode THEN 0 ELSE Discount END
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
+
+		UPDATE tblTransactions SET
+			GrossSales = SubTotal + itemsdiscount,
+			VatableAmount = (SubTotal - Discount - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12,
+			VAT = (SubTotal - Discount - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12 * 0.12,
+			NetSales = SubTotal - (VATExempt * 0.12) - Discount
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
 
 		CALL procCashierReportSyncTransactionSales(intBranchID, strTerminalNo, dteActualZReadDate, dteNextZReadDate);
 
@@ -1793,7 +1821,7 @@ BEGIN
 					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
 					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
 					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
-					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales, UseBranchORSeries,
 					IsProcessed, InitializedBy) 
 				(SELECT 
 					BranchID, TerminalID, TerminalNo, IncludeIneSales, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
@@ -1822,7 +1850,7 @@ BEGIN
 					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
 					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
 					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
-					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales, UseBranchORSeries,
 					IsProcessed, strInitializedBy 
 				FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 	
@@ -8854,12 +8882,6 @@ END;
 GO
 delimiter ;
 
--- COLLATE ILLEGAL MIX ISSUE
-ALTER DATABASE pos CHARACTER SET utf8;
-ALTER DATABASE pos DEFAULT COLLATE utf8_general_ci;
-
-SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
-
 -- default the supplier to RetailPlus Default Supplier for those that doesnt have supplierid
 UPDATE tblProducts SET SupplierID = 2 WHERE SupplierID NOT IN (SELECT DISTINCT contactid from tblContacts);
 
@@ -10262,8 +10284,8 @@ BEGIN
 
 		UPDATE tblTransactions SET
 			GrossSales = SubTotal + itemsdiscount,
-			VatableAmount = (SubTotal - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12,
-			VAT = (SubTotal - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12 * 0.12,
+			VatableAmount = (SubTotal - Discount - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12,
+			VAT = (SubTotal - Discount - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12 * 0.12,
 			NetSales = SubTotal - (VATExempt * 0.12) - Discount
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')

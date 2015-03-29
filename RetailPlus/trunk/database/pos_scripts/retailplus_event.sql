@@ -15,7 +15,7 @@ GO
 CREATE EVENT eventExpireContactRewardCard
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2012-08-24 11:50:00'
+		STARTS '2012-08-24 22:30:00'
     DO 
 	BEGIN
 		CALL sysContactRewardExpire();
@@ -35,7 +35,7 @@ GO
 CREATE EVENT eventExpireCustomerCreditCard
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2012-08-24 11:50:00'
+		STARTS '2012-08-24 22:30:00'
     DO 
 	BEGIN
 		CALL sysContactCreditCardExpire();
@@ -55,7 +55,7 @@ GO
 CREATE EVENT eventProductInventorySnapshot
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2013-08-24 11:50:00'
+		STARTS '2013-08-24 22:30:00'
     DO 
 	BEGIN
 		CALL sysProductInventorySnapshot();
@@ -77,7 +77,7 @@ GO
 CREATE EVENT eventHoldCustomerCreditWithG
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2012-08-24 11:50:00'
+		STARTS '2012-08-24 22:50:00'
     DO 
 	BEGIN
 		CALL sysHoldCustomerCreditWithG();

@@ -117,31 +117,29 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			ReportDataset rptds = new ReportDataset();
 
 			PO clsPO = new PO();
-			MySqlDataReader myreader = clsPO.List(iID, "POID", SortOption.Ascending);
-			while(myreader.Read())
-			{
-				DataRow drNew = rptds.PO.NewRow();
-				
-				foreach (DataColumn dc in rptds.PO.Columns)
-					drNew[dc] = "" + myreader[dc.ColumnName]; 
-				
-				rptds.PO.Rows.Add(drNew);
-			}
-            myreader.Close();
+
+            System.Data.DataTable dt = clsPO.ListAsDataTable(POID: iID);
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                DataRow drNew = rptds.PO.NewRow();
+
+                foreach (DataColumn dc in rptds.PO.Columns)
+                    drNew[dc] = dr[dc.ColumnName];
+
+                rptds.PO.Rows.Add(drNew);
+            }
 
             POItem clsPOItem = new POItem(clsPO.Connection, clsPO.Transaction);
-            MySqlDataReader myreaderitems = clsPOItem.List(iID, "POItemID", SortOption.Ascending);
+            dt = clsPOItem.ListAsDataTable(iID);
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                DataRow drNew = rptds.POItems.NewRow();
 
-			while(myreaderitems.Read())
-			{
-				DataRow drNew = rptds.POItems.NewRow();
-				
-				foreach (DataColumn dc in rptds.POItems.Columns)
-					drNew[dc] = "" + myreaderitems[dc.ColumnName]; 
-				
-				rptds.POItems.Rows.Add(drNew);
-			}
-            myreaderitems.Close();
+                foreach (DataColumn dc in rptds.POItems.Columns)
+                    drNew[dc] = dr[dc.ColumnName];
+
+                rptds.POItems.Rows.Add(drNew);
+            }
             clsPO.CommitAndDispose();
 
 			Report.SetDataSource(rptds); 

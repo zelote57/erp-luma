@@ -1821,7 +1821,7 @@ BEGIN
 					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
 					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
 					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
-					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales, UseBranchORSeries,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales, ORSeriesBranchID, ORSeriesTerminalNo,
 					IsProcessed, InitializedBy) 
 				(SELECT 
 					BranchID, TerminalID, TerminalNo, IncludeIneSales, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
@@ -1850,7 +1850,7 @@ BEGIN
 					NoOfConsignmentTransactions, NoOfConsignmentRefundTransactions, NoOfWalkInTransactions,
 					NoOfWalkInRefundTransactions, NoOfOutOfStockTransactions, NoOfOutOfStockRefundTransactions,
 					ConsignmentSales, ConsignmentRefundSales, WalkInSales,
-					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales, UseBranchORSeries,
+					WalkInRefundSales, OutOfStockSales, OutOfStockRefundSales, ORSeriesBranchID, ORSeriesTerminalNo,
 					IsProcessed, strInitializedBy 
 				FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 	

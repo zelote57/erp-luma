@@ -161,25 +161,20 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 
 		private void LoadItems()
 		{
-			DataClass clsDataClass = new DataClass();
-
 			StockItem clsStockItem = new StockItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsStockItem.List(Convert.ToInt64(lblStockID.Text), "StockItemID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsStockItem.ListAsDataTable(Convert.ToInt64(lblStockID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsStockItem.CommitAndDispose();
 		}
 
 		private void Transfer()
 		{
-
-			DataClass clsDataClass = new DataClass();
-
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["stockid"],Session.SessionID));
 			Stock clsStock = new Stock();
 			StockDetails clsStockDetails = clsStock.Details(iID);
 
 			StockItem clsStockItem = new StockItem(clsStock.Connection, clsStock.Transaction);
-			DataTable dtaStockItemList = clsDataClass.DataReaderToDataTable(clsStockItem.List(Convert.ToInt64(lblStockID.Text), "StockItemID",SortOption.Ascending));
+			DataTable dtaStockItemList = clsStockItem.ListAsDataTable(Convert.ToInt64(lblStockID.Text));
 			
 			Contacts clsContact = new Contacts(clsStock.Connection, clsStock.Transaction);
 			ContactDetails clsContactDetails = clsContact.Details(clsStockDetails.SupplierID);

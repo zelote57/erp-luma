@@ -141,20 +141,19 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DateTime DateLastInitialized()
+        public DateTime DateLastInitialized(Int32 BranchID, string TerminalNo)
         {
             try
             {
-                string SQL = "SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo;";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+                
+                string SQL = "SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID=@BranchID AND TerminalNo = @TerminalNo;";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = CompanyDetails.TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
                 System.Data.DataTable dt = new System.Data.DataTable("tblTerminalReport");
                 base.MySqlDataAdapterFill(cmd, dt);
 

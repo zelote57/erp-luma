@@ -343,7 +343,7 @@
 		                                        </tr>
 		                                        <tr>
                                                     <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Markup in Percent (%) <font color="red">*</font></td>
-				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Selling Price / Prev. Selling Price<font color="red">*</font></td>
+				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Selling Price / Suggested Selling Price<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">VAT<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">EVAT<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Local Tax<font color="red">*</font></td>

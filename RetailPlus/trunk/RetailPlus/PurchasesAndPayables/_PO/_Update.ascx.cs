@@ -80,6 +80,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			lblTerms.Text = clsDetails.Terms.ToString("##0");
             lblModeOfterms.Text = clsDetails.ModeOfTerms.ToString("G");
 			txtSupplierAddress.Text = clsDetails.Address;
+
+            // 23Mar2015 As per request by Sweetie
+            txtSupplierTINNo.Text = clsDetails.TINNo;
+            txtSupplierLTONo.Text = clsDetails.LTONo;
 		}
 		protected void cboBranch_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -131,6 +135,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			cboSupplier.SelectedIndex = cboSupplier.Items.IndexOf(cboSupplier.Items.FindByValue(clsDetails.SupplierID.ToString()));
 			txtSupplierContact.Text = clsDetails.SupplierContact;
 			txtSupplierTelephoneNo.Text = clsDetails.SupplierTelephoneNo;
+            txtSupplierTINNo.Text = clsDetails.SupplierTINNo;
+            txtSupplierLTONo.Text = clsDetails.SupplierLTONo;
 			lblTerms.Text = clsDetails.SupplierTerms.ToString("##0");
 			switch (clsDetails.SupplierModeOfTerms)
 			{
@@ -161,6 +167,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			clsDetails.SupplierContact = txtSupplierContact.Text;
 			clsDetails.SupplierAddress = txtSupplierAddress.Text;
 			clsDetails.SupplierTelephoneNo = txtSupplierTelephoneNo.Text;
+            clsDetails.SupplierTINNo = txtSupplierTINNo.Text;
+            clsDetails.SupplierLTONo = txtSupplierLTONo.Text;
 			switch (lblModeOfterms.Text)
 			{
 				case "Days":

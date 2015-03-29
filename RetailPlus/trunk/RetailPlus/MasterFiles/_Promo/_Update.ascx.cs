@@ -127,7 +127,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 			
 			cboPromoType.DataTextField = "PromoTypeCode";
 			cboPromoType.DataValueField = "PromoTypeID";
-			cboPromoType.DataSource = clsDataClass.DataReaderToDataTable(clsPromoType.List("PromoTypeID",SortOption.Ascending)).DefaultView;
+			cboPromoType.DataSource = clsPromoType.ListAsDataTable().DefaultView;
 			cboPromoType.DataBind();
 			cboPromoType.SelectedIndex = cboPromoType.Items.Count - 1;	
 

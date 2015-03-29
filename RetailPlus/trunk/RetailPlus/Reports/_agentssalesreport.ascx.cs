@@ -64,7 +64,7 @@ namespace AceSoft.RetailPlus.Reports
             Department clsDepartment = new Department(clsContact.Connection, clsContact.Transaction);
             cboDepartment.DataTextField = "DepartmentName";
             cboDepartment.DataValueField = "DepartmentID";
-            cboDepartment.DataSource = clsDepartment.ListAsDataTable(null, SortOption.Ascending, 0);
+            cboDepartment.DataSource = clsDepartment.ListAsDataTable();
             cboDepartment.DataBind();
             cboDepartment.Items.Add(new ListItem(Department.DEFAULT_ALL_DEPARTMENTS, "0"));
             cboDepartment.SelectedIndex = cboDepartment.Items.Count - 1;

@@ -91,7 +91,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
             Department clsDepartment = new Department(clsContactGroup.Connection, clsContactGroup.Transaction);
             cboDepartment.DataTextField = "DepartmentName";
             cboDepartment.DataValueField = "DepartmentID";
-            cboDepartment.DataSource = clsDepartment.ListAsDataTable("DepartmentName", SortOption.Ascending, 0).DefaultView;
+            cboDepartment.DataSource = clsDepartment.ListAsDataTable().DefaultView;
             cboDepartment.DataBind();
             cboDepartment.SelectedIndex = 0;
 

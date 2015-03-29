@@ -98,16 +98,15 @@ namespace AceSoft.RetailPlus.Reports
 			ReportDataset rptds = new ReportDataset();
 
 			string TransactionNo = txtTransactionNo.Text.Trim();
-			DataClass clsDataClass= new DataClass();
 
 			Stock clsStock = new Stock();
-			DataTable dt = clsDataClass.DataReaderToDataTable(clsStock.Search(TransactionNo));
+			DataTable dt = clsStock.Search(TransactionNo);
 			clsStock.CommitAndDispose();
 
 			long StockID = Convert.ToInt64(dt.Rows[0]["StockID"].ToString());
 
 			StockItem clsStockItem = new StockItem();
-			DataTable dtItems = clsDataClass.DataReaderToDataTable(clsStockItem.List(StockID, "StockItemID",SortOption.Ascending));
+			DataTable dtItems = clsStockItem.ListAsDataTable(StockID);
 			clsStockItem.CommitAndDispose();
 
 			foreach(DataRow dr in dt.Rows)

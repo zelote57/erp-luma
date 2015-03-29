@@ -326,203 +326,122 @@ namespace AceSoft.RetailPlus.Data
 			return stSQL;
 		}
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader List(Int64 StockID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "AND StockID = @StockID " +
-								"ORDER BY " + SortField; 
-
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmStockID = new MySqlParameter("@StockID",MySqlDbType.Int64);
-				prmStockID.Value = StockID;
-				cmd.Parameters.Add(prmStockID);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-        public System.Data.DataTable ListAsDataTable(Int64 StockID, string SortField = "StockItemID", SortOption SortOrder = SortOption.Desscending)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "AND StockID = @StockID " +
-								"ORDER BY " + SortField; 
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmStockID = new MySqlParameter("@StockID",MySqlDbType.Int64);
-				prmStockID.Value = StockID;
-				cmd.Parameters.Add(prmStockID);
-
-                System.Data.DataTable dt = new System.Data.DataTable("StockItems");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-				
-				return dt;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        //public MySqlDataReader ProductHistoryReport(long ProductID, DateTime StartDate, DateTime EndDate)
+        //public MySqlDataReader List(string SortField, SortOption SortOrder)
         //{
         //    try
         //    {
+        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
+				
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
+
+				
+
         //        MySqlCommand cmd = new MySqlCommand();
-
-        //        string SQL = "SELECT " +
-        //                        "StockItemID, " +
-        //                        "IFNULL(c.Description, b.ProductCode) AS MatrixDescription, " +
-        //                        "CASE StockDirection " +
-        //                        "	WHEN 0 THEN a.Quantity " +
-        //                        "	WHEN 1 THEN -a.Quantity " +
-        //                        "END AS Quantity, " +
-        //                        "d.UnitCode, " +
-        //                        "CONCAT(e.Description, ':' , a.Remarks) AS Remarks, " +
-        //                        "a.StockDate AS TransactionDate, " +
-        //                        "TransactionNo " +
-        //                    "FROM (((tblStockItems a " +
-        //                    "INNER JOIN tblStock f ON a.StockID = f.StockID " +
-        //                    "LEFT OUTER JOIN tblProducts b ON a.ProductID = b.ProductID) " +
-        //                    "LEFT OUTER JOIN tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID) " +
-        //                    "LEFT OUTER JOIN tblUnit d ON a.ProductUnitID = d.UnitID) " +
-        //                    "LEFT OUTER JOIN tblStockType e ON a.StockTypeID = e.StockTypeID " +
-        //                    "WHERE 1=1 ";
-
-        //        SQL += "AND a.StockDate >= @StartDate ";
-
-        //        MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);
-        //        prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-        //        cmd.Parameters.Add(prmStartDate); 
-
-        //        SQL += "AND a.StockDate <= @EndDate ";
-
-        //        MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);
-        //        prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-        //        cmd.Parameters.Add(prmEndDate); 
-
-        //        if (ProductID != 0)
-        //        {	
-        //            SQL += "AND a.ProductID = @ProductID ";
-
-        //            MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
-        //            prmProductID.Value = ProductID;
-        //            cmd.Parameters.Add(prmProductID); 
-        //        }
-
-        //        SQL += "ORDER BY a.StockDate DESC";
-
-        //        
-
-        //        
-        //        
+				
+				
         //        cmd.CommandType = System.Data.CommandType.Text;
         //        cmd.CommandText = SQL;
 				
-        //        
+				
 				
         //        return base.ExecuteReader(cmd);			
         //    }
         //    catch (Exception ex)
         //    {
-        //        
-        //        
+				
+				
         //        {
-        //            
-        //            
-        //            
-        //            
+					
+					
+					
+					
         //        }
 
         //        throw base.ThrowException(ex);
         //    }	
         //}
+		
+        //public MySqlDataReader List(Int64 StockID, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "AND StockID = @StockID " +
+        //                        "ORDER BY " + SortField; 
+
+				
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
+
+				
+
+        //        MySqlCommand cmd = new MySqlCommand();
+				
+				
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
+				
+        //        MySqlParameter prmStockID = new MySqlParameter("@StockID",MySqlDbType.Int64);
+        //        prmStockID.Value = StockID;
+        //        cmd.Parameters.Add(prmStockID);
+
+				
+				
+        //        return base.ExecuteReader(cmd);			
+        //    }
+        //    catch (Exception ex)
+        //    {
+				
+				
+        //        {
+					
+					
+					
+					
+        //        }
+
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+
+        public System.Data.DataTable ListAsDataTable(Int64 StockID, string SortField = "StockItemID", SortOption SortOrder = SortOption.Desscending, Int32 limit = 0)
+		{
+			try
+			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "AND StockID = @StockID ";
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "StockItemID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.Parameters.AddWithValue("@StockID", StockID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+			}
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
+		}
+
         public MySqlDataReader ProductHistoryReport(long ProductID, DateTime StartDate, DateTime EndDate)
         {
             try
             {
                 string SQL = "CALL procGenerateProductHistory(@SessionID, @StartTransactionDate, @EndTransactionDate, @ProductID);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -564,13 +483,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
                 throw base.ThrowException(ex);
             }
         }
@@ -579,7 +491,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                // note the parameter name must be the same as paramter in the proc.
+                // note the parameter name must be the same as parameter in the proc.
                 // this is more efficient then the call.
                 // need to adjust all proc like this
 

@@ -56,39 +56,22 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL = "INSERT INTO tblChargeType (ChargeTypeCode, ChargeType, ChargeAmount, InPercent) " +
 					"VALUES (@ChargeTypeCode, @ChargeType, @ChargeAmount, @InPercent) ;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("@ChargeTypeCode", Details.ChargeTypeCode);
                 cmd.Parameters.AddWithValue("@ChargeType", Details.ChargeType);
                 cmd.Parameters.AddWithValue("@ChargeAmount", Details.ChargeAmount);
                 cmd.Parameters.AddWithValue("@InPercent", Details.InPercent);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
-
-				myReader.Close();
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);

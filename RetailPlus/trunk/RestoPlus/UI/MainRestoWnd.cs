@@ -5423,7 +5423,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     try
                     {
-                        clsEvent.AddEvent("[" + lblCashier.Text + "] Initializing Beginning balance.", true);
+                        clsEvent.AddEvent("[" + lblCashier.Text + "] Initializing ZReading.", true);
                         PrintZRead(true);
 
                         Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
@@ -5440,7 +5440,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         //initialize Z-Read
                         clsTerminalReport.InitializeZRead(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, Constants.C_DATE_MIN_VALUE, boWithOutTF);
 
-                        InsertAuditLog(AccessTypes.InitializeZRead, "Initialize Z-Read." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                        InsertAuditLog(AccessTypes.InitializeZRead, "Initialize Z-Read." + " [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo);
 
                         DateTime dteMAXDateLastInitialized = DateTime.MinValue;
 
@@ -5459,7 +5459,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         clsEvent.AddEventLn("Done!");
 
-                        MessageBox.Show("Z-Read has been initialized...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Z-Read has been initialized for [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo + "...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // May 21, 2009      Lemuel E. Aceron
                         // added the for auto FTP of file for RLC
@@ -5467,15 +5467,110 @@ namespace AceSoft.RetailPlus.Client.UI
                         if (CONFIG.MallCode.ToUpper() == MallCodes.RLC)
                             ProcessMallForwarder(dteMAXDateLastInitialized, true);
 
+                        // 23Mar2015 : Initialize all reading with the same ORSeriesBranchID and ORSeriesTerminalNo
+                        InitializeAllZreadWithSameORSeries(boWithOutTF);
+
                         LoggedOutCashier(false);
                     }
                     catch (Exception ex)
-                    { clsEvent.AddErrorEventLn(ex); }
+                    {
+                        InsertErrorLogToFile(ex, "ERRROR!!! Initializing ZREAD for [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo);
+                    }
 
                     Cursor.Current = Cursors.Default;
                 }
             }
         }
+
+        public void InitializeAllZreadWithSameORSeries(bool boWithOutTF)
+        {
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                Data.Terminal clsTerminal = new Data.Terminal(mConnection, mTransaction);
+                mConnection = clsTerminal.Connection; mTransaction = clsTerminal.Transaction;
+
+                Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
+                mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
+
+                AccessUser clsUser = new AccessUser(mConnection, mTransaction);
+                mConnection = clsUser.Connection; mTransaction = clsUser.Transaction;
+
+                System.Data.DataTable dt = clsTerminal.ListORSeries(mclsTerminalDetails.ORSeriesBranchID, mclsTerminalDetails.ORSeriesTerminalNo);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Int32 iBranchID = Int32.Parse(dr["BranchID"].ToString());
+                    string stTerminalNo = dr["TerminalNo"].ToString();
+
+                    mclsTerminalDetails = clsTerminal.Details(iBranchID, stTerminalNo);
+                    mclsSalesTransactionDetails.CashierID = clsTerminal.getLastLoggedCashierID(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+
+                    AccessUserDetails details = clsUser.Details(mclsSalesTransactionDetails.CashierID);
+
+                    mclsSalesTransactionDetails.CashierName = details.Name;
+
+                    if (IsDateLastInitializationOK())
+                    {
+                        try
+                        {
+                            clsEvent.AddEvent("[" + lblCashier.Text + "] Initializing ZReading.", true);
+                            PrintZRead(false);
+
+                            // Dec 01, 2008      Lemuel E. Aceron
+                            // added the IsCashCountInitialized for
+                            // 1 time Cash count every printing of report.
+                            clsTerminal.UpdateIsCashCountInitialized(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierID, false);
+
+                            //initialize Z-Read
+                            clsTerminalReport.InitializeZRead(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, Constants.C_DATE_MIN_VALUE, boWithOutTF);
+
+                            InsertAuditLog(AccessTypes.InitializeZRead, "Initialize Z-Read." + " [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo);
+
+                            DateTime dteMAXDateLastInitialized = DateTime.MinValue;
+
+                            // May 21, 2009      Lemuel E. Aceron
+                            // added the for auto FTP of file for RLC
+                            // get the maxdatelastinitialized
+                            if (CONFIG.MallCode.ToUpper() == MallCodes.RLC)
+                            {
+                                Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory(mConnection, mTransaction);
+                                mConnection = clsTerminalReportHistory.Connection; mTransaction = clsTerminalReportHistory.Transaction;
+
+                                dteMAXDateLastInitialized = clsTerminalReportHistory.MINDateLastInitialized(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, DateTime.Now);
+                            }
+
+                            clsEvent.AddEventLn("Done!");
+
+                            MessageBox.Show("Z-Read has been initialized for [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo + "...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // May 21, 2009      Lemuel E. Aceron
+                            // added the for auto FTP of file for RLC
+                            // send the data to RLC
+                            if (CONFIG.MallCode.ToUpper() == MallCodes.RLC)
+                                ProcessMallForwarder(dteMAXDateLastInitialized, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            InsertErrorLogToFile(ex, "ERRROR!!! Initializing ZREAD for [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo);
+                        }
+                    }
+                }
+
+                clsTerminal.CommitAndDispose();
+                Cursor.Current = Cursors.Default;
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, "ERRROR!!! Initializing ALL ZREAD [ORSeriesBranchID]:" + mclsTerminalDetails.ORSeriesBranchID.ToString() + " [ORSeriesTerminalNo]" + mclsTerminalDetails.ORSeriesTerminalNo);
+            }
+
+            // 23Mar2015 : Needed to do this
+            mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag);
+            mclsSalesTransactionDetails.CashierName = lblCashier.Text;
+        }
+
         private void ReadBarCode()
         {
             DialogResult loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.CreateTransaction);
@@ -9267,7 +9362,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 Data.Database clsDatabase = new Data.Database(mConnection, mTransaction);
                 mConnection = clsDatabase.Connection; mTransaction = clsDatabase.Transaction;
 
-                DateTime dtDateLastInitialized = clsDatabase.DateLastInitialized();
+                DateTime dtDateLastInitialized = clsDatabase.DateLastInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
 
                 bool boRetValue = false;
 
@@ -10055,6 +10150,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private bool IsStartCutOffTimeOK()
         {
             bool bolRetValue = false;
+            bool bolMessageBoxShown = false;
             try
             {
                 // check if with Cutofftime
@@ -10118,7 +10214,11 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             if (dteTransactionDate >= dteStartCutOffTime && dteTransactionDate <= dteEndCutOffTime)
                             {
-                                MessageBox.Show("Today's EOD was not performed", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                if (!bolMessageBoxShown)
+                                {
+                                    MessageBox.Show("Today's EOD was not performed. Performing Auto Z-Read this may take some time. Please wait...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    bolMessageBoxShown = true;
+                                }
 
                                 clsEvent.AddEventLn("Today's EOD was not performed: System found AllowedStartDateTime [" + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "] > MAXDateLastInitialized [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss") + "].", true);
                                 clsEvent.AddEventLn("System is Auto-Initializing ZREAD", true);
@@ -10141,7 +10241,11 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
                         else
                         {
-                            MessageBox.Show("Previous' day's EOD was not performed", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (!bolMessageBoxShown)
+                            {
+                                MessageBox.Show("Previous' day's EOD was not performed. Performing Auto Z-Read this may take some time. Please wait...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                bolMessageBoxShown = true;
+                            }
 
                             clsEvent.AddEventLn("Previous' day's EOD was not performed: System found AllowedStartDateTime [" + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "] > MAXDateLastInitialized [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss") + "].", true);
                             clsEvent.AddEventLn("System is Auto-Initializing ZREAD", true);

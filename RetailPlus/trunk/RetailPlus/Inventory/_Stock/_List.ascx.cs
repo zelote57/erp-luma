@@ -320,16 +320,13 @@ namespace AceSoft.RetailPlus.Inventory._Stock
             if (rdoShowActiveOnly.Checked == true) clsTransactionListFilterType = TransactionListFilterType.ShowActiveOnly;
             if (rdoShowInactiveOnly.Checked == true) clsTransactionListFilterType = TransactionListFilterType.ShowInactiveOnly;
 
-			if (Request.QueryString["Search"]==null)
+            string SearchKey = "";
+			if (Request.QueryString["Search"]!=null)
 			{
-				PageData.DataSource = clsStock.ListAsDataTableActiveInactive(clsTransactionListFilterType, SortField, sortoption).DefaultView;
-			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsStock.SearchDataTableActiveInactive(clsTransactionListFilterType, SearchKey, SortField, sortoption).DefaultView;
+				SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
 			}
 
+            PageData.DataSource = clsStock.ListAsDataTableActiveInactive(clsTransactionListFilterType, SearchKey, SortField, sortoption).DefaultView;
 			clsStock.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

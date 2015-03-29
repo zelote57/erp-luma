@@ -57,25 +57,8 @@ namespace AceSoft.RetailPlus.Data
 			{
                 Save(Details);
 
-                string SQL = "SELECT LAST_INSERT_ID();";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                Int32 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int32.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -88,7 +71,6 @@ namespace AceSoft.RetailPlus.Data
 			{
                 Save(Details);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -113,7 +95,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -166,52 +147,34 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"SELECT " +
-					"PromoTypeID, " +
-					"PromoTypeCode, " +
-					"PromoTypeName " +
-					"FROM tblPromoType a " +
-					"WHERE a.PromoTypeID = @PromoTypeID;"; 
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+					            "PromoTypeID, " +
+					            "PromoTypeCode, " +
+					            "PromoTypeName " +
+					        "FROM tblPromoType a " +
+					        "WHERE a.PromoTypeID = @PromoTypeID;";
 
-				MySqlParameter prmPromoTypeID = new MySqlParameter("@PromoTypeID",MySqlDbType.Int32);
-				prmPromoTypeID.Value = PromoTypeID;
-				cmd.Parameters.Add(prmPromoTypeID);
+                cmd.Parameters.AddWithValue("@PromoTypeID", PromoTypeID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				PromoTypeDetails Details = new PromoTypeDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.PromoTypeID = myReader.GetInt32(0);
-					Details.PromoTypeCode = myReader.GetString(1);
-					Details.PromoTypeName = myReader.GetString(2);
-				}
-
-				myReader.Close();
+                PromoTypeDetails Details = new PromoTypeDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.PromoTypeID = Int32.Parse(dr["PromoTypeID"].ToString());
+                    Details.PromoTypeCode = dr["PromoTypeCode"].ToString();
+                    Details.PromoTypeName = dr["PromoTypeName"].ToString();
+                }
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -221,98 +184,41 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = null, string SortField = "PromoTypeCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL =	"SELECT " +
-					"PromoTypeID, " +
-					"PromoTypeCode, " +
-					"PromoTypeName " +
-					"FROM tblPromoType " +
-					"WHERE 1=1 ORDER BY " + SortField; 
+					                "PromoTypeID, " +
+					                "PromoTypeCode, " +
+					                "PromoTypeName " +
+					            "FROM tblPromoType ";
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "WHERE (PromoTypeCode LIKE @SearchKey OR PromoTypeName LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
 
-				
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "PromoTypeCode") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				
-				
-				return base.ExecuteReader(cmd);			
+                return dt;		
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =	"SELECT " +
-								"PromoTypeID, " +
-								"PromoTypeCode, " +
-								"PromoTypeName " +
-							"FROM tblPromoType " +
-							"WHERE PromoTypeCode LIKE @SearchKey " +
-								"OR PromoTypeName LIKE @SearchKey " +
-							"ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}		
-
 		#endregion
 	}
 }

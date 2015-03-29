@@ -415,56 +415,38 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = SQLSelect() + "WHERE TransactionNo = @TransactionNo;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionNo = new MySqlParameter("@TransactionNo",MySqlDbType.String);
-				prmTransactionNo.Value = TransactionNo;
-				cmd.Parameters.Add(prmTransactionNo);
+                cmd.Parameters.AddWithValue("@TransactionNo", TransactionNo);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				StockDetails Details = new StockDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.StockID = myReader.GetInt64("StockID");
-                    Details.BranchID = myReader.GetInt32("BranchID");
-					Details.TransactionNo = "" + myReader["TransactionNo"].ToString();
-					Details.StockTypeID = myReader.GetInt16("StockTypeID");
-					Details.StockTypeCode = "" + myReader["StockTypeCode"].ToString();
-					Details.StockTypeDescription = "" + myReader["StockTypeDescription"].ToString();
-                    Details.StockDirection = (StockDirections)Enum.Parse(typeof(StockDirections), myReader.GetString("StockDirection"));
-					Details.StockDate = myReader.GetDateTime("StockDate");
-					Details.SupplierID = myReader.GetInt64("SupplierID");
-					Details.SupplierCode = "" + myReader["SupplierCode"].ToString();
-					Details.SupplierName = "" + myReader["SupplierName"].ToString();
-					Details.Remarks = "" + myReader["Remarks"].ToString();
-				}
+                StockDetails Details = new StockDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.StockID = Int64.Parse(dr["StockID"].ToString());
+                    Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                    Details.TransactionNo = "" + dr["TransactionNo"].ToString();
+                    Details.StockTypeID = Int16.Parse(dr["StockTypeID"].ToString());
+                    Details.StockTypeCode = "" + dr["StockTypeCode"].ToString();
+                    Details.StockTypeDescription = "" + dr["StockTypeDescription"].ToString();
+                    Details.StockDirection = (StockDirections)Enum.Parse(typeof(StockDirections), dr["StockDirection"].ToString());
+                    Details.StockDate = DateTime.Parse(dr["StockDate"].ToString());
+                    Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
+                    Details.SupplierCode = "" + dr["SupplierCode"].ToString();
+                    Details.SupplierName = "" + dr["SupplierName"].ToString();
+                    Details.Remarks = "" + dr["Remarks"].ToString();
+                }
 
-				myReader.Close();
-
-				return Details;
+                return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -474,220 +456,148 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader Search(string TransactionNo)
-		{
-			try
-			{
-				string SQL =	SQLSelect() + "WHERE TransactionNo = @TransactionNo ";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmTransactionNo = new MySqlParameter("@TransactionNo",MySqlDbType.String);
-				prmTransactionNo.Value = TransactionNo;
-				cmd.Parameters.Add(prmTransactionNo);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}		
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =	SQLSelect() + "(TransactionNo LIKE @SearchKey " +
-								"OR StockTypeCode LIKE @SearchKey " +
-								"OR a.Remarks LIKE @SearchKey) " +
-								"ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public MySqlDataReader List(string SortField, SortOption SortOrder)
+        public System.Data.DataTable Search(string TransactionNo)
         {
             try
             {
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE TransactionNo = @TransactionNo ";
+
+                cmd.Parameters.AddWithValue("@TransactionNo", TransactionNo);
+
                 cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                
-
-                return base.ExecuteReader(cmd);
+                return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
-        }
+        }		
 
-        public System.Data.DataTable ListAsDataTableActiveInactive(TransactionListFilterType clsTransactionListFilterType, string SortField, SortOption SortOrder)
+        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL =	SQLSelect() + "(TransactionNo LIKE @SearchKey " +
+        //                        "OR StockTypeCode LIKE @SearchKey " +
+        //                        "OR a.Remarks LIKE @SearchKey) " +
+        //                        "ORDER BY " + SortField; 
+
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
+
+				
+
+        //        MySqlCommand cmd = new MySqlCommand();
+				
+				
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
+				
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
+
+				
+				
+        //        return base.ExecuteReader(cmd);			
+        //    }
+        //    catch (Exception ex)
+        //    {
+				
+				
+        //        {
+					
+					
+					
+					
+        //        }
+
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public MySqlDataReader List(string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
+
+
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
+
+                
+
+        //        MySqlCommand cmd = new MySqlCommand();
+                
+                
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
+
+                
+
+        //        return base.ExecuteReader(cmd);
+        //    }
+        //    catch (Exception ex)
+        //    {
+                
+                
+        //        {
+                    
+                    
+                    
+                    
+        //        }
+
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
+
+        public System.Data.DataTable ListAsDataTableActiveInactive(TransactionListFilterType clsTransactionListFilterType, string SearchKey = null, string SortField = "StockID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = SQLSelect() + "WHERE 1=1 ";
 
                 if (clsTransactionListFilterType == TransactionListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
                 else if (clsTransactionListFilterType == TransactionListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
 
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblStock");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                return dt;
-
-            }
-            catch (Exception ex)
-            {
-                
-                
+                if (!string.IsNullOrEmpty(SearchKey))
                 {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
-        public System.Data.DataTable SearchDataTableActiveInactive(TransactionListFilterType clsTransactionListFilterType, string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "WHERE 1=1 " +
-                                                "AND (TransactionNo LIKE @SearchKey " +
+                    SQL += "AND (TransactionNo LIKE @SearchKey " +
                                                 "OR StockTypeCode LIKE @SearchKey " +
                                                 "OR a.Remarks LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+                }
 
-                if (clsTransactionListFilterType == TransactionListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-                if (clsTransactionListFilterType == TransactionListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "StockID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblStock");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
+
 
 		#endregion
 

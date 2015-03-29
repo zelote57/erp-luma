@@ -220,6 +220,24 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
         protected global::System.Web.UI.WebControls.TextBox txtSupplierAddress;
         
         /// <summary>
+        /// txtSupplierTINNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSupplierTINNo;
+        
+        /// <summary>
+        /// txtSupplierLTONo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSupplierLTONo;
+        
+        /// <summary>
         /// cboBranch control.
         /// </summary>
         /// <remarks>

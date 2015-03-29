@@ -188,14 +188,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Department
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{	PageData.DataSource = clsDataClass.DataReaderToDataTable(clsDepartment.List(SortField, sortoption, 0)).DefaultView;	}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsDepartment.Search(SearchKey, SortField, sortoption, 0)).DefaultView;
-			}
+            string SearchKey = "";
 
+			if (Request.QueryString["Search"]!=null)
+			{		
+                SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
+			}
+            PageData.DataSource = clsDepartment.ListAsDataTable(SearchKey, SortField, sortoption, 0).DefaultView;
 			clsDepartment.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

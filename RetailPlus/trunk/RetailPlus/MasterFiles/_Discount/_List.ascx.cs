@@ -214,16 +214,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Discount
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
+            string SearchKey = "";
+			if (Request.QueryString["Search"]!=null)
 			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsDiscount.List(SortField, sortoption)).DefaultView;
+                SearchKey = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID);
 			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsDiscount.Search(SearchKey, SortField, sortoption)).DefaultView;
-			}
-
+            PageData.DataSource = clsDiscount.ListAsDataTable(SearchKey, SortField, sortoption).DefaultView;
 			clsDiscount.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

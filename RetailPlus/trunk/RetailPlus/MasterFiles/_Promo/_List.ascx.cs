@@ -143,7 +143,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 				DataClass clsDataClass = new DataClass();
 
 				lstStuff.ItemDataBound += new System.Web.UI.WebControls.DataListItemEventHandler(this.lstStuff_ItemDataBound);
-				lstStuff.DataSource = clsDataClass.DataReaderToDataTable(clsPromoItems.List(PromoID, "PromoItemsID",SortOption.Ascending)).DefaultView;
+				lstStuff.DataSource = clsPromoItems.ListAsDataTable(PromoID).DefaultView;
 				lstStuff.DataBind();
 				clsPromoItems.CommitAndDispose();
 

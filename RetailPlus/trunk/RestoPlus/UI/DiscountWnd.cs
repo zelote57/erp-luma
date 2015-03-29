@@ -532,7 +532,7 @@ namespace AceSoft.RetailPlus.Client.UI
             //string strTmp = "";
             cboDiscountType.Items.Clear();
             Data.Discount clsDiscount = new Data.Discount();
-            foreach (System.Data.DataRow dr in clsDiscount.DataList("DiscountCode", SortOption.Ascending).Rows)
+            foreach (System.Data.DataRow dr in clsDiscount.ListAsDataTable().Rows)
             {
                 //if (mDisableVATExempt && dr["DiscountCode"].ToString() == TerminalDetails.SeniorCitizenDiscountCode)
                 //    strTmp = "";

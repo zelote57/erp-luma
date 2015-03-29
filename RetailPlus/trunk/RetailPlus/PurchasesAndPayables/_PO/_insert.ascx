@@ -154,15 +154,25 @@
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                             </td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                            </td>
+                                            <label>Supplier TIN No</label></td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                            </td>
+                                            <label>Supplier LTO No</label></td>
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer">
                                             <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-                                        <td class="ms-authoringcontrols" colspan=7>
+                                        <td class="ms-authoringcontrols" colspan="3">
                                             <asp:textbox id="txtSupplierAddress" accessKey="A" CssClass="ms-short" runat="server" TextMode=MultiLine BorderStyle="Groove" Width="100%"></asp:textbox>
+                                        </td>
+                                        <td class="ms-formspacer">
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols" style="vertical-align:top">
+                                            <asp:textbox id="txtSupplierTINNo" accessKey="T" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:textbox>
+                                        </td>
+                                        <td class="ms-formspacer">
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols" style="vertical-align:top">
+                                            <asp:textbox id="txtSupplierLTONo" accessKey="L" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:textbox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -187,7 +197,7 @@
                                         </td>
                                         <td class="ms-formspacer">
                                             <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-                                        <td class="ms-authoringcontrols" colspan=5>
+                                        <td class="ms-authoringcontrols" colspan="5">
                                             <asp:textbox id="txtBranchAddress" accessKey="B" CssClass="ms-long" runat="server" ReadOnly="True" BorderStyle="Groove" Width="100%"></asp:textbox>
                                         </td>
                                     </tr>

@@ -28,6 +28,8 @@ namespace AceSoft.RetailPlus.Data
 		public string SupplierTelephoneNo;
 		public int SupplierModeOfTerms;
 		public int SupplierTerms;
+        public string SupplierTINNo;
+        public string SupplierLTONo;
 		public DateTime RequiredDeliveryDate;
 		public int BranchID;
 		public string BranchCode;
@@ -112,6 +114,9 @@ namespace AceSoft.RetailPlus.Data
                 ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "INSERT INTO tblPO (" +
 								"PONo, " +
 								"PODate, " +
@@ -122,6 +127,8 @@ namespace AceSoft.RetailPlus.Data
 								"SupplierTelephoneNo, " +
 								"SupplierModeOfTerms, " +
 								"SupplierTerms, " +
+                                "SupplierTINNo, " +
+                                "SupplierLTONo, " +
 								"RequiredDeliveryDate, " +
                                 "RID, " +
 								"BranchID, " +
@@ -145,6 +152,8 @@ namespace AceSoft.RetailPlus.Data
                                 "@SupplierTelephoneNo, " +
                                 "@SupplierModeOfTerms, " +
                                 "@SupplierTerms, " +
+                                "@SupplierTINNo, " +
+                                "@SupplierLTONo, " +
                                 "@RequiredDeliveryDate, " +
                                 "@RID, " +
                                 "@BranchID, " +
@@ -159,117 +168,37 @@ namespace AceSoft.RetailPlus.Data
                                 "@ChartOfAccountIDAPContra, " +
                                 "@ChartOfAccountIDAPLatePayment" +
 							");";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 				
-				MySqlParameter prmPONo = new MySqlParameter("@PONo",MySqlDbType.String);
-				prmPONo.Value = Details.PONo;
-				cmd.Parameters.Add(prmPONo);
-
-				MySqlParameter prmPODate = new MySqlParameter("@PODate",MySqlDbType.DateTime);
-				prmPODate.Value = Details.PODate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmPODate);
-
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
-				prmSupplierID.Value = Details.SupplierID;
-				cmd.Parameters.Add(prmSupplierID);
-								 
-				MySqlParameter prmSupplierCode = new MySqlParameter("@SupplierCode",MySqlDbType.String);
-				prmSupplierCode.Value = Details.SupplierCode;
-				cmd.Parameters.Add(prmSupplierCode);
-		 
-				MySqlParameter prmSupplierContact = new MySqlParameter("@SupplierContact",MySqlDbType.String);
-				prmSupplierContact.Value = Details.SupplierContact;
-				cmd.Parameters.Add(prmSupplierContact);			 
-				
-				MySqlParameter prmSupplierAddress = new MySqlParameter("@SupplierAddress",MySqlDbType.String);
-				prmSupplierAddress.Value = Details.SupplierAddress;
-				cmd.Parameters.Add(prmSupplierAddress);	
-				
-				MySqlParameter prmSupplierTelephoneNo = new MySqlParameter("@SupplierTelephoneNo",MySqlDbType.String);
-				prmSupplierTelephoneNo.Value = Details.SupplierTelephoneNo;
-				cmd.Parameters.Add(prmSupplierTelephoneNo);	
-
-				MySqlParameter prmSupplierModeOfTerms = new MySqlParameter("@SupplierModeOfTerms",MySqlDbType.Int16);
-				prmSupplierModeOfTerms.Value = Details.SupplierModeOfTerms;
-				cmd.Parameters.Add(prmSupplierModeOfTerms);	
-
-				MySqlParameter prmSupplierTerms = new MySqlParameter("@SupplierTerms",MySqlDbType.Int16);
-				prmSupplierTerms.Value = Details.SupplierTerms;
-				cmd.Parameters.Add(prmSupplierTerms);			 
-							 
-				MySqlParameter prmRequiredDeliveryDate = new MySqlParameter("@RequiredDeliveryDate",MySqlDbType.DateTime);
-				prmRequiredDeliveryDate.Value = Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmRequiredDeliveryDate);
-
+                cmd.Parameters.AddWithValue("@PONo", Details.PONo);
+				cmd.Parameters.AddWithValue("@PODate", Details.PODate.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("@SupplierID", Details.SupplierID);
+				cmd.Parameters.AddWithValue("@SupplierCode", Details.SupplierCode);
+				cmd.Parameters.AddWithValue("@SupplierContact", Details.SupplierContact);
+                cmd.Parameters.AddWithValue("@SupplierAddress", Details.SupplierAddress);
+                cmd.Parameters.AddWithValue("@SupplierTelephoneNo", Details.SupplierTelephoneNo);
+                cmd.Parameters.AddWithValue("@SupplierModeOfTerms", Details.SupplierModeOfTerms);
+                cmd.Parameters.AddWithValue("@SupplierTerms", Details.SupplierTerms);
+                cmd.Parameters.AddWithValue("@SupplierTINNo", Details.SupplierTINNo);
+                cmd.Parameters.AddWithValue("@SupplierLTONo", Details.SupplierLTONo);
+                cmd.Parameters.AddWithValue("@RequiredDeliveryDate", Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@RID", Details.RID);
+                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("@PurchaserID", Details.PurchaserID);
+                cmd.Parameters.AddWithValue("@PurchaserName", Details.PurchaserName);
+                cmd.Parameters.AddWithValue("@Status", Details.Status.ToString("d"));
+                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPTracking", clsAPLinkConfigDetails.ChartOfAccountIDAPTracking);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPBills", clsAPLinkConfigDetails.ChartOfAccountIDAPBills);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPFreight", clsAPLinkConfigDetails.ChartOfAccountIDAPFreight);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPVDeposit", clsAPLinkConfigDetails.ChartOfAccountIDAPVDeposit);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPContra", clsAPLinkConfigDetails.ChartOfAccountIDAPContra);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPLatePayment", clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment);
 
-				MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int16);
-				prmBranchID.Value = Details.BranchID;
-				cmd.Parameters.Add(prmBranchID);				 
-				
-				MySqlParameter prmPurchaserID = new MySqlParameter("@PurchaserID",MySqlDbType.Int64);						
-				prmPurchaserID.Value = Details.PurchaserID;
-				cmd.Parameters.Add(prmPurchaserID);
-
-                MySqlParameter prmPurchaserName = new MySqlParameter("@PurchaserName",MySqlDbType.String);
-                prmPurchaserName.Value = Details.PurchaserName;
-                cmd.Parameters.Add(prmPurchaserName);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = Details.Status.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);			
-				prmRemarks.Value = Details.Remarks;
-                cmd.Parameters.Add(prmRemarks);
-
-                MySqlParameter prmChartOfAccountIDAPTracking = new MySqlParameter("@ChartOfAccountIDAPTracking",MySqlDbType.Int32);
-                prmChartOfAccountIDAPTracking.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPTracking;
-                cmd.Parameters.Add(prmChartOfAccountIDAPTracking);
-
-                MySqlParameter prmChartOfAccountIDAPBills = new MySqlParameter("@ChartOfAccountIDAPBills",MySqlDbType.Int32);
-                prmChartOfAccountIDAPBills.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPBills;
-                cmd.Parameters.Add(prmChartOfAccountIDAPBills);
-
-                MySqlParameter prmChartOfAccountIDAPFreight = new MySqlParameter("@ChartOfAccountIDAPFreight",MySqlDbType.Int32);
-                prmChartOfAccountIDAPFreight.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPFreight;
-                cmd.Parameters.Add(prmChartOfAccountIDAPFreight);
-
-                MySqlParameter prmChartOfAccountIDAPVDeposit = new MySqlParameter("@ChartOfAccountIDAPVDeposit",MySqlDbType.Int32);
-                prmChartOfAccountIDAPVDeposit.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPVDeposit;
-                cmd.Parameters.Add(prmChartOfAccountIDAPVDeposit);
-
-                MySqlParameter prmChartOfAccountIDAPContra = new MySqlParameter("@ChartOfAccountIDAPContra",MySqlDbType.Int32);
-                prmChartOfAccountIDAPContra.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPContra;
-                cmd.Parameters.Add(prmChartOfAccountIDAPContra);
-
-                MySqlParameter prmChartOfAccountIDAPLatePayment = new MySqlParameter("@ChartOfAccountIDAPLatePayment",MySqlDbType.Int32);
-                prmChartOfAccountIDAPLatePayment.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment;
-                cmd.Parameters.Add(prmChartOfAccountIDAPLatePayment);
-
-				base.ExecuteNonQuery(cmd);
-
-                SQL = "SELECT LAST_INSERT_ID();";
-
-                cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
 
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                Int64 iID = 0;
-
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -282,6 +211,9 @@ namespace AceSoft.RetailPlus.Data
                 ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
                 string SQL=	"UPDATE tblPO SET " +
                                 "PONo					=	@PONo, " +
                                 "PODate					=	@PODate, " +
@@ -292,6 +224,8 @@ namespace AceSoft.RetailPlus.Data
                                 "SupplierTelephoneNo	=	@SupplierTelephoneNo, " +
                                 "SupplierModeOfTerms	=	@SupplierModeOfTerms, " +
                                 "SupplierTerms			=	@SupplierTerms, " +
+                                "SupplierTINNo          =	@SupplierTINNo, " +
+                                "SupplierLTONo          =	@SupplierLTONo, " +
                                 "RequiredDeliveryDate	=	@RequiredDeliveryDate, " +
                                 "RID	                =	@RID, " +
                                 "BranchID				=	@BranchID, " +
@@ -306,99 +240,36 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPLatePayment  = @ChartOfAccountIDAPLatePayment " +
 							"WHERE POID = @POID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				
 
-                MySqlParameter prmPONo = new MySqlParameter("@PONo",MySqlDbType.String);
-                prmPONo.Value = Details.PONo;
-                cmd.Parameters.Add(prmPONo);
-
-                MySqlParameter prmPODate = new MySqlParameter("@PODate",MySqlDbType.DateTime);
-                prmPODate.Value = Details.PODate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmPODate);
-
-                MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);
-                prmSupplierID.Value = Details.SupplierID;
-                cmd.Parameters.Add(prmSupplierID);
-
-                MySqlParameter prmSupplierCode = new MySqlParameter("@SupplierCode",MySqlDbType.String);
-                prmSupplierCode.Value = Details.SupplierCode;
-                cmd.Parameters.Add(prmSupplierCode);
-
-                MySqlParameter prmSupplierContact = new MySqlParameter("@SupplierContact",MySqlDbType.String);
-                prmSupplierContact.Value = Details.SupplierContact;
-                cmd.Parameters.Add(prmSupplierContact);
-
-                MySqlParameter prmSupplierAddress = new MySqlParameter("@SupplierAddress",MySqlDbType.String);
-                prmSupplierAddress.Value = Details.SupplierAddress;
-                cmd.Parameters.Add(prmSupplierAddress);
-
-                MySqlParameter prmSupplierTelephoneNo = new MySqlParameter("@SupplierTelephoneNo",MySqlDbType.String);
-                prmSupplierTelephoneNo.Value = Details.SupplierTelephoneNo;
-                cmd.Parameters.Add(prmSupplierTelephoneNo);
-
-                MySqlParameter prmSupplierModeOfTerms = new MySqlParameter("@SupplierModeOfTerms",MySqlDbType.Int16);
-                prmSupplierModeOfTerms.Value = Details.SupplierModeOfTerms;
-                cmd.Parameters.Add(prmSupplierModeOfTerms);
-
-                MySqlParameter prmSupplierTerms = new MySqlParameter("@SupplierTerms",MySqlDbType.Int16);
-                prmSupplierTerms.Value = Details.SupplierTerms;
-                cmd.Parameters.Add(prmSupplierTerms);
-
-                MySqlParameter prmRequiredDeliveryDate = new MySqlParameter("@RequiredDeliveryDate",MySqlDbType.DateTime);
-                prmRequiredDeliveryDate.Value = Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmRequiredDeliveryDate);
-
+                cmd.Parameters.AddWithValue("@PONo", Details.PONo);
+                cmd.Parameters.AddWithValue("@PODate", Details.PODate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@SupplierID", Details.SupplierID);
+                cmd.Parameters.AddWithValue("@SupplierCode", Details.SupplierCode);
+                cmd.Parameters.AddWithValue("@SupplierContact", Details.SupplierContact);
+                cmd.Parameters.AddWithValue("@SupplierAddress", Details.SupplierAddress);
+                cmd.Parameters.AddWithValue("@SupplierTelephoneNo", Details.SupplierTelephoneNo);
+                cmd.Parameters.AddWithValue("@SupplierModeOfTerms", Details.SupplierModeOfTerms);
+                cmd.Parameters.AddWithValue("@SupplierTerms", Details.SupplierTerms);
+                cmd.Parameters.AddWithValue("@SupplierTINNo", Details.SupplierTINNo);
+                cmd.Parameters.AddWithValue("@SupplierLTONo", Details.SupplierLTONo);
+                cmd.Parameters.AddWithValue("@RequiredDeliveryDate", Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@RID", Details.RID);
+                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("@PurchaserID", Details.PurchaserID);
+                cmd.Parameters.AddWithValue("@PurchaserName", Details.PurchaserName);
+                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPTracking", clsAPLinkConfigDetails.ChartOfAccountIDAPTracking);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPBills", clsAPLinkConfigDetails.ChartOfAccountIDAPBills);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPFreight", clsAPLinkConfigDetails.ChartOfAccountIDAPFreight);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPVDeposit", clsAPLinkConfigDetails.ChartOfAccountIDAPVDeposit);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPContra", clsAPLinkConfigDetails.ChartOfAccountIDAPContra);
+                cmd.Parameters.AddWithValue("@ChartOfAccountIDAPLatePayment", clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment);
+                cmd.Parameters.AddWithValue("@POID", Details.POID);
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int16);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmPurchaserID = new MySqlParameter("@PurchaserID",MySqlDbType.Int64);
-                prmPurchaserID.Value = Details.PurchaserID;
-                cmd.Parameters.Add(prmPurchaserID);
-
-                MySqlParameter prmPurchaserName = new MySqlParameter("@PurchaserName",MySqlDbType.String);
-                prmPurchaserName.Value = Details.PurchaserName;
-                cmd.Parameters.Add(prmPurchaserName);
-
-                MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);
-                prmRemarks.Value = Details.Remarks;
-                cmd.Parameters.Add(prmRemarks);
-
-                MySqlParameter prmChartOfAccountIDAPTracking = new MySqlParameter("@ChartOfAccountIDAPTracking",MySqlDbType.Int32);
-                prmChartOfAccountIDAPTracking.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPTracking;
-                cmd.Parameters.Add(prmChartOfAccountIDAPTracking);
-
-                MySqlParameter prmChartOfAccountIDAPBills = new MySqlParameter("@ChartOfAccountIDAPBills",MySqlDbType.Int32);
-                prmChartOfAccountIDAPBills.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPBills;
-                cmd.Parameters.Add(prmChartOfAccountIDAPBills);
-
-                MySqlParameter prmChartOfAccountIDAPFreight = new MySqlParameter("@ChartOfAccountIDAPFreight",MySqlDbType.Int32);
-                prmChartOfAccountIDAPFreight.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPFreight;
-                cmd.Parameters.Add(prmChartOfAccountIDAPFreight);
-
-                MySqlParameter prmChartOfAccountIDAPVDeposit = new MySqlParameter("@ChartOfAccountIDAPVDeposit",MySqlDbType.Int32);
-                prmChartOfAccountIDAPVDeposit.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPVDeposit;
-                cmd.Parameters.Add(prmChartOfAccountIDAPVDeposit);
-
-                MySqlParameter prmChartOfAccountIDAPContra = new MySqlParameter("@ChartOfAccountIDAPContra",MySqlDbType.Int32);
-                prmChartOfAccountIDAPContra.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPContra;
-                cmd.Parameters.Add(prmChartOfAccountIDAPContra);
-
-                MySqlParameter prmChartOfAccountIDAPLatePayment = new MySqlParameter("@ChartOfAccountIDAPLatePayment",MySqlDbType.Int32);
-                prmChartOfAccountIDAPLatePayment.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment;
-                cmd.Parameters.Add(prmChartOfAccountIDAPLatePayment);
-
-				MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);						
-				prmPOID.Value = Details.POID;
-				cmd.Parameters.Add(prmPOID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -409,22 +280,17 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblPO SET " +
                                 "IsVatInclusive          =   @IsVatInclusive " +
                             "WHERE POID = @POID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@IsVatInclusive", Convert.ToInt16(IsVatInclusive));
+                cmd.Parameters.AddWithValue("@POID", POID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmIsVatInclusive = new MySqlParameter("@IsVatInclusive",MySqlDbType.Int16);
-                prmIsVatInclusive.Value = Convert.ToInt16(IsVatInclusive); ;
-                cmd.Parameters.Add(prmIsVatInclusive);
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
-
                 base.ExecuteNonQuery(cmd);
 
                 SynchronizeAmount(POID);
@@ -439,6 +305,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = "UPDATE tblPO SET " +
                                 "DiscountApplied        =   @DiscountApplied, " +
                                 "DiscountType           =   @DiscountType, " +
@@ -448,41 +317,17 @@ namespace AceSoft.RetailPlus.Data
                                 "Discount3Type          =   @Discount3Type " +
                             "WHERE POID = @POID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@DiscountApplied", DiscountApplied);
+                cmd.Parameters.AddWithValue("@DiscountType", Convert.ToInt16(DiscountType.ToString("d")));
+                cmd.Parameters.AddWithValue("@Discount2Applied", Discount2Applied);
+                cmd.Parameters.AddWithValue("@Discount2Type", Convert.ToInt16(Discount2Type.ToString("d")));
+                cmd.Parameters.AddWithValue("@Discount3Applied", Discount3Applied);
+                cmd.Parameters.AddWithValue("@Discount3Type", Convert.ToInt16(Discount3Type.ToString("d")));
+                cmd.Parameters.AddWithValue("@POID", POID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
-                prmDiscountApplied.Value = DiscountApplied;
-                cmd.Parameters.Add(prmDiscountApplied);
-
-                MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType",MySqlDbType.Int16);
-                prmDiscountType.Value = Convert.ToInt16(DiscountType.ToString("d"));
-                cmd.Parameters.Add(prmDiscountType);
-
-                MySqlParameter prmDiscount2Applied = new MySqlParameter("@Discount2Applied",MySqlDbType.Decimal);
-                prmDiscount2Applied.Value = Discount2Applied;
-                cmd.Parameters.Add(prmDiscount2Applied);
-
-                MySqlParameter prmDiscount2Type = new MySqlParameter("@Discount2Type",MySqlDbType.Int16);
-                prmDiscount2Type.Value = Convert.ToInt16(Discount2Type.ToString("d"));
-                cmd.Parameters.Add(prmDiscount2Type);
-
-                MySqlParameter prmDiscount3Applied = new MySqlParameter("@Discount3Applied",MySqlDbType.Decimal);
-                prmDiscount3Applied.Value = Discount3Applied;
-                cmd.Parameters.Add(prmDiscount3Applied);
-
-                MySqlParameter prmDiscount3Type = new MySqlParameter("@Discount3Type",MySqlDbType.Int16);
-                prmDiscount3Type.Value = Convert.ToInt16(Discount3Type.ToString("d"));
-                cmd.Parameters.Add(prmDiscount3Type);
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -492,30 +337,21 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblPO SET " +
                                 "DiscountApplied        =   @DiscountApplied, " +
                                 "DiscountType           =   @DiscountType " +
                             "WHERE POID = @POID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@DiscountApplied", DiscountApplied);
+                cmd.Parameters.AddWithValue("@DiscountType", Convert.ToInt16(DiscountType.ToString("d")));
+                cmd.Parameters.AddWithValue("@POID", POID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
-                prmDiscountApplied.Value = DiscountApplied;
-                cmd.Parameters.Add(prmDiscountApplied);
-
-                MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType",MySqlDbType.Int16);
-                prmDiscountType.Value = Convert.ToInt16(DiscountType.ToString("d"));
-                cmd.Parameters.Add(prmDiscountType);
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -525,25 +361,19 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblPO SET " +
                                 "Freight           =   @Freight " +
                             "WHERE POID = @POID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@Freight", Freight);
+                cmd.Parameters.AddWithValue("@POID", POID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmFreight = new MySqlParameter("@Freight",MySqlDbType.Decimal);
-                prmFreight.Value = Freight;
-                cmd.Parameters.Add(prmFreight);
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -553,25 +383,19 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = "UPDATE tblPO SET " +
                                 "Deposit           =   @Deposit " +
                             "WHERE POID = @POID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@Deposit", Deposit);
+                cmd.Parameters.AddWithValue("@POID", POID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmDeposit = new MySqlParameter("@Deposit",MySqlDbType.Decimal);
-                prmDeposit.Value = Deposit;
-                cmd.Parameters.Add(prmDeposit);
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -582,33 +406,22 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"UPDATE tblPO SET " + 
 								"SupplierDRNo			=	@SupplierDRNo, " +
                                 "DeliveryDate			=	@DeliveryDate, " +
 								"Status				    =	@Status " +
 							"WHERE POID = @POID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSupplierDRNo = new MySqlParameter("@SupplierDRNo",MySqlDbType.String);
-				prmSupplierDRNo.Value = SupplierDRNo;
-				cmd.Parameters.Add(prmSupplierDRNo);
+                cmd.Parameters.AddWithValue("@SupplierDRNo", SupplierDRNo);
+                cmd.Parameters.AddWithValue("@DeliveryDate", DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@Status", Convert.ToInt16(POStatus.Posted));
+                cmd.Parameters.AddWithValue("@POID", POID);
 
-                MySqlParameter prmDeliveryDate = new MySqlParameter("@DeliveryDate",MySqlDbType.DateTime);
-                prmDeliveryDate.Value = DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDeliveryDate);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
-				prmStatus.Value = Convert.ToInt16(POStatus.Posted);
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);						
-				prmPOID.Value = POID;
-				cmd.Parameters.Add(prmPOID);
-
-				base.ExecuteNonQuery(cmd);
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
 
 				/*******************************************
 				 * Update the status of items
@@ -631,7 +444,6 @@ namespace AceSoft.RetailPlus.Data
 				 * ****************************************/
                 UpdateRID(POID);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1157,6 +969,8 @@ namespace AceSoft.RetailPlus.Data
                                 "SupplierTelephoneNo, " +
                                 "SupplierModeOfTerms, " +
                                 "SupplierTerms, " +
+                                "SupplierTINNo, " +
+                                "SupplierLTONo, " +
                                 "RequiredDeliveryDate, " +
                                 "RID, " +
                                 "a.BranchID, " +
@@ -1209,77 +1023,75 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	SQLSelect() + "WHERE POID = @POID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("@POID", POID);
 
-				MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int16);
-				prmPOID.Value = POID;
-				cmd.Parameters.Add(prmPOID);
+                cmd.CommandText = SQL;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				PODetails Details = new PODetails();
-
-				while (myReader.Read()) 
-				{
+                PODetails Details = new PODetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
 					Details.POID = POID;
-					Details.PONo = "" + myReader["PONo"].ToString();
-					Details.PODate = myReader.GetDateTime("PODate");
-					Details.SupplierID = myReader.GetInt64("SupplierID");
-					Details.SupplierCode = "" + myReader["SupplierCode"].ToString();
-					Details.SupplierContact = "" + myReader["SupplierContact"].ToString();
-					Details.SupplierAddress = "" + myReader["SupplierAddress"].ToString();
-					Details.SupplierTelephoneNo = "" + myReader["SupplierTelephoneNo"].ToString();
-					Details.SupplierModeOfTerms = myReader.GetInt16("SupplierModeofTerms");
-					Details.SupplierTerms = myReader.GetInt16("SupplierTerms");
-					Details.RequiredDeliveryDate = myReader.GetDateTime("RequiredDeliveryDate");
-                    Details.RID = myReader.GetInt64("RID");
-					Details.BranchID = myReader.GetInt16("BranchID");
-					Details.BranchCode = "" + myReader["BranchCode"].ToString();
-					Details.BranchName = "" + myReader["BranchName"].ToString();
-					Details.BranchAddress = "" + myReader["BranchAddress"].ToString();
-					Details.PurchaserID = myReader.GetInt64("PurchaserID");
-                    Details.PurchaserName = "" + myReader["PurchaserName"].ToString();
-					Details.SubTotal = myReader.GetDecimal("SubTotal");
-					Details.Discount = myReader.GetDecimal("Discount");
-                    Details.DiscountApplied = myReader.GetDecimal("DiscountApplied");
-                    Details.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("DiscountType"));
-                    Details.Discount2 = myReader.GetDecimal("Discount2");
-                    Details.Discount2Applied = myReader.GetDecimal("Discount2Applied");
-                    Details.Discount2Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("Discount2Type"));
-                    Details.Discount3 = myReader.GetDecimal("Discount3");
-                    Details.Discount3Applied = myReader.GetDecimal("Discount3Applied");
-                    Details.Discount3Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("Discount3Type"));
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.VatableAmount = myReader.GetDecimal("VatableAmount");
-                    Details.EVAT = myReader.GetDecimal("EVAT");
-                    Details.EVatableAmount = myReader.GetDecimal("EVatableAmount");
-                    Details.LocalTax = myReader.GetDecimal("LocalTax");
-                    Details.Freight = myReader.GetDecimal("Freight");
-                    Details.Deposit = myReader.GetDecimal("Deposit");
-                    Details.PaidAmount = myReader.GetDecimal("PaidAmount");
-                    Details.UnpaidAmount = myReader.GetDecimal("UnpaidAmount");
-                    Details.Status = (POStatus)Enum.Parse(typeof(POStatus), myReader.GetString("Status"));
-                    Details.IsVatInclusive = myReader.GetBoolean("IsVatInclusive");
-                    Details.TotalItemDiscount = myReader.GetDecimal("TotalItemDiscount");
-					Details.Remarks = "" + myReader["Remarks"].ToString();
-					Details.SupplierDRNo = "" + myReader["SupplierDRNo"].ToString();
-					Details.DeliveryDate = myReader.GetDateTime("DeliveryDate");
-                    Details.ChartOfAccountIDAPTracking = myReader.GetInt16("ChartOfAccountIDAPTracking");
-                    Details.ChartOfAccountIDAPFreight = myReader.GetInt16("ChartOfAccountIDAPFreight");
-                    Details.ChartOfAccountIDAPVDeposit = myReader.GetInt16("ChartOfAccountIDAPVDeposit");
-                    Details.ChartOfAccountIDAPContra = myReader.GetInt16("ChartOfAccountIDAPContra");
-                    Details.ChartOfAccountIDAPLatePayment = myReader.GetInt16("ChartOfAccountIDAPLatePayment");
+					Details.PONo = "" + dr["PONo"].ToString();
+                    Details.PODate = DateTime.Parse(dr["PODate"].ToString());
+					Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
+					Details.SupplierCode = "" + dr["SupplierCode"].ToString();
+					Details.SupplierContact = "" + dr["SupplierContact"].ToString();
+					Details.SupplierAddress = "" + dr["SupplierAddress"].ToString();
+					Details.SupplierTelephoneNo = "" + dr["SupplierTelephoneNo"].ToString();
+                    Details.SupplierTINNo = "" + dr["SupplierTINNo"].ToString();
+                    Details.SupplierLTONo = "" + dr["SupplierLTONo"].ToString();
+					Details.SupplierModeOfTerms = Int16.Parse(dr["SupplierModeofTerms"].ToString());
+					Details.SupplierTerms = Int16.Parse(dr["SupplierTerms"].ToString());
+					Details.RequiredDeliveryDate = DateTime.Parse(dr["RequiredDeliveryDate"].ToString());
+                    Details.RID = Int64.Parse(dr["RID"].ToString());
+					Details.BranchID = Int16.Parse(dr["BranchID"].ToString());
+					Details.BranchCode = "" + dr["BranchCode"].ToString();
+                    Details.BranchName = "" + dr["BranchName"].ToString();
+                    Details.BranchAddress = "" + dr["BranchAddress"].ToString();
+					Details.PurchaserID = Int64.Parse(dr["PurchaserID"].ToString());
+                    Details.PurchaserName = dr["PurchaserName"].ToString();
+					Details.SubTotal = Decimal.Parse(dr["SubTotal"].ToString());
+					Details.Discount = Decimal.Parse(dr["Discount"].ToString());
+                    Details.DiscountApplied = Decimal.Parse(dr["DiscountApplied"].ToString());
+                    Details.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["DiscountType"].ToString());
+                    Details.Discount2 = Decimal.Parse(dr["Discount2"].ToString());
+                    Details.Discount2Applied = Decimal.Parse(dr["Discount2Applied"].ToString());
+                    Details.Discount2Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["Discount2Type"].ToString());
+                    Details.Discount3 = Decimal.Parse(dr["Discount3"].ToString());
+                    Details.Discount3Applied = Decimal.Parse(dr["Discount3Applied"].ToString());
+                    Details.Discount3Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["Discount3Type"].ToString());
+					Details.VAT = Decimal.Parse(dr["VAT"].ToString());
+					Details.VatableAmount = Decimal.Parse(dr["VatableAmount"].ToString());
+                    Details.EVAT = Decimal.Parse(dr["EVAT"].ToString());
+                    Details.EVatableAmount = Decimal.Parse(dr["EVatableAmount"].ToString());
+                    Details.LocalTax = Decimal.Parse(dr["LocalTax"].ToString());
+                    Details.Freight = Decimal.Parse(dr["Freight"].ToString());
+                    Details.Deposit = Decimal.Parse(dr["Deposit"].ToString());
+                    Details.PaidAmount = Decimal.Parse(dr["PaidAmount"].ToString());
+                    Details.UnpaidAmount = Decimal.Parse(dr["UnpaidAmount"].ToString());
+                    Details.Status = (POStatus)Enum.Parse(typeof(POStatus), dr["Status"].ToString());
+                    Details.IsVatInclusive = bool.Parse(dr["IsVatInclusive"].ToString());
+                    Details.TotalItemDiscount = Decimal.Parse(dr["TotalItemDiscount"].ToString());
+					Details.Remarks = dr["Remarks"].ToString();
+					Details.SupplierDRNo = dr["SupplierDRNo"].ToString();
+					Details.DeliveryDate = DateTime.Parse(dr["DeliveryDate"].ToString());
+                    Details.ChartOfAccountIDAPTracking = Int16.Parse(dr["ChartOfAccountIDAPTracking"].ToString());
+                    Details.ChartOfAccountIDAPFreight = Int16.Parse(dr["ChartOfAccountIDAPFreight"].ToString());
+                    Details.ChartOfAccountIDAPVDeposit = Int16.Parse(dr["ChartOfAccountIDAPVDeposit"].ToString());
+                    Details.ChartOfAccountIDAPContra = Int16.Parse(dr["ChartOfAccountIDAPContra"].ToString());
+                    Details.ChartOfAccountIDAPLatePayment = Int16.Parse(dr["ChartOfAccountIDAPLatePayment"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1290,63 +1102,95 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(POStatus postatus, string SortField, SortOption SortOrder)
+        //public System.Data.DataTable ListAsDataTable(POStatus postatus, string SortField, SortOption SortOrder)
+        //{
+        //    if (SortField == string.Empty || SortField == null) SortField = "POID";
+
+        //    string SQL = SQLSelect() + "WHERE Status = @Status ";
+
+        //    SQL += "ORDER BY " + SortField;
+
+        //    if (SortOrder == SortOption.Ascending)
+        //        SQL += " ASC";
+        //    else
+        //        SQL += " DESC";
+
+        //    MySqlCommand cmd = new MySqlCommand();
+        //    cmd.CommandType = System.Data.CommandType.Text;
+        //    cmd.CommandText = SQL;
+
+        //    cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
+
+        //    string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //    base.MySqlDataAdapterFill(cmd, dt);
+
+        //    return dt;
+        //}
+        public System.Data.DataTable ListAsDataTable(POStatus postatus = POStatus.All, DateTime? OrderStartDate = null, DateTime? OrderEndDate = null, DateTime? PostingStartDate = null, DateTime? PostingEndDate = null, string SortField = "POID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0, Int64 SupplierID = 0, Int64 POID = 0)
         {
-            if (SortField == string.Empty || SortField == null) SortField = "POID";
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-            string SQL = SQLSelect() + "WHERE Status = @Status ";
+                string SQL = SQLSelect() + "WHERE 1=1 ";
 
-            SQL += "ORDER BY " + SortField;
+                if (postatus != POStatus.All)
+                {
+                    SQL += "AND Status = @Status ";
+                    cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
+                }
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+                if (POID != 0)
+                {
+                    SQL += "AND POID = @POID ";
+                    cmd.Parameters.AddWithValue("@POID", POID);
+                }
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+                if (SupplierID != 0)
+                {
+                    SQL += "AND SupplierID >= @SupplierID ";
+                    cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+                }
 
-            cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
+                if ((OrderStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : OrderStartDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND PODate >= @OrderStartDate ";
+                    cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
 
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
+                if ((OrderEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : OrderEndDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND PODate <= @OrderEndDate ";
+                    cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
 
-            return dt;
-        }
-        public System.Data.DataTable ListAsDataTable(POStatus postatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SortField, SortOption SortOrder)
-        {
-            if (SortField == string.Empty || SortField == null) SortField = "POID";
+                if ((PostingStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PostingStartDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND PODate >= @PostingStartDate ";
+                    cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
 
-            string SQL = SQLSelect() + "WHERE Status = @Status ";
+                if ((PostingEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PostingEndDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND PODate <= @PostingEndDate ";
+                    cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
 
-            if (OrderStartDate != DateTime.MinValue) SQL += "AND PODate >= @OrderStartDate ";
-            if (OrderEndDate != DateTime.MinValue) SQL += "AND PODate <= @OrderEndDate ";
-            if (PostingStartDate != DateTime.MinValue) SQL += "AND PODate >= @PostingStartDate ";
-            if (PostingEndDate != DateTime.MinValue) SQL += "AND PODate <= @PostingEndDate ";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "POID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-            SQL += "ORDER BY " + SortField;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
-
-            if (OrderStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (OrderEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
         public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
@@ -1370,125 +1214,125 @@ namespace AceSoft.RetailPlus.Data
             return dt;
 		}
 
-		public MySqlDataReader List(long POID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //public MySqlDataReader List(long POID, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //public MySqlDataReader List(string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
-		public MySqlDataReader List(POStatus postatus, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //public MySqlDataReader List(POStatus postatus, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-				string SQL = SQLSelect() + "WHERE Status = @Status ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE Status = @Status ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = postatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
+        //        prmStatus.Value = postatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
-		public MySqlDataReader List(POStatus postatus, long SupplierID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //public MySqlDataReader List(POStatus postatus, long SupplierID, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-				string SQL = SQLSelect() + "WHERE Status =@Status AND SupplierID = @SupplierID ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE Status =@Status AND SupplierID = @SupplierID ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = postatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
+        //        prmStatus.Value = postatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
-				prmSupplierID.Value = SupplierID;
-				cmd.Parameters.Add(prmSupplierID);
+        //        MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
+        //        prmSupplierID.Value = SupplierID;
+        //        cmd.Parameters.Add(prmSupplierID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
         public MySqlDataReader ListForPayment(long SupplierID, string SortField, SortOption SortOrder)
         {
             try
@@ -1506,15 +1350,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmFullyPaidPaymentStatus = new MySqlParameter("@FullyPaidPaymentStatus",MySqlDbType.Int16);
+                MySqlParameter prmFullyPaidPaymentStatus = new MySqlParameter("@FullyPaidPaymentStatus", MySqlDbType.Int16);
                 prmFullyPaidPaymentStatus.Value = POPaymentStatus.FullyPaid.ToString("d");
                 cmd.Parameters.Add(prmFullyPaidPaymentStatus);
 
-                MySqlParameter prmPostedStatus = new MySqlParameter("@PostedStatus",MySqlDbType.Int16);
+                MySqlParameter prmPostedStatus = new MySqlParameter("@PostedStatus", MySqlDbType.Int16);
                 prmPostedStatus.Value = POStatus.Posted.ToString("d");
                 cmd.Parameters.Add(prmPostedStatus);
 
-                MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);
+                MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID", MySqlDbType.Int64);
                 prmSupplierID.Value = SupplierID;
                 cmd.Parameters.Add(prmSupplierID);
 
@@ -1527,74 +1371,74 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-				string SQL = SQLSelect() + "WHERE (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-										"or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey) " +
-								"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey) " +
+        //                        "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}		
-		public MySqlDataReader Search(POStatus postatus, string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}		
+        //public MySqlDataReader Search(POStatus postatus, string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-				string SQL = SQLSelect() + "WHERE Status = @Status AND (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
-							"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
+        //                    "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = postatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
+        //        prmStatus.Value = postatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
         public System.Data.DataTable SearchAsDataTable(POStatus postatus, string SearchKey, string SortField, SortOption SortOrder)
         {
             try
@@ -1676,61 +1520,61 @@ namespace AceSoft.RetailPlus.Data
             }
         }	
 
-        public MySqlDataReader List(POStatus postatus, DateTime StartDate, DateTime EndDate)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY POID ASC";
+        //public MySqlDataReader List(POStatus postatus, DateTime StartDate, DateTime EndDate)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY POID ASC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);			
-				prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmStartDate);
+        //        MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);			
+        //        prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmStartDate);
 
-				MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);
-				prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmEndDate);
+        //        MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);
+        //        prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmEndDate);
 
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = postatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
+        //        prmStatus.Value = postatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public MySqlDataReader List(POStatus postatus, long SupplierID, DateTime StartDate, DateTime EndDate)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "WHERE Status = @Status AND SupplierID = @SupplierID AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY POID ASC";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public MySqlDataReader List(POStatus postatus, long SupplierID, DateTime StartDate, DateTime EndDate)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND SupplierID = @SupplierID AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY POID ASC";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
-                cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-                cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
+        //        cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+        //        cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //        return myReader;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 		
 		#endregion
 
@@ -1747,7 +1591,6 @@ namespace AceSoft.RetailPlus.Data
 
 				return stRetValue;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1757,19 +1600,16 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procPOSynchronizeAmount(@POID);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procPOSynchronizeAmount(@POID);";
+
+                cmd.Parameters.AddWithValue("@POID", POID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);

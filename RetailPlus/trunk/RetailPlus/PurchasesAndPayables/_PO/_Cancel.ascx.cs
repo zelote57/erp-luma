@@ -232,7 +232,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			DataClass clsDataClass = new DataClass();
 
 			POItem clsPOItem = new POItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOItem.List(Convert.ToInt64(lblPOID.Text), "POItemID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsPOItem.ListAsDataTable(Convert.ToInt64(lblPOID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsPOItem.CommitAndDispose();
 		}

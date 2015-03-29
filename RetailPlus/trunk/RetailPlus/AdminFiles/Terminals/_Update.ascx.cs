@@ -101,13 +101,13 @@ namespace AceSoft.RetailPlus.Security._Terminals
             Data.Discount clsDiscount = new Data.Discount();
             cboDiscountCode.DataTextField = "DiscountType";
             cboDiscountCode.DataValueField = "DiscountCode";
-            cboDiscountCode.DataSource = clsDiscount.DataList("DiscountCode", SortOption.Ascending).DefaultView;
+            cboDiscountCode.DataSource = clsDiscount.ListAsDataTable().DefaultView;
             cboDiscountCode.DataBind();
             cboDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
 
             cboPWDDiscountCode.DataTextField = "DiscountType";
             cboPWDDiscountCode.DataValueField = "DiscountCode";
-            cboPWDDiscountCode.DataSource = clsDiscount.DataList("DiscountCode", SortOption.Ascending).DefaultView;
+            cboPWDDiscountCode.DataSource = clsDiscount.ListAsDataTable().DefaultView;
             cboPWDDiscountCode.DataBind();
             cboPWDDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
 

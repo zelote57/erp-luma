@@ -183,12 +183,8 @@ namespace AceSoft.RetailPlus.Reports
 			{
 				case "Posted PO":
 					Data.PO clsPO = new Data.PO();
-                    if (lngSupplierID==0)
-					    dt =  clsDataClass.DataReaderToDataTable(clsPO.List(POStatus.Posted, PostingDateFrom, PostingDateTo));
-                    else
-                        dt = clsDataClass.DataReaderToDataTable(clsPO.List(POStatus.Posted, lngSupplierID, PostingDateFrom, PostingDateTo));
-
-					clsPO.CommitAndDispose();
+                    dt = clsPO.ListAsDataTable(POStatus.Posted, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, PostingDateFrom, PostingDateTo, SupplierID: lngSupplierID);
+                    clsPO.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)
 					{

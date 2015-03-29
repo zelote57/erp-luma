@@ -140,7 +140,8 @@ namespace AceSoft.RetailPlus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+		Cancelled		=	2,
+        All             =   3
 	}
 
 	public enum POItemStatus

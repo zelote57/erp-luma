@@ -51,55 +51,21 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "INSERT INTO tblCharacteristics (CharacteristicsCode, CharacteristicsName) VALUES (@CharacteristicsCode, @CharacteristicsName);";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCharacteristicsCode = new MySqlParameter("@CharacteristicsCode",MySqlDbType.String);			
-				prmCharacteristicsCode.Value = Details.CharacteristicsCode;
-				cmd.Parameters.Add(prmCharacteristicsCode);
+				cmd.Parameters.AddWithValue("@CharacteristicsCode", Details.CharacteristicsCode);
+                cmd.Parameters.AddWithValue("@CharacteristicsName", Details.CharacteristicsName);
 
-				MySqlParameter prmCharacteristicsName = new MySqlParameter("@CharacteristicsName",MySqlDbType.String);			
-				prmCharacteristicsName.Value = Details.CharacteristicsName;
-				cmd.Parameters.Add(prmCharacteristicsName);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
-
-				myReader.Close();
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -108,44 +74,23 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblCharacteristics SET " + 
 							"CharacteristicsCode = @CharacteristicsCode, " +  
 							"CharacteristicsName = @CharacteristicsName " +  
 							"WHERE CharacteristicsID = @CharacteristicsID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCharacteristicsCode = new MySqlParameter("@CharacteristicsCode",MySqlDbType.String);			
-				prmCharacteristicsCode.Value = Details.CharacteristicsCode;
-				cmd.Parameters.Add(prmCharacteristicsCode);
 
-				MySqlParameter prmCharacteristicsName = new MySqlParameter("@CharacteristicsName",MySqlDbType.String);			
-				prmCharacteristicsName.Value = Details.CharacteristicsName;
-				cmd.Parameters.Add(prmCharacteristicsName);
+                cmd.Parameters.AddWithValue("@CharacteristicsCode", Details.CharacteristicsCode);
+                cmd.Parameters.AddWithValue("@CharacteristicsName", Details.CharacteristicsName);
+                cmd.Parameters.AddWithValue("@CharacteristicsID", Details.CharacteristicsID);
 
-				MySqlParameter prmCharacteristicsID = new MySqlParameter("@CharacteristicsID",MySqlDbType.Int16);			
-				prmCharacteristicsID.Value = Details.CharacteristicsID;
-				cmd.Parameters.Add(prmCharacteristicsID);
-
-				base.ExecuteNonQuery(cmd);
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -197,51 +142,34 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"SELECT " +
 								"CharacteristicsID, " +
 								"CharacteristicsCode, " +
 								"CharacteristicsName " +
 							"FROM tblCharacteristics " +
 							"WHERE CharacteristicsID = @CharacteristicsID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
-				MySqlParameter prmCharacteristicsID = new MySqlParameter("@CharacteristicsID",MySqlDbType.Int16);
-				prmCharacteristicsID.Value = CharacteristicsID;
-				cmd.Parameters.Add(prmCharacteristicsID);
+                cmd.Parameters.AddWithValue("@CharacteristicsID", CharacteristicsID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				CharacteristicsDetails Details = new CharacteristicsDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.CharacteristicsID = CharacteristicsID;
-					Details.CharacteristicsCode = myReader.GetString(1);
-					Details.CharacteristicsName = myReader.GetString(2);
-				}
+                CharacteristicsDetails Details = new CharacteristicsDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.CharacteristicsID = Int32.Parse(dr["CharacteristicsID"].ToString());
+                    Details.CharacteristicsCode = dr["CharacteristicsCode"].ToString();
+                    Details.CharacteristicsName = dr["CharacteristicsName"].ToString();
+                }
 
-				myReader.Close();
-
-				return Details;
+                return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -251,140 +179,35 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+        public System.Data.DataTable DataList(string SearchKey = null, string SortField = "CharacteristicsCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
-			try
-			{
-				string SQL = "SELECT * FROM tblCharacteristics ORDER BY " + SortField;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                string SQL = "SELECT * FROM tblCharacteristics ";
 
-				
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "CharacteristicsName LIKE @SearchKey";
+                    cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BranchCode") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				
-				
-				
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblCharacteristics");
-
-			dt.Columns.Add("CharacteristicsID");
-			dt.Columns.Add("CharacteristicsCode");
-			dt.Columns.Add("CharacteristicsName");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["CharacteristicsID"] = myReader.GetInt16(0);
-				dr["CharacteristicsCode"] = myReader.GetString(1);
-				dr["CharacteristicsName"] = myReader.GetString(2);
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
-		}
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL ="SELECT " +
-								"CharacteristicsID, " +
-								"CharacteristicsCode, " +
-								"CharacteristicsName " +
-							"FROM tblCharacteristics " +
-							"WHERE CharacteristicsName LIKE @SearchKey " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public System.Data.DataTable DataSearch(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = Search(SearchKey,SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblCharacteristics");
-
-			dt.Columns.Add("CharacteristicsID");
-			dt.Columns.Add("CharacteristicsCode");
-			dt.Columns.Add("CharacteristicsName");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["CharacteristicsID"] = myReader.GetInt16(0);
-				dr["CharacteristicsCode"] = myReader.GetString(1);
-				dr["CharacteristicsName"] = myReader.GetString(2);
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
 
 		#endregion

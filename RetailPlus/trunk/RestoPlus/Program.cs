@@ -362,7 +362,7 @@ namespace AceSoft.RetailPlus.Client
                 clsEvent.AddEvent("Checking last initialization date");
 
                 Data.Database clsDatabase = new Data.Database();
-                DateTime dtDateLastInitialized = clsDatabase.DateLastInitialized();
+                DateTime dtDateLastInitialized = clsDatabase.DateLastInitialized(Constants.TerminalBranchID, CompanyDetails.TerminalNo);
                 clsDatabase.CommitAndDispose();
 
                 bool boReturn = false;

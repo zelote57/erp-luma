@@ -80,9 +80,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 		{	
 			Int64 PromoID =  Convert.ToInt64(lblPromoID.Text);
 			PromoItems clsPromoItems = new PromoItems();
-			DataClass clsDataClass = new DataClass();
-
-			lstStuff.DataSource = clsDataClass.DataReaderToDataTable(clsPromoItems.List(PromoID, "PromoItemsID",SortOption.Ascending)).DefaultView;
+			lstStuff.DataSource = clsPromoItems.ListAsDataTable(PromoID).DefaultView;
 			lstStuff.DataBind();
 			clsPromoItems.CommitAndDispose();
 		}

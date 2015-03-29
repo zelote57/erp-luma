@@ -58,26 +58,8 @@ namespace AceSoft.RetailPlus.Data
 			{
                 Save(Details);
 
-                string SQL = "SELECT LAST_INSERT_ID();";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
-
-				myReader.Close();
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -183,45 +165,31 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=SQLSelect() + "WHERE DiscountID = @DiscountID;";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmDiscountID = new MySqlParameter("@DiscountID",MySqlDbType.Int16);
-				prmDiscountID.Value = DiscountID;
-				cmd.Parameters.Add(prmDiscountID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 				
-				DiscountDetails Details = new DiscountDetails();
+				string SQL=SQLSelect() + "WHERE DiscountID = @DiscountID;";
 
-				while (myReader.Read()) 
-				{
-                    Details.DiscountID = myReader.GetInt32("DiscountID");
-                    Details.DiscountCode = "" + myReader["DiscountCode"].ToString();
-                    Details.DiscountType = "" + myReader["DiscountType"].ToString();
-                    Details.DiscountPrice = myReader.GetDecimal("DiscountPrice");
-                    Details.InPercent = myReader.GetBoolean("InPercent");
-				}
+                cmd.Parameters.AddWithValue("@DiscountID", DiscountID);
 
-				myReader.Close();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                DiscountDetails Details = new DiscountDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.DiscountID = Int32.Parse(dr["DiscountID"].ToString());
+                    Details.DiscountCode = "" + dr["DiscountCode"].ToString();
+                    Details.DiscountType = "" + dr["DiscountType"].ToString();
+                    Details.DiscountPrice = Decimal.Parse(dr["DiscountPrice"].ToString());
+                    Details.InPercent = bool.Parse(dr["InPercent"].ToString());
+                }
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -229,50 +197,32 @@ namespace AceSoft.RetailPlus.Data
 		public DiscountDetails Details(string DiscountCode)
 		{
 			try
-			{
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	SQLSelect() + "WHERE DiscountCode = @DiscountCode;";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@DiscountCode", DiscountCode);
 
-				MySqlParameter prmDiscountCode = new MySqlParameter("@DiscountCode",MySqlDbType.String);
-				prmDiscountCode.Value = DiscountCode;
-				cmd.Parameters.Add(prmDiscountCode);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				DiscountDetails Details = new DiscountDetails();
-
-				while (myReader.Read()) 
-				{
-					Details.DiscountID = myReader.GetInt32("DiscountID");
-					Details.DiscountCode = "" + myReader["DiscountCode"].ToString();
-					Details.DiscountType = "" + myReader["DiscountType"].ToString();
-					Details.DiscountPrice = myReader.GetDecimal("DiscountPrice");
-					Details.InPercent =  myReader.GetBoolean("InPercent");
-				}
-
-				myReader.Close();
+                DiscountDetails Details = new DiscountDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.DiscountID = Int32.Parse(dr["DiscountID"].ToString());
+                    Details.DiscountCode = "" + dr["DiscountCode"].ToString();
+                    Details.DiscountType = "" + dr["DiscountType"].ToString();
+                    Details.DiscountPrice = Decimal.Parse(dr["DiscountPrice"].ToString());
+                    Details.InPercent = bool.Parse(dr["InPercent"].ToString());
+                }
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -281,109 +231,116 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = null, string SortField = "DiscountCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+                string SQL = SQLSelect() + " ";
 
-            
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "WHERE DiscountType LIKE @SearchKey ";
+                    cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+                }
 
-            MySqlCommand cmd = new MySqlCommand();
-            
-            
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "DiscountCode") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-            System.Data.DataTable dt = new System.Data.DataTable("tblDiscount");
-            base.MySqlDataAdapterFill(cmd, dt);
-            
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
 		
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =SQLSelect() + "ORDER BY " + SortField;
+        //public MySqlDataReader List(string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL =SQLSelect() + "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
 				
 
-				MySqlCommand cmd = new MySqlCommand();
+        //        MySqlCommand cmd = new MySqlCommand();
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
 				
 				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
+        //        return base.ExecuteReader(cmd);			
+        //    }
+        //    catch (Exception ex)
+        //    {
 				
 				
-				{
+        //        {
 					
 					
 					
 					
-				}
+        //        }
 
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE DiscountType LIKE @SearchKey ORDER BY " + SortField;
+        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "WHERE DiscountType LIKE @SearchKey ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
 				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
+
+        //        MySqlCommand cmd = new MySqlCommand();
 				
 				
-				{
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
+				
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
+
+				
+				
+        //        return base.ExecuteReader(cmd);			
+        //    }
+        //    catch (Exception ex)
+        //    {
+				
+				
+        //        {
 					
 					
 					
 					
-				}
+        //        }
 
-				throw base.ThrowException(ex);
-			}	
-		}		
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}		
 
 		
 		#endregion

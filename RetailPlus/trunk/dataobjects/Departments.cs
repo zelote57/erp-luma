@@ -58,26 +58,8 @@ namespace AceSoft.RetailPlus.Data
             {
                 Save(Details);
 
-                string SQL = "SELECT LAST_INSERT_ID();";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                Int16 iID = 0;
-
-                while (myReader.Read())
-                {
-                    iID = myReader.GetInt16(0);
-                }
-
-                myReader.Close();
-
-                return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -178,44 +160,29 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	SQLSelect() + "WHERE DepartmentID = @DepartmentID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@DepartmentID", DepartmentID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				DepartmentDetails Details = new DepartmentDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.DepartmentID = myReader.GetInt16("DepartmentID");
-					Details.DepartmentCode = "" + myReader["DepartmentCode"].ToString();
-					Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
-				}
-
-				myReader.Close();
+                DepartmentDetails Details = new DepartmentDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.DepartmentID = Int16.Parse(dr["DepartmentID"].ToString());
+                    Details.DepartmentCode = "" + dr["DepartmentCode"].ToString();
+                    Details.DepartmentName = "" + dr["DepartmentName"].ToString();
+                }
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -223,44 +190,29 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	SQLSelect() + "WHERE DepartmentName = @DepartmentName;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@DepartmentName", DepartmentName);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				DepartmentDetails Details = new DepartmentDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.DepartmentID = myReader.GetInt16("DepartmentID");
-					Details.DepartmentCode = "" + myReader["DepartmentCode"].ToString();
-					Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
-				}
+                DepartmentDetails Details = new DepartmentDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.DepartmentID = Int16.Parse(dr["DepartmentID"].ToString());
+                    Details.DepartmentCode = "" + dr["DepartmentCode"].ToString();
+                    Details.DepartmentName = "" + dr["DepartmentName"].ToString();
+                }
 
-				myReader.Close();
-
-				return Details;
+                return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -269,181 +221,33 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public MySqlDataReader List(string SortField, SortOption SortOrder, Int32 Limit)
-		{
-			try
-			{
-                if (SortField == null || SortField == string.Empty) SortField = "DepartmentName";
-
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder, Int32 Limit)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = null, string SortField = "DepartmentName", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             try
             {
-                if (SortField == null || SortField == string.Empty) SortField = "DepartmentName";
-
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("tblDepartments");
+                string SQL = SQLSelect() + " ";
+
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "WHERE (DepartmentCode LIKE @SearchKey OR DepartmentName LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "DepartmentName") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit)
-		{
-			try
-			{
-                if (SortField == null || SortField == string.Empty) SortField = "DepartmentName";
-
-                string SQL = SQLSelect() + "WHERE (DepartmentCode LIKE @SearchKey " +
-                                            "OR DepartmentName LIKE @SearchKey) ";
-
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable SearchDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "WHERE (DepartmentCode LIKE @SearchKey " +
-                                            "OR DepartmentName LIKE @SearchKey) ";
-
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblDepartments");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

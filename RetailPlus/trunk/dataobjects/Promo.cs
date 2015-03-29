@@ -189,6 +189,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"SELECT " +
 								"PromoID, " +
 								"PromoCode, " +
@@ -201,52 +204,31 @@ namespace AceSoft.RetailPlus.Data
 								"PromoTypeName " +
 							"FROM tblPromo a " +
 							"INNER JOIN tblPromoType b ON a.PromoTypeID = b.PromoTypeID " +
-							"WHERE a.PromoID = @PromoID;"; 
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+							"WHERE a.PromoID = @PromoID;";
 
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int32);
-				prmPromoID.Value = PromoID;
-				cmd.Parameters.Add(prmPromoID);
+                cmd.Parameters.AddWithValue("@PromoID", PromoID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				PromoDetails Details = new PromoDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.PromoID = myReader.GetInt64("PromoID");
-					Details.PromoCode = "" + myReader["PromoCode"].ToString();
-					Details.PromoName = "" + myReader["PromoName"].ToString();
-					Details.StartDate = myReader.GetDateTime("StartDate");
-					Details.EndDate = myReader.GetDateTime("EndDate");
-					Details.PromoTypeID = myReader.GetInt32("PromoTypeID");
-					Details.PromoTypeCode = "" + myReader["PromoTypeCode"].ToString();
-					Details.PromoTypeName = "" + myReader["PromoTypeName"].ToString();
-				}
-
-				myReader.Close();
+                PromoDetails Details = new PromoDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.PromoID = Int64.Parse(dr["PromoID"].ToString());
+                    Details.PromoCode = "" + dr["PromoCode"].ToString();
+                    Details.PromoName = "" + dr["PromoName"].ToString();
+                    Details.StartDate = DateTime.Parse(dr["StartDate"].ToString());
+                    Details.EndDate = DateTime.Parse(dr["EndDate"].ToString());
+                    Details.PromoTypeID = Int32.Parse(dr["PromoTypeID"].ToString());
+                    Details.PromoTypeCode = "" + dr["PromoTypeCode"].ToString();
+                    Details.PromoTypeName = "" + dr["PromoTypeName"].ToString();
+                }
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

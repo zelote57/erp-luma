@@ -735,29 +735,24 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(long POID = 0, string SortField = "POItemID", SortOption SortOrder = SortOption.Desscending)
+        public System.Data.DataTable ListAsDataTable(long POID = 0, string SortField = "POItemID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+
             string SQL = SQLSelect();
 
             if (POID != 0)
             {
                 SQL += "WHERE POID = @POID ";
-
-                MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                prmPOID.Value = POID;
-                cmd.Parameters.Add(prmPOID);
+                cmd.Parameters.AddWithValue("@POID", POID);
             }
 
-            SQL += "ORDER BY " + SortField;
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            cmd.CommandType = System.Data.CommandType.Text;
+            SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "POItemID") + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+            
             cmd.CommandText = SQL;
-
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
 
@@ -765,133 +760,133 @@ namespace AceSoft.RetailPlus.Data
 
         }
         
-		public MySqlDataReader List(long POID = 0, string SortField = "POItemID", SortOption SortOrder = SortOption.Desscending)
-		{
-			try
-			{
-                MySqlCommand cmd = new MySqlCommand();
-                string SQL = SQLSelect();
+        //public MySqlDataReader List(long POID = 0, string SortField = "POItemID", SortOption SortOrder = SortOption.Desscending)
+        //{
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        string SQL = SQLSelect();
 
-                if (POID != 0)
-                {
-                    SQL += "WHERE POID = @POID ";
+        //        if (POID != 0)
+        //        {
+        //            SQL += "WHERE POID = @POID ";
 
-                    MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
-                    prmPOID.Value = POID;
-                    cmd.Parameters.Add(prmPOID);
-                }
+        //            MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);
+        //            prmPOID.Value = POID;
+        //            cmd.Parameters.Add(prmPOID);
+        //        }
 
-                SQL += "ORDER BY " + SortField;
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        SQL += "ORDER BY " + SortField;
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
-		public MySqlDataReader List(POItemStatus POItemstatus, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POItemID";
+        //public MySqlDataReader List(POItemStatus POItemstatus, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POItemID";
 
-				string SQL = SQLSelect() + "WHERE POItemStatus = @POItemStatus " +
-							"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE POItemStatus = @POItemStatus " +
+        //                    "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				cmd.Parameters.AddWithValue("@POItemStatus", POItemstatus.ToString("d"));
+        //        cmd.Parameters.AddWithValue("@POItemStatus", POItemstatus.ToString("d"));
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POItemID";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POItemID";
 
-				string SQL = SQLSelect() + "WHERE (ProductCode LIKE @SearchKey or BarCode LIKE @SearchKey or Description LIKE @SearchKey " +
-										"or MatrixDescription LIKE @SearchKey or ProductGroup LIKE @SearchKey or ProductSubGroup LIKE @SearchKey " +
-										"or Remarks LIKE @SearchKey) " +
-								"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE (ProductCode LIKE @SearchKey or BarCode LIKE @SearchKey or Description LIKE @SearchKey " +
+        //                                "or MatrixDescription LIKE @SearchKey or ProductGroup LIKE @SearchKey or ProductSubGroup LIKE @SearchKey " +
+        //                                "or Remarks LIKE @SearchKey) " +
+        //                        "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+        //        cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}		
-		public MySqlDataReader Search(POItemStatus POItemstatus, string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "POItemID";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}		
+        //public MySqlDataReader Search(POItemStatus POItemstatus, string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "POItemID";
 
-				string SQL = SQLSelect() + "WHERE (ProductCode LIKE @SearchKey or BarCode LIKE @SearchKey or Description LIKE @SearchKey " +
-									"or MatrixDescription LIKE @SearchKey or ProductGroup LIKE @SearchKey or ProductSubGroup LIKE @SearchKey " +
-									"or Remarks LIKE @SearchKey) " +
-							"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE (ProductCode LIKE @SearchKey or BarCode LIKE @SearchKey or Description LIKE @SearchKey " +
+        //                            "or MatrixDescription LIKE @SearchKey or ProductGroup LIKE @SearchKey or ProductSubGroup LIKE @SearchKey " +
+        //                            "or Remarks LIKE @SearchKey) " +
+        //                    "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-                cmd.Parameters.AddWithValue("@POItemStatus", POItemstatus.ToString("d"));
-                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+        //        cmd.Parameters.AddWithValue("@POItemStatus", POItemstatus.ToString("d"));
+        //        cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}		
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}		
 		
 		#endregion
 	}

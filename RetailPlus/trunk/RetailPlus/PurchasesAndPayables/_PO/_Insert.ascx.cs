@@ -124,6 +124,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			lblTerms.Text = clsDetails.Terms.ToString("##0");
             lblModeOfterms.Text = clsDetails.ModeOfTerms.ToString("G");
 			txtSupplierAddress.Text = clsDetails.Address;
+
+            // 23Mar2015 As per request by Sweetie
+            txtSupplierTINNo.Text = clsDetails.TINNo;
+            txtSupplierLTONo.Text = clsDetails.LTONo;
 		}
 
 
@@ -181,6 +185,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			clsDetails.SupplierAddress = txtSupplierAddress.Text;
 			clsDetails.SupplierTelephoneNo = txtSupplierTelephoneNo.Text;
             clsDetails.SupplierTerms = Convert.ToInt32(lblTerms.Text);
+            clsDetails.SupplierTINNo = txtSupplierTINNo.Text;
+            clsDetails.SupplierLTONo = txtSupplierLTONo.Text;
 			switch (lblModeOfterms.Text)
 			{
 				case "Days":

@@ -139,10 +139,8 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 		}
 		private void LoadItems()
 		{
-			DataClass clsDataClass = new DataClass();
-
 			StockItem clsStockItem = new StockItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsStockItem.List(Convert.ToInt64(lblStockID.Text), "StockItemID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsStockItem.ListAsDataTable(Convert.ToInt64(lblStockID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsStockItem.CommitAndDispose();
 		}

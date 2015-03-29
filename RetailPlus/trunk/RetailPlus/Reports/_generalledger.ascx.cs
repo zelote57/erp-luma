@@ -339,7 +339,7 @@ namespace AceSoft.RetailPlus.Reports
 			{
 				case "Posted PO":
 					Data.PO clsPO = new Data.PO();
-					dt =  clsDataClass.DataReaderToDataTable(clsPO.List(POStatus.Posted, PostingDateFrom, PostingDateTo));
+                    dt = clsPO.ListAsDataTable(POStatus.Posted, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, PostingDateFrom, PostingDateTo);
 					clsPO.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)

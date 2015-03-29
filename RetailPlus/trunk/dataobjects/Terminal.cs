@@ -109,6 +109,10 @@ namespace AceSoft.RetailPlus.Data
         public string TakeOutChargeCode;
         public string DeliveryChargeCode;
 
+        // 23Mar2015 : This is used to determine which BranchID & TerminalNo to use when creating an ORNo
+        public Int32 ORSeriesBranchID;
+        public string ORSeriesTerminalNo;
+
         public DateTime CreatedOn;
         public DateTime LastModified;
 	}
@@ -399,7 +403,7 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public void UpdateIsCashCountInitialized(Int32 BranchID, string TerminalNo, Int64 CashierID, bool IsCashCountInitialized)
+        public void UpdateIsCashCountInitialized(Int32 BranchID, string TerminalNo, Int64 CashierID = 0, bool IsCashCountInitialized = false)
         {
             try
             {
@@ -408,11 +412,16 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "UPDATE tblCashierReport SET " +
                                 "IsCashCountInitialized	= @IsCashCountInitialized " +
-                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo AND CashierID = @CashierID;";
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo ";
+
+                if (CashierID != 0)
+                {
+                    SQL += "AND CashierID = @CashierID ";
+                    cmd.Parameters.AddWithValue("CashierID", CashierID);
+                }
 
                 cmd.Parameters.AddWithValue("BranchID", BranchID);
                 cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
-                cmd.Parameters.AddWithValue("CashierID", CashierID);
                 cmd.Parameters.AddWithValue("IsCashCountInitialized", IsCashCountInitialized);
 
                 cmd.CommandText = SQL;
@@ -694,7 +703,9 @@ namespace AceSoft.RetailPlus.Data
                             "DefaultTransactionChargeCode, " +
                             "DineInChargeCode, " +
                             "TakeOutChargeCode, " +
-                            "DeliveryChargeCode " +
+                            "DeliveryChargeCode, " +
+                            "ORSeriesBranchID, " +
+                            "ORSeriesTerminalNo " +
 						"FROM tblTerminal ";
 
 			return SQL;
@@ -949,7 +960,8 @@ namespace AceSoft.RetailPlus.Data
                 Details.DineInChargeCode = dr["DineInChargeCode"].ToString();
                 Details.TakeOutChargeCode = dr["TakeOutChargeCode"].ToString();
                 Details.DeliveryChargeCode = dr["DeliveryChargeCode"].ToString();
-                
+                Details.ORSeriesBranchID = Int32.Parse(dr["ORSeriesBranchID"].ToString());
+                Details.ORSeriesTerminalNo = dr["ORSeriesTerminalNo"].ToString();
             }
 
             Branch clsBranch = new Branch(base.Connection, base.Transaction);
@@ -996,6 +1008,37 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public Int64 getLastLoggedCashierID(Int32 BranchID, string TerminalNo)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT CashierID FROM tblCashierReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                             "ORDER BY LastLoginDate DESC LIMIT 1;";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                Int64 iRetvalue = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iRetvalue = Int64.Parse(dr["CashierID"].ToString());
+                }
+
+                return iRetvalue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 	
 		#region Streams
@@ -1033,6 +1076,36 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public System.Data.DataTable ListORSeries(Int32 ORSeriesBranchID, string ORSeriesTerminalNo, string SortField = "TerminalNo", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect();
+
+                SQL += "WHERE ORSeriesBranchID = @ORSeriesBranchID AND ORSeriesTerminalNo = @ORSeriesTerminalNo ";
+
+                cmd.Parameters.AddWithValue("@ORSeriesBranchID", ORSeriesBranchID);
+                cmd.Parameters.AddWithValue("@ORSeriesTerminalNo", ORSeriesTerminalNo);
+
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 

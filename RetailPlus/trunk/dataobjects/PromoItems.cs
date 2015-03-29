@@ -180,6 +180,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"SELECT " +
 								"PromoItemsID, " +
 								"PromoID, " +
@@ -192,39 +195,31 @@ namespace AceSoft.RetailPlus.Data
 								"PromoValue, " +
 								"InPercent " +
 							"FROM tblPromoItems " +
-							"WHERE PromoItemsID = @PromoItemsID;"; 
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+							"WHERE PromoItemsID = @PromoItemsID;";
 
-				MySqlParameter prmPromoItemsID = new MySqlParameter("@PromoItemsID",MySqlDbType.Int32);
-				prmPromoItemsID.Value = PromoItemsID;
-				cmd.Parameters.Add(prmPromoItemsID);
+                cmd.Parameters.AddWithValue("@PromoItemsID", PromoItemsID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				PromoItemsDetails Details = new PromoItemsDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.PromoItemsID = myReader.GetInt64("PromoItemsID");
-					Details.PromoID = myReader.GetInt64("PromoID");
-					Details.ContactID = myReader.GetInt64("ContactID");
-					Details.ProductGroupID = myReader.GetInt64("ProductGroupID");
-					Details.ProductSubGroupID = myReader.GetInt64("ProductSubGroupID");
-					Details.ProductID = myReader.GetInt64("ProductID");
-					Details.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
-					Details.Quantity = myReader.GetDecimal(6);
-					Details.PromoValue = myReader.GetDecimal("PromoValue");
-					Details.InPercent = myReader.GetBoolean("InPercent");
-				}
-
-				myReader.Close();
+                PromoItemsDetails Details = new PromoItemsDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.PromoItemsID = Int64.Parse(dr["PromoItemsID"].ToString());
+                    Details.PromoID = Int64.Parse(dr["PromoID"].ToString());
+                    Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
+                    Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
+                    Details.ProductSubGroupID = Int64.Parse(dr["ProductSubGroupID"].ToString());
+                    Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+                    Details.VariationMatrixID = Int64.Parse(dr["VariationMatrixID"].ToString());
+                    Details.Quantity = Decimal.Parse(dr["Quantity"].ToString());
+                    Details.PromoValue = Decimal.Parse(dr["PromoValue"].ToString());
+                    Details.InPercent = bool.Parse(dr["InPercent"].ToString());
+                }
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -235,6 +230,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"";
 				
 				SQL = "SELECT " +
@@ -254,36 +252,29 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') >= CURRENT_DATE " +
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') <= CURRENT_DATE;";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				PromoItemsDetails clsDetails = new PromoItemsDetails();
+                PromoItemsDetails Details = new PromoItemsDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.PromoItemsID = Int64.Parse(dr["PromoItemsID"].ToString());
+                    Details.PromoID = Int64.Parse(dr["PromoID"].ToString());
+                    Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
+                    Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
+                    Details.ProductSubGroupID = Int64.Parse(dr["ProductSubGroupID"].ToString());
+                    Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+                    Details.VariationMatrixID = Int64.Parse(dr["VariationMatrixID"].ToString());
+                    Details.Quantity = Decimal.Parse(dr["Quantity"].ToString());
+                    Details.PromoValue = Decimal.Parse(dr["PromoValue"].ToString());
+                    Details.InPercent = bool.Parse(dr["InPercent"].ToString());
+                }
 
-				while (myReader.Read()) 
-				{
-					clsDetails.PromoItemsID = myReader.GetInt64("PromoItemsID");
-					clsDetails.PromoID = myReader.GetInt64("PromoID");
-					clsDetails.ContactID = myReader.GetInt64("ContactID");
-					clsDetails.ProductGroupID = myReader.GetInt64("ProductGroupID");
-					clsDetails.ProductSubGroupID = myReader.GetInt64("ProductSubGroupID");
-					clsDetails.ProductID = myReader.GetInt64("ProductID");
-					clsDetails.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
-                    clsDetails.Quantity = myReader.GetDecimal("Quantity");
-					clsDetails.PromoValue = myReader.GetDecimal("PromoValue");
-                    clsDetails.InPercent = myReader.GetBoolean("InPercent");
-				}
-				myReader.Close();
-
-				return clsDetails;
+                return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -295,142 +286,62 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(Int64 PromoID, string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(Int64 PromoID, string SearchKey = null, string SortField = "PromoItemsID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
-				string SQL =	"SELECT " +
-					"PromoItemsID, " +
-					"a.ContactID, " +
-					"ContactName, " +
-					"a.ProductGroupID, " +
-					"ProductGroupName, " +
-					"a.ProductSubGroupID, " +
-					"ProductSubGroupName, " +
-					"a.ProductID, " +
-					"ProductDesc, " +
-					"a.VariationMatrixID, " +
-					"Description, " +
-					"a.Quantity, " +
-					"a.PromoValue, " +
-					"a.InPercent " +
-					"FROM tblPromoItems a LEFT OUTER JOIN " +
-					"tblContacts b ON a.ContactID = b.ContactID LEFT OUTER JOIN " +
-					"tblProductGroup c ON a.ProductGroupID = c.ProductGroupID LEFT OUTER JOIN " +
-					"tblProductSubGroup d ON a.ProductSubGroupID = d.ProductSubGroupID LEFT OUTER JOIN " +
-					"tblProducts e ON a.ProductID = e.ProductID LEFT OUTER JOIN " +
-					"tblProductBaseVariationsMatrix f ON a.VariationMatrixID = f.MatrixID " +
-					"WHERE PromoID = @PromoID " +
-					"ORDER BY " + SortField; 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC;";
-				else
-					SQL += " DESC;";
+                string SQL = "SELECT " +
+                                    "PromoItemsID, " +
+                                    "a.ContactID, " +
+                                    "ContactName, " +
+                                    "a.ProductGroupID, " +
+                                    "ProductGroupName, " +
+                                    "a.ProductSubGroupID, " +
+                                    "ProductSubGroupName, " +
+                                    "a.ProductID, " +
+                                    "ProductDesc, " +
+                                    "a.VariationMatrixID, " +
+                                    "Description, " +
+                                    "a.Quantity, " +
+                                    "a.PromoValue, " +
+                                    "a.InPercent " +
+                            "FROM tblPromoItems a LEFT OUTER JOIN " +
+                            "tblContacts b ON a.ContactID = b.ContactID LEFT OUTER JOIN " +
+                            "tblProductGroup c ON a.ProductGroupID = c.ProductGroupID LEFT OUTER JOIN " +
+                            "tblProductSubGroup d ON a.ProductSubGroupID = d.ProductSubGroupID LEFT OUTER JOIN " +
+                            "tblProducts e ON a.ProductID = e.ProductID LEFT OUTER JOIN " +
+                            "tblProductBaseVariationsMatrix f ON a.VariationMatrixID = f.MatrixID " +
+                            "WHERE PromoID = @PromoID ";
 
-				
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "AND (PromoItemsCode LIKE @SearchKey " +
+                                    "OR PromoItemsName LIKE @SearchKey " +
+                                    "OR PromoItemsTypeCode LIKE @SearchKey " +
+                                    "OR PromoItemsTypeName LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BranchCode") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int64);			
-				prmPromoID.Value = PromoID;
-				cmd.Parameters.Add(prmPromoID);
+                cmd.Parameters.AddWithValue("@PromoID", PromoID);
 
-				
-				
-				return base.ExecuteReader(cmd);			
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;	
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
-		
-		public MySqlDataReader Search(Int64 PromoID, string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =	"SELECT " +
-									"PromoItemsID, " +
-									"a.ContactID, " +
-									"ContactName, " +
-									"a.ProductGroupID, " +
-									"ProductGroupName, " +
-									"a.ProductSubGroupID, " +
-									"ProductSubGroupName, " +
-									"a.ProductID, " +
-									"ProductDesc, " +
-									"a.VariationMatrixID, " +
-									"Description, " +
-									"Quantity, " +
-									"PromoValue, " +
-									"InPercent " +
-								"FROM tblPromoItems a LEFT OUTER JOIN " +
-								"tblContacts b ON a.ContactID = b.ContactID LEFT OUTER JOIN " +
-								"tblProductGroup c ON a.ProductGroupID = c.ProductGroupID LEFT OUTER JOIN " +
-								"tblProductSubGroup d ON a.ProductSubGroupID = d.ProductSubGroupID LEFT OUTER JOIN " +
-								"tblProducts e ON a.ProductID = e.ProductID LEFT OUTER JOIN " +
-								"tblProductBaseVariationsMatrix f ON a.VariationMatrixID = f.MatrixID " +
-								"WHERE PromoID = @PromoID " +
-									"AND (PromoItemsCode LIKE @SearchKey " +
-									"OR PromoItemsName LIKE @SearchKey " +
-									"OR PromoItemsTypeCode LIKE @SearchKey " +
-									"OR PromoItemsTypeName LIKE @SearchKey) " +
-								"ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int32);			
-				prmPromoID.Value = PromoID;
-				cmd.Parameters.Add(prmPromoID);
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}		
-
 
 		#endregion
 

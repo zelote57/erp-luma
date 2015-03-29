@@ -287,7 +287,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 else if (!mclsSalesTransactionDetails.isConsignment)
                 {
                     // 04Sep2014 : Added to put as OR No - Void NO-OR
-                    mclsSalesTransactionDetails.ORNo = clsSalesTransactions.CreateORNo(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+                    mclsSalesTransactionDetails.ORNo = clsSalesTransactions.CreateORNo(mclsTerminalDetails.ORSeriesBranchID, mclsTerminalDetails.ORSeriesTerminalNo);
                     clsEvent.AddEventLn("      applying ORNo".PadRight(15) + ":" + mclsSalesTransactionDetails.ORNo, true, mclsSysConfigDetails.WillWriteSystemLog);
                 }
 
@@ -408,7 +408,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     else
                     {
-                        mclsSalesTransactionDetails.ORNo = clsSalesTransactions.CreateORNo(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+                        mclsSalesTransactionDetails.ORNo = clsSalesTransactions.CreateORNo(mclsTerminalDetails.ORSeriesBranchID, mclsTerminalDetails.ORSeriesTerminalNo);
                         clsEvent.AddEventLn("      applying ORNo".PadRight(15) + ":" + mclsSalesTransactionDetails.ORNo, true, mclsSysConfigDetails.WillWriteSystemLog);
                     }
                 }
@@ -1990,6 +1990,7 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         #endregion
+
 
         #endregion
 
@@ -5609,6 +5610,7 @@ namespace AceSoft.RetailPlus.Client.UI
         #endregion
 
         #region PrintZRead
+
         public void PrintZRead(bool pvtWillPreviewReport)
         {
             Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);

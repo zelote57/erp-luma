@@ -29,7 +29,7 @@
 						        <td class="ms-formspacer"></td>
 						        <td width="30%" rowspan="4"><img alt="" src="../../_layouts/images/company_logo.gif" /></td>
 						        <td class="ms-formspacer"></td>
-						        <td style="HEIGHT: 70px" bordercolor="white" align="center" width="40%" rowspan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
+						        <td style="HEIGHT: 70px;border-color: white" align="center" width="40%" rowspan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
 								        Order</label></td>
 						        <td style="padding-bottom: 2px" width="30%" colspan="2"><label>Purchase Order no:</label></td>
 					        </tr>
@@ -179,12 +179,12 @@
 											        </tr>
 										        </table>
 									        </td>
-									        <td class="ms-toolbar" id="align02" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+									        <td class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 									        </td>
 								        </tr>
 							        </table>
 						        </td>
-						        <td class="ms-toolbar" nowrap align="right" width="1%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						        <td class="ms-toolbar" nowrap="nowrap" align="right" width="1%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 						        </td>
 					        </tr>
 				        </table>
@@ -340,22 +340,22 @@
 							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols">
 							                            <asp:textbox onkeypress="AllNum()" id="txtDiscount" onkeyup="ComputeAmountPost()" accessKey="D" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Width="50%">0</asp:textbox>
-							                            <input id="chkInPercent" type="checkbox" onchange="ComputeAmountPost()" CHECKED name="chkInPercent" runat="server" /><label style="FONT-SIZE: 10px">(in percent)</label>
+							                            <input id="chkInPercent" type="checkbox" onchange="ComputeAmountPost()" checked="checked" name="chkInPercent" runat="server" /><label style="FONT-SIZE: 10px">(in percent)</label>
 							                            <asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Discount' must not be left blank." Display="Dynamic" ControlToValidate="txtDiscount"></asp:requiredfieldvalidator>
 							                        </td>
 							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols"><asp:textbox onkeypress="AllNum()" id="txtAmount" accessKey="A" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" ReadOnly="True" Width="80%">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator9" runat="server" CssClass="ms-error" ErrorMessage="'Amount' must not be left blank." Display="Dynamic" ControlToValidate="txtAmount"></asp:requiredfieldvalidator></td>
-							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" align="center" colspan=2>
-							                            <input id="chkIsTaxable" type="checkbox" CHECKED name="chkIsTaxable" runat="server" onchange="ComputeAmountPost()" />
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" align="center" colspan="2">
+							                            <input id="chkIsTaxable" type="checkbox" checked="checked" name="chkIsTaxable" runat="server" onchange="ComputeAmountPost()" />
 							                            <label>Check if taxable</label>
 							                        </td>
 						                        </tr>
 						                        <tr>
-						                            <td colspan=10 style="padding-bottom: 5px; PADDING-TOP: 5px" ><label class="ms-error">Change the figures below to update the selling information.</label></td>
+						                            <td colspan="10" style="padding-bottom: 5px; PADDING-TOP: 5px" ><label class="ms-error">Change the figures below to update the selling information.</label></td>
 						                        </tr>
 						                        <tr valign="top">
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Margin in Percent (%) <font color="red">*</font></td>
-				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Selling Price / Prev. Selling Price<font color="red">*</font></td>
+				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Selling Price / Suggested Selling Price<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">VAT<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">EVAT<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">Local Tax<font color="red">*</font></td>
@@ -363,7 +363,7 @@
 			                                    <tr valign="top">
 				                                    <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                                    <td class="ms-authoringcontrols">
-				                                        <asp:textbox onkeypress="AllNum()" id="txtSellingQuantity" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Enabled=false Visible="false" >1</asp:textbox>
+				                                        <asp:textbox onkeypress="AllNum()" id="txtSellingQuantity" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" enabled="false" Visible="false" >1</asp:textbox>
 				                                        <asp:textbox onkeypress="AllNum()" id="txtMargin" onkeyup="ChangePriceComputeMarginPPPO(this)" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen" Width="80%">0</asp:textbox>
 				                                        <asp:requiredfieldvalidator id="Requiredfieldvalidator14" runat="server" CssClass="ms-error" ErrorMessage="'Price' must not be left blank." Display="Dynamic" ControlToValidate="txtMargin"></asp:requiredfieldvalidator>
 				                                    </td>
@@ -389,9 +389,8 @@
 				                                    </td>
 			                                    </tr>
 						                        <tr>
-						                            <td colspan=10>
+						                            <td colspan="10">
 						                                <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-						                                                    
 						                                </table>
 						                            </td>
 						                        </tr>
@@ -447,7 +446,7 @@
 			        <td class="ms-sectionline" colspan="3" height="1">
 				        <table class="ms-toolbar" id="twotidGrpsTB" cellspacing="0" cellpadding="2" border="0" width="100%">
 					        <tr>
-						        <td class="ms-toolbar" nowrap align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						        <td class="ms-toolbar" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 						        </td>
 						        <td class="ms-toolbar">
 							        <table cellspacing="0" cellpadding="1" border="0">
@@ -518,7 +517,7 @@
 											        </tr>
 										        </table>
 									        </td>--%>
-									        <td class="ms-toolbar" id="align03" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+									        <td class="ms-toolbar" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 									        </td>
 								        </tr>
 							        </table>
@@ -583,11 +582,11 @@
 						                <input type="checkbox" id="chkList" runat="server" name="chkList" />
 					                </td>
 					                <td class="ms-vb-user">
-						                <asp:ImageButton id="imgItemUpdate" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Item" CommandName="imgItemUpdateClick" CausesValidation=false></asp:ImageButton>						                
+						                <asp:ImageButton id="imgItemUpdate" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Item" CommandName="imgItemUpdateClick" CausesValidation="false"></asp:ImageButton>						                
 					                </td>
 					                <td class="ms-vb-user">
 					                    <asp:Label id="lblPOItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" Visible="false" ></asp:Label>
-						                <asp:ImageButton id="imgItemReceive" runat="server" ImageUrl="../../_layouts/images/post.gif" ToolTip="Update Item" CommandName="imgItemReceive" CausesValidation=false></asp:ImageButton>
+						                <asp:ImageButton id="imgItemReceive" runat="server" ImageUrl="../../_layouts/images/post.gif" ToolTip="Update Item" CommandName="imgItemReceive" CausesValidation="false"></asp:ImageButton>
 					                </td>
 					                <td class="ms-vb-user">
 					                    <asp:HyperLink ID="lnkBarcode" Runat="server" Target="_blank"></asp:HyperLink>
@@ -612,14 +611,14 @@
 						                <asp:Label ID="lblAmount" Runat="server"></asp:Label>
 					                </td>
 					                <td class="ms-vb2">
-						                <A class="DropDown" id="anchorDown" href="" runat="server">
-							                <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show"></asp:Image></A>
+						                <a class="DropDown" id="anchorDown" href="" runat="server">
+							                <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show"></asp:Image></a>
 					                </td>
 				                </tr>
 				                <tr>
 					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 					                <td colspan="8" height="1">
-						                <DIV class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
+						                <div class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 							                <asp:panel id="panItem" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 								                <table id="tblpanItem" cellspacing="0" cellpadding="0" width="100%" border="0">
 									                <tr>
@@ -677,7 +676,7 @@
 										                </td>
 									                </tr>
 								                </table>
-							                </asp:panel></DIV>
+							                </asp:panel></div>
 					                </td>
 					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 				                </tr>
@@ -728,7 +727,7 @@
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (1):</label></td>
-				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODiscountApplied" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" OnTextChanged="txtPODiscountApplied_TextChanged"></asp:textbox><asp:dropdownlist id="cboPODiscountType" runat="server" CssClass="ms-short" AutoPostBack="True" OnSelectedIndexChanged="cboPODiscountType_SelectedIndexChanged">
+				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODiscountApplied" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text="0" Width="82px" AutoPostBack="True" OnTextChanged="txtPODiscountApplied_TextChanged"></asp:textbox><asp:dropdownlist id="cboPODiscountType" runat="server" CssClass="ms-short" AutoPostBack="True" OnSelectedIndexChanged="cboPODiscountType_SelectedIndexChanged">
                                             <asp:ListItem Value="0">NA</asp:ListItem>
                                             <asp:ListItem Value="1">amt</asp:ListItem>
                                             <asp:ListItem Selected="True" Value="2">%</asp:ListItem>
@@ -756,7 +755,7 @@
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (2):</label></td>
-				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODiscount2Applied" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" OnTextChanged="txtPODiscountApplied_TextChanged"></asp:textbox><asp:dropdownlist id="cboPODiscount2Type" runat="server" CssClass="ms-short" AutoPostBack="True" OnSelectedIndexChanged="cboPODiscountType_SelectedIndexChanged">
+				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODiscount2Applied" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text="0" Width="82px" AutoPostBack="True" OnTextChanged="txtPODiscountApplied_TextChanged"></asp:textbox><asp:dropdownlist id="cboPODiscount2Type" runat="server" CssClass="ms-short" AutoPostBack="True" OnSelectedIndexChanged="cboPODiscountType_SelectedIndexChanged">
                                             <asp:ListItem Value="0">NA</asp:ListItem>
                                             <asp:ListItem Value="1">amt</asp:ListItem>
                                             <asp:ListItem Selected="True" Value="2">%</asp:ListItem>
@@ -784,7 +783,7 @@
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (3):</label></td>
-				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODiscount3Applied" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" OnTextChanged="txtPODiscountApplied_TextChanged"></asp:textbox><asp:dropdownlist id="cboPODiscount3Type" runat="server" CssClass="ms-short" AutoPostBack="True" OnSelectedIndexChanged="cboPODiscountType_SelectedIndexChanged">
+				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODiscount3Applied" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text="0" Width="82px" AutoPostBack="True" OnTextChanged="txtPODiscountApplied_TextChanged"></asp:textbox><asp:dropdownlist id="cboPODiscount3Type" runat="server" CssClass="ms-short" AutoPostBack="True" OnSelectedIndexChanged="cboPODiscountType_SelectedIndexChanged">
                                             <asp:ListItem Value="0">NA</asp:ListItem>
                                             <asp:ListItem Value="1">amt</asp:ListItem>
                                             <asp:ListItem Selected="True" Value="2">%</asp:ListItem>
@@ -868,7 +867,7 @@
         <td>
 	        <table class="ms-toolbar" id="onetidGrpsTC" cellspacing="0" cellpadding="2" border="0" width="100%">
 		        <tr>
-			        <td class="ms-toolbar" id="align01" nowrap align="right" width="99%">
+			        <td class="ms-toolbar" id="align01" nowrap="nowrap" align="right" width="99%">
 			        </td>
 			        <td class="ms-toolbar" align="center">
 				        <table cellspacing="0" cellpadding="1" border="0">
@@ -904,7 +903,7 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
 			        </td>
-			        <td class="ms-toolbar" id="align052" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+			        <td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 			        </td>
 		        </tr>
 	        </table>

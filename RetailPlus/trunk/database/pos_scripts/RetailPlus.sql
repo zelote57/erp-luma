@@ -9046,7 +9046,7 @@ ALTER TABLE tblContacts MODIFY LTONo VARCHAR(20) DEFAULT '';
 UPDATE tblTerminal SET DBVersion = '4.0.1.37';
 
 DELETE FROM sysAccessTypes WHERE TypeID = 178;
-INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (178, 'Change Customer''s Price Level', 1);
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (178, 'Change Customer''s Price Level', 0);
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 178, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 178, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 7, Category = '04: Backend - MasterFiles' WHERE TypeID = 178;
@@ -9058,6 +9058,59 @@ UPDATE sysAccessTypes SET SequenceNo = 7, Category = '04: Backend - MasterFiles'
 --		false	- will not refetch
 DELETE FROM sysConfig WHERE ConfigName = 'EnablePriceLevel';
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLevel',	'FE', 'false');
+
+
+/*********************************  v_4.0.1.37.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.38';
+
+ALTER TABLE tblPO ADD SupplierTINNo VARCHAR(20) DEFAULT '';
+ALTER TABLE tblPO ADD SupplierLTONo VARCHAR(20) DEFAULT '';
+
+UPDATE tblPO 
+INNER JOIN tblContacts
+SET
+	SupplierTINNo = tblContacts.TINNo,
+	SupplierLTONo = tblContacts.LTONo
+WHERE tblPO.SupplierID = tblContacts.ContactID;
+
+/****
+-- 23Mar2015 : HP, AppplyORNo
+-- default		- false
+-- selection: 
+--		true	- will use same branch OR series
+--		false	- will have a per terminal OR series
+ALTER TABLE tblTerminal ADD UseBranchORSeries TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD UseBranchORSeries TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD UseBranchORSeries TINYINT(1) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminal DROP UseBranchORSeries;
+ALTER TABLE tblTerminalReport DROP UseBranchORSeries;
+ALTER TABLE tblTerminalReportHistory DROP UseBranchORSeries;
+
+****/
+
+-- 23Mar2015 : HP, For Terminal's with Only 1 ORNoSeries 
+ALTER TABLE tblTerminal ADD ORSeriesBranchID INT(4) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD ORSeriesBranchID INT(4) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD ORSeriesBranchID INT(4) NOT NULL DEFAULT 0;
+
+UPDATE tblTerminal SET ORSeriesBranchID = BranchID;
+UPDATE tblTerminalReport SET ORSeriesBranchID = BranchID;
+UPDATE tblTerminalReportHistory SET ORSeriesBranchID = BranchID;
+--	   HP : UPDATE tblTerminal SET ORSeriesBranchID = 1 WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+--	   HP : UPDATE tblTerminalReport SET ORSeriesBranchID = 1 WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+
+-- 23Mar2015 : HP, For Terminal's with Only 1 ORNoSeries 
+ALTER TABLE tblTerminal ADD ORSeriesTerminalNo VARCHAR(10) NOT NULL DEFAULT '';
+ALTER TABLE tblTerminalReport ADD ORSeriesTerminalNo VARCHAR(10) NOT NULL DEFAULT '';
+ALTER TABLE tblTerminalReportHistory ADD ORSeriesTerminalNo VARCHAR(10) NOT NULL DEFAULT '';
+UPDATE tblTerminal SET ORSeriesTerminalNo = TerminalNo;
+UPDATE tblTerminalReport SET ORSeriesTerminalNo = TerminalNo;
+UPDATE tblTerminalReportHistory SET ORSeriesTerminalNo = TerminalNo;
+--	   HP : UPDATE tblTerminal SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+--	   HP : UPDATE tblTerminalReport SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+
 
 
 

@@ -1,4 +1,14 @@
 CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '02', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '03', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '04', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '05', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '06', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '07', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '08', '2015-01-31 21:00');
+CALL procTerminalReportHistorySyncTransactionSales(1, '09', '2015-01-31 21:00');
+
+CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-01-31 21:00');
 CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-01-31 21:00');
 CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-01-31 21:00');
 CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-01-31 21:00');

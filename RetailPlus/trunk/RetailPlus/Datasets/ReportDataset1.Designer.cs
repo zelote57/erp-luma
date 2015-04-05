@@ -6090,6 +6090,8 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnProductCode;
             
+            private global::System.Data.DataColumn columnSupplierCode;
+            
             private global::System.Data.DataColumn columnQuantity;
             
             private global::System.Data.DataColumn columnAmount;
@@ -6101,6 +6103,10 @@ namespace RetailPlus.Datasets {
             private global::System.Data.DataColumn columnPurchasePrice;
             
             private global::System.Data.DataColumn columnInvQuantity;
+            
+            private global::System.Data.DataColumn columnPurchasePrice2;
+            
+            private global::System.Data.DataColumn columnSupplierCode2;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -6161,6 +6167,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SupplierCodeColumn {
+                get {
+                    return this.columnSupplierCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn QuantityColumn {
                 get {
                     return this.columnQuantity;
@@ -6209,6 +6223,22 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PurchasePrice2Column {
+                get {
+                    return this.columnPurchasePrice2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SupplierCode2Column {
+                get {
+                    return this.columnSupplierCode2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -6244,18 +6274,21 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public SalesTransactionPerItemRow AddSalesTransactionPerItemRow(string ProductGroup, long ProductID, string ProductCode, decimal Quantity, decimal Amount, decimal PurchaseAmount, decimal Discount, decimal PurchasePrice, decimal InvQuantity) {
+            public SalesTransactionPerItemRow AddSalesTransactionPerItemRow(string ProductGroup, long ProductID, string ProductCode, string SupplierCode, decimal Quantity, decimal Amount, decimal PurchaseAmount, decimal Discount, decimal PurchasePrice, decimal InvQuantity, decimal PurchasePrice2, string SupplierCode2) {
                 SalesTransactionPerItemRow rowSalesTransactionPerItemRow = ((SalesTransactionPerItemRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ProductGroup,
                         ProductID,
                         ProductCode,
+                        SupplierCode,
                         Quantity,
                         Amount,
                         PurchaseAmount,
                         Discount,
                         PurchasePrice,
-                        InvQuantity};
+                        InvQuantity,
+                        PurchasePrice2,
+                        SupplierCode2};
                 rowSalesTransactionPerItemRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSalesTransactionPerItemRow);
                 return rowSalesTransactionPerItemRow;
@@ -6281,12 +6314,15 @@ namespace RetailPlus.Datasets {
                 this.columnProductGroup = base.Columns["ProductGroup"];
                 this.columnProductID = base.Columns["ProductID"];
                 this.columnProductCode = base.Columns["ProductCode"];
+                this.columnSupplierCode = base.Columns["SupplierCode"];
                 this.columnQuantity = base.Columns["Quantity"];
                 this.columnAmount = base.Columns["Amount"];
                 this.columnPurchaseAmount = base.Columns["PurchaseAmount"];
                 this.columnDiscount = base.Columns["Discount"];
                 this.columnPurchasePrice = base.Columns["PurchasePrice"];
                 this.columnInvQuantity = base.Columns["InvQuantity"];
+                this.columnPurchasePrice2 = base.Columns["PurchasePrice2"];
+                this.columnSupplierCode2 = base.Columns["SupplierCode2"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6298,6 +6334,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnProductID);
                 this.columnProductCode = new global::System.Data.DataColumn("ProductCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProductCode);
+                this.columnSupplierCode = new global::System.Data.DataColumn("SupplierCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSupplierCode);
                 this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuantity);
                 this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -6310,6 +6348,10 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnPurchasePrice);
                 this.columnInvQuantity = new global::System.Data.DataColumn("InvQuantity", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInvQuantity);
+                this.columnPurchasePrice2 = new global::System.Data.DataColumn("PurchasePrice2", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPurchasePrice2);
+                this.columnSupplierCode2 = new global::System.Data.DataColumn("SupplierCode2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSupplierCode2);
                 this.columnProductCode.AllowDBNull = false;
                 this.columnQuantity.AllowDBNull = false;
                 this.columnQuantity.DefaultValue = ((decimal)(0m));
@@ -6318,6 +6360,7 @@ namespace RetailPlus.Datasets {
                 this.columnPurchaseAmount.AllowDBNull = false;
                 this.columnPurchaseAmount.DefaultValue = ((decimal)(0m));
                 this.columnDiscount.DefaultValue = ((decimal)(0m));
+                this.columnPurchasePrice2.DefaultValue = ((decimal)(0m));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -35102,6 +35145,22 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string SupplierCode {
+                get {
+                    if (this.IsSupplierCodeNull()) {
+                        return null;
+                    }
+                    else {
+                        return ((string)(this[this.tableSalesTransactionPerItem.SupplierCodeColumn]));
+                    }
+                }
+                set {
+                    this[this.tableSalesTransactionPerItem.SupplierCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal Quantity {
                 get {
                     return ((decimal)(this[this.tableSalesTransactionPerItem.QuantityColumn]));
@@ -35184,6 +35243,39 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal PurchasePrice2 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesTransactionPerItem.PurchasePrice2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PurchasePrice2\' in table \'SalesTransactionPerItem\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesTransactionPerItem.PurchasePrice2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string SupplierCode2 {
+                get {
+                    if (this.IsSupplierCode2Null()) {
+                        return null;
+                    }
+                    else {
+                        return ((string)(this[this.tableSalesTransactionPerItem.SupplierCode2Column]));
+                    }
+                }
+                set {
+                    this[this.tableSalesTransactionPerItem.SupplierCode2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsProductGroupNull() {
                 return this.IsNull(this.tableSalesTransactionPerItem.ProductGroupColumn);
             }
@@ -35204,6 +35296,18 @@ namespace RetailPlus.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetProductIDNull() {
                 this[this.tableSalesTransactionPerItem.ProductIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSupplierCodeNull() {
+                return this.IsNull(this.tableSalesTransactionPerItem.SupplierCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSupplierCodeNull() {
+                this[this.tableSalesTransactionPerItem.SupplierCodeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -35240,6 +35344,30 @@ namespace RetailPlus.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetInvQuantityNull() {
                 this[this.tableSalesTransactionPerItem.InvQuantityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPurchasePrice2Null() {
+                return this.IsNull(this.tableSalesTransactionPerItem.PurchasePrice2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPurchasePrice2Null() {
+                this[this.tableSalesTransactionPerItem.PurchasePrice2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSupplierCode2Null() {
+                return this.IsNull(this.tableSalesTransactionPerItem.SupplierCode2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSupplierCode2Null() {
+                this[this.tableSalesTransactionPerItem.SupplierCode2Column] = global::System.Convert.DBNull;
             }
         }
         

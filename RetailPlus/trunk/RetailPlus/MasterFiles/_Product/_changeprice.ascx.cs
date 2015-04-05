@@ -81,7 +81,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 lstProductPackages.DataBind();
 
                 ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProduct.Connection, clsProduct.Transaction);
-                System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "PurchasePrice", SortOption.Ascending);
+                System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), DateTime.Now.AddMonths(-6), "PurchasePrice", SortOption.Ascending);
                 clsProduct.CommitAndDispose();
 
                 string strPurchasePriceHistory = string.Empty;

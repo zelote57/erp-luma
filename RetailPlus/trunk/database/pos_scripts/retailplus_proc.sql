@@ -420,8 +420,8 @@ BEGIN
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s')
 			GROUP BY BranchID, TerminalNo, CashierID
 		) Trx ON tblCashierReport.BranchID = Trx.BranchID AND tblCashierReport.TerminalNo = Trx.TerminalNo AND tblCashierReport.CashierID = Trx.CashierID
 	SET					
@@ -481,8 +481,8 @@ BEGIN
 
 						tblCashierReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 	WHERE tblCashierReport.BranchID = intBranchID AND tblCashierReport.TerminalNo = strTerminalNo
-		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s');
 	
 END;
 GO
@@ -527,7 +527,7 @@ BEGIN
 			PWDDiscount = CASE DiscountCode WHEN strPWDDiscountCode THEN Discount ELSE 0 END,
 			OtherDiscount = CASE DiscountCode WHEN strSNRDiscountCode THEN 0 WHEN strPWDDiscountCode THEN 0 ELSE Discount END
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s');
 
 		UPDATE tblTransactions SET
 			GrossSales = SubTotal + itemsdiscount,
@@ -535,7 +535,7 @@ BEGIN
 			VAT = (SubTotal - Discount - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12 * 0.12,
 			NetSales = SubTotal - (VATExempt * 0.12) - Discount
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s');
 
 		CALL procCashierReportSyncTransactionSales(intBranchID, strTerminalNo, dteActualZReadDate, dteNextZReadDate);
 
@@ -692,8 +692,8 @@ BEGIN
 				FROM  tblTransactions
 						WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 							AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-							AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-							AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
+							AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+							AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s')
 				GROUP BY BranchID, TerminalNo
 			) Trx ON tblTerminalReport.BranchID = Trx.BranchID AND tblTerminalReport.TerminalNo = Trx.TerminalNo
 		SET					
@@ -755,7 +755,7 @@ BEGIN
 
 							tblTerminalReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 		WHERE tblTerminalReport.BranchID = intBranchID AND tblTerminalReport.TerminalNo = strTerminalNo
-			AND DATE_FORMAT(tblTerminalReport.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(tblTerminalReport.DateLastInitialized, '%Y-%m-%d %H:%i:%s') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s');
 
 		CALL procsysAuditInsert(NOW(), 'RetailPlus Admin', 'RESYNC TERMINAL REPORT', 'localhost', CONCAT('TR has been re-run @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo,'.'));
 
@@ -2199,7 +2199,7 @@ GO
 
 create procedure procGenerateSalesPerItemByGroup(
 	IN strSessionID varchar(30),
-	IN strProductGroup varchar(20),
+	IN strProductGroup varchar(50),
 	IN strTransactionNo varchar(30),
 	IN strCustomerName varchar(100),
 	IN strCashierName varchar(100),
@@ -10158,8 +10158,8 @@ BEGIN
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s')
 			GROUP BY BranchID, TerminalNo, CashierID
 		) Trx ON tblCashierReportHistory.BranchID = Trx.BranchID AND tblCashierReportHistory.TerminalNo = Trx.BranchID AND tblCashierReportHistory.CashierID = Trx.CashierID
 	SET					
@@ -10219,8 +10219,8 @@ BEGIN
 
 						tblCashierReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 	WHERE tblCashierReportHistory.BranchID = intBranchID AND tblCashierReportHistory.TerminalNo = strTerminalNo
-		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s');
 	
 END;
 GO
@@ -10252,9 +10252,9 @@ BEGIN
 	DECLARE decSNRPercent DECIMAL(5,2) DEFAULT 0.20;
 	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(10) DEFAULT 'SNR';
 	
-	DECLARE curActualZReadDate CURSOR FOR SELECT DateLastInitialized FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+	DECLARE curActualZReadDate CURSOR FOR SELECT DateLastInitialized FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i:%s'); 
 
-	SELECT COUNT(DateLastInitialized) INTO intCount FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+	SELECT COUNT(DateLastInitialized) INTO intCount FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i:%s'); 
 
 	SET strSNRDiscountCode = (IFNULL((SELECT SeniorCitizenDiscountCode FROM tblTerminal WHERE TerminalNo='01' LIMIT 1), 'SNR'));
 	SET strPWDDiscountCode = (IFNULL((SELECT PWDDiscountCode FROM tblTerminal WHERE TerminalNo='01' LIMIT 1), 'PWD'));
@@ -10279,8 +10279,8 @@ BEGIN
 			PWDDiscount = CASE DiscountCode WHEN strPWDDiscountCode THEN Discount ELSE 0 END,
 			OtherDiscount = CASE DiscountCode WHEN strSNRDiscountCode THEN 0 WHEN strPWDDiscountCode THEN 0 ELSE Discount END
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s');
 
 		UPDATE tblTransactions SET
 			GrossSales = SubTotal + itemsdiscount,
@@ -10288,8 +10288,8 @@ BEGIN
 			VAT = (SubTotal - Discount - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12 * 0.12,
 			NetSales = SubTotal - (VATExempt * 0.12) - Discount
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s');
 
 		CALL procCashierReportHistorySyncTransactionSales(intBranchID, strTerminalNo, dteActualZReadDate, dteNextZReadDate);
 			
@@ -10446,8 +10446,8 @@ BEGIN
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
-						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i:%s')
 			GROUP BY BranchID, TerminalNo
 		) Trx ON tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo
 		SET					
@@ -10509,14 +10509,14 @@ BEGIN
 
 				tblTerminalReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 		WHERE tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
-			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i:%s') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s');
 		
 		UPDATE tblTerminalReportHistory,
 			(SELECT BranchID, TerminalNo, a.DateLastInitialized, a.NewGrandTotal, a.GrossSales,
-				IFNULL((SELECT NewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i') ORDER BY b.DateLastInitialized DESC LIMIT 1),0) OldGrandTotal,
-				IFNULL((SELECT ActualNewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i') ORDER BY b.DateLastInitialized DESC LIMIT 1),0) ActualOldGrandTotal
+				IFNULL((SELECT NewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s') ORDER BY b.DateLastInitialized DESC LIMIT 1),0) OldGrandTotal,
+				IFNULL((SELECT ActualNewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s') ORDER BY b.DateLastInitialized DESC LIMIT 1),0) ActualOldGrandTotal
 				FROM tblTerminalReportHistory a 
-				WHERE DATE_FORMAT(a.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+				WHERE DATE_FORMAT(a.DateLastInitialized, '%Y-%m-%d %H:%i:%s') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s')
 				) Trx
 		SET
 			tblTerminalReportHistory.OldGrandTotal						= Trx.OldGrandTotal,
@@ -10525,9 +10525,9 @@ BEGIN
 			tblTerminalReportHistory.ActualOldGrandTotal				= Trx.ActualOldGrandTotal,
 			tblTerminalReportHistory.ActualNewGrandTotal				= Trx.ActualOldGrandTotal + tblTerminalReportHistory.GrossSales
 		WHERE tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo 
-			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(Trx.DateLastInitialized, '%Y-%m-%d %H:%i')
+			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i:%s') = DATE_FORMAT(Trx.DateLastInitialized, '%Y-%m-%d %H:%i:%s')
 			AND tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
-			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
+			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i:%s') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i:%s');
 
 		SET dteActualZReadDate = NULL;
 		SET dteNextZReadDate = NULL;
@@ -10545,7 +10545,7 @@ BEGIN
 		ActualNewGrandTotal =  ActualOldGrandTotal + GrossSales
 	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo; 
 
-	CALL procsysAuditInsert(NOW(), 'RetailPlus Admin', 'RESYNC TERMINAL REPORT HISTORY', 'localhost', CONCAT('TRH has been re-run from ',DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'),' up to ',DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i'),' @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo,'.'));
+	CALL procsysAuditInsert(NOW(), 'RetailPlus Admin', 'RESYNC TERMINAL REPORT HISTORY', 'localhost', CONCAT('TRH has been re-run from ',DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i:%s'),' up to ',DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s'),' @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo,'.'));
 
 	-- checking
 	SELECT 'Please double check the following if correct.';
@@ -10556,7 +10556,7 @@ BEGIN
 								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal,
 								BeginningTransactionNo, EndingTransactionNo
 	FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-		AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i')
+		AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i:%s')
 	ORDER BY DateLastInitialized DESC; 
 
 	SELECT DateLastInitialized, OldGrandTotal, NewGrandTotal, 

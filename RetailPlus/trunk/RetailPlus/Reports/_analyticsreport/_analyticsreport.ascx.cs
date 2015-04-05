@@ -225,13 +225,11 @@ namespace AceSoft.RetailPlus.Reports
             string CashierName = cboCashierName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboCashierName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboCashierName.SelectedItem.Text;
             string TerminalNo = cboTerminalNo.SelectedItem.Text == Constants.ALL ? string.Empty : cboTerminalNo.SelectedItem.Text;
             DateTime StartTransactionDate = DateTime.MinValue;
-            try
-            { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text + " " + txtStartTime.Text); }
-            catch { }
+            StartTransactionDate = DateTime.TryParse(txtStartTransactionDate.Text + " " + txtStartTime.Text, out StartTransactionDate) ? StartTransactionDate : DateTime.MinValue;
+
             DateTime EndTransactionDate = DateTime.MinValue;
-            try
-            { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text + " " + txtEndTime.Text); }
-            catch { }
+            EndTransactionDate = DateTime.TryParse(txtEndTransactionDate.Text + " " + txtEndTime.Text, out EndTransactionDate) ? EndTransactionDate : DateTime.MinValue;
+
             TransactionStatus Status = (TransactionStatus)Enum.Parse(typeof(TransactionStatus), cboTransactionStatus.SelectedItem.Value);
             PaymentTypes PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboPaymentType.SelectedItem.Value);
 
@@ -327,12 +325,17 @@ namespace AceSoft.RetailPlus.Reports
                     if (rdoShowNegativeOnly.Checked) enumSaleperItemFilterType = SaleperItemFilterType.ShowNegativeOnly;
 
                     clsSalesTransactionItems = new SalesTransactionItems();
+                    //if (cboProductGroup.Text == Constants.ALL)
+                    //    dt = clsSalesTransactionItems.SalesPerItem(TransactionNo + "%", CustomerName + "%", CashierName + "%",
+                    //        TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+                    //else
+                    //    dt = clsSalesTransactionItems.SalesPerItemByGroup(strProductGroup + "%", TransactionNo + "%", CustomerName + "%", CashierName + "%",
+                    //        TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+
                     if (cboProductGroup.Text == Constants.ALL)
-                        dt = clsSalesTransactionItems.SalesPerItem(TransactionNo + "%", CustomerName + "%", CashierName + "%",
-                            TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+                        dt = clsSalesTransactionItems.SalesPerItem(TransactionNo, CustomerName, CashierName, TerminalNo, StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
                     else
-                        dt = clsSalesTransactionItems.SalesPerItemByGroup(strProductGroup + "%", TransactionNo + "%", CustomerName + "%", CashierName + "%",
-                            TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+                        dt = clsSalesTransactionItems.SalesPerItemByGroupProc(strProductGroup, TransactionNo, CustomerName, CashierName, TerminalNo, StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
 
                     clsSalesTransactionItems.CommitAndDispose();
 

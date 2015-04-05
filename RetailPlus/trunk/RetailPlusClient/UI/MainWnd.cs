@@ -4490,6 +4490,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							dgItems[iRow, 10] = "0.00";
 							dgItems[iRow, 11] = "0.00";
 							dgItems[iRow, 13] = "0.00";
+                            dgItems[iRow, 21] = TransactionItemStatus.Void.ToString("d");
 
 							SetItemDetails();
 							

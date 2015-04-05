@@ -9046,7 +9046,7 @@ ALTER TABLE tblContacts MODIFY LTONo VARCHAR(20) DEFAULT '';
 UPDATE tblTerminal SET DBVersion = '4.0.1.37';
 
 DELETE FROM sysAccessTypes WHERE TypeID = 178;
-INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (178, 'Change Customer''s Price Level', 0);
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (178, 'Change Customer''s Price Level', 1);
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 178, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 178, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 7, Category = '04: Backend - MasterFiles' WHERE TypeID = 178;
@@ -9057,7 +9057,7 @@ UPDATE sysAccessTypes SET SequenceNo = 7, Category = '04: Backend - MasterFiles'
 --		true	- will refetch then recompute
 --		false	- will not refetch
 DELETE FROM sysConfig WHERE ConfigName = 'EnablePriceLevel';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLevel',	'FE', 'false');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLevel',	'FE', 'true');
 
 
 /*********************************  v_4.0.1.37.sql END  *******************************************************/ 
@@ -9112,7 +9112,9 @@ UPDATE tblTerminalReportHistory SET ORSeriesTerminalNo = TerminalNo;
 --	   HP : UPDATE tblTerminalReport SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
 
 
+/*********************************  v_4.0.1.38.sql END  *******************************************************/ 
 
+UPDATE tblTerminal SET DBVersion = '4.0.1.39';
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

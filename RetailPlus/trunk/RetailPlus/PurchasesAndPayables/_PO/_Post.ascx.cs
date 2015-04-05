@@ -144,7 +144,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
             ProductDetails clsDetails = clsProduct.Details(ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
-            System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
+            System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, DateTime.Now.AddMonths(-6), "PurchasePrice", SortOption.Ascending, 5);
 
             //ProductPackage clsProductPackage = new ProductPackage(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
             //ProductPackageDetails clsProductPackageDetails = clsProductPackage.DetailsByProductID(ProductID, Int64.Parse(cboVariation.SelectedItem.Value));

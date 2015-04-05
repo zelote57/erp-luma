@@ -59,11 +59,12 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 
         #region Insert and Update
+
         public void AddToList(ProductPurchasePriceHistoryDetails Details)
         {
             try
             {
-                System.Data.DataTable dt = ListAsDataTable(Details.ProductID, "PurchasePrice", SortOption.Desscending);
+                System.Data.DataTable dt = ListAsDataTable(Details.ProductID, DateTime.Now.AddMonths(-6), "PurchasePrice", SortOption.Desscending);
                 if (dt.Rows.Count < DataConstants.MAX_PURCHASE_PRICE_SUPPLIER)
                 {
                     //insert new purchase price if price levels are lower than max
@@ -89,7 +90,6 @@ namespace AceSoft.RetailPlus.Data
                     Update(Details);
                 }
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -100,6 +100,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL =	"INSERT INTO tblProductPurchasePriceHistory (" +
 									"ProductID, " + 
 									"MatrixID, " + 
@@ -118,16 +121,7 @@ namespace AceSoft.RetailPlus.Data
                                     "@Remarks," +
                                     "@PurchaserName," +
                                     "now());"; 
-
-				  
-				
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
 				cmd.Parameters.AddWithValue("@ProductID",Details.ProductID);
                 cmd.Parameters.AddWithValue("@MatrixID", Details.MatrixID);
                 cmd.Parameters.AddWithValue("@SupplierID", Details.SupplierID);
@@ -136,37 +130,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
                 cmd.Parameters.AddWithValue("@PurchaserName", Details.PurchaserName);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                Int64 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -175,6 +145,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL =	"UPDATE tblProductPurchasePriceHistory SET " +
 									"SupplierID     = @SupplierID, " + 
 									"PurchasePrice  = @PurchasePrice, " +  
@@ -183,14 +156,6 @@ namespace AceSoft.RetailPlus.Data
                                     "PurchaserName       = @PurchaserName " +
 								"WHERE ProductPurchasePriceHistoryID	= @ProductPurchasePriceHistoryID;";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("@ProductPurchasePriceHistoryID", Details.ProductPurchasePriceHistoryID);
                 cmd.Parameters.AddWithValue("@SupplierID", Details.SupplierID);
                 cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
@@ -198,21 +163,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
                 cmd.Parameters.AddWithValue("@PurchaserName", Details.PurchaserName);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -228,33 +184,20 @@ namespace AceSoft.RetailPlus.Data
 			{
 				
 				MySqlCommand cmd = new MySqlCommand();
-				string SQL;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				SQL=	"DELETE FROM tblProductPurchasePriceHistory WHERE ProductPurchasePriceHistoryID IN (" + IDs + ");";
-				cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
-				return true;
+				string SQL=	"DELETE FROM tblProductPurchasePriceHistory WHERE ProductPurchasePriceHistoryID IN (" + IDs + ");";
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+
+                return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
-
 
 		#endregion
 
@@ -279,100 +222,67 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Details
 
-		public ProductPurchasePriceHistoryDetails Details(long ProductPurchasePriceHistoryID)
+		public ProductPurchasePriceHistoryDetails Details(Int64 ProductPurchasePriceHistoryID)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
                 string SQL = SQLSelect() + "WHERE a.ProductPurchasePriceHistoryID = @ProductPurchasePriceHistoryID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@ProductPurchasePriceHistoryID", ProductPurchasePriceHistoryID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                ProductPurchasePriceHistoryDetails Details = SetDetails(myReader);
-
-                myReader.Close();
-
-				return Details;
+                return SetDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
-		public ProductPurchasePriceHistoryDetails DetailsByProductID(long ProductID)
+
+		public ProductPurchasePriceHistoryDetails DetailsByProductID(Int64 ProductID)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = SQLSelect() + "WHERE a.ProductID = @ProductID;";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                ProductPurchasePriceHistoryDetails Details = SetDetails(myReader);
-
-				myReader.Close();
-
-				return Details;
+                return SetDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        private ProductPurchasePriceHistoryDetails SetDetails(MySqlDataReader myReader, int BranchID = 0)
+        private ProductPurchasePriceHistoryDetails SetDetails(System.Data.DataTable dt, Int32 BranchID = 0)
         {
             try
             {
                 ProductPurchasePriceHistoryDetails Details = new ProductPurchasePriceHistoryDetails();
                 Details.ProductPurchasePriceHistoryID = 0;
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.ProductPurchasePriceHistoryID = myReader.GetInt64("ProductPurchasePriceHistoryID");
-                    Details.MatrixID = myReader.GetInt64("MatrixID");
-                    Details.SupplierID = myReader.GetInt64("SupplierID");
-                    Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-                    Details.PurchaseDate = myReader.GetDateTime("PurchaseDate");
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
+                    Details.ProductPurchasePriceHistoryID = Int64.Parse(dr["ProductPurchasePriceHistoryID"].ToString());
+                    Details.MatrixID = Int64.Parse(dr["MatrixID"].ToString());
+                    Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
+                    Details.PurchasePrice = Decimal.Parse(dr["PurchasePrice"].ToString());
+                    Details.PurchaseDate = DateTime.Parse(dr["PurchaseDate"].ToString());
+                    Details.Remarks = "" + dr["Remarks"].ToString();
 
                     Products clsProduct = new Products(base.Connection, base.Transaction);
                     Details.ProductDetails = clsProduct.Details1(BranchID, Details.ProductID);
@@ -383,7 +293,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return Details;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -394,182 +303,43 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
+		public System.Data.DataTable ListAsDataTable(Int64 ProductID = 0, DateTime? PurchaseDateFrom = null, string SortField = "PurchasePrice", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
-                string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField; 
-
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				System.Data.DataTable dt = new System.Data.DataTable("tblProductPurchasePriceHistory");
-				base.MySqlDataAdapterFill(cmd, dt);
-				
-
-				return dt;
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		public System.Data.DataTable ListAsDataTable(long ProductID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                string SQL = SQLSelect() + "WHERE a.ProductID = @ProductID ORDER BY " + SortField;
-
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@ProductID", ProductID);
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductPurchasePriceHistory");
-                base.MySqlDataAdapterFill(cmd, dt);
                 
-
-                return dt;
-
-            }
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder, int Limit)
-        {
-            try
-            {
                 string SQL = SQLSelect() + "WHERE 1=1 ";
 
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductPurchasePriceHistory");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                return dt;
-
-            }
-            catch (Exception ex)
-            {
-                
-                
+                if (ProductID != 0)
                 {
-                    
-                    
-                    
-                    
+                    SQL += "AND a.ProductID = @ProductID ";
+                    cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 }
 
-                throw base.ThrowException(ex);
-            }
-        }
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder, int Limit, long ProductID)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "WHERE ProductID = @ProductID ";
-
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@ProductID", ProductID);
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductPurchasePriceHistory");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                return dt;
-
-            }
-            catch (Exception ex)
-            {
-                
-                
+                if (PurchaseDateFrom.GetValueOrDefault() != DateTime.MinValue)
                 {
-                    
-                    
-                    
-                    
+                    SQL += "AND a.PurchaseDate >= @PurchaseDateFrom ";
+                    cmd.Parameters.AddWithValue("@PurchaseDateFrom", PurchaseDateFrom.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PurchaseDateFrom);
                 }
 
-                throw base.ThrowException(ex);
-            }
-        }
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "PurchasePrice") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
+		}
+        
 		#endregion
 
     }

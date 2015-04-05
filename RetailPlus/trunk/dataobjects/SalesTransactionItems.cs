@@ -705,16 +705,27 @@ namespace AceSoft.RetailPlus.Data
                 base.ExecuteNonQuery(cmd);
 
                 SQL = "SELECT " +
-                        "ProductGroup," +
-                        "ProductID," +
-                        "ProductCode," +
-                        "SUM(Quantity) 'Quantity'," +
-                        "SUM(Amount) 'Amount'," +
-                        "SUM(PurchaseAmount) 'PurchaseAmount', " +
-                        "SUM(Discount) 'Discount', " +
-                        "MIN(PurchasePrice) 'PurchasePrice', " +
-                        "MAX(InvQuantity) 'InvQuantity' " +
-                    "FROM tblSalesPerItem " +
+                        "spi.ProductGroup," +
+                        "spi.ProductID," +
+                        "spi.ProductCode," +
+                        "MAX(cntct.ContactCode) SupplierCode," +
+                        "SUM(spi.Quantity) 'Quantity'," +
+                        "SUM(spi.Amount) 'Amount'," +
+                        "SUM(spi.PurchaseAmount) 'PurchaseAmount', " +
+                        "SUM(spi.Discount) 'Discount', " +
+                        "MIN(spi.PurchasePrice) 'PurchasePrice', " +
+                        "MAX(spi.InvQuantity) 'InvQuantity' " +
+                        "IFNULL(MIN(ppph.PurchasePrice),0) 'PurchasePrice2', " +
+                        "IFNULL(MAX(cntct2.ContactCode),'') SupplierCode2 " +
+                    "FROM tblSalesPerItem spi " +
+                    "INNER JOIN tblProducts prd ON spi.ProductID = prd.ProductID " +
+                    "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID " +
+                    "LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
+                                                                       "AND ppph.SupplierID <> prd.SupplierID " +
+                                                                       "AND ppph.PurchasePrice <> 0 " +
+                                                                       "AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                                                                       "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "LEFT OUTER JOIN tblContacts cntct2 ON ppph.SupplierID = cntct2.ContactID " +
                     "WHERE SessionID = @SessionID ";
 
                 switch (pvtSaleperItemFilterType)
@@ -727,7 +738,7 @@ namespace AceSoft.RetailPlus.Data
                         break;
                 }
 
-                SQL += "GROUP BY ProductGroup, ProductCode ORDER BY ProductCode;";
+                SQL += "GROUP BY spi.ProductGroup, spi.ProductCode  ORDER BY ProductCode, MIN(ppph.PurchasePrice);";
 
                 cmd.CommandText = SQL;
                 cmd.Parameters.Clear();
@@ -749,16 +760,103 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+
+        public System.Data.DataTable SalesPerItemByGroupProc(string ProductGroupName, string TransactionNo, string CustomerName, string CashierName, string TerminalNo,
+            DateTime StartTransactionDate, DateTime EndTransactionDate, TransactionStatus Status, PaymentTypes PaymentType, SaleperItemFilterType pvtSaleperItemFilterType)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                string SQL = "procGenerateSalesPerItemByGroup";
+
+                Random clsRandom = new Random();
+                MySqlParameter prmSessionID = new MySqlParameter("@strSessionID", clsRandom.Next(1234567, 99999999));
+
+                cmd.Parameters.Add(prmSessionID);
+                cmd.Parameters.AddWithValue("@strProductGroup", ProductGroupName);
+                cmd.Parameters.AddWithValue("@strTransactionNo", TransactionNo);
+                cmd.Parameters.AddWithValue("@strCustomerName", CustomerName);
+                cmd.Parameters.AddWithValue("@strCashierName", CashierName);
+                cmd.Parameters.AddWithValue("@strTerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartTransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndTransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+
+                SQL = "SELECT " +
+                        "spi.ProductGroup," +
+                        "spi.ProductID," +
+                        "spi.ProductCode," +
+                        "MAX(cntct.ContactCode) SupplierCode," +
+                        "SUM(spi.Quantity) 'Quantity'," +
+                        "SUM(spi.Amount) 'Amount'," +
+                        "SUM(spi.PurchaseAmount) 'PurchaseAmount', " +
+                        "SUM(spi.Discount) 'Discount', " +
+                        "MIN(spi.PurchasePrice) 'PurchasePrice', " +
+                        "MAX(spi.InvQuantity) 'InvQuantity', " +
+                        "IFNULL(MIN(ppph.PurchasePrice),0) 'PurchasePrice2', " +
+                        "IFNULL(MAX(cntct2.ContactCode),'') SupplierCode2 " +
+                    "FROM tblSalesPerItem spi " +
+                    "INNER JOIN tblProducts prd ON spi.ProductID = prd.ProductID " +
+                    "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID " +
+                    "LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
+                                                                       "AND ppph.SupplierID <> prd.SupplierID " +
+                                                                       "AND ppph.PurchasePrice <> 0 " +
+                                                                       "AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                                                                       "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "LEFT OUTER JOIN tblContacts cntct2 ON ppph.SupplierID = cntct2.ContactID " +
+                    "WHERE spi.SessionID = @strSessionID ";
+
+                switch (pvtSaleperItemFilterType)
+                {
+                    case SaleperItemFilterType.ShowPositiveOnly:
+                        SQL += "AND spi.Amount > PurchaseAmount ";
+                        break;
+                    case SaleperItemFilterType.ShowNegativeOnly:
+                        SQL += "AND spi.Amount < PurchaseAmount ";
+                        break;
+                }
+
+                SQL += "GROUP BY spi.ProductGroup, spi.ProductID, spi.ProductCode ORDER BY ProductCode, MIN(ppph.PurchasePrice);";
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(prmSessionID);
+
+                cmd.CommandText = SQL;
+                System.Data.DataTable dt = new System.Data.DataTable("SalesTransactionPerItem");
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                SQL = "DELETE FROM tblSalesPerItem WHERE SessionID = @strSessionID;";
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(prmSessionID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public System.Data.DataTable SalesPerItemByGroup(string ProductGroupName, string TransactionNo, string CustomerName, string CashierName, string TerminalNo,
             DateTime StartTransactionDate, DateTime EndTransactionDate, TransactionStatus Status, PaymentTypes PaymentType, SaleperItemFilterType pvtSaleperItemFilterType)
         {
             try
             {
-                string SQL = "CALL procGenerateSalesPerItemByGroup(@SessionID, @ProductGroupName, @TransactionNo, @CustomerName, @CashierName, @TerminalNo, @StartTransactionDate, @EndTransactionDate);";
-                
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = "CALL procGenerateSalesPerItemByGroup(@SessionID, @ProductGroupName, @TransactionNo, @CustomerName, @CashierName, @TerminalNo, @StartTransactionDate, @EndTransactionDate);";
+
 
                 Random clsRandom = new Random();
                 MySqlParameter prmSessionID = new MySqlParameter("@SessionID", clsRandom.Next(1234567, 99999999));
@@ -772,19 +870,31 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@StartTransactionDate", StartTransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@EndTransactionDate", EndTransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
+                cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
 
                 SQL = "SELECT " +
-                        "ProductGroup," +
-                        "ProductID," +
-                        "ProductCode," +
-                        "SUM(Quantity) 'Quantity'," +
-                        "SUM(Amount) 'Amount'," +
-                        "SUM(PurchaseAmount) 'PurchaseAmount', " +
-                        "SUM(Discount) 'Discount', " +
-                        "MIN(PurchasePrice) 'PurchasePrice', " +
-                        "MAX(InvQuantity) 'InvQuantity' " +
-                    "FROM tblSalesPerItem " +
+                        "spi.ProductGroup," +
+                        "spi.ProductID," +
+                        "spi.ProductCode," +
+                        "MAX(cntct.ContactCode) SupplierCode," +
+                        "SUM(spi.Quantity) 'Quantity'," +
+                        "SUM(spi.Amount) 'Amount'," +
+                        "SUM(spi.PurchaseAmount) 'PurchaseAmount', " +
+                        "SUM(spi.Discount) 'Discount', " +
+                        "MIN(spi.PurchasePrice) 'PurchasePrice', " +
+                        "MAX(spi.InvQuantity) 'InvQuantity', " +
+                        "IFNULL(MIN(ppph.PurchasePrice),0) 'PurchasePrice2', " +
+                        "IFNULL(MAX(cntct2.ContactCode),'') SupplierCode2 " +
+                    "FROM tblSalesPerItem spi " +
+                    "INNER JOIN tblProducts prd ON spi.ProductID = prd.ProductID " +
+                    "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID " +
+                    "LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
+                                                                       "AND ppph.SupplierID <> prd.SupplierID " +
+                                                                       "AND ppph.PurchasePrice <> 0 " +
+                                                                       "AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                                                                       "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "LEFT OUTER JOIN tblContacts cntct2 ON ppph.SupplierID = cntct2.ContactID " +
                     "WHERE SessionID = @SessionID ";
 
                 switch (pvtSaleperItemFilterType)
@@ -797,7 +907,7 @@ namespace AceSoft.RetailPlus.Data
                         break;
                 }
 
-                SQL += "GROUP BY ProductGroup, ProductID, ProductCode ORDER BY ProductCode;";
+                SQL += "GROUP BY spi.ProductGroup, spi.ProductID, spi.ProductCode ORDER BY ProductCode, MIN(ppph.PurchasePrice);";
 
                 cmd.CommandText = SQL;
                 cmd.Parameters.Clear();
@@ -820,6 +930,7 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+
         public System.Data.DataTable List(Int64 TransactionID, DateTime TransactionDate, string SortField, SortOption SortOrder)
         {
             try

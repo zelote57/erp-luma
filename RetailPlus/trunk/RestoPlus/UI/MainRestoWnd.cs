@@ -5498,15 +5498,20 @@ namespace AceSoft.RetailPlus.Client.UI
                 AccessUser clsUser = new AccessUser(mConnection, mTransaction);
                 mConnection = clsUser.Connection; mTransaction = clsUser.Transaction;
 
-                System.Data.DataTable dt = clsTerminal.ListORSeries(mclsTerminalDetails.ORSeriesBranchID, mclsTerminalDetails.ORSeriesTerminalNo);
+                System.Data.DataTable dt = clsTerminal.ListORSeries(mclsTerminalDetails.ORSeriesTerminalNo);
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     Int32 iBranchID = Int32.Parse(dr["BranchID"].ToString());
                     string stTerminalNo = dr["TerminalNo"].ToString();
 
+                    clsEvent.AddEvent("Getting Terminal Info BranchID: " + iBranchID.ToString() + " Terminalno:" + stTerminalNo, true);
+
                     mclsTerminalDetails = clsTerminal.Details(iBranchID, stTerminalNo);
                     mclsSalesTransactionDetails.CashierID = clsTerminal.getLastLoggedCashierID(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+
+                    if (mclsSalesTransactionDetails.CashierID == 0)
+                        mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag);
 
                     AccessUserDetails details = clsUser.Details(mclsSalesTransactionDetails.CashierID);
 

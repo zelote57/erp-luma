@@ -307,20 +307,20 @@ namespace AceSoft.RetailPlus.Data
 									"a.ProductID, " +
 									"ProductCode, " +
 									"VariationMatrixID, " + 
-									"c.Description AS BaseVariationDescription, " +
+									"IFNULL(c.Description, '') AS BaseVariationDescription, " +
 									"ProductUnitID, " +
 									"d.UnitCode, " +
 									"d.UnitName, " +
 									"a.StockTypeID, " +
-									"e.Description AS StockTypeDescription, " +
+                                    "IFNULL(e.Description, '') AS StockTypeDescription, " +
 									"StockDate, " +
 									"a.Quantity, " +
 									"a.Remarks, " +
                                     "a.PurchasePrice " +
-								"FROM (((tblStockItems a " +
-								    "LEFT OUTER JOIN tblProducts b ON a.ProductID = b.ProductID) " +
-								    "LEFT OUTER JOIN tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID) " +  
-								    "LEFT OUTER JOIN tblUnit d ON a.ProductUnitID = d.UnitID) " +
+								"FROM tblStockItems a " +
+								    "LEFT OUTER JOIN tblProducts b ON a.ProductID = b.ProductID " +
+								    "LEFT OUTER JOIN tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID " +  
+								    "LEFT OUTER JOIN tblUnit d ON a.ProductUnitID = d.UnitID " +
 								    "LEFT OUTER JOIN tblStockType e ON a.StockTypeID = e.StockTypeID " +
 								"WHERE 1=1 ";
 			return stSQL;

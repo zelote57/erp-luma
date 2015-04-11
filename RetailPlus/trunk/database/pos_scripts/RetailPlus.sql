@@ -9057,7 +9057,7 @@ UPDATE sysAccessTypes SET SequenceNo = 7, Category = '04: Backend - MasterFiles'
 --		true	- will refetch then recompute
 --		false	- will not refetch
 DELETE FROM sysConfig WHERE ConfigName = 'EnablePriceLevel';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLevel',	'FE', 'true');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLevel',	'FE', 'false');
 
 
 /*********************************  v_4.0.1.37.sql END  *******************************************************/ 
@@ -9110,11 +9110,19 @@ UPDATE tblTerminalReport SET ORSeriesTerminalNo = TerminalNo;
 UPDATE tblTerminalReportHistory SET ORSeriesTerminalNo = TerminalNo;
 --	   HP : UPDATE tblTerminal SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
 --	   HP : UPDATE tblTerminalReport SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+--	   HP : UPDATE tblTerminalReport SET EndingORNo = '00000000059031' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+
 
 
 /*********************************  v_4.0.1.38.sql END  *******************************************************/ 
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.39';
+
+-- 07Apr2015 : CashierReports.GeneratePLUReport add new line so that those products without OrderSlipPrinter will be defaulted to OrderSlipPrinter1
+UPDATE tblTerminal SET DBVersion = '4.0.1.40';
+
+
+
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

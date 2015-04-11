@@ -177,7 +177,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 //if (holderTagPrice.Visible)
                 //{
                 string strUnitCode = lblProductUnitCode.Text.ToUpper();
-                decimal iQty = decimal.TryParse(lblQuantity.Text, out iQty) ? iQty : 1;
                 switch (strUnitCode)
                 {
                     case "CAN":
@@ -190,7 +189,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                     case "BOTTLE": 
                     case "PACK":
                     case "BNDL":
-                        txtTagPriceCount.Text = iQty.ToString("#,##0");break;
+
+                        decimal iQty = decimal.TryParse(lblQuantity.Text, out iQty) ? iQty : 1;
+
+                        int iQuotient, iRemainder;
+                        iQuotient = Math.DivRem(Convert.ToInt32(Math.Floor(iQty)), 2, out iRemainder);
+
+                        txtTagPriceCount.Text = (iRemainder == 1 ? (iQuotient + 1) : iQuotient).ToString("#,##0");break;
                     default:
                         txtTagPriceCount.Text = "1"; break;
                 }

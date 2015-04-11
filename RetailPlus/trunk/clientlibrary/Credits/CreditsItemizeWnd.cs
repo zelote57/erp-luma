@@ -72,7 +72,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private PaymentTypes mPaymentType = PaymentTypes.NotYetAssigned;
+        private PaymentTypes mPaymentType;
         public PaymentTypes PaymentType
         {
             get

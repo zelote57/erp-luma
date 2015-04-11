@@ -11278,6 +11278,7 @@ namespace RetailPlus.Datasets {
                 this.columnStockID.AllowDBNull = false;
                 this.columnProductCode.AllowDBNull = false;
                 this.columnBaseVariationDescription.AllowDBNull = false;
+                this.columnBaseVariationDescription.DefaultValue = ((string)(""));
                 this.columnUnitCode.AllowDBNull = false;
                 this.columnUnitName.AllowDBNull = false;
                 this.columnStockDate.AllowDBNull = false;

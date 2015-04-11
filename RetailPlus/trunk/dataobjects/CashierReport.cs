@@ -1251,7 +1251,9 @@ namespace AceSoft.RetailPlus.Data
                                     "AND CashierName = @CashierName " +
                                     "AND (TransactionStatus = @TransactionStatusClosed " +
                                         "OR TransactionStatus = @TransactionStatusReprinted " +
-                                        "OR TransactionStatus = @TransactionStatusRefund) " +
+                                        "OR TransactionStatus = @TransactionStatusRefund " +
+                                        "OR TransactionStatus = @TransactionStatusClosedWalkIn " +
+                                        "OR TransactionStatus = @TransactionStatusClosedWalkInRefund) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo) " +
                                     "GROUP BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) ORDER BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductCode ASC, ProductGroup";
 
@@ -1268,7 +1270,9 @@ namespace AceSoft.RetailPlus.Data
                                     "AND CashierName = @CashierName " +
                                     "AND (TransactionStatus = @TransactionStatusClosed " +
                                         "OR TransactionStatus = @TransactionStatusReprinted " +
-                                        "OR TransactionStatus = @TransactionStatusRefund) " +
+                                        "OR TransactionStatus = @TransactionStatusRefund " +
+                                        "OR TransactionStatus = @TransactionStatusClosedWalkIn " +
+                                        "OR TransactionStatus = @TransactionStatusClosedWalkInRefund) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo) " +
                                     "GROUP BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductGroup " +
                                     "ORDER BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductGroup ASC ";
@@ -1283,6 +1287,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@TransactionStatusVoid", (Int16)TransactionStatus.Void);
                 cmd.Parameters.AddWithValue("@TransactionStatusReprinted", (Int16)TransactionStatus.Reprinted);
                 cmd.Parameters.AddWithValue("@TransactionStatusRefund", (Int16)TransactionStatus.Refund);
+                cmd.Parameters.AddWithValue("@TransactionStatusClosedWalkIn", (Int16)TransactionStatus.ClosedWalkIn);
+                cmd.Parameters.AddWithValue("@TransactionStatusClosedWalkInRefund", (Int16)TransactionStatus.ClosedWalkInRefund);
 
 				cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
@@ -1323,6 +1329,9 @@ namespace AceSoft.RetailPlus.Data
                     bool boOrderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
                     bool boOrderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
                     bool boOrderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
+
+                    // 07Apr2015 : Add this so that those products without OrderSlipPrinter will be defaulted to OrderSlipPrinter1
+                    if (!boOrderSlipPrinter1 && !boOrderSlipPrinter2 && !boOrderSlipPrinter3 && !boOrderSlipPrinter4 && !boOrderSlipPrinter5) boOrderSlipPrinter1 = true;
 
                     clsPLUReportDetails = new PLUReportDetails();
                     clsPLUReportDetails.BranchDetails = new BranchDetails {

@@ -45,11 +45,11 @@ namespace Test
                 //AceSoft.ThermalBarCodePrinter clsThermalBarCodePrinter3 = new AceSoft.ThermalBarCodePrinter();
                 //clsThermalBarCodePrinter3.PrintTagPrice(prdcode, barcode, Convert.ToDecimal(price).ToString("#,##0.#0"));
 
-                //acesoft.thermalbarcodeprinter clsthermalbarcodeprinter3 = new acesoft.thermalbarcodeprinter();
-                //clsthermalbarcodeprinter3.printshelvestag(prdcode, barcode, convert.todecimal(price).tostring("#,##0.#0"));
-
                 AceSoft.ThermalBarCodePrinter clsThermalBarCodePrinter3 = new AceSoft.ThermalBarCodePrinter();
-                clsThermalBarCodePrinter3.PrintUserAccess("Lemuel E. Aceron", "lemuel|80");
+                clsThermalBarCodePrinter3.PrintShelvesTag(prdcode, barcode, Convert.ToDecimal(price).ToString("#,##0.#0"));
+
+                //AceSoft.ThermalBarCodePrinter clsThermalBarCodePrinter3 = new AceSoft.ThermalBarCodePrinter();
+                //clsThermalBarCodePrinter3.PrintUserAccess("Lemuel E. Aceron", "lemuel|80");
 
                 Console.WriteLine("printed.");
             }

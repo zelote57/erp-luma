@@ -1077,7 +1077,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public System.Data.DataTable ListORSeries(Int32 ORSeriesBranchID, string ORSeriesTerminalNo, string SortField = "TerminalNo", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListORSeries(string ORSeriesTerminalNo, string SortField = "TerminalNo", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             try
             {
@@ -1086,9 +1086,8 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = SQLSelect();
 
-                SQL += "WHERE ORSeriesBranchID = @ORSeriesBranchID AND ORSeriesTerminalNo = @ORSeriesTerminalNo ";
+                SQL += "WHERE ORSeriesTerminalNo = @ORSeriesTerminalNo ";
 
-                cmd.Parameters.AddWithValue("@ORSeriesBranchID", ORSeriesBranchID);
                 cmd.Parameters.AddWithValue("@ORSeriesTerminalNo", ORSeriesTerminalNo);
 
                 SQL += "ORDER BY " + SortField + " ";

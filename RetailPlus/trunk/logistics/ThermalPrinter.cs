@@ -79,9 +79,9 @@ namespace AceSoft
             // y        16points = 1.5 mm  
             // height   36points = 4.5 mm
             if (strProductCode.Length > 28)
-                TSCLIB_DLL.windowsfont(4, 4, 40, 0, 2, 0, "ARIAL NARROW", strProductCode);  //Draw Product Code
+                TSCLIB_DLL.windowsfont(12, 4, 40, 0, 2, 0, "ARIAL NARROW", strProductCode);  //Draw Product Code
             else
-                TSCLIB_DLL.windowsfont(4, 4, 40, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
+                TSCLIB_DLL.windowsfont(12, 4, 40, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
 
             // y        48points = 6.0 mm   (coz above 4 + 40 + 4 = 48)
             // height   24points = 3.0 mm
@@ -94,7 +94,7 @@ namespace AceSoft
             int iPriceFontHeight = 120;
             int iPriceLeft = 328;
             // overwride if price is too big
-            if (strPrice.Length > 6) { iPriceLeft = 296; iPriceFontHeight = 80; }
+            if (strPrice.Length >= 6) { iPriceLeft = 296; iPriceFontHeight = 80; }
 
             // y        84points = 4 mm  same as barcode
             // height   80points = 10.0 mm

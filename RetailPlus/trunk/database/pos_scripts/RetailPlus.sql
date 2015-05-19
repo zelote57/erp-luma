@@ -9110,6 +9110,8 @@ UPDATE tblTerminalReport SET ORSeriesTerminalNo = TerminalNo;
 UPDATE tblTerminalReportHistory SET ORSeriesTerminalNo = TerminalNo;
 --	   HP : UPDATE tblTerminal SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
 --	   HP : UPDATE tblTerminalReport SET ORSeriesTerminalNo = '03' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+--	   HP : UPDATE tblTerminal SET ORSeriesBranchID = 1 WHERE TerminalNo >= 3 AND TerminalNo <= 22;
+--	   HP : UPDATE tblTerminalReport SET ORSeriesBranchID = 1 WHERE TerminalNo >= 3 AND TerminalNo <= 22;
 --	   HP : UPDATE tblTerminalReport SET EndingORNo = '00000000059031' WHERE TerminalNo >= 3 AND TerminalNo <= 22;
 
 
@@ -9121,8 +9123,30 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.39';
 -- 07Apr2015 : CashierReports.GeneratePLUReport add new line so that those products without OrderSlipPrinter will be defaulted to OrderSlipPrinter1
 UPDATE tblTerminal SET DBVersion = '4.0.1.40';
 
+-- 15Apr2015 : Add FirstPayment of the billingperiod
+ALTER TABLE tblContactCreditCardInfo ADD FirstPaymentDateBillPeriod DATE DEFAULT '1900-01-01';
 
+/*********************************  v_4.0.1.40.sql END  *******************************************************/ 
 
+UPDATE tblTerminal SET DBVersion = '4.0.1.41';
+
+-- 21Apr2015 : Fix bug when no items is punched and customer select is done first.
+
+ALTER TABLE tblCreditBillHeader MODIFY CreditLimit				  decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY RunningCreditAmt           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrMonthCreditAmt         decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrMonthAmountPaid        decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY TotalBillCharges           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrentDueAmount           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY MinimumAmountDue           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev1MoCurrentDueAmount    decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev1MoMinimumAmountDue    decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev1MoCurrMonthAmountPaid decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev2MoCurrentDueAmount    decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrentPurchaseAmt         decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY BeginningBalance           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY EndingBalance              decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillDetail MODIFY Amount				      decimal(18,2) not null default 0;
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

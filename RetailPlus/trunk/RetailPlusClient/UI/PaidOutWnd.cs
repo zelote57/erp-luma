@@ -434,7 +434,12 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsPaidOutDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
                 mclsPaidOutDetails.CashierID = mCashierID;
 
+                // boRetValue = true;
+                // 15Apr2015 No need to check for this coz Disburse is based on actual cash.
+
                 Data.CashierReports clsCashierReport = new Data.CashierReports();
+                Data.TerminalReport clsTerminalReport = new Data.TerminalReport(clsCashierReport.Connection, clsCashierReport.Transaction);
+                clsTerminalReport.SyncTransactionSales(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
                 if (!clsCashierReport.IsPaidOutAmountValid(mclsPaidOutDetails))
                 {
                     MessageBox.Show("Sorry, the amount you entered is greater than the " + cboType.Text + " sales." +

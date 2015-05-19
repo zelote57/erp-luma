@@ -433,6 +433,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsDisburseDetails.Remarks = txtRemarks.Text;
 
                 Data.CashierReports clsCashierReport = new Data.CashierReports();
+                Data.TerminalReport clsTerminalReport = new Data.TerminalReport(clsCashierReport.Connection, clsCashierReport.Transaction);
+                clsTerminalReport.SyncTransactionSales(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
                 if (!clsCashierReport.IsDisburseAmountValid(mclsDisburseDetails))
                 {
                     MessageBox.Show("Sorry, the amount you entered is greater than the " + cboType.Text + " sales." +

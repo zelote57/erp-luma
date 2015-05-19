@@ -448,6 +448,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsPaidOutDetails.CashierID = mCashierID;
 
                 Data.CashierReports clsCashierReport = new Data.CashierReports();
+                Data.TerminalReport clsTerminalReport = new Data.TerminalReport(clsCashierReport.Connection, clsCashierReport.Transaction);
+                clsTerminalReport.SyncTransactionSales(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
                 if (!clsCashierReport.IsPaidOutAmountValid(mclsPaidOutDetails))
                 {
                     MessageBox.Show("Sorry, the amount you entered is greater than the " + cboType.Text + " sales." +

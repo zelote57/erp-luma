@@ -214,6 +214,25 @@ BEGIN
 				SELECT * FROM tblCreditBillDetail;
 			END IF;
 
+			-- 15Apr2015 : Update the first date wherein the customer has paid.
+			--			 : If the customer has paid after the DueDate, LatePayment will apply
+			UPDATE tblContactCreditCardInfo SET FirstPaymentDateBillPeriod = '1900-01-01' WHERE CreditCardTypeID= intCardTypeID;
+
+			UPDATE tblContactCreditCardInfo
+			INNER JOIN 
+				(
+					SELECT Trx.CustomerID, MIN(Trx.TransactionDate) TransactionDate
+					FROM tblTransactions Trx 
+						INNER JOIN tblTransactionItems TrxD ON Trx.TransactionID = TrxD.TransactionID
+					WHERE TrxD.ProductCode = 'CREDIT PAYMENT'
+						AND TransactionStatus = 7 -- creditPaymentStatus
+						AND CONVERT(Trx.TransactionDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess
+					GROUP BY Trx.CustomerID
+				) Trx
+			SET tblContactCreditCardInfo.FirstPaymentDateBillPeriod = TransactionDate
+			WHERE Trx.CustomerID = tblContactCreditCardInfo.CustomerID 
+				AND CreditCardTypeID = intCardTypeID;
+
 			/** end-Put the credit details for each contacts *****/
 
 			/** Update the header with the details *****/
@@ -253,16 +272,18 @@ BEGIN
 
 			/***********INSERT THE CCI LATE PAYMENT CHARGE**************/
 			-- update the TransactionRefID to be use for saving to tblTransactions
+			-- 15Apr2015 : use DateResumed as container of FirstPaymentDateBillPeriod
+
 			INSERT INTO tblTransactions (	 TransactionNo, BranchID, BranchCode, CustomerID, CustomerName
 											,AgentID, AgentName, CreatedByID, CreatedByName, CashierID, CashierName
 											,TerminalNo, TransactionDate, TransactionStatus
 											,WaiterID, WaiterName ,AgentPositionName, AgentDepartmentName
-											,SubTotal ,AmountPaid ,CreditPayment ,PaymentType ,DateClosed, Datasource)
+											,SubTotal ,AmountPaid ,CreditPayment ,PaymentType ,DateClosed, DateResumed, Datasource)
 			SELECT LPAD(TransactionNo + rownum,14,'0'), 1, 'Main', CBH.ContactID ,CBH.ContactName 
 							,1 ,'RetailPlus Agent' ,1 ,'Credit Bill' ,1 ,CONCAT(strCreatedByName,'-LPC')
 							,'00' ,dteBillingDate ,1
 							,2 ,'System Credit Bill' ,'Credit Bill Position' ,'Credit Bill Dept.'
-							,CBH.LatePaymentChargeAmt ,CBH.LatePaymentChargeAmt ,CBH.LatePaymentChargeAmt ,5 ,dteBillingDate, CONCAT('CreditBillerLPC:', lngCreditBillID)
+							,CBH.LatePaymentChargeAmt ,CBH.LatePaymentChargeAmt ,CBH.LatePaymentChargeAmt ,5 ,dteBillingDate, FirstPaymentDateBillPeriod, CONCAT('CreditBillerLPC:', lngCreditBillID)
 			FROM (
 				SELECT @rownum:=@rownum+1 AS rownum, CBH.*
 				FROM (
@@ -271,9 +292,12 @@ BEGIN
 								Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
 							  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
 						 END AS LatePaymentChargeAmt
+						,CCI.FirstPaymentDateBillPeriod
 					FROM tblCreditBillHeader CBH 
 					INNER JOIN tblContacts CON ON CBH.ContactID = CON.ContactID
-					WHERE CBH.CreditBillID = lngCreditBillID AND (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) > 0 AND CurrMonthAmountPaid = 0
+					INNER JOIN tblContactCreditCardInfo CCI ON CCI.CustomerID = CON.ContactID
+					WHERE CBH.CreditBillID = lngCreditBillID AND (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) > 0 AND (CurrMonthAmountPaid = 0 OR CCI.FirstPaymentDateBillPeriod > dteCreditPaymentDueDate)
+					-- 13April2015 include first payment date so use OR
 			) CBH, (SELECT @rownum:=0) r) CBH, (SELECT MAX(TransactionNo) TransactionNo  FROM tblTransactions) r;
 
 			-- insert the late payment Charges FOR bills that did not pay for the 1 month.
@@ -294,7 +318,10 @@ BEGIN
 														   AND CONVERT(TRX.TransactionDate, DATE) = dteBillingDate
 														   AND TRX.CashierName = CONCAT(strCreatedByName,'-LPC')
 														   AND TRX.Datasource = CONCAT('CreditBillerLPC:', lngCreditBillID)
-			WHERE CBH.CreditBillID = lngCreditBillID AND (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) > 0 AND CurrMonthAmountPaid = 0;
+			WHERE CBH.CreditBillID = lngCreditBillID AND (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) > 0 
+				AND (CurrMonthAmountPaid = 0 OR TRX.DateResumed > dteCreditPaymentDueDate);
+			-- 13April2015 include first payment date so use OR
+
 
 			-- insert the transactionitems
 			INSERT INTO tblTransactionItems(TransactionID, ProductID, ProductCode, BarCode, Description, 

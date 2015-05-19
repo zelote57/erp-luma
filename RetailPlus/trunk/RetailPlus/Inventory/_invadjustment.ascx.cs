@@ -261,7 +261,7 @@ namespace AceSoft.RetailPlus.Inventory
             cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));
 
             string strproductcode = string.Empty;
-            try { strproductcode = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID); }
+            try { strproductcode = Server.UrlDecode(Common.Decrypt(Server.UrlDecode(Request.QueryString["productcode"].ToString()), Session.SessionID)); }
             catch { }
 
             if (strproductcode == string.Empty)

@@ -88,9 +88,9 @@ namespace AceSoft.RetailPlus.Reports
                 try
                 {
                     if (Request.QueryString["sender"].ToString().ToLower() == "direct" && Request.QueryString["productcode"].ToString() != null)
-                        strProductCode = Request.QueryString["productcode"].ToString();
+                        strProductCode = Server.UrlDecode(Request.QueryString["productcode"].ToString());
                 }
-                catch { strProductCode = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID); }
+                catch { strProductCode = Server.UrlDecode(Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID)); }
                 lblReferrer.ToolTip = strProductCode;
             }
             catch { strProductCode = lblReferrer.ToolTip; }

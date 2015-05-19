@@ -57,6 +57,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdGenerateCustomerCode;
         private Label label13;
         private TextBox txtPriceLevel;
+        private Label label14;
+        private ComboBox cboGroup;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -137,6 +139,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cboGroup = new System.Windows.Forms.ComboBox();
+            this.txtPriceLevel = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.cmdGenerateCustomerCode = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.txtLTONo = new System.Windows.Forms.TextBox();
@@ -170,8 +176,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCreditLimit = new System.Windows.Forms.TextBox();
-            this.txtPriceLevel = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -202,6 +206,8 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.cboGroup);
             this.groupBox1.Controls.Add(this.txtPriceLevel);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.cmdGenerateCustomerCode);
@@ -229,6 +235,52 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contact Details";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label14.Location = new System.Drawing.Point(73, 149);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(78, 13);
+            this.label14.TabIndex = 30;
+            this.label14.Text = "Select group";
+            // 
+            // cboGroup
+            // 
+            this.cboGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboGroup.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboGroup.Location = new System.Drawing.Point(114, 167);
+            this.cboGroup.Name = "cboGroup";
+            this.cboGroup.Size = new System.Drawing.Size(205, 27);
+            this.cboGroup.TabIndex = 7;
+            // 
+            // txtPriceLevel
+            // 
+            this.txtPriceLevel.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtPriceLevel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPriceLevel.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPriceLevel.Location = new System.Drawing.Point(114, 246);
+            this.txtPriceLevel.MaxLength = 75;
+            this.txtPriceLevel.Name = "txtPriceLevel";
+            this.txtPriceLevel.ReadOnly = true;
+            this.txtPriceLevel.Size = new System.Drawing.Size(201, 30);
+            this.txtPriceLevel.TabIndex = 18;
+            this.txtPriceLevel.TabStop = false;
+            this.txtPriceLevel.Text = "SRP";
+            this.txtPriceLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label13.Location = new System.Drawing.Point(73, 231);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(68, 13);
+            this.label13.TabIndex = 19;
+            this.label13.Text = "Price Level";
             // 
             // cmdGenerateCustomerCode
             // 
@@ -288,7 +340,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label16.Location = new System.Drawing.Point(71, 229);
+            this.label16.Location = new System.Drawing.Point(349, 228);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(58, 13);
             this.label16.TabIndex = 24;
@@ -298,12 +350,12 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemarks.Location = new System.Drawing.Point(114, 247);
+            this.txtRemarks.Location = new System.Drawing.Point(392, 246);
             this.txtRemarks.MaxLength = 150;
             this.txtRemarks.Multiline = true;
             this.txtRemarks.Name = "txtRemarks";
-            this.txtRemarks.Size = new System.Drawing.Size(887, 49);
-            this.txtRemarks.TabIndex = 8;
+            this.txtRemarks.Size = new System.Drawing.Size(609, 49);
+            this.txtRemarks.TabIndex = 9;
             // 
             // label10
             // 
@@ -375,7 +427,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label1.Location = new System.Drawing.Point(71, 152);
+            this.label1.Location = new System.Drawing.Point(349, 149);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(183, 13);
             this.label1.TabIndex = 6;
@@ -385,12 +437,12 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAddress.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddress.Location = new System.Drawing.Point(114, 170);
+            this.txtAddress.Location = new System.Drawing.Point(392, 167);
             this.txtAddress.MaxLength = 150;
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(588, 48);
-            this.txtAddress.TabIndex = 7;
+            this.txtAddress.Size = new System.Drawing.Size(609, 48);
+            this.txtAddress.TabIndex = 8;
             this.txtAddress.GotFocus += new System.EventHandler(this.txtAddress_GotFocus);
             // 
             // lblCaption
@@ -425,7 +477,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.Location = new System.Drawing.Point(765, 618);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(106, 83);
-            this.cmdCancel.TabIndex = 14;
+            this.cmdCancel.TabIndex = 15;
             this.cmdCancel.Text = "CANCEL";
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
@@ -440,7 +492,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.Location = new System.Drawing.Point(877, 618);
             this.cmdEnter.Name = "cmdEnter";
             this.cmdEnter.Size = new System.Drawing.Size(106, 83);
-            this.cmdEnter.TabIndex = 13;
+            this.cmdEnter.TabIndex = 14;
             this.cmdEnter.Text = "ENTER";
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
@@ -489,7 +541,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.chkIsCreditAllowed.Location = new System.Drawing.Point(688, 136);
             this.chkIsCreditAllowed.Name = "chkIsCreditAllowed";
             this.chkIsCreditAllowed.Size = new System.Drawing.Size(240, 30);
-            this.chkIsCreditAllowed.TabIndex = 12;
+            this.chkIsCreditAllowed.TabIndex = 13;
             this.chkIsCreditAllowed.Text = "( If uncheck credit will not be allowed \r\n  even if he/she has available credit b" +
     "alance)";
             this.chkIsCreditAllowed.UseVisualStyleBackColor = true;
@@ -523,7 +575,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cboTerms.Location = new System.Drawing.Point(443, 136);
             this.cboTerms.Name = "cboTerms";
             this.cboTerms.Size = new System.Drawing.Size(185, 31);
-            this.cboTerms.TabIndex = 11;
+            this.cboTerms.TabIndex = 12;
             // 
             // label8
             // 
@@ -545,7 +597,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTerms.MaxLength = 75;
             this.txtTerms.Name = "txtTerms";
             this.txtTerms.Size = new System.Drawing.Size(257, 30);
-            this.txtTerms.TabIndex = 10;
+            this.txtTerms.TabIndex = 11;
             this.txtTerms.Text = "0";
             this.txtTerms.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtTerms.GotFocus += new System.EventHandler(this.txtTerms_GotFocus);
@@ -624,37 +676,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit.MaxLength = 75;
             this.txtCreditLimit.Name = "txtCreditLimit";
             this.txtCreditLimit.Size = new System.Drawing.Size(257, 30);
-            this.txtCreditLimit.TabIndex = 9;
+            this.txtCreditLimit.TabIndex = 10;
             this.txtCreditLimit.Text = "0.00";
             this.txtCreditLimit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtCreditLimit.GotFocus += new System.EventHandler(this.txtCreditLimit_GotFocus);
             this.txtCreditLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCreditLimit_KeyPress);
-            // 
-            // txtPriceLevel
-            // 
-            this.txtPriceLevel.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtPriceLevel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPriceLevel.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPriceLevel.Location = new System.Drawing.Point(771, 167);
-            this.txtPriceLevel.MaxLength = 75;
-            this.txtPriceLevel.Name = "txtPriceLevel";
-            this.txtPriceLevel.ReadOnly = true;
-            this.txtPriceLevel.Size = new System.Drawing.Size(230, 30);
-            this.txtPriceLevel.TabIndex = 18;
-            this.txtPriceLevel.TabStop = false;
-            this.txtPriceLevel.Text = "SRP";
-            this.txtPriceLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label13.Location = new System.Drawing.Point(730, 152);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(68, 13);
-            this.label13.TabIndex = 19;
-            this.label13.Text = "Price Level";
             // 
             // ContactAddWnd
             // 
@@ -871,6 +897,23 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             cboTerms.SelectedIndex = 0;
 
+            Data.ContactGroups clsContactGroups = new Data.ContactGroups();
+            System.Data.DataTable dtContactGroups = clsContactGroups.ListAsDataTable(Data.ContactGroupCategory.CUSTOMER);
+            clsContactGroups.CommitAndDispose();
+
+            bool boContactGroup = false;
+            cboGroup.Items.Clear();
+            foreach (System.Data.DataRow dr in dtContactGroups.Rows)
+            {
+                cboGroup.Items.Add(dr["ContactGroupName"].ToString());
+                if (mContactDetails.ContactGroupName == dr["ContactGroupName"].ToString())
+                {
+                    cboGroup.SelectedIndex = cboGroup.Items.Count - 1; boContactGroup = true;
+                }
+            }
+
+            if (!boContactGroup) cboGroup.SelectedIndex = 0;
+
             if (mContactDetails.ContactID != 0)
             {
                 txtContactCode.Text = mContactDetails.ContactCode;
@@ -925,7 +968,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsDetails.Terms = int.Parse(txtTerms.Text);
                 clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboTerms.SelectedItem.ToString());
 
+
                 Data.Contacts clsContact = new Data.Contacts();
+                Data.ContactGroups clsContactGroups = new Data.ContactGroups(clsContact.Connection, clsContact.Transaction);
+                clsDetails.ContactGroupID = clsContactGroups.DetailsByName(cboGroup.SelectedItem.ToString()).ContactGroupID;
+                
                 if (mContactDetails.ContactID == 0)
                 {
                     if (mstCaption == "Please enter customer name for deposit.")
@@ -935,14 +982,12 @@ namespace AceSoft.RetailPlus.Client.UI
                     else if (mContactDetails.ContactID == 0) // means not edit
                     { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
 
-                    clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
                     clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
                     clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
                     clsDetails.ContactID = clsContact.Insert(clsDetails);
                 }
                 else
                 {
-                    clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
                     clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
                     clsContact.Update(clsDetails);
                 }

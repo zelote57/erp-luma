@@ -45,6 +45,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Timer tmrSearch;
         private Label lblProductCode;
         private Label lblProductQuantity;
+        private DataGridView dgvItemsPerBranch;
+        private Label lblQuantityPerBranch2;
+        private Label lblQuantityPerBranch3;
+        private Label lblQuantityPerBranch1;
         private System.ComponentModel.IContainer components;
 
 		public DialogResult Result
@@ -138,6 +142,9 @@ namespace AceSoft.RetailPlus.Client.UI
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblHeader = new System.Windows.Forms.Label();
             this.dgItems = new System.Windows.Forms.DataGrid();
@@ -162,14 +169,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.WSPrice = new System.Windows.Forms.DataGridTextBoxColumn();
             this.VAT = new System.Windows.Forms.DataGridTextBoxColumn();
             this.LocalTax = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
             this.MinThreshold = new System.Windows.Forms.DataGridTextBoxColumn();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.tmrSearch = new System.Windows.Forms.Timer(this.components);
             this.lblProductCode = new System.Windows.Forms.Label();
             this.lblProductQuantity = new System.Windows.Forms.Label();
+            this.dgvItemsPerBranch = new System.Windows.Forms.DataGridView();
+            this.lblQuantityPerBranch2 = new System.Windows.Forms.Label();
+            this.lblQuantityPerBranch3 = new System.Windows.Forms.Label();
+            this.lblQuantityPerBranch1 = new System.Windows.Forms.Label();
+            this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItemsPerBranch)).BeginInit();
             this.SuspendLayout();
             // 
             // txtSearch
@@ -460,17 +472,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.LocalTax.ReadOnly = true;
             this.LocalTax.Width = 0;
             // 
-            // Quantity
-            // 
-            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Quantity.Format = "";
-            this.Quantity.FormatInfo = null;
-            this.Quantity.HeaderText = "Qty";
-            this.Quantity.MappingName = "Quantity";
-            this.Quantity.NullText = "0";
-            this.Quantity.ReadOnly = true;
-            this.Quantity.Width = 0;
-            // 
             // MinThreshold
             // 
             this.MinThreshold.Format = "";
@@ -519,12 +520,105 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblProductQuantity.TabIndex = 81;
             this.lblProductQuantity.Text = "0.00";
             // 
+            // dgvItemsPerBranch
+            // 
+            this.dgvItemsPerBranch.AllowUserToAddRows = false;
+            this.dgvItemsPerBranch.AllowUserToDeleteRows = false;
+            this.dgvItemsPerBranch.AllowUserToResizeColumns = false;
+            this.dgvItemsPerBranch.AllowUserToResizeRows = false;
+            this.dgvItemsPerBranch.BackgroundColor = System.Drawing.Color.White;
+            this.dgvItemsPerBranch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvItemsPerBranch.CausesValidation = false;
+            this.dgvItemsPerBranch.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvItemsPerBranch.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItemsPerBranch.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvItemsPerBranch.ColumnHeadersHeight = 24;
+            this.dgvItemsPerBranch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvItemsPerBranch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvItemsPerBranch.GridColor = System.Drawing.Color.White;
+            this.dgvItemsPerBranch.Location = new System.Drawing.Point(469, 60);
+            this.dgvItemsPerBranch.Name = "dgvItemsPerBranch";
+            this.dgvItemsPerBranch.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItemsPerBranch.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvItemsPerBranch.RowHeadersVisible = false;
+            this.dgvItemsPerBranch.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItemsPerBranch.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvItemsPerBranch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvItemsPerBranch.Size = new System.Drawing.Size(335, 225);
+            this.dgvItemsPerBranch.StandardTab = true;
+            this.dgvItemsPerBranch.TabIndex = 82;
+            this.dgvItemsPerBranch.Visible = false;
+            // 
+            // lblQuantityPerBranch2
+            // 
+            this.lblQuantityPerBranch2.AutoSize = true;
+            this.lblQuantityPerBranch2.BackColor = System.Drawing.Color.Transparent;
+            this.lblQuantityPerBranch2.ForeColor = System.Drawing.Color.Red;
+            this.lblQuantityPerBranch2.Location = new System.Drawing.Point(782, 9);
+            this.lblQuantityPerBranch2.Name = "lblQuantityPerBranch2";
+            this.lblQuantityPerBranch2.Size = new System.Drawing.Size(27, 13);
+            this.lblQuantityPerBranch2.TabIndex = 115;
+            this.lblQuantityPerBranch2.Text = "[F5]";
+            // 
+            // lblQuantityPerBranch3
+            // 
+            this.lblQuantityPerBranch3.AutoSize = true;
+            this.lblQuantityPerBranch3.BackColor = System.Drawing.Color.Transparent;
+            this.lblQuantityPerBranch3.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblQuantityPerBranch3.Location = new System.Drawing.Point(807, 9);
+            this.lblQuantityPerBranch3.Name = "lblQuantityPerBranch3";
+            this.lblQuantityPerBranch3.Size = new System.Drawing.Size(146, 13);
+            this.lblQuantityPerBranch3.TabIndex = 114;
+            this.lblQuantityPerBranch3.Text = " to show quantity per branch";
+            // 
+            // lblQuantityPerBranch1
+            // 
+            this.lblQuantityPerBranch1.AutoSize = true;
+            this.lblQuantityPerBranch1.BackColor = System.Drawing.Color.Transparent;
+            this.lblQuantityPerBranch1.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblQuantityPerBranch1.Location = new System.Drawing.Point(751, 9);
+            this.lblQuantityPerBranch1.Name = "lblQuantityPerBranch1";
+            this.lblQuantityPerBranch1.Size = new System.Drawing.Size(33, 13);
+            this.lblQuantityPerBranch1.TabIndex = 113;
+            this.lblQuantityPerBranch1.Text = "Press";
+            // 
+            // Quantity
+            // 
+            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Quantity.Format = "";
+            this.Quantity.FormatInfo = null;
+            this.Quantity.HeaderText = "Qty";
+            this.Quantity.MappingName = "Quantity";
+            this.Quantity.NullText = "0";
+            this.Quantity.ReadOnly = true;
+            this.Quantity.Width = 0;
+            // 
             // ItemSelectWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.lblQuantityPerBranch2);
+            this.Controls.Add(this.lblQuantityPerBranch3);
+            this.Controls.Add(this.lblQuantityPerBranch1);
+            this.Controls.Add(this.dgvItemsPerBranch);
             this.Controls.Add(this.lblProductQuantity);
             this.Controls.Add(this.lblProductCode);
             this.Controls.Add(this.dgItems);
@@ -543,6 +637,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Resize += new System.EventHandler(this.ItemSelectWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItemsPerBranch)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -559,8 +654,15 @@ namespace AceSoft.RetailPlus.Client.UI
 			switch (e.KeyData)
 			{
 				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
+                    if (dgvItemsPerBranch.Visible)
+                    {
+                        dgvItemsPerBranch.Visible = false;
+                    }
+                    else
+                    {
+                        dialog = DialogResult.Cancel;
+                        this.Hide();
+                    }
 					break;
 
 				case Keys.Enter:
@@ -577,7 +679,12 @@ namespace AceSoft.RetailPlus.Client.UI
                     this.Hide();
 					break;
 
+                case Keys.F5:
+                    ShowProductPerBranchQuantity();
+                    break;
+
                 case Keys.Up:
+                    dgvItemsPerBranch.Visible = false;
                     dt = (System.Data.DataTable)dgItems.DataSource;
                     if (dgItems.CurrentRowIndex > 0)
                     {
@@ -590,6 +697,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.Down:
+                    dgvItemsPerBranch.Visible = false;
                     dt = (System.Data.DataTable)dgItems.DataSource;
                     if (dgItems.CurrentRowIndex < dt.Rows.Count - 1)
                     {
@@ -793,6 +901,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
             lblProductCode.Text = "";
             lblProductQuantity.Text = "";
+
+            lblQuantityPerBranch1.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
+            lblQuantityPerBranch2.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
+            lblQuantityPerBranch3.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
 		}
 
 		private void LoadItemData()
@@ -810,6 +922,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				dgItems.Select(0);
 				dgItems.CurrentRowIndex=0;
 
+                dgvItemsPerBranch.Visible = false;
                 ShowProductTotalQuantity();
 			}
             catch (IndexOutOfRangeException) { lblProductCode.Visible = false; lblProductQuantity.Visible = false; }
@@ -855,6 +968,76 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     lblProductCode.Visible = false;
                     lblProductQuantity.Visible = false;
+                }
+            }
+            catch { }
+        }
+        private void ShowProductPerBranchQuantity()
+        {
+            try
+            {
+                if (mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect)
+                {
+                    if (dgItems.CurrentRowIndex < 0)
+                    {
+                        dgvItemsPerBranch.Visible = false;
+                    }
+                    else
+                    {
+                        ProductModel.ProductID = Int64.Parse(dgItems[dgItems.CurrentRowIndex, 1].ToString());
+                        ProductModel.MatrixID = Int64.Parse(dgItems[dgItems.CurrentRowIndex, 2].ToString());
+
+                        ProductInventories clsProduct = new ProductInventories();
+                        System.Data.DataTable dt = clsProduct.ListAsDataTable(ProductID: ProductModel.ProductID, MatrixID: ProductModel.MatrixID, isSummary: 0);
+                        clsProduct.CommitAndDispose();
+
+                        dgvItemsPerBranch.MultiSelect = false;
+                        dgvItemsPerBranch.AutoGenerateColumns = true;
+                        dgvItemsPerBranch.AutoSize = false;
+                        dgvItemsPerBranch.DataSource = dt.TableName;
+                        dgvItemsPerBranch.DataSource = dt;
+
+                        foreach (DataGridViewColumn dc in dgvItemsPerBranch.Columns)
+                        {
+                            dc.Visible = false;
+                        }
+
+                        dgvItemsPerBranch.Columns["BranchCode"].Visible = true;
+                        dgvItemsPerBranch.Columns["Quantity"].Visible = true;
+                        dgvItemsPerBranch.Columns["ConvertedQuantity"].Visible = true;
+
+                        dgvItemsPerBranch.Columns["BranchCode"].DisplayIndex = 0;
+                        dgvItemsPerBranch.Columns["Quantity"].DisplayIndex = 1;
+                        dgvItemsPerBranch.Columns["ConvertedQuantity"].DisplayIndex = 2;
+
+                        dgvItemsPerBranch.Columns["BranchCode"].Width = 170;
+                        dgvItemsPerBranch.Columns["Quantity"].Width = 75;
+                        dgvItemsPerBranch.Columns["ConvertedQuantity"].Width = 90;
+
+                        dgvItemsPerBranch.Columns["BranchCode"].HeaderText = "Branch";
+                        dgvItemsPerBranch.Columns["Quantity"].HeaderText = "Quantity";
+                        dgvItemsPerBranch.Columns["ConvertedQuantity"].HeaderText = "Converted Qty";
+
+                        dgvItemsPerBranch.Columns["Quantity"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvItemsPerBranch.Columns["ConvertedQuantity"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                        dgvItemsPerBranch.Columns["Quantity"].DefaultCellStyle.Format = "#,##0.#0";
+
+                        dgvItemsPerBranch.ReadOnly = true;
+
+                        dgvItemsPerBranch.Height = dt.Rows.Count * 30;
+                        dgvItemsPerBranch.Left = dgItems.Width - 480;
+                        if (dgItems.GetCurrentCellBounds().Y  >= 500)
+                            dgvItemsPerBranch.Top = dgItems.GetCurrentCellBounds().Y + 50 - dgvItemsPerBranch.Height;
+                        else
+                            dgvItemsPerBranch.Top = dgItems.GetCurrentCellBounds().Y + 105;
+
+                        dgvItemsPerBranch.Visible = true;
+                    }
+                }
+                else
+                {
+                    dgvItemsPerBranch.Visible = false;
                 }
             }
             catch { }

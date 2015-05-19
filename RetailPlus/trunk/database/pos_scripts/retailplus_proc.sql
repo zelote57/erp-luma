@@ -10230,7 +10230,7 @@ delimiter ;
 /********************************************
 	procTerminalReportHistorySyncTransactionSales
 
-	CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2014-12-01 00:00');
+	CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-03-31 20:00');
 
 	-- this must be run when version 4.0.1.1 is updated
 	-- this should be run up to the last zread to correct the grandtotals.

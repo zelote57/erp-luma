@@ -3079,8 +3079,11 @@ namespace AceSoft.RetailPlus.Client.UI
                                     }
                                 }
 
-                                dgItems.CurrentRowIndex = iOldRow;
-                                dgItems.Select(iOldRow);
+                                if (iOldRow >= 0)
+                                {
+                                    dgItems.CurrentRowIndex = iOldRow;
+                                    dgItems.Select(iOldRow);
+                                }
                                 mbodgItemRowClick = true;
                             }
                             Details = getCurrentRowItemDetails();
@@ -3161,8 +3164,11 @@ namespace AceSoft.RetailPlus.Client.UI
                                     }
 
                                 }
-                                dgItems.CurrentRowIndex = iOldRow;
-                                dgItems.Select(iOldRow);
+                                if (iOldRow >= 0)
+                                {
+                                    dgItems.CurrentRowIndex = iOldRow;
+                                    dgItems.Select(iOldRow);
+                                }
                                 mbodgItemRowClick = true;
                             }
                             Details = getCurrentRowItemDetails();
@@ -3236,8 +3242,11 @@ namespace AceSoft.RetailPlus.Client.UI
                                     }
 
                                 }
-                                dgItems.CurrentRowIndex = iOldRow;
-                                dgItems.Select(iOldRow);
+                                if (iOldRow >= 0)
+                                {
+                                    dgItems.CurrentRowIndex = iOldRow;
+                                    dgItems.Select(iOldRow);
+                                }
                                 mbodgItemRowClick = true;
                             }
                             Details = getCurrentRowItemDetails();
@@ -4007,16 +4016,20 @@ namespace AceSoft.RetailPlus.Client.UI
                                 }
                             }
 
-                            dgItems.CurrentRowIndex = iOldRow;
-                            dgItems.Select(iOldRow);
-
                             clsProductPackage.CommitAndDispose();
 
-                            Details = getCurrentRowItemDetails();
-                            DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
-                            DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
-                            InsertAuditLog(AccessTypes.ChangePrice, "Change price: change contact : for item " + Details.ProductCode + " to " + Details.Price.ToString("#,##0.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-                            mbodgItemRowClick = false;
+                            if (iOldRow >= 0)
+                            {
+                                dgItems.CurrentRowIndex = iOldRow;
+                                dgItems.Select(iOldRow);
+
+                                Details = getCurrentRowItemDetails();
+                                DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
+                                DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                                InsertAuditLog(AccessTypes.ChangePrice, "Change price: change contact : for item " + Details.ProductCode + " to " + Details.Price.ToString("#,##0.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                                mbodgItemRowClick = false;
+                            }
+                            
                             Cursor.Current = Cursors.Default;
                         }
                     }

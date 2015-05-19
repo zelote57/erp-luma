@@ -96,6 +96,9 @@ namespace AceSoft.RetailPlus.Reports
 			ReportDataset rptds = new ReportDataset();
 
 			Data.TerminalReport clsTerminalReport = new Data.TerminalReport();
+            Data.Terminal clsTerminal = new Data.Terminal(clsTerminalReport.Connection, clsTerminalReport.Transaction);
+            Data.TerminalDetails clsTerminalDetails = clsTerminal.Details(txtTerminalNo.Text);
+            clsTerminalReport.SyncTransactionSales(clsTerminalDetails.BranchDetails.BranchID, txtTerminalNo.Text);
 			System.Data.DataTable dt = clsTerminalReport.List(txtTerminalNo.Text);
 			clsTerminalReport.CommitAndDispose();
 

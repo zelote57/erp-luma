@@ -352,25 +352,25 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 case "imgInventoryAdjustmentClick":
                     lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("invadjustment", Session.SessionID) +
-                        "&productcode=" + Common.Encrypt(lnkProductCode.Text, Session.SessionID);
+                        "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam);
                     break;
                 case "imgProductHistoryClick":
                     lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("producthistory", Session.SessionID) +
-                                "&productcode=" + Common.Encrypt(lnkProductCode.Text, Session.SessionID);
+                                "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam);
                     break;
                 case "imgProductPriceHistoryClick":
                     lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("pricehistory", Session.SessionID) +
-                                "&productcode=" + Common.Encrypt(lnkProductCode.Text, Session.SessionID);
+                                "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam);
                     break;
                 case "imgChangePriceClick":
                     lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("changeprice", Session.SessionID) +
-                                "&productcode=" + Common.Encrypt(lnkProductCode.Text, Session.SessionID);
+                                "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect("Default.aspx" + stParam);
                     break;
                 case "imgFinanceClick":

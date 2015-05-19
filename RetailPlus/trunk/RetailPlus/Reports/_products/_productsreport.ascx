@@ -16,7 +16,7 @@
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap">
 									<a tabindex="2" id="idGroup" class="ms-toolbar" accesskey="N" title="Select Group"></a>
-									&nbsp;<asp:imagebutton id="imgView" ToolTip="Show Report" accesskey="V" tabIndex="1" height="16" width="16" border="0" ImageUrl="~/_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+									&nbsp;<asp:imagebutton id="imgView" ToolTip="Show Report" accesskey="V" tabIndex="1" height="16" width="16" border="0" ImageUrl="../../_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 								</td>
 								<td class="ms-toolbar" nowrap="nowrap"width="100">
 									<asp:Label id="Label2" Runat="server" text="Select Group :">Report Options</asp:Label>
@@ -60,7 +60,7 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" title="Back to previous window" accesskey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="~/_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" title="Back to previous window" accesskey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
 								<td nowrap="nowrap"><asp:linkbutton id="cmdBack" title="Back to previous window" accesskey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Back to previous window</asp:linkbutton></td>
 							</tr>
 						</table>
@@ -110,7 +110,7 @@
                                     <asp:textbox id="txtContactCode" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgContactCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand; width: 16px;" accesskey="P" 
-                                        ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
+                                        ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
                                         CausesValidation="False" onclick="imgContactCodeSearch_Click"></asp:imagebutton>
 									<label>Filter by Supplier</label>
 								</td>
@@ -130,7 +130,7 @@
                                     <asp:textbox id="txtProductGroupCode" accesskey="G" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgProductGroupCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand" accesskey="P" 
-                                        ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
+                                        ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
                                         CausesValidation="False" onclick="imgProductGroupCodeSearch_Click"></asp:imagebutton>
                                     <label>Filter by Group</label>
 								</td>
@@ -150,26 +150,27 @@
                                     <asp:textbox id="txtSubGroupCode" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgSubGroupCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand" accesskey="P" 
-                                        ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
+                                        ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
                                         CausesValidation="False" onclick="imgSubGroupCodeSearch_Click"></asp:imagebutton>
 									<label>Filter by Sub Group</label>
 								</td>
 								<td width="99%" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
-							<asp:PlaceHolder id="holderWeighted" runat="server" Visible=false>
+							<asp:PlaceHolder id="holderWeighted" runat="server" Visible="false">
 							<tr>
 								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
-									<label>Check if will Include Buying Price</label>
+									
 								<img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
 								<td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
 								<td style="HEIGHT: 15px">
 									<asp:CheckBox id="chkIncludeBuying" runat=server Checked=true text="" />
+                                    <label>Check if will Include Buying Price</label>
 								</td>
-								<td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+								<td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;&nbsp;</td>
 								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
-									<label>Check if will Include MarginCheck if will Include Buying Price</label>
+									
 								</td>
 								<td style="HEIGHT: 15px">
 									<asp:CheckBox id="chkIncludeMargin" runat=server Checked=true text="" />

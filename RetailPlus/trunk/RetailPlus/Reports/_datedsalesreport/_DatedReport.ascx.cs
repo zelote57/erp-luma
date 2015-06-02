@@ -65,12 +65,23 @@ namespace AceSoft.RetailPlus.Reports
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactions, ReportTypes.SalesTransactions));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomer, ReportTypes.SalesTransactionPerCustomer));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerPerGroup, ReportTypes.SalesTransactionPerCustomerPerGroup));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerPerGroupSummarized, ReportTypes.SalesTransactionPerCustomerPerGroupSummarized));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerWithCheque, ReportTypes.SalesTransactionPerCustomerWithCheque));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerPerItem, ReportTypes.SalesTransactionPerCustomerPerItem));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashier, ReportTypes.SalesTransactionPerCashier));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashierPerCustomer, ReportTypes.SalesTransactionPerCashierPerCustomer));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerTerminal, ReportTypes.SalesTransactionPerTerminal));
-                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerItem, ReportTypes.SalesTransactionPerItem));
+
+                if (clsAccessRights.Details(UID, (int)AccessTypes.SalesTransactionPerItem).Read)
+                {
+                    cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerItem, ReportTypes.SalesTransactionPerItem));
+                }
+                if (clsAccessRights.Details(UID, (int)AccessTypes.SalesTransactionPerItemWoutPurchaseDetails).Read)
+                {
+                    cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerItemWoutPurchaseDetails, ReportTypes.SalesTransactionPerItemWoutPurchaseDetails));
+                }
+
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
                 cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesDaily, ReportTypes.CashSalesDaily));
                 cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesMonthly, ReportTypes.CashSalesMonthly));
@@ -233,6 +244,12 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerCustomer:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomer.rpt"));
                     break;
+                case ReportTypes.SalesTransactionPerCustomerPerGroup:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomerPerGroup.rpt"));
+                    break;
+                case ReportTypes.SalesTransactionPerCustomerPerGroupSummarized:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomerPerGroupSummarized.rpt"));
+                    break;
                 case ReportTypes.SalesTransactionPerCustomerWithCheque:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomerWithCheque.rpt"));
                     break;
@@ -250,6 +267,9 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.SalesTransactionPerItem:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerItem.rpt"));
+                    break;
+                case ReportTypes.SalesTransactionPerItemWoutPurchaseDetails:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerItemWoutPD.rpt"));
                     break;
                 case ReportTypes.CashSalesDaily:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportCashSalesDaily.rpt"));
@@ -498,6 +518,8 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                 case ReportTypes.SalesTransactionPerCustomer:
+                case ReportTypes.SalesTransactionPerCustomerPerGroup:
+                case ReportTypes.SalesTransactionPerCustomerPerGroupSummarized:
                 case ReportTypes.SalesTransactionPerCustomerWithCheque:
                 case ReportTypes.SalesTransactionPerCashierPerCustomer:
                     #region Sales Transaction Per Customer
@@ -518,7 +540,7 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                     #endregion
                 case ReportTypes.SalesTransactionPerCustomerPerItem:
-                    #region Sales Transaction Per Customer
+                    #region Sales Transaction Per Customer Per Item
                     clsSalesTransactions = new SalesTransactions();
                     //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CustomerName", System.Data.SqlClient.SortOrder.Ascending);
                     dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "CustomerName", SortOption.Ascending, 0);
@@ -615,6 +637,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                 case ReportTypes.SalesTransactionPerItem:
+                case ReportTypes.SalesTransactionPerItemWoutPurchaseDetails:
                     #region Sales Transaction Per Item
 
                     SaleperItemFilterType enumSaleperItemFilterType = SaleperItemFilterType.ShowBothPositiveAndNegative;
@@ -995,6 +1018,8 @@ namespace AceSoft.RetailPlus.Reports
 
                 case ReportTypes.SalesTransactions:
                 case ReportTypes.SalesTransactionPerCustomer:
+                case ReportTypes.SalesTransactionPerCustomerPerGroup:
+                case ReportTypes.SalesTransactionPerCustomerPerGroupSummarized:
                 case ReportTypes.SalesTransactionPerCustomerWithCheque:
                 case ReportTypes.SalesTransactionPerCustomerPerItem:
                 case ReportTypes.SalesTransactionPerCashier:
@@ -1014,6 +1039,7 @@ namespace AceSoft.RetailPlus.Reports
                     break;
 
                 case ReportTypes.SalesTransactionPerItem:
+                case ReportTypes.SalesTransactionPerItemWoutPurchaseDetails:
                     holderSalesperItem.Visible = true;
                     break;
 

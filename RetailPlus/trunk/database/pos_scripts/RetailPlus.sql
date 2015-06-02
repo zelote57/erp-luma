@@ -9148,6 +9148,143 @@ ALTER TABLE tblCreditBillHeader MODIFY BeginningBalance           decimal(18,2) 
 ALTER TABLE tblCreditBillHeader MODIFY EndingBalance              decimal(18,2) not null default 0;
 ALTER TABLE tblCreditBillDetail MODIFY Amount				      decimal(18,2) not null default 0;
 
+/*********************************  v_4.0.1.41.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.42';
+
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 179;
+DELETE FROM sysAccessRights WHERE TranTypeID = 179;
+DELETE FROM sysAccessTypes WHERE TypeID = 179;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (179, 'SalesTransaction PerItem', 1);
+UPDATE sysAccessTypes SET SequenceNo = 3, Category = '11: Backend - Sales Reports' WHERE TypeID = 179;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 179, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=30;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 179, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=30;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 180;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 180;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 180, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=30;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 180, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=30;
+DELETE FROM sysAccessTypes WHERE TypeID = 180;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (180, 'SalesTransaction PerItem W/out PurchaseDetails', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '11: Backend - Sales Reports' WHERE TypeID = 180;
+
+
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '11: Backend - Sales Reports' WHERE TypeID = 41;
+UPDATE sysAccessTypes SET SequenceNo = 2, Category = '11: Backend - Sales Reports' WHERE TypeID = 30;
+UPDATE sysAccessTypes SET SequenceNo = 3, Category = '11: Backend - Sales Reports' WHERE TypeID = 179;
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '11: Backend - Sales Reports' WHERE TypeID = 180;
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '11: Backend - Sales Reports' WHERE TypeID = 36;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '11: Backend - Sales Reports' WHERE TypeID = 137;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '11: Backend - Sales Reports' WHERE TypeID = 134;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '11: Backend - Sales Reports' WHERE TypeID = 148;
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '11: Backend - Sales Reports' WHERE TypeID = 150;
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 181;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 181;
+DELETE FROM sysAccessTypes WHERE TypeID = 181;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (181, 'Branch Inventory Transfer', 1);
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Inventory' WHERE TypeID = 181;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 181, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=112;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 181, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=112;
+
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 182;
+DELETE FROM sysAccessRights WHERE TranTypeID = 182;
+DELETE FROM sysAccessTypes WHERE TypeID = 182;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (182, 'Warehouse -> Branch Inventory Transfer', 1);
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Inventory' WHERE TypeID = 182;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 182, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=112;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 182, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=112;
+
+
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 185;
+DELETE FROM sysAccessRights WHERE TranTypeID = 185;
+DELETE FROM sysAccessTypes WHERE TypeID = 185;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (185, 'Warehouse -> Branch Inventory Transfer IssueGRN', 1);
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Inventory' WHERE TypeID = 185;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 185, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=112;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 185, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=112;
+
+
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '08: Backend - Inventory' WHERE TypeID = 21;
+UPDATE sysAccessTypes SET SequenceNo = 2, Category = '08: Backend - Inventory' WHERE TypeID = 22;
+UPDATE sysAccessTypes SET SequenceNo = 3, Category = '08: Backend - Inventory' WHERE TypeID = 23;
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '08: Backend - Inventory' WHERE TypeID = 89;
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '08: Backend - Inventory' WHERE TypeID = 90;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '08: Backend - Inventory' WHERE TypeID = 112;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Inventory' WHERE TypeID = 113;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Inventory' WHERE TypeID = 181;
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '08: Backend - Inventory' WHERE TypeID = 182;
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Inventory' WHERE TypeID = 185;
+UPDATE sysAccessTypes SET SequenceNo = 11, Category = '08: Backend - Inventory' WHERE TypeID = 114;
+UPDATE sysAccessTypes SET SequenceNo = 12, Category = '08: Backend - Inventory' WHERE TypeID = 115;
+UPDATE sysAccessTypes SET SequenceNo = 13, Category = '08: Backend - Inventory' WHERE TypeID = 116;
+UPDATE sysAccessTypes SET SequenceNo = 14, Category = '08: Backend - Inventory' WHERE TypeID = 117;
+UPDATE sysAccessTypes SET SequenceNo = 15, Category = '08: Backend - Inventory' WHERE TypeID = 118;
+UPDATE sysAccessTypes SET SequenceNo = 16, Category = '08: Backend - Inventory' WHERE TypeID = 119;
+UPDATE sysAccessTypes SET SequenceNo = 17, Category = '08: Backend - Inventory' WHERE TypeID = 120;
+UPDATE sysAccessTypes SET SequenceNo = 18, Category = '08: Backend - Inventory' WHERE TypeID = 139;
+
+DELETE FROM sysConfig WHERE ConfigName = 'WillShowProductBranchQuantityInItemSelect';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillShowProductBranchQuantityInItemSelect',	'FE',						'false');
+-- INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillShowProductBranchQuantityInItemSelect',	'FE',						'true');
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 183;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 183;
+DELETE FROM sysAccessTypes WHERE TypeID = 183;
+
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (183, 'Set Item As Demo', 1);
+UPDATE sysAccessTypes SET SequenceNo = 25, Category = '14: Frontend - Cashiering' WHERE TypeID = 183;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 183, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=66;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 183, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=66;
+
+UPDATE tblTransactions trx
+LEFT OUTER JOIN tblContacts cntct ON trx.CustomerID = cntct.ContactID
+LEFT OUTER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
+SET
+	CustomerGroupName = IFNULL(grp.ContactGroupName, 'Default Customer Group')
+WHERE IFNULL(trx.CustomerGroupName,'') = '';
+
+
+
+ALTER TABLE tblProductInventory ADD BranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryAudit ADD BranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryDaily ADD BranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD BranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+ALTER TABLE tblProductInventory ADD BranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryAudit ADD BranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryDaily ADD BranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD BranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+ALTER TABLE tblProductInventory ADD RIDBranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryAudit ADD RIDBranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryDaily ADD RIDBranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD RIDBranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+ALTER TABLE tblProductInventory ADD RIDBranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryAudit ADD RIDBranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryDaily ADD RIDBranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD RIDBranchMaxThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+ALTER TABLE tblProductInventory ADD RIDBranch INT(4) NOT NULL DEFAULT '14';
+ALTER TABLE tblProductInventoryAudit ADD RIDBranch INT(4) NOT NULL DEFAULT '14';
+ALTER TABLE tblProductInventoryDaily ADD RIDBranch INT(4) NOT NULL DEFAULT '14';
+ALTER TABLE tblProductInventoryMonthly ADD RIDBranch INT(4) NOT NULL DEFAULT '14';
+
+UPDATE tblProducts SET RID = 14 WHERE RID <= 1;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 184;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 184;
+DELETE FROM sysAccessTypes WHERE TypeID = 184;
+
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (184, 'Set Inventory Threshold', 1);
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Inventory' WHERE TypeID = 184;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 184, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=114;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 184, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=114;
+
+
 -- Notes: Please read
 -- run the retailplus_proc.sql
 

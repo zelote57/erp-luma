@@ -15,6 +15,7 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlCloseInventoryProduct" Src="_CloseInventoryProduct.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlCloseInventoryDetailed" Src="_CloseInventoryDetailed.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInvAdjustment" Src="_invadjustment.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlInvThreshold" Src="_invthreshold.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="../Inventory/_Menu.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlExpiry" Src="../_Expiry.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../_Processing.ascx" %>
@@ -121,6 +122,7 @@
                                     <CTRL:ctrlCloseInventoryProduct id="ctrlCloseInventoryProduct" runat="server" Visible="False"></CTRL:ctrlCloseInventoryProduct>
 									<CTRL:ctrlCloseInventoryDetailed id="ctrlCloseInventoryDetailed" runat="server" Visible="False"></CTRL:ctrlCloseInventoryDetailed>
 									<CTRL:ctrlInvAdjustment id="ctrlInvAdjustment" runat="server" Visible="False"></CTRL:ctrlInvAdjustment>
+                                    <CTRL:ctrlInvThreshold id="ctrlInvThreshold" runat="server" Visible="False"></CTRL:ctrlInvThreshold>
                                     <CTRL:ctrlProductInventoryReport ID="ctrlProductInventoryReport" runat="server" Visible="false" />
                                     <CTRL:ctrlClosingInventoryReport ID="ctrlClosingInventoryReport" runat="server" Visible="false" />
                                     <CTRL:ctrlInventoryAnalyst ID="ctrlInventoryAnalyst" runat="server" Visible="false" />

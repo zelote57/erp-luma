@@ -157,6 +157,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::AceSoft.RetailPlus.Inventory.@__InvAdjusment ctrlInvAdjustment;
         
         /// <summary>
+        /// ctrlInvThreshold control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Inventory.@__InvThreshold ctrlInvThreshold;
+        
+        /// <summary>
         /// ctrlProductInventoryReport control.
         /// </summary>
         /// <remarks>

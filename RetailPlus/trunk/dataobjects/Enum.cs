@@ -55,7 +55,9 @@ namespace AceSoft.RetailPlus
 		Return				=	3,
 		Refund				=	4,
         OrderSlip           =   5,
-        CancelledCreditPayment = 6
+        CancelledCreditPayment = 6,
+        Demo                =   7,
+        OutOfStock          =   8
 	}
 
 	public enum TerminalStatus
@@ -179,10 +181,28 @@ namespace AceSoft.RetailPlus
     {
         Open = 0,
         Posted = 1,
-        Cancelled = 2
+        Cancelled = 2,
+        All = 9
     }
 
     public enum BranchTransferItemStatus
+    {
+        Valid = 0,
+        Posted = 1,
+        Cancelled = 2,
+        All = 9
+    }
+
+    public enum WBranchTransferStatus
+    {
+        Open = 0,
+        Posted = 1,
+        Cancelled = 2,
+        ForApproval = 3,
+        All = 9
+    }
+
+    public enum WBranchTransferItemStatus
     {
         Valid = 0,
         Posted = 1,
@@ -356,6 +376,14 @@ namespace AceSoft.RetailPlus
     }
 
     public enum BranchTransferPaymentStatus
+    {
+        Unpaid = 0,
+        ForProcessing = 1,
+        Partially = 2,
+        FullyPaid = 3
+    }
+
+    public enum WBranchTransferPaymentStatus
     {
         Unpaid = 0,
         ForProcessing = 1,

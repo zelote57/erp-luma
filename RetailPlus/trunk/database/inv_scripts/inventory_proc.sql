@@ -706,6 +706,83 @@ END;
 GO
 delimiter ;
 
+
+/*************************************************************************************************************
+
+procWBranchTransferSynchronizeAmount
+Lemuel E. Aceron
+
+SELECT decSubTotalDiscountableAmount, decAmount, decDiscount;
+SELECT Subtotal, discount, TotalItemDiscount, vat , VATAbleAmount, evat , eVATAbleAmount, localtax from tblpo where poid = lngpoid;
+SELECT decSubTotalDiscountableAmount, decTotalItemDiscount, decWBranchTransferDiscount, decWBranchTransferDiscountApplied, intWBranchTransferDiscountType, decTotalVAT, decTotalVATableAmount;
+
+*************************************************************************************************************/
+
+DROP PROCEDURE IF EXISTS procWBranchTransferSynchronizeAmount;
+delimiter GO
+
+create procedure procWBranchTransferSynchronizeAmount(IN lngWBranchTransferID bigint(20))
+BEGIN
+	DECLARE decTotalItemAmount, decTotalItemDiscount, decTotalVAT, decTotalVATableAmount, decTotalEVAT, decTotalEVATableAmount, decTotalLocalTax  DECIMAL(18,3) DEFAULT 0;
+	DECLARE decAmount, decDiscount DECIMAL(18,3) DEFAULT 0;
+	DECLARE intWBranchTransferDiscountType INT DEFAULT 0;
+	DECLARE decSubTotalDiscountableAmount, decWBranchTransferDiscount, decWBranchTransferDiscountApplied DECIMAL(18,3) DEFAULT 0;
+	
+	DECLARE done INT DEFAULT 0;
+	DECLARE curItems CURSOR FOR SELECT Amount, Discount FROM tblWBranchTransferItems WHERE WBranchTransferID = lngWBranchTransferID;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+	
+	SET decTotalItemAmount = (SELECT SUM(Amount) FROM tblWBranchTransferItems WHERE WBranchTransferID = lngWBranchTransferID);
+	SET decTotalItemDiscount = (SELECT SUM(Discount) FROM tblWBranchTransferItems WHERE WBranchTransferID = lngWBranchTransferID AND Discount <> 0);
+	
+	SET decWBranchTransferDiscountApplied = (SELECT DiscountApplied FROM tblWBranchTransfer WHERE WBranchTransferID = lngWBranchTransferID);
+	set decTotalItemDiscount = 0;
+	
+	OPEN curItems;
+	REPEAT
+		FETCH curItems INTO decAmount, decDiscount;
+		
+		IF NOT done THEN
+			IF decDiscount<>0 THEN
+				SET decTotalItemDiscount = (SELECT decTotalItemDiscount + decDiscount);
+			END IF;
+			SET decSubTotalDiscountableAmount = (SELECT decSubTotalDiscountableAmount + decAmount);
+		END IF;
+	UNTIL done END REPEAT;
+	CLOSE curItems;
+	
+	SET decWBranchTransferDiscountApplied = (SELECT DiscountApplied FROM tblWBranchTransfer WHERE WBranchTransferID = lngWBranchTransferID);
+	SET intWBranchTransferDiscountType = (SELECT DiscountType FROM tblWBranchTransfer WHERE WBranchTransferID = lngWBranchTransferID);
+
+	IF intWBranchTransferDiscountType = 1 and decTotalItemAmount >= decWBranchTransferDiscountApplied THEN
+		SET decWBranchTransferDiscount = (SELECT decWBranchTransferDiscountApplied);
+	ELSEIF intWBranchTransferDiscountType = 2 THEN
+		SET decWBranchTransferDiscount = (SELECT (decSubTotalDiscountableAmount * (decWBranchTransferDiscountApplied / 100)));
+	END IF;
+	
+	SET decTotalVATableAmount = (SELECT (decTotalItemAmount - decWBranchTransferDiscount) / (1+(SELECT VAT/100 FROM tblTerminal WHERE TerminalID = 1))) ;
+	SET decTotalVAT = (SELECT decTotalVATableAmount * (SELECT VAT/100 FROM tblTerminal WHERE TerminalID = 1));
+	SET decTotalEVATableAmount = (SELECT (decTotalItemAmount - decWBranchTransferDiscount) / (1+(SELECT VAT/100 FROM tblTerminal WHERE TerminalID = 1))) ;
+	SET decTotalEVAT = (SELECT decTotalEVATableAmount * (SELECT EVAT/100 FROM tblTerminal WHERE TerminalID = 1));
+	SET decTotalLocalTax = (SELECT decTotalVATableAmount * (SELECT LocalTax/100 FROM tblTerminal WHERE TerminalID = 1));
+	
+	UPDATE tblWBranchTransfer SET
+		SubTotal = decTotalItemAmount - decWBranchTransferDiscount + Freight - Deposit,
+		Discount = decWBranchTransferDiscount,
+		TotalItemDiscount = decTotalItemDiscount,
+		VAT = decTotalVAT,
+		VATAbleAmount = decTotalVATableAmount,
+		EVAT = decTotalEVAT,
+		EVATAbleAmount = decTotalEVATableAmount,
+		LocalTax = decTotalLocalTax,
+		UnpaidAmount = decTotalItemAmount - decWBranchTransferDiscount + Freight - Deposit
+	WHERE WBranchTransferID = lngWBranchTransferID;
+	
+END;
+GO
+delimiter ;
+
+
 /********************
 
 Oct 4, 2014

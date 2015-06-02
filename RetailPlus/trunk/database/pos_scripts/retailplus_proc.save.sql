@@ -539,6 +539,7 @@ create procedure procSaveERPConfig(
 	IN strDBVersion VARCHAR(10),
 	IN strDBVersionSales VARCHAR(10),
 	IN strLastBranchTransferNo VARCHAR(10),
+	IN strLastWBranchTransferNo VARCHAR(10),
 	IN strLastCustomerCode VARCHAR(15),
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
@@ -582,6 +583,7 @@ BEGIN
 			DBVersion				= strDBVersion,
 			DBVersionSales			= strDBVersionSales,
 			LastBranchTransferNo	= strLastBranchTransferNo,
+			LastWBranchTransferNo	= strLastWBranchTransferNo,
 			LastCustomerCode		= strLastCustomerCode,
 			LastModified			= dteLastModified
 		WHERE ERPConfigID			= intERPConfigID;
@@ -593,7 +595,7 @@ BEGIN
 								ChartOfAccountIDAPVDeposit, ChartOfAccountIDAPContra, ChartOfAccountIDAPLatePayment,
 								ChartOfAccountIDARTracking, ChartOfAccountIDARBills, ChartOfAccountIDARFreight,
 								ChartOfAccountIDARVDeposit, ChartOfAccountIDARContra, ChartOfAccountIDARLatePayment,
-								LastCreditCardNo, LastRewardCardNo, DBVersion, DBVersionSales, LastBranchTransferNo, 
+								LastCreditCardNo, LastRewardCardNo, DBVersion, DBVersionSales, LastBranchTransferNo, LastWBranchTransferNo,
 								LastCustomerCode, CreatedOn, LastModified)
 			VALUES(intERPConfigID, strLastPONo, strLastPOReturnNo, strLastDebitMemoNo, strLastSONo,
 							strLastSOReturnNo, strLastCreditMemoNo, strLastTransferInNo, strLastTransferOutNo,
@@ -602,7 +604,7 @@ BEGIN
 							intChartOfAccountIDAPVDeposit, intChartOfAccountIDAPContra, intChartOfAccountIDAPLatePayment,
 							intChartOfAccountIDARTracking, intChartOfAccountIDARBills, intChartOfAccountIDARFreight,
 							intChartOfAccountIDARVDeposit, intChartOfAccountIDARContra, intChartOfAccountIDARLatePayment,
-							strLastCreditCardNo, strLastRewardCardNo, strDBVersion, strDBVersionSales, strLastBranchTransferNo,
+							strLastCreditCardNo, strLastRewardCardNo, strDBVersion, strDBVersionSales, strLastBranchTransferNo, strLastWBranchTransferNo,
 							strLastCustomerCode, dteCreatedOn, dteLastModified);
 	END IF;
 				

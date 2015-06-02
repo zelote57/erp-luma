@@ -38,6 +38,7 @@ namespace AceSoft.RetailPlus.Data
         public string DBVersion;
         public string DBVersionSales;
         public string LastBranchTransferNo;
+        public string LastWBranchTransferNo;
         public string LastCustomerCode;        
 
         public DateTime CreatedOn;
@@ -215,7 +216,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@ChartOfAccountIDAPVDeposit, @ChartOfAccountIDAPContra, @ChartOfAccountIDAPLatePayment, " +
                                 "@ChartOfAccountIDARTracking, @ChartOfAccountIDARBills, @ChartOfAccountIDARFreight, " +
                                 "@ChartOfAccountIDARVDeposit, @ChartOfAccountIDARContra, @ChartOfAccountIDARLatePayment, " +
-                                "@LastCreditCardNo, @LastRewardCardNo, @DBVersion, @DBVersionSales, @LastBranchTransferNo,  " +
+                                "@LastCreditCardNo, @LastRewardCardNo, @DBVersion, @DBVersionSales, @LastBranchTransferNo,  @LastWBranchTransferNo" +
 								"@LastCustomerCode, @CreatedOn, @LastModified);";
 
                 MySqlCommand cmd = new MySqlCommand();
@@ -252,6 +253,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("DBVersion", Details.DBVersion);
                 cmd.Parameters.AddWithValue("DBVersionSales", Details.DBVersionSales);
                 cmd.Parameters.AddWithValue("LastBranchTransferNo", Details.LastBranchTransferNo);
+                cmd.Parameters.AddWithValue("LastWBranchTransferNo", Details.LastWBranchTransferNo);
                 cmd.Parameters.AddWithValue("LastCustomerCode", Details.LastCustomerCode);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
@@ -535,6 +537,19 @@ namespace AceSoft.RetailPlus.Data
 			}	
         }
 
+        public string get_LastWBranchTransferNo()
+        {
+            try
+            {
+                return getNewTransactionNo(LastWBranchTransferNo);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region get_LastSONo, get_LastSOReturnNo, get_LastCreditMemoNo
@@ -696,6 +711,7 @@ namespace AceSoft.RetailPlus.Data
         private static string LastPOReturnNo = "LastPOReturnNo";
         private static string LastDebitMemoNo = "LastDebitMemoNo";
         private static string LastBranchTransferNo = "LastBranchTransferNo";
+        private static string LastWBranchTransferNo = "LastWBranchTransferNo";
         private static string LastSONo = "LastSONo";
         private static string LastSOReturnNo = "LastSOReturnNo";
         private static string LastCreditMemoNo = "LastCreditMemoNo";

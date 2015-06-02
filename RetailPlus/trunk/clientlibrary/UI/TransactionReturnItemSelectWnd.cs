@@ -830,7 +830,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 foreach (Data.SalesTransactionItemDetails item in TransactionItems)
                 {
-                    if (item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Valid)
+                    if (item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Valid ||
+                        item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Demo)
                     {
                         System.Data.DataRow dr = dt.NewRow();
 
@@ -838,7 +839,11 @@ namespace AceSoft.RetailPlus.Client.UI
                         dr["ProductID"] = item.ProductID;
                         dr["ProductCode"] = item.ProductCode;
                         dr["BarCode"] = item.BarCode;
-                        dr["ProductDesc"] = item.Description;
+                        if (item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Demo)
+                            dr["ProductDesc"] = "Demo-" + item.Description;
+                        else
+                            dr["ProductDesc"] = item.Description;
+
                         dr["ProductUnitID"] = item.ProductUnitID;
                         dr["ProductUnitCode"] = item.ProductUnitCode;
                         dr["Quantity"] = item.Quantity;

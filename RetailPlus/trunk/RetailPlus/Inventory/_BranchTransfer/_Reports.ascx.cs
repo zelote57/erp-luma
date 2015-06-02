@@ -104,7 +104,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 
 		private void SetDataSource(ReportDocument Report)
 		{
-            long iID = 0;
+            Int64 iID = 0;
             try
             {
                 if (Request.QueryString["task"].ToString().ToLower() == "reportfromposted" && Request.QueryString["branchtransferid"].ToString() != null)
@@ -117,33 +117,31 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			ReportDataset rptds = new ReportDataset();
 
             BranchTransfer clsBranchTransfer = new BranchTransfer();
-			MySqlDataReader myreader = clsBranchTransfer.List(iID);
-            
-			while(myreader.Read())
+			System.Data.DataTable dt = clsBranchTransfer.ListAsDataTable(iID);
+            BranchTransferItem clsBranchTransferItem = new BranchTransferItem(clsBranchTransfer.Connection, clsBranchTransfer.Transaction);
+            System.Data.DataTable dtitems = clsBranchTransferItem.ListAsDataTable(iID);
+            clsBranchTransfer.CommitAndDispose();
+
+            foreach (System.Data.DataRow dr in dt.Rows)
 			{
 				DataRow drNew = rptds.BranchTransfer.NewRow();
 
                 foreach (DataColumn dc in rptds.BranchTransfer.Columns)
-					drNew[dc] = "" + myreader[dc.ColumnName];
+					drNew[dc] = dr[dc.ColumnName];
 
                 rptds.BranchTransfer.Rows.Add(drNew);
 			}
-            myreader.Close();
 
-            BranchTransferItem clsBranchTransferItem = new BranchTransferItem(clsBranchTransfer.Connection, clsBranchTransfer.Transaction);
-            MySqlDataReader myreaderitems = clsBranchTransferItem.List(iID);
-			while(myreaderitems.Read())
+            foreach (System.Data.DataRow dr in dtitems.Rows)
 			{
 				DataRow drNew = rptds.BranchTransferItems.NewRow();
 
                 foreach (DataColumn dc in rptds.BranchTransferItems.Columns)
-					drNew[dc] = "" + myreaderitems[dc.ColumnName];
+					drNew[dc] = dr[dc.ColumnName];
 
                 rptds.BranchTransferItems.Rows.Add(drNew);
 			}
-            myreaderitems.Close();
-            clsBranchTransfer.CommitAndDispose();
-
+            
 			Report.SetDataSource(rptds); 
 			SetParameters(Report);
 		}

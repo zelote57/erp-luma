@@ -366,12 +366,38 @@ namespace AceSoft.RetailPlus.Client.UI
                         decimal decPackageQuantity = 0;
                         decimal decNewQuantity = 0;
 
-                        if (dr["Quantity"].ToString() != "VOID")
+                        if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
+                        {
+                            decimal decPrice = Convert.ToDecimal(dr["Price"]);
+                            decimal decPurchasePrice = Convert.ToDecimal(dr["PurchasePrice"]);
+
+                            decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
+                            decimal decAmount = -Convert.ToDecimal(dr["Amount"]);
+
+                            decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
+                            decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+                            decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+                            decNewQuantity = -decNewQuantity;
+
+                            clsEvent.AddEventLn("      subtracting refund-return item: prdid-" + lProductID.ToString() + " to inv: qty-" + decNewQuantity.ToString() + "...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                            clsProduct.SubtractQuantity(mclsTerminalDetails.BranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_REFUND_RETURN) + " @ " + (decAmount / decNewQuantity).ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " Orig Selling: " + decPrice.ToString("#,##0.#0") + " Discount: " + (decPrice - (decAmount / decNewQuantity)).ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                        }
+                        else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1)
+                        {
+                            decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - DEMO", "").Trim());
+                            decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+                            decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+
+                            clsEvent.AddEventLn("      adding refund-demo item: prdid-" + lProductID.ToString() + " from inv/rsrvd: qty-" + decNewQuantity.ToString() + "...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                            clsProduct.AddQuantity(mclsTerminalDetails.BranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_DEMO_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                        }
+                        else if (dr["Quantity"].ToString() != "VOID")
                         {
                             decQuantity = Convert.ToDecimal(dr["Quantity"]);
                             decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
                             decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
 
+                            clsEvent.AddEventLn("      adding refund item: prdid-" + lProductID.ToString() + " from inv/rsrvd: qty-" + decNewQuantity.ToString() + "...", true, mclsSysConfigDetails.WillWriteSystemLog);
                             clsProduct.AddQuantity(mclsTerminalDetails.BranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
                         }
                     }
@@ -498,6 +524,16 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             clsEvent.AddEventLn("      adding return item: prdid-" + lProductID.ToString() + " to inv: qty-" + decNewQuantity.ToString() + "...", true, mclsSysConfigDetails.WillWriteSystemLog);
                             clsProduct.AddQuantity(mclsTerminalDetails.BranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                        }
+                        else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1)
+                        {
+                            decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - DEMO", "").Trim());
+                            decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+                            decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+
+                            clsEvent.AddEventLn("      subtracting demo item: prdid-" + lProductID.ToString() + " from inv/rsrvd: qty-" + decNewQuantity.ToString() + "...", true, mclsSysConfigDetails.WillWriteSystemLog);
+                            clsProduct.SubtractQuantity(mclsTerminalDetails.BranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_DEMO_RETAIL) + " @ " + (decAmount / decNewQuantity).ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " Orig Selling: " + decPrice.ToString("#,##0.#0") + " Discount: " + (decPrice - (decAmount / decNewQuantity)).ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                            clsProduct.SubtractReservedQuantity(mclsTerminalDetails.BranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_DEMO_RETAIL) + " @ " + (decAmount / decNewQuantity).ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " Orig Selling: " + decPrice.ToString("#,##0.#0") + " Discount: " + (decPrice - (decAmount / decNewQuantity)).ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
                         }
                         else if (dr["Quantity"].ToString() != "VOID")
                         {
@@ -761,6 +797,12 @@ namespace AceSoft.RetailPlus.Client.UI
                                 stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
                                 decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
                                 decAmount = -decAmount;
+                            }
+                            else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1)
+                            {
+                                stProductCode = "" + dr["ProductCode"].ToString() + "-DEMO";
+                                decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - DEMO", "").Trim());
+                                decAmount = 0;
                             }
                             else if (dr["Quantity"].ToString() != "VOID")
                             {
@@ -1095,7 +1137,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     decItemsDiscount += Convert.ToDecimal(dr["Discount"]);
 
                     decimal itemPrice = Convert.ToDecimal(dr["Price"]);
-                    decimal itemQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim().Replace("VOID", "0"));
+                    decimal itemQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim().Replace(" - DEMO", "").Trim().Replace("VOID", "0"));
 
                     // Sep 4, 2014 remove this. subtotal should reflect the VAT
                     //// feb 8, 2014
@@ -1115,6 +1157,13 @@ namespace AceSoft.RetailPlus.Client.UI
                         decItemsDiscount = decItemsDiscount * -1;
                         itemQuantity = itemQuantity * -1;
 
+                    }
+                    else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1) //2. check if the item is demo
+                    {
+                        decItemAmount = 0;
+                        itemTrueAmt = 0;
+                        decItemsDiscount = 0;
+                        DiscountType = DiscountTypes.NotApplicable;
                     }
                     else if (dr["Quantity"].ToString().IndexOf("VOID") == -1)
                     {
@@ -2436,6 +2485,24 @@ namespace AceSoft.RetailPlus.Client.UI
                         decimal decPrice = Convert.ToDecimal(dr["Price"]);
                         decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
                         decimal decAmount = Convert.ToDecimal(dr["Amount"]) * -1;
+                        decimal decVAT = Convert.ToDecimal(dr["VAT"]);
+                        decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
+                        decimal decPromoApplied = Convert.ToDecimal(dr["PromoApplied"]);
+                        string stDiscountCode = "" + dr["DiscountCode"].ToString();
+                        DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
+
+                        PrintItem(stItemNo, stProductCode, stProductUnitCode, decQuantity, decPrice, decDiscount, decPromoApplied, decAmount, decVAT, decEVAT, stDiscountCode, ItemDiscountType);
+                    }
+                    else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1)
+                    {
+                        string stItemNo = "" + dr["ItemNo"].ToString();
+                        string stProductCode = "" + dr["ProductCode"].ToString() + "-DEMO";
+                        string stProductUnitCode = "" + dr["ProductUnitCode"].ToString();
+                        if (!string.IsNullOrEmpty(dr["MatrixDescription"].ToString())) stProductCode += "-" + dr["MatrixDescription"].ToString();
+                        decimal decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - DEMO", "").Trim());
+                        decimal decPrice = Convert.ToDecimal(dr["Price"]);
+                        decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
+                        decimal decAmount = Convert.ToDecimal(dr["Amount"]);
                         decimal decVAT = Convert.ToDecimal(dr["VAT"]);
                         decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
                         decimal decPromoApplied = Convert.ToDecimal(dr["PromoApplied"]);
@@ -4138,21 +4205,21 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     catch { }
 
-                    System.Drawing.Printing.PrintDocument printDoc = new System.Drawing.Printing.PrintDocument();
-                    int i;
-                    int rawKind = 0;
-
-                    for (i = 0; i < printDoc.PrinterSettings.PaperSizes.Count; i++)
-                    {
-                        if (printDoc.PrinterSettings.PaperSizes[i].PaperName == "RetailPlusLXHalfSize")
-                        {
-                            rawKind = (int)GetField(printDoc.PrinterSettings.PaperSizes[i], "kind");
-                            break;
-                        }
-                    }
-
                     if (isPrinterOnline(mclsTerminalDetails.SalesInvoicePrinterName))
                     {
+                        System.Drawing.Printing.PrintDocument printDoc = new System.Drawing.Printing.PrintDocument();
+                        int i;
+                        int rawKind = 0;
+
+                        for (i = 0; i < printDoc.PrinterSettings.PaperSizes.Count; i++)
+                        {
+                            if (printDoc.PrinterSettings.PaperSizes[i].PaperName == "RetailPlusLXHalfSize")
+                            {
+                                rawKind = (int)GetField(printDoc.PrinterSettings.PaperSizes[i], "kind");
+                                break;
+                            }
+                        }
+
                         rpt.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
                         rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
                         rpt.PrintToPrinter(1, false, 0, 0);

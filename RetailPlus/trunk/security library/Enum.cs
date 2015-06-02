@@ -301,7 +301,20 @@ namespace AceSoft.RetailPlus
         ResumeSuspendedOpenTransaction = 177,
 
         // 13Mar2015 : use only for manager's MPC
-        ChangePriceLevel = 178
+        ChangePriceLevel = 178,
+
+        // 19Mar2015 : Put 
+        SalesTransactionPerItem = 179,
+        SalesTransactionPerItemWoutPurchaseDetails = 180,
+        
+        BranchInventoryTransfer = 181,
+        WarehouseToBranchTransfer = 182,
+        SetItemAsDemo = 183,
+
+        InvThreshold = 184,
+
+        WarehouseToBranchTransferIssueGRN = 185
+
     }
 
     /// <summary>

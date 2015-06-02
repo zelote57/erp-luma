@@ -572,21 +572,21 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("Total Transactions", ":", mclsDetails.NoOfTotalTransactions.ToString("#,##0.00"));
 
             dt.Rows.Add("Misc Amount Breakdown", "", "");
-            dt.Rows.Add("Consignment", ":", mclsDetails.ConsignmentSales.ToString("#,##0.00"));
-            dt.Rows.Add("Walk-In", ":", mclsDetails.WalkInSales.ToString("#,##0.00"));
-            dt.Rows.Add("Out Of Stock", ":", mclsDetails.OutOfStockSales.ToString("#,##0.00"));
-            dt.Rows.Add("    Refund", "", "");
-            dt.Rows.Add("Consignment", ":", mclsDetails.ConsignmentRefundSales.ToString("#,##0.00"));
-            dt.Rows.Add("Walk-In", ":", mclsDetails.WalkInRefundSales.ToString("#,##0.00"));
-            dt.Rows.Add("Out Of Stock", ":", mclsDetails.OutOfStockRefundSales.ToString("#,##0.00"));
-            dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("Consignment Trans", ":", mclsDetails.NoOfConsignmentTransactions.ToString("#,##0.00"));
-            dt.Rows.Add("Walk-In Trans", ":", mclsDetails.NoOfWalkInTransactions.ToString("#,##0.00"));
-            dt.Rows.Add("Out Of Stock Trans", ":", mclsDetails.NoOfOutOfStockTransactions.ToString("#,##0.00"));
-            dt.Rows.Add("    Refund", "", "");
-            dt.Rows.Add("Consignment Trans", ":", mclsDetails.NoOfConsignmentRefundTransactions.ToString("#,##0.00"));
-            dt.Rows.Add("Walk-In Trans", ":", mclsDetails.NoOfWalkInRefundTransactions.ToString("#,##0.00"));
-            dt.Rows.Add("Out Of Stock Trans", ":", mclsDetails.NoOfOutOfStockRefundTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("    Consignment", ":", mclsDetails.ConsignmentSales.ToString("#,##0.00"));
+            dt.Rows.Add("    Walk-In", ":", mclsDetails.WalkInSales.ToString("#,##0.00"));
+            dt.Rows.Add("    Out Of Stock", ":", mclsDetails.OutOfStockSales.ToString("#,##0.00"));
+            dt.Rows.Add("Refund - Misc Amount Breakdown", "", "");
+            dt.Rows.Add("    Consignment", ":", mclsDetails.ConsignmentRefundSales.ToString("#,##0.00"));
+            dt.Rows.Add("    Walk-In", ":", mclsDetails.WalkInRefundSales.ToString("#,##0.00"));
+            dt.Rows.Add("    Out Of Stock", ":", mclsDetails.OutOfStockRefundSales.ToString("#,##0.00"));
+            dt.Rows.Add("Misc Trans Breakdown", "", "");
+            dt.Rows.Add("    Consignment Trans", ":", mclsDetails.NoOfConsignmentTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("    Walk-In Trans", ":", mclsDetails.NoOfWalkInTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("    Out Of Stock Trans", ":", mclsDetails.NoOfOutOfStockTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("Refund - Misc Trans Breakdown", "", "");
+            dt.Rows.Add("    Consignment Trans", ":", mclsDetails.NoOfConsignmentRefundTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("    Walk-In Trans", ":", mclsDetails.NoOfWalkInRefundTransactions.ToString("#,##0.00"));
+            dt.Rows.Add("    Out Of Stock Trans", ":", mclsDetails.NoOfOutOfStockRefundTransactions.ToString("#,##0.00"));
 
             string strReportFooter1 = clsReceipt.Details("ReportFooter1").Value;
             string strReportFooter2 = clsReceipt.Details("ReportFooter2").Value;

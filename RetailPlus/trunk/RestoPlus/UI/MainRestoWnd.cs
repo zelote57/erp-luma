@@ -2114,6 +2114,14 @@ namespace AceSoft.RetailPlus.Client.UI
                                 ChangeProductCode();
                                 break;
 
+                            case Keys.F3:
+                                ChangeItemRemarks();
+                                break;
+
+                            case Keys.F4:
+                                setItemAsDemo();
+                                break;
+
                             case Keys.F5:
                                 UpdateContact();
                                 break;
@@ -3072,7 +3080,10 @@ namespace AceSoft.RetailPlus.Client.UI
                                     Details = getCurrentRowItemDetails();
 
                                     System.Data.DataRow dr = dt.Rows[x];
-                                    if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
+                                    if (dr["Quantity"].ToString() != "VOID" 
+                                        && dr["Quantity"].ToString().IndexOf("RETURN") == -1
+                                        && dr["Quantity"].ToString().IndexOf("DEMO") == -1 
+                                        && dr["ProductID"].ToString() == Details.ProductID.ToString())
                                     {
                                         Details = ApplyPromo(Details);
                                         ApplyChangeQuantityPriceAmountDetails(x, Details, "Change Quantity");
@@ -3110,7 +3121,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (iRow >= 0)
             {
-                if (dgItems[iRow, 8].ToString() != "VOID" && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1)
+                if (dgItems[iRow, 8].ToString() != "VOID" 
+                    && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1
+                    && dgItems[iRow, 8].ToString().IndexOf("DEMO") == -1)
                 {
                     if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
                     {
@@ -3157,7 +3170,10 @@ namespace AceSoft.RetailPlus.Client.UI
                                     Details = getCurrentRowItemDetails();
 
                                     System.Data.DataRow dr = dt.Rows[x];
-                                    if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
+                                    if (dr["Quantity"].ToString() != "VOID" 
+                                        && dr["Quantity"].ToString().IndexOf("RETURN") == -1
+                                        && dr["Quantity"].ToString().IndexOf("DEMO") == -1 
+                                        && dr["ProductID"].ToString() == Details.ProductID.ToString())
                                     {
                                         Details = ApplyPromo(Details);
                                         ApplyChangeQuantityPriceAmountDetails(x, Details);
@@ -3190,7 +3206,9 @@ namespace AceSoft.RetailPlus.Client.UI
             if (iRow >= 0)
             {
 
-                if (dgItems[iRow, 8].ToString() != "VOID" && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1)
+                if (dgItems[iRow, 8].ToString() != "VOID" 
+                    && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1
+                    && dgItems[iRow, 8].ToString().IndexOf("DEMO") == -1)
                 {
                     if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
                     {
@@ -3235,7 +3253,10 @@ namespace AceSoft.RetailPlus.Client.UI
                                     Details = getCurrentRowItemDetails();
 
                                     System.Data.DataRow dr = dt.Rows[x];
-                                    if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
+                                    if (dr["Quantity"].ToString() != "VOID" 
+                                        && dr["Quantity"].ToString().IndexOf("RETURN") == -1
+                                        && dr["Quantity"].ToString().IndexOf("DEMO") == -1 
+                                        && dr["ProductID"].ToString() == Details.ProductID.ToString())
                                     {
                                         Details = ApplyPromo(Details);
                                         ApplyChangeQuantityPriceAmountDetails(x, Details);
@@ -3267,7 +3288,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (iRow >= 0)
 			{
-				if (dgItems[iRow, 8].ToString() != "VOID" && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1)
+				if (dgItems[iRow, 8].ToString() != "VOID" 
+                    && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1
+                    && dgItems[iRow, 8].ToString().IndexOf("DEMO") == -1)
 				{
 					if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
 					{
@@ -3335,6 +3358,7 @@ namespace AceSoft.RetailPlus.Client.UI
             clsEvent.AddEventLn("Updating item #:" + clsItemDetails.ItemNo + " : done", true);
 
         }
+
         private void ReturnItem()
         {
             if (mboIsRefund)
@@ -3430,6 +3454,98 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private void setItemAsDemo()
+        {
+            Data.SalesTransactionItemDetails Details;
+
+            int iRow = dgItems.CurrentRowIndex;
+
+            if (iRow >= 0)
+            {
+                if (dgItems[iRow, 8].ToString() != "VOID")
+                {
+                    if (dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1
+                        && dgItems[iRow, 8].ToString().IndexOf("DEMO") == -1)
+                    {
+                        DialogResult loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.SetItemAsDemo);
+
+                        if (loginresult == DialogResult.OK)
+                        {
+                            if (MessageBox.Show("Are you sure you want to set this item DEMO?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                return;
+                            }
+
+                            Details = getCurrentRowItemDetails();
+                            clsEvent.AddEvent("[" + lblCashier.Text + "] Setting demo item no. " + Details.ItemNo + "".PadRight(15) + ":" + Details.Description + ".");
+                            try
+                            {
+                                // override the transaction item status
+                                TransactionItemStatus _previousTransactionItemStatus = Details.TransactionItemStatus;
+
+                                Details.TransactionItemStatus = TransactionItemStatus.Demo;
+
+                                Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
+                                mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
+
+                                clsSalesTransactions.setItemAsDemo(Details.TransactionItemsID, mclsSalesTransactionDetails.TransactionDate);
+                                clsEvent.AddEventLn("Setting demo item #: " + Details.ItemNo + "".PadRight(15) + ":" + Details.Description + ".", true);
+
+                                // 21May2015 :Shouldn't have an effect in the inventory.
+                                // it's already punched
+                                //ReservedAndCommitItem(Details, _previousTransactionItemStatus);
+
+                                clsSalesTransactions.CommitAndDispose();
+
+                                InsertAuditLog(AccessTypes.VoidItem, "Voiding item #: " + Details.ItemNo + "".PadRight(15) + ":" + Details.Description + "." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+
+                                dgItems[iRow, 8] = Details.Quantity.ToString("#,##0.##") + " - DEMO";
+                                dgItems[iRow, 9] = "0.00";
+                                dgItems[iRow, 10] = "0.00";
+                                dgItems[iRow, 11] = "0.00";
+                                dgItems[iRow, 13] = "0.00";
+                                dgItems[iRow, 14] = "0.00";
+                                dgItems[iRow, 15] = "0.00";
+                                dgItems[iRow, 16] = "0.00";
+                                dgItems[iRow, 21] = TransactionItemStatus.Demo.ToString("d");
+                                dgItems[iRow, 31] = "0.00"; //PromoApplied
+                                dgItems[iRow, 32] = "0.00"; //PurchasePrice
+                                dgItems[iRow, 33] = "0.00"; //PurchaseAmount
+
+                                dgItems[iRow, 43] = "0.00"; //PercentageCommision
+                                dgItems[iRow, 44] = "0.00"; //Commision
+                                dgItems[iRow, 45] = "0.00"; //RewardPoints
+
+                                SetItemDetails();
+
+                                clsEvent.AddEventLn("Done!");
+
+                                ComputeSubTotal(); setTotalDetails();
+
+                                try
+                                {
+                                    DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
+                                    DisplayItemToTurretDel.BeginInvoke("DEMO-" + Details.ProductCode, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                                }
+                                catch { }
+                                if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
+                                {
+                                    PrintItemDelegate PrintItemDel = new PrintItemDelegate(PrintItem);
+                                    PrintItemDel.BeginInvoke(Details.ItemNo, Details.ProductCode + " - DEMO ", Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, Details.DiscountCode, Details.ItemDiscountType, null, null);
+                                    //PrintItemDel.BeginInvoke(Details.ProductCode + " - VOID ", Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                InsertErrorLogToFile(ex, "ERROR!!! Setting demo item." + Details.ItemNo + "".PadRight(15) + ":" + Details.Description);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void ApplyItemDiscount()
         {
             int iRow = dgItems.CurrentRowIndex;
@@ -3437,8 +3553,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (dgItems[iRow, 8].ToString() != "VOID")
             {
-
-                if (dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1)
+                if (dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1
+                    && dgItems[iRow, 8].ToString().IndexOf("DEMO") == -1)
                 {
                     if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
                     {
@@ -3618,7 +3734,8 @@ namespace AceSoft.RetailPlus.Client.UI
                         dgItems.CurrentRowIndex = iRowCtr;
                         if (dgItems[iRowCtr, 8].ToString() != "VOID")
                         {
-                            if (dgItems[iRowCtr, 8].ToString().IndexOf("RETURN") == -1)
+                            if (dgItems[iRowCtr, 8].ToString().IndexOf("RETURN") == -1
+                                && dgItems[iRowCtr, 8].ToString().IndexOf("DEMO") == -1)
                             {
                                 try
                                 {
@@ -4621,6 +4738,12 @@ namespace AceSoft.RetailPlus.Client.UI
                                 stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
                                 decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
                                 decAmount = -decAmount;
+                            }
+                            else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1)
+                            {
+                                stProductCode = "" + dr["ProductCode"].ToString() + "-DEMO";
+                                decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - DEMO", "").Trim());
+                                decAmount = 0;
                             }
                             else if (dr["Quantity"].ToString() != "VOID")
                             {
@@ -8664,6 +8787,10 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     Details.Quantity = Convert.ToDecimal(dgItems[iRow, 8].ToString().Replace(" - RETURN", "").Trim());
                 }
+                else if (dgItems[iRow, 8].ToString().IndexOf("DEMO") != -1)
+                {
+                    Details.Quantity = Convert.ToDecimal(dgItems[iRow, 8].ToString().Replace(" - DEMO", "").Trim());
+                }
                 else if (dgItems[iRow, 8].ToString().IndexOf("VOID") != -1)
                 {
                     Details.Quantity = 0;
@@ -8747,7 +8874,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["Description"] = Details.Description;
                 dr["ProductUnitID"] = Details.ProductUnitID;
                 dr["ProductUnitCode"] = Details.ProductUnitCode;
-                dr["Quantity"] = Details.Quantity.ToString("###,##0.###");	//8
+                dr["Quantity"] = Details.Quantity.ToString("###,##0.##");	//8
                 dr["Price"] = Details.Price.ToString("###,##0.#0");	//9
                 dr["Discount"] = Details.Discount.ToString("###,##0.#0"); //10
                 dr["ItemDiscount"] = Details.ItemDiscount.ToString("###,##0.#0");//11
@@ -8787,6 +8914,10 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["ItemRemarks"] = Details.ItemRemarks;
                 dr["PaxNo"] = Details.PaxNo;
 
+                // 21May2015 : do an override for 3 digits wighted
+                if (mclsSysConfigDetails.WeightMeasurement.IndexOf(Details.ProductUnitCode.ToUpper()) > -1)
+                    dr["Quantity"] = Details.Quantity.ToString("###,##0.###");	//8
+
                 if (Details.TransactionItemStatus == TransactionItemStatus.Void)
                 {
                     dr["Quantity"] = "VOID";
@@ -8803,13 +8934,35 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else if (Details.TransactionItemStatus == TransactionItemStatus.Return)
                 {
-                    dr["Quantity"] = Details.Quantity + " - RETURN";
+                    dr["Quantity"] = Details.Quantity.ToString("#,##0.##") + " - RETURN";
                     if (Details.Amount < 0)
                     {
                         dr["Amount"] = Convert.ToDecimal(-Details.Amount).ToString("###,##0.#0");
                         dr["PercentageCommision"] = -Details.PercentageCommision;
                         dr["Commision"] = Convert.ToDecimal(Convert.ToDecimal(dr["Commision"]) * -1).ToString("###,##0.#0");
                     }
+
+                    // 21May2015 : do an override for 3 digits wighted
+                    if (mclsSysConfigDetails.WeightMeasurement.IndexOf(Details.ProductUnitCode.ToUpper()) > -1)
+                        dr["Quantity"] = Details.Quantity.ToString("#,##0.###") + " - RETURN";
+                }
+                else if (Details.TransactionItemStatus == TransactionItemStatus.Demo)
+                {
+                    dr["Quantity"] = Details.Quantity.ToString("#,##0.##") + " - DEMO";
+                    dr["Price"] = "0.00";
+                    dr["Discount"] = "0.00";
+                    dr["Amount"] = "0.00";
+                    dr["VAT"] = "0.00";
+                    dr["EVAT"] = "0.00";
+                    dr["LocalTax"] = "0.00";
+                    dr["PromoApplied"] = "0.00";
+                    dr["PercentageCommision"] = "0.00";
+                    dr["Commision"] = "0.00";
+                    dr["RewardPoints"] = "0.00";
+
+                    // 21May2015 : do an override for 3 digits wighted
+                    if (mclsSysConfigDetails.WeightMeasurement.IndexOf(Details.ProductUnitCode.ToUpper()) > -1)
+                        dr["Quantity"] = Details.Quantity.ToString("#,##0.###") + " - DEMO";
                 }
 
                 if (ItemDataTable.Rows.Count + 1 > 8)
@@ -9185,6 +9338,12 @@ namespace AceSoft.RetailPlus.Client.UI
                                 stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
                                 decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
                                 decAmount = -decAmount;
+                            }
+                            else if (dr["Quantity"].ToString().IndexOf("DEMO") != -1)
+                            {
+                                stProductCode = "" + dr["ProductCode"].ToString() + "-DEMO";
+                                decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - DEMO", "").Trim());
+                                decAmount = 0;
                             }
                             else if (dr["Quantity"].ToString() != "VOID")
                             {

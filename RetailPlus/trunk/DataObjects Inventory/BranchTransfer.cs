@@ -695,23 +695,41 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(BranchTransferStatus branchtransferstatus, string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(Int64 BranchTransferID = 0, Int64 SupplierID = 0, BranchTransferDetails SearchKey = new BranchTransferDetails(),
+                                                    BranchTransferStatus BranchTransferstatus = BranchTransferStatus.All,
+                                                    DateTime? OrderStartDate = null, DateTime? OrderEndDate = null,
+                                                    DateTime? PostingStartDate = null, DateTime? PostingEndDate = null,
+                                                    DateTime? DeliveryStartDate = null, DateTime? DeliveryEndDate = null, 
+                                                    string SortField = "BranchTransferID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
 
-            if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
+            string SQL = SQLSelect() + "WHERE 1=1 ";
 
-            string SQL = SQLSelect() + "WHERE Status = @Status ";
+            if (BranchTransferID != 0) SQL += "AND BranchTransferID = @BranchTransferID ";
+            if (SupplierID != 0) SQL += "AND SupplierID = @SupplierID ";
+            if (BranchTransferstatus != BranchTransferStatus.All) SQL += "AND Status = @Status ";
+            if (OrderStartDate.GetValueOrDefault() != DateTime.MinValue) SQL += "AND BranchTransferDate >= @OrderStartDate ";
+            if (OrderEndDate.GetValueOrDefault() != DateTime.MinValue) SQL += "AND BranchTransferDate <= @OrderEndDate ";
+            if (PostingStartDate.GetValueOrDefault() != DateTime.MinValue) SQL += "AND BranchTransferDate >= @PostingStartDate ";
+            if (PostingEndDate.GetValueOrDefault() != DateTime.MinValue) SQL += "AND BranchTransferDate <= @PostingEndDate ";
+            if (DeliveryStartDate.GetValueOrDefault() != DateTime.MinValue) SQL += "AND DeliveryDate >= @DeliveryStartDate ";
+            if (DeliveryEndDate.GetValueOrDefault() != DateTime.MinValue) SQL += "AND DeliveryDate <= @DeliveryEndDate ";
 
-            SQL += "ORDER BY " + SortField;
+            SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BranchTransferID") + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
+            if (BranchTransferID != 0) cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
+            if (SupplierID != 0) cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+            if (BranchTransferstatus != BranchTransferStatus.All) cmd.Parameters.AddWithValue("@Status", BranchTransferstatus.ToString("d"));
+            if (OrderStartDate.GetValueOrDefault() != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : OrderStartDate);
+            if (OrderEndDate.GetValueOrDefault() != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : OrderEndDate);
+            if (PostingStartDate.GetValueOrDefault() != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PostingStartDate);
+            if (PostingEndDate.GetValueOrDefault() != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PostingEndDate);
+            if (DeliveryStartDate.GetValueOrDefault() != DateTime.MinValue) cmd.Parameters.AddWithValue("@DeliveryStartDate", DeliveryStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DeliveryStartDate);
+            if (DeliveryEndDate.GetValueOrDefault() != DateTime.MinValue) cmd.Parameters.AddWithValue("@DeliveryEndDate", DeliveryEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DeliveryEndDate);
 
             cmd.CommandText = SQL;
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
@@ -719,179 +737,7 @@ namespace AceSoft.RetailPlus.Data
 
             return dt;
         }
-        public System.Data.DataTable ListAsDataTable(BranchTransferStatus branchtransferstatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SortField, SortOption SortOrder)
-        {
-            if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
 
-            string SQL = SQLSelect() + "WHERE Status = @Status ";
-
-            if (OrderStartDate != DateTime.MinValue) SQL += "AND BranchTransferDate >= @OrderStartDate ";
-            if (OrderEndDate != DateTime.MinValue) SQL += "AND BranchTransferDate <= @OrderEndDate ";
-            if (PostingStartDate != DateTime.MinValue) SQL += "AND BranchTransferDate >= @PostingStartDate ";
-            if (PostingEndDate != DateTime.MinValue) SQL += "AND BranchTransferDate <= @PostingEndDate ";
-
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
-
-            if (OrderStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (OrderEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-        }
-
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
-		{
-            if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
-
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-		}
-
-		public MySqlDataReader List(long BranchTransferID, string SortField = "BranchTransferID", SortOption SortOrder = SortOption.Ascending)
-		{
-			try
-			{
-                string SQL = SQLSelect() + "WHERE BranchTransferID = @BranchTransferID ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader List(string SortField = "BranchTransferID", SortOption SortOrder = SortOption.Ascending)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader List(BranchTransferStatus branchtransferstatus, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
-
-				string SQL = SQLSelect() + "WHERE Status = @Status ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = branchtransferstatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader List(BranchTransferStatus branchtransferstatus, long SupplierID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
-
-				string SQL = SQLSelect() + "WHERE Status =@Status AND SupplierID = @SupplierID ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = branchtransferstatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
-				prmSupplierID.Value = SupplierID;
-				cmd.Parameters.Add(prmSupplierID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
         public MySqlDataReader ListForPayment(long SupplierID, string SortField, SortOption SortOrder)
         {
             try
@@ -930,213 +776,213 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
+        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
 
-				string SQL = SQLSelect() + "WHERE (BranchTransferNo LIKE @SearchKey or BranchTransferDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-										"or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey) " +
-								"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE (BranchTransferNo LIKE @SearchKey or BranchTransferDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey) " +
+        //                        "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}		
-		public MySqlDataReader Search(BranchTransferStatus branchtransferstatus, string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}		
+        //public MySqlDataReader Search(BranchTransferStatus branchtransferstatus, string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
 
-				string SQL = SQLSelect() + "WHERE Status = @Status AND (BranchTransferNo LIKE @SearchKey or BranchTransferDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
-							"ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND (BranchTransferNo LIKE @SearchKey or BranchTransferDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
+        //                    "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = branchtransferstatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
+        //        prmStatus.Value = branchtransferstatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable SearchAsDataTable(BranchTransferStatus branchtransferstatus, string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public System.Data.DataTable SearchAsDataTable(BranchTransferStatus branchtransferstatus, string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
 
-                string SQL = SQLSelect() + "WHERE Status = @Status AND (BranchTransferNo LIKE @SearchKey or BranchTransferDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
-                            "ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND (BranchTransferNo LIKE @SearchKey or BranchTransferDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
+        //                    "ORDER BY " + SortField;
 
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
-                prmStatus.Value = branchtransferstatus.ToString("d");
-                cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
+        //        prmStatus.Value = branchtransferstatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-                MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-                prmSearchKey.Value = "%" + SearchKey + "%";
-                cmd.Parameters.Add(prmSearchKey);
+        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
+        //        prmSearchKey.Value = "%" + SearchKey + "%";
+        //        cmd.Parameters.Add(prmSearchKey);
 
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
 
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public System.Data.DataTable SearchAsDataTable(BranchTransferStatus branchtransferstatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
+        //        return dt;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
+        //public System.Data.DataTable SearchAsDataTable(BranchTransferStatus branchtransferstatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
 
-                string SQL = SQLSelect() + "WHERE Status = @Status ";
+        //        string SQL = SQLSelect() + "WHERE Status = @Status ";
                 
-                if (SearchKey != string.Empty || SearchKey != null)
-                    SQL += "AND (BranchTransferNo LIKE @SearchKey " +
-                                        "or b.BranchCode LIKE @SearchKey or c.BranchCode LIKE @SearchKey or a.Remarks LIKE @SearchKey) ";
+        //        if (SearchKey != string.Empty || SearchKey != null)
+        //            SQL += "AND (BranchTransferNo LIKE @SearchKey " +
+        //                                "or b.BranchCode LIKE @SearchKey or c.BranchCode LIKE @SearchKey or a.Remarks LIKE @SearchKey) ";
 
-                if (OrderStartDate != DateTime.MinValue) SQL += "AND BranchTransferDate >= @OrderStartDate ";
-                if (OrderEndDate != DateTime.MinValue) SQL += "AND BranchTransferDate <= @OrderEndDate ";
-                if (PostingStartDate != DateTime.MinValue) SQL += "AND BranchTransferDate >= @PostingStartDate ";
-                if (PostingEndDate != DateTime.MinValue) SQL += "AND BranchTransferDate <= @PostingEndDate ";
+        //        if (OrderStartDate != DateTime.MinValue) SQL += "AND BranchTransferDate >= @OrderStartDate ";
+        //        if (OrderEndDate != DateTime.MinValue) SQL += "AND BranchTransferDate <= @OrderEndDate ";
+        //        if (PostingStartDate != DateTime.MinValue) SQL += "AND BranchTransferDate >= @PostingStartDate ";
+        //        if (PostingEndDate != DateTime.MinValue) SQL += "AND BranchTransferDate <= @PostingEndDate ";
 
-                SQL += "ORDER BY " + SortField;
+        //        SQL += "ORDER BY " + SortField;
 
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
-                if (SearchKey != string.Empty || SearchKey != null) cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+        //        cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
+        //        if (SearchKey != string.Empty || SearchKey != null) cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
 
-                if (OrderStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                if (OrderEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        if (OrderStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        if (OrderEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
 
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }	
+        //        return dt;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}	
 
-        public MySqlDataReader List(BranchTransferStatus branchtransferstatus, DateTime StartDate, DateTime EndDate)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY BranchTransferID ASC";
+        //public MySqlDataReader List(BranchTransferStatus branchtransferstatus, DateTime StartDate, DateTime EndDate)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY BranchTransferID ASC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
-				MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);			
-				prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmStartDate);
+        //        MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);			
+        //        prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmStartDate);
 
-				MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);			
-				prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmEndDate);
+        //        MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);			
+        //        prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmEndDate);
 
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = branchtransferstatus.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
+        //        prmStatus.Value = branchtransferstatus.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public MySqlDataReader List(BranchTransferStatus branchtransferstatus, long SupplierID, DateTime StartDate, DateTime EndDate)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "WHERE Status = @Status AND SupplierID = @SupplierID AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY BranchTransferID ASC";
+        //        return myReader;			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public MySqlDataReader List(BranchTransferStatus branchtransferstatus, long SupplierID, DateTime StartDate, DateTime EndDate)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect() + "WHERE Status = @Status AND SupplierID = @SupplierID AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY BranchTransferID ASC";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
-                cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-                cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
+        //        cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+        //        cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        //        cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
 
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //        return myReader;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 		
 		#endregion
 

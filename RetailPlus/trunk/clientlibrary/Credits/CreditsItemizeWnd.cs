@@ -1182,7 +1182,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mdecDebitPayment = payment.DebitPayment;
                 mdecBalanceAmount = payment.BalanceAmount;
                 mdecChangeAmount = payment.ChangeAmount;
-                PaymentTypes mPaymentType = payment.PaymentType;
+                mPaymentType = payment.PaymentType;
                 marrCashPaymentDetails = payment.CashPaymentDetails;
                 marrChequePaymentDetails = payment.ChequePaymentDetails;
                 marrCreditCardPaymentDetails = payment.CreditCardPaymentDetails;

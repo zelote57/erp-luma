@@ -728,6 +728,14 @@ BEGIN
 			DELETE FROM tblTransactionItems WHERE ProductCode = 'GCI LATE PAYMENT CHARGE' OR ProductCode = 'GCI FINANCE CHARGE' AND TransactionID IN (SELECT TransactionID FROM tblTransactions WHERE TerminalNo = '00' AND CreatedByName = 'Credit Bill' AND TransactionDate >= '2015-01-06');
 			DELETE FROM tblTransactions WHERE TerminalNo = '00' AND CreatedByName = 'Credit Bill' AND TransactionDate >= '2015-01-06';
 
+			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID = 17343);
+			DELETE FROM tblCreditBillHeader WHERE CreditBillID = 17343;
+			DELETE FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID = 17343;
+			DELETE FROM tblCreditPayment WHERE CashierName = 'SysCWithGBiller-LPC' OR CashierName = 'SysCWithGBiller-FC' AND CreditDate BETWEEN '2015-05-20' AND '2015-05-21';
+			DELETE FROM tblTransactions WHERE Transactiondate BETWEEN '2015-05-20' AND '2015-05-21' AND TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'GCI LATE PAYMENT CHARGE' OR ProductCode = 'GCI FINANCE CHARGE');
+			DELETE FROM tblTransactionItems WHERE ProductCode = 'GCI LATE PAYMENT CHARGE' OR ProductCode = 'GCI FINANCE CHARGE' AND CreatedOn BETWEEN '2015-05-20' AND '2015-05-21';
+
+
 			-- UPDATE tblContactCreditCardInfo SET LastBillingDate = ''
 			CALL procSyncContactCredit();
 

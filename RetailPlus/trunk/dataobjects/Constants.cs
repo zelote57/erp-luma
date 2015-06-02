@@ -177,6 +177,7 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_TERMINAL_REPORT = "WillDeductTFInTerminalReport";
         public const string SYS_CONFIG_WILL_ASK_DO_NOT_PRINT_TRANSACTIONDATE = "WillAskDoNotPrintTransactionDate";
         public const string SYS_CONFIG_WILL_SHOW_PRODUCT_TOTAL_QUANTITY_IN_ITEMSELECT = "WillShowProductTotalQuantityInItemSelect";
+        public const string SYS_CONFIG_WILL_SHOW_PRODUCT_BRANCH_QUANTITY_IN_ITEMSELECT = "WillShowProductBranchQuantityInItemSelect";
         public const string SYS_CONFIG_WILL_NOT_PRINT_REPRINT_MESSAGE = "WillNotPrintReprintMessage";
         public const string SYS_CONFIG_WILL_DEPOSIT_CHANGE_OF_CREDIT_PAYMENT = "WillDepositChangeOfCreditPayment";
         public const string SYS_CONFIG_CREDIT_PAYMENT_TYPE = "CreditPaymentType";

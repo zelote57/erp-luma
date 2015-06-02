@@ -507,7 +507,7 @@ BEGIN
 	DECLARE dteNextZReadDate DATETIME DEFAULT NULL;
 	DECLARE boIsProcessed TINYINT(1) DEFAULT 0;
 	DECLARE decSNRPercent DECIMAL(5,2) DEFAULT 0.20;
-	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(10) DEFAULT 'SNR';
+	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(20) DEFAULT 'SNR';
 
 	SET boIsProcessed = (SELECT IsProcessed FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 
@@ -6222,6 +6222,12 @@ BEGIN
                             ,prd.RIDMaxThreshold
                             ,prd.RIDMaxThreshold -  SUM(IFNULL(inv.Quantity,0)) AS RIDReorderQty
 
+							,SUM(IFNULL(inv.BranchMinThreshold,0)) BranchMinThreshold
+							,SUM(IFNULL(inv.BranchMaxThreshold,0)) BranchMaxThreshold
+							,SUM(IFNULL(inv.RIDBranch,0)) RIDBranch
+							,SUM(IFNULL(inv.RIDBranchMinThreshold,0)) RIDBranchMinThreshold
+							,SUM(IFNULL(inv.RIDBranchMaxThreshold,0)) RIDBranchMaxThreshold
+
 							,prd.ChartOfAccountIDPurchase
 							,prd.ChartOfAccountIDSold
 							,prd.ChartOfAccountIDInventory
@@ -10250,7 +10256,7 @@ BEGIN
 	DECLARE dteActualZReadDate DATETIME DEFAULT NULL;
 	DECLARE dteNextZReadDate DATETIME DEFAULT NULL;
 	DECLARE decSNRPercent DECIMAL(5,2) DEFAULT 0.20;
-	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(10) DEFAULT 'SNR';
+	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(20) DEFAULT 'SNR';
 	
 	DECLARE curActualZReadDate CURSOR FOR SELECT DateLastInitialized FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i:%s'); 
 
@@ -10987,6 +10993,51 @@ GO
 delimiter ;
 
 
+
+/**************************************************************
+
+	procProductUpdateThresholds
+	Lemuel E. Aceron
+	25May2015
+
+	CALL procProductUpdateThresholds();
+	
+	25May2015: Updating of thresholds per branch
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductUpdateThresholds
+GO
+
+create procedure procProductUpdateThresholds(
+						IN iBranchID INT(4),
+						IN iProductID bigint,
+						IN iMatrixID bigint,
+						IN decBranchMinThreshold numeric,
+						IN decBranchMaxThreshold numeric,
+						IN iRIDBranch int(4),
+						IN decRIDBranchMinThreshold numeric,
+						IN decRIDBranchMaxThreshold numeric)
+BEGIN
+	
+	IF EXISTS(SELECT ProductID FROM tblProductInventory WHERE ProductID = iProductID AND MatrixID = iMatrixID AND BranchID = iBranchID) THEN 
+		UPDATE tblProductInventory SET
+			BranchMinThreshold	= decBranchMinThreshold,
+			BranchMaxThreshold	= decBranchMaxThreshold,
+			RIDBranch = iRIDBranch,
+			RIDBranchMinThreshold	= decRIDBranchMinThreshold,
+			RIDBranchMaxThreshold	= decRIDBranchMaxThreshold
+		WHERE ProductID = iProductID AND MatrixID = iMatrixID AND BranchID = iBranchID;
+	ELSE
+		INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, BranchMinThreshold, BranchMaxThreshold,
+										RIDBranch, RIDBranchMinThreshold, RIDBranchMaxThreshold)
+			VALUES(iBranchID, iProductID, iMatrixID, decBranchMinThreshold, decBranchMaxThreshold,
+										iRIDBranch, decRIDBranchMinThreshold, decRIDBranchMaxThreshold);
+	END IF;
+	
+END;
+GO
+delimiter ;
 
 GRANT RELOAD ON *.* TO 'POSUser';
 GRANT RELOAD ON *.* TO 'POSAuditUser';

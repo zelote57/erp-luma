@@ -1433,6 +1433,52 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+
+        public void setItemAsDemo(Int64 TransactionItemsID)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblTransactionItems SET " +
+                                "Price							=	0, " +
+                                "Discount						=	0, " +
+                                "Amount							=	0, " +
+                                "Commision						=	0, " +
+                                "RewardPoints					=	0, " +
+                                "VAT							=	0, " +
+                                "EVAT							=	0, " +
+                                "LocalTax						=	0, " +
+                                "NonVATableAmount				=	0, " +
+                                "NonEVATableAmount				=	0, " +
+                                "GrossSales						=	0, " +
+                                "SellingPrice					=	0, " +
+                                "VatableAmount					=	0, " +
+                                "EVatableAmount					=	0, " +
+                                "PurchasePrice                  =   0, " +
+                                "PurchaseAmount                 =   0, " +
+                                "PromoApplied                   =   0, " +
+                                "PercentageCommision            =   0, " +
+                                "Commision                      =   0, " +
+                                "RewardPoints                   =   0, " +
+                                "TransactionItemStatus			=	@TransactionItemStatus, " +
+                                "OrderSlipPrinted               =   0, " +
+                                "LastModified		            =	NOW() " +
+                             "WHERE TransactionItemsID		=	@TransactionItemsID;";
+
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.Demo.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionItemsID", TransactionItemsID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public void Void(Int64 TransactionItemsID)
         {
             try
@@ -1466,6 +1512,7 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+
         public void VoidByTransaction(Int64 TransactionID)
         {
             try

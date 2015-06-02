@@ -2566,11 +2566,19 @@ namespace AceSoft.RetailPlus.Data
 			SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
 			clsSalesTransactionItems.Return(TransactionItemID);
 		}
-		public void VoidItem(Int64 TransactionItemID, DateTime TransactionDate)
+		
+        public void VoidItem(Int64 TransactionItemID, DateTime TransactionDate)
 		{
 			SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
 			clsSalesTransactionItems.Void(TransactionItemID);
 		}
+
+        public void setItemAsDemo(Int64 TransactionItemID, DateTime TransactionDate)
+        {
+            SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
+            clsSalesTransactionItems.setItemAsDemo(TransactionItemID);
+        }
+
         public void UpdateItem(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType, SalesTransactionItemDetails SalesTransItemDetails)
 		{
             UpdateSubTotal(TransactionID, ItemSold, QuantitySold, GrossSales, SubTotal, NetSales, ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, Discount, SNRDiscount, PWDDiscount, OtherDiscount, TransDiscount, TransDiscountType, VAT, VATableAmount, ZeroRatedSales, NonVATableAmount, VATExempt, EVAT, EVATableAmount, NonEVATableAmount, LocalTax, DiscountCode, DiscountRemarks, Charge, ChargeAmount, ChargeCode, ChargeRemarks, ChargeType);

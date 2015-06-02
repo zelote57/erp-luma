@@ -454,6 +454,13 @@
     <Compile Include="Home\GLA\_uploadsales.ascx.designer.cs">
       <DependentUpon>_uploadsales.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\_invthreshold.ascx.cs">
+      <DependentUpon>_invthreshold.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_invthreshold.ascx.designer.cs">
+      <DependentUpon>_invthreshold.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\_closeinventorysubgroup.ascx.cs">
       <DependentUpon>_closeinventorysubgroup.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -538,6 +545,62 @@
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_WBranchTransfer\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
     <Compile Include="MasterFiles\_ContactGroup\_changepricelevel.ascx.cs">
       <DependentUpon>_changepricelevel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -574,6 +637,12 @@
     </Compile>
     <Compile Include="Reports\BranchTransferReportSellingPrice.cs">
       <DependentUpon>BranchTransferReportSellingPrice.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\WBranchTransferReport.cs">
+      <DependentUpon>WBranchTransferReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -647,6 +716,24 @@
     </Compile>
     <Compile Include="Reports\_customercredit\_ccisummarystatistics.cs">
       <DependentUpon>_ccisummarystatistics.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerGroupSummarized.cs">
+      <DependentUpon>_DatedReportSalesTransactionPerCustomerPerGroupSummarized.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerGroup.cs">
+      <DependentUpon>_DatedReportSalesTransactionPerCustomerPerGroup.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerItemWoutPD.cs">
+      <DependentUpon>_DatedReportSalesTransactionPerItemWoutPD.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -3686,9 +3773,18 @@
     <Content Include="Home\GLA\default.aspx" />
     <Content Include="Home\_menu.ascx" />
     <Content Include="Home\GLA\_uploadsales.ascx" />
+    <Content Include="Inventory\_invthreshold.ascx" />
     <Content Include="Inventory\_closeinventorysubgroup.ascx" />
     <Content Include="Inventory\_closeinventoryproduct.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\default.aspx" />
+    <Content Include="Inventory\_WBranchTransfer\_cancel.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\_details.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\_insert.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\_list.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\_post.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\_reports.ascx" />
+    <Content Include="Inventory\_WBranchTransfer\_update.ascx" />
     <Content Include="MasterFiles\_ContactGroup\_changepricelevel.ascx" />
     <Content Include="MasterFiles\_Contact\_pricelevel.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
@@ -4203,6 +4299,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchTransferReportSellingPrice.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\WBranchTransferReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>WBranchTransferReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_analyticsreport\_TransactionsAll.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_TransactionsAll.cs</LastGenOutput>
@@ -4258,6 +4358,18 @@
     <EmbeddedResource Include="Reports\_customercredit\_ccisummarystatistics.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ccisummarystatistics.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerGroupSummarized.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCustomerPerGroupSummarized.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerGroup.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCustomerPerGroup.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerItemWoutPD.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerItemWoutPD.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithEffective.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

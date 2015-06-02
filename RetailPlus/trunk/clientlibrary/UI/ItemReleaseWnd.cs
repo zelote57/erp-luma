@@ -533,7 +533,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgItems.CurrentRowIndex = iRow;
                 _SalesTransactionItemDetails = getCurrentRowItemDetails();
                 TransactionItemStatus _TransactionItemStatus = (TransactionItemStatus)Enum.Parse(typeof(TransactionItemStatus), dgItems[iRow, 21].ToString());
-                if ((_SalesTransactionItemDetails.BarCode == txtScan.Text.Trim() || _SalesTransactionItemDetails.ProductCode.Contains(txtScan.Text.Trim()))  && _TransactionItemStatus == TransactionItemStatus.Valid)
+                if ((_SalesTransactionItemDetails.BarCode == txtScan.Text.Trim() || _SalesTransactionItemDetails.ProductCode.Contains(txtScan.Text.Trim()))  && (_TransactionItemStatus == TransactionItemStatus.Valid || _TransactionItemStatus == TransactionItemStatus.Demo))
                 {
                     _SalesTransactionItemDetails.ScannedQty += 1;
                     ApplyChangeQuantityPriceAmountDetails(iRow, _SalesTransactionItemDetails);

@@ -22,6 +22,7 @@ namespace AceSoft.RetailPlus.Inventory
 
 				lnkBranch.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Branch/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
                 lnkBranchTransfer.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_BranchTransfer/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                lnkWarehouseTransfer.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_WBranchTransfer/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
 				lnkInventoryList.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
 				lnkStockType.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_StockType/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
 				lnkStock.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Stock/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
@@ -30,6 +31,7 @@ namespace AceSoft.RetailPlus.Inventory
 				lnkTransferOut.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
 
                 lnkInvAdjustment.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("invadjustment", Session.SessionID);
+                lnkInvThreshold.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("invthreshold", Session.SessionID);
 
                 lnkInventoryAnalyst.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("inventoryanalyst", Session.SessionID);
                 lnkCloseInventoryProduct.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closeinventoryproduct", Session.SessionID);
@@ -49,6 +51,7 @@ namespace AceSoft.RetailPlus.Inventory
                 //lnkTotalStock.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("totalstockrep", Session.SessionID);
 
                 lnkCLosingInventoryReport.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID);
+                
 			}
 		}
 
@@ -69,17 +72,25 @@ namespace AceSoft.RetailPlus.Inventory
  
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.StockTransactions); 
 			lnkStock.Visible = clsDetails.Read; 
-			lnkUpload.Visible = clsDetails.Read; 
+			lnkUpload.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.BranchInventoryTransfer);
+            lnkBranchTransfer.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.WarehouseToBranchTransfer);
+            lnkWarehouseTransfer.Visible = clsDetails.Read;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.TransferIn);
 			lnkTransferIn.Visible = clsDetails.Read;
-            lnkBranchTransfer.Visible = clsDetails.Read;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.TransferOut);
 			lnkTransferOut.Visible = clsDetails.Read; 
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InvAdjustment); 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InvThreshold); 
 			lnkInvAdjustment.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InvThreshold);
+            lnkInvThreshold.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InventoryAnalyst);
             lnkInventoryAnalyst.Visible = false;

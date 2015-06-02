@@ -31,9 +31,17 @@
 									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
-										<td class="Ms-pvtbbutton" nowrap>
+										<td class="Ms-pvtbbutton" nowrap="nowrap">
 											<asp:HyperLink id="lnkBranchTransfer" runat="server" ToolTip="Display List of Branch Transfers">
 													Branch Inventory Transfer</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton" nowrap="nowrap">
+											<asp:HyperLink id="lnkWarehouseTransfer" runat="server" ToolTip="Display List of Warehouse-Branch Transfers">
+													Warehouse->Branch Transfer</asp:HyperLink>
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
@@ -85,6 +93,14 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkInvThreshold" runat="server" ToolTip="Set inventory threshold">
+													Set Inventory Threshold</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 								</table>
 							</div>
 						</td>
@@ -120,7 +136,7 @@
 					</tr>
 					<tr>
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
-						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word" nowrap>
+						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word" nowrap="nowrap">
 							<asp:HyperLink id="lnkCloseInventoryDetailed" runat="server" ToolTip="Close Inventory using detailed variation">
 								<li>
 									Close Inventory By Supplier</li></asp:HyperLink>

@@ -77,6 +77,8 @@
     <Compile Include="ClosingItems.cs" />
     <Compile Include="BranchTransfer.cs" />
     <Compile Include="BranchTransferItems.cs" />
+    <Compile Include="WBranchTransfer.cs" />
+    <Compile Include="WBranchTransferItems.cs" />
     <Compile Include="DebitMemo.cs" />
     <Compile Include="DebitMemoItems.cs" />
     <Compile Include="Enum.cs" />

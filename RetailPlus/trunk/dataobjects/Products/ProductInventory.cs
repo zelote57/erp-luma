@@ -148,6 +148,41 @@ namespace AceSoft.RetailPlus.Data
         }
 
         /// <summary>
+        /// 25May2015 : Updating of thresholds per branch
+        /// </summary>
+        public bool UpdateThresholds(int iBranchID, long iProductID, long iMatrixID, decimal decBranchMinThreshold, decimal decBranchMaxThreshold, int iRIDBranch, decimal decRIDBranchMinThreshold, decimal decRIDBranchMaxThreshold)
+        {
+            bool boRetValue = false;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                string SQL = "procProductUpdateThresholds";
+
+                cmd.Parameters.AddWithValue("@iBranchID", iBranchID);
+                cmd.Parameters.AddWithValue("@iProductID", iProductID);
+                cmd.Parameters.AddWithValue("@iMatrixID", iMatrixID);
+                cmd.Parameters.AddWithValue("@decBranchMinThreshold", decBranchMinThreshold);
+                cmd.Parameters.AddWithValue("@decBranchMaxThreshold", decBranchMaxThreshold);
+                cmd.Parameters.AddWithValue("@iRIDBranch", iRIDBranch);
+                cmd.Parameters.AddWithValue("@decRIDBranchMinThreshold", decRIDBranchMinThreshold);
+                cmd.Parameters.AddWithValue("@decRIDBranchMaxThreshold", decRIDBranchMaxThreshold);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
+        /// <summary>
         /// Lemu - 06-20-2011
         /// </summary>
         /// <param name="ProductID">Put zero(0) if you want to update all products</param>

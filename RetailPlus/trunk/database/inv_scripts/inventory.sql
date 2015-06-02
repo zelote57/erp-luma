@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS tblPO;
 CREATE TABLE tblPO (
 	`POID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`PONo` VARCHAR(30) NOT NULL,
-	`PODate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`PODate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 	`SupplierCode` VARCHAR(25) NOT NULL,
 	`SupplierContact` VARCHAR(75) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE tblPO (
 	`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 	`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
 	`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
 	`PurchaserID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 	`PurchaserName` VARCHAR(100),
@@ -46,8 +46,8 @@ CREATE TABLE tblPO (
 	`Status` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	`Remarks` VARCHAR(150),
 	`SupplierDRNo` VARCHAR(30) NOT NULL,
-	`DeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledRemarks` VARCHAR(150),
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -137,7 +137,7 @@ DROP TABLE IF EXISTS tblPODebitMemo;
 CREATE TABLE tblPODebitMemo (
 	`DebitMemoID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`MemoNo` VARCHAR(30) NOT NULL,
-	`MemoDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`MemoDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 	`SupplierCode` VARCHAR(25) NOT NULL,
 	`SupplierContact` VARCHAR(75) NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE tblPODebitMemo (
 	`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 	`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
 	`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-	`RequiredPostingDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RequiredPostingDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
 	`PurchaserID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 	`PurchaserName` VARCHAR(100),
@@ -162,8 +162,8 @@ CREATE TABLE tblPODebitMemo (
 	`DebitMemoStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	`Remarks` VARCHAR(150),
 	`SupplierDocNo` VARCHAR(30) NOT NULL,
-	`PostingDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`PostingDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledRemarks` VARCHAR(150),
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -186,7 +186,7 @@ CREATE TABLE tblPODebitMemo (
 	INDEX `IX3_tblPODebitMemo`(`PurchaserID`)
 );
 
--- alter table tblPODebitMemo add `CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
+-- alter table tblPODebitMemo add `CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 -- alter table tblPODebitMemo add `CancelledRemarks` VARCHAR(150);
 -- alter table tblPODebitMemo add `CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0;
 
@@ -240,9 +240,9 @@ CREATE TABLE tblPODebitMemoItems (
 DROP TABLE IF EXISTS tblInventory;
 CREATE TABLE tblInventory (
 	`InventoryID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`PostingDateFrom` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`PostingDateTo` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`PostingDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`PostingDateFrom` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`PostingDateTo` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`PostingDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`ReferenceNo` VARCHAR(30) NOT NULL,
 	`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 	`ContactCode` VARCHAR(25) NOT NULL,
@@ -303,8 +303,8 @@ CREATE TABLE tblERPConfig (
 	`LastTransferOutNo` VARCHAR(10) NOT NULL,
 	`LastInvAdjustmentNo` VARCHAR(10) NOT NULL,
 	`LastClosingNo` VARCHAR(10) NOT NULL,
-	`PostingDateFrom` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`PostingDateTo` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`PostingDateFrom` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`PostingDateTo` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`ChartOfAccountIDAPTracking` INT(4) UNSIGNED NOT NULL DEFAULT 0,
 	`ChartOfAccountIDAPBills` INT(4) UNSIGNED NOT NULL DEFAULT 0,
 	`ChartOfAccountIDAPFreight` INT(4) UNSIGNED NOT NULL DEFAULT 0,
@@ -358,7 +358,7 @@ DROP TABLE IF EXISTS tblTransferIn;
 CREATE TABLE tblTransferIn (
 	`TransferInID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransferInNo` VARCHAR(30) NOT NULL,
-	`TransferInDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`TransferInDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 	`SupplierCode` VARCHAR(25) NOT NULL,
 	`SupplierContact` VARCHAR(75) NOT NULL,
@@ -366,7 +366,7 @@ CREATE TABLE tblTransferIn (
 	`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 	`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
 	`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
 	`TransferrerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 	`TransferrerName` VARCHAR(100),
@@ -382,8 +382,8 @@ CREATE TABLE tblTransferIn (
 	`Status` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	`Remarks` VARCHAR(150),
 	`SupplierDRNo` VARCHAR(30) NOT NULL,
-	`DeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledRemarks` VARCHAR(150),
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -465,7 +465,7 @@ DROP TABLE IF EXISTS tblTransferOut;
 CREATE TABLE tblTransferOut (
 	`TransferOutID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransferOutNo` VARCHAR(30) NOT NULL,
-	`TransferOutDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`TransferOutDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 	`SupplierCode` VARCHAR(25) NOT NULL,
 	`SupplierContact` VARCHAR(75) NOT NULL,
@@ -473,7 +473,7 @@ CREATE TABLE tblTransferOut (
 	`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 	`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
 	`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
 	`TransferrerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 	`TransferrerName` VARCHAR(100),
@@ -489,8 +489,8 @@ CREATE TABLE tblTransferOut (
 	`Status` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	`Remarks` VARCHAR(150),
 	`SupplierDRNo` VARCHAR(30) NOT NULL,
-	`DeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledRemarks` VARCHAR(150),
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -573,7 +573,7 @@ DROP TABLE IF EXISTS tblInvAdjustment;
 CREATE TABLE tblInvAdjustment (
 	`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-	`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -688,8 +688,8 @@ DROP TABLE IF EXISTS tblBranchTransfer;
 CREATE TABLE tblBranchTransfer (
 	`BranchTransferID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`BranchTransferNo` VARCHAR(30) NOT NULL,
-	`BranchTransferDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`BranchTransferDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`BranchIDFrom` INT(4) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblBranch(`BranchIDFrom`),
 	`BranchIDTo` INT(4) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblBranch(`BranchIDFrom`),
 	`TransferrerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
@@ -707,8 +707,8 @@ CREATE TABLE tblBranchTransfer (
 	`Remarks` VARCHAR(150),
 	`RequestedBy` VARCHAR(150) NOT NULL DEFAULT '',
 	`ReceivedBy` VARCHAR(150) NOT NULL DEFAULT '',
-	`DeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledRemarks` VARCHAR(150),
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -925,3 +925,115 @@ ALTER TABLE tblERPConfig MODIFY LastGroupCreditCardNo VARCHAR(8) NOT NULL DEFAUL
 ALTER TABLE tblERPConfig MODIFY LastCustomerCode VARCHAR(8) NOT NULL DEFAULT '00000001';
 
 /*********************************  v_4.0.1.1.sql END  *******************************************************/ 
+
+UPDATE tblERPConfig SET DBVersion = 'v_4.0.1.2';
+
+ALTER TABLE tblERPConfig ADD `LastWBranchTransferNo` VARCHAR(10) NOT NULL DEFAULT '0000000001';
+
+
+/*****************************
+**	tblWBranchTransfer
+*****************************/
+DROP TABLE IF EXISTS tblWBranchTransferItems;
+DROP TABLE IF EXISTS tblWBranchTransfer;
+CREATE TABLE tblWBranchTransfer (
+	`WBranchTransferID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`WBranchTransferNo` VARCHAR(30) NOT NULL,
+	`WBranchTransferDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`BranchIDFrom` INT(4) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblBranch(`BranchIDFrom`),
+	`BranchIDTo` INT(4) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblBranch(`BranchIDFrom`),
+	`TransferrerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`TransferrerName` VARCHAR(100),
+	`SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DiscountApplied` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DiscountType` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Status` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`Remarks` VARCHAR(150),
+	`RequestedBy` VARCHAR(150) NOT NULL DEFAULT '',
+	`ReceivedBy` VARCHAR(150) NOT NULL DEFAULT '',
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledRemarks` VARCHAR(150),
+	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PaymentStatus` TINYINT(1) NOT NULL DEFAULT 0,
+	`Freight` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Deposit` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalItemDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	PRIMARY KEY (WBranchTransferID),
+	INDEX `IX_tblWBranchTransfer`(`WBranchTransferID`),
+	UNIQUE `PK_tblWBranchTransfer`(`WBranchTransferNo`),
+	INDEX `IX2_tblWBranchTransfer`(`BranchIDFrom`),
+	INDEX `IX3_tblWBranchTransfer`(`BranchIDTo`),
+	INDEX `IX4_tblWBranchTransfer`(`TransferrerID`)
+);
+
+
+/*****************************
+**	tblWBranchTransferItems
+*****************************/
+DROP TABLE IF EXISTS tblWBranchTransferItems;
+CREATE TABLE tblWBranchTransferItems (
+	`WBranchTransferItemID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`WBranchTransferID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblWBranchTransfer(`WBranchTransferID`),
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`ProductCode` VARCHAR(30) NOT NULL,
+	`BarCode` VARCHAR(30) NOT NULL,
+	`Description` VARCHAR(100) NOT NULL,
+	`ProductUnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductUnitCode` VARCHAR(30) NOT NULL,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`UnitCost` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DiscountApplied` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DiscountType` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`isVatInclusive` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+	`VariationMatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`MatrixDescription` VARCHAR(150) NULL,
+	`ProductGroup` VARCHAR(20) NULL,
+	`ProductSubGroup` VARCHAR(20) NULL,
+	`WBranchTransferItemStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`IsVatable` TINYINT(1) NOT NULL DEFAULT 1,
+	`Remarks` VARCHAR(150),
+	`SellingPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SellingVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SellingEVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SellingLocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`OldSellingPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`WBranchTransferItemID`),
+	INDEX `IX_tblWBranchTransferItems`(`WBranchTransferItemID`),
+	INDEX `IX0_tblWBranchTransferItems`(`WBranchTransferID`, `ProductID`),
+	INDEX `IX1_tblWBranchTransferItems`(`WBranchTransferID`, `ProductID`,`VariationMatrixID`),
+	INDEX `IX2_tblWBranchTransferItems`(`ProductCode`),
+	INDEX `IX3_tblWBranchTransferItems`(`WBranchTransferID`),
+	INDEX `IX4_tblWBranchTransferItems`(`ProductUnitID`)
+);
+
+ALTER TABLE tblWBranchTransfer ADD `SubmittedBy` VARCHAR(150) NOT NULL DEFAULT '';
+ALTER TABLE tblWBranchTransfer ADD `SubmissionDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+
+/*****************************
+**	Added on May 21, 2010 for Synchronizing Products
+**	Lemuel E. Aceron
+*****************************/
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (133, '');
+
+UPDATE sysAccessTypes SET SequenceNo = 14, Category = '05: Backend - MasterFiles - Products' WHERE TypeID = 133;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 133, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 133, 1, 1);
+

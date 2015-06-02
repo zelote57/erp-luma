@@ -40,6 +40,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkBranchTransfer;
         
         /// <summary>
+        /// lnkWarehouseTransfer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkWarehouseTransfer;
+        
+        /// <summary>
         /// lnkInventoryList control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkInvAdjustment;
+        
+        /// <summary>
+        /// lnkInvThreshold control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkInvThreshold;
         
         /// <summary>
         /// lnkInventoryAnalyst control.

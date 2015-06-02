@@ -354,11 +354,12 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
             try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
             catch { }
 
-            string SearchKey = txtSearch.Text;
-            BranchTransferStatus status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), cboStatus.SelectedItem.Value);
-            PageData.DataSource = clsBranchTransfer.SearchAsDataTable(status, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
+            BranchTransferDetails searchKey = new BranchTransferDetails();
+            searchKey.BranchTransferNo = txtSearch.Text;
 
-			clsBranchTransfer.CommitAndDispose();
+            BranchTransferStatus status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), cboStatus.SelectedItem.Value);
+            PageData.DataSource = clsBranchTransfer.ListAsDataTable(0, 0, searchKey, status, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, null, null, SortField, sortoption).DefaultView; 
+            clsBranchTransfer.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
 			

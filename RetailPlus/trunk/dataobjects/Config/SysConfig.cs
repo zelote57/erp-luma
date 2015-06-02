@@ -59,6 +59,7 @@ namespace AceSoft.RetailPlus.Data
         public bool WillAskDoNotPrintTransactionDate;
 
         public bool WillShowProductTotalQuantityInItemSelect;
+        public bool WillShowProductBranchQuantityInItemSelect;
         public bool WillNotPrintReprintMessage;
 
         public bool WillDepositChangeOfCreditPayment;
@@ -194,6 +195,17 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_SHOW_PRODUCT_TOTAL_QUANTITY_IN_ITEMSELECT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_WillShowProductBranchQuantityInItemSelect()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_SHOW_PRODUCT_BRANCH_QUANTITY_IN_ITEMSELECT));
             }
             catch { }
             return boRetValue;
@@ -457,6 +469,7 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.WillDeductTFInTerminalReport = get_WillDeductTFInTerminalReport();
             clsSysConfigDetails.WillAskDoNotPrintTransactionDate = get_WillAskDoNotPrintTransactionDate();
             clsSysConfigDetails.WillShowProductTotalQuantityInItemSelect = get_WillShowProductTotalQuantityInItemSelect();
+            clsSysConfigDetails.WillShowProductBranchQuantityInItemSelect = get_WillShowProductBranchQuantityInItemSelect();
             clsSysConfigDetails.WillNotPrintReprintMessage = get_WillNotPrintReprintMessage();
             clsSysConfigDetails.WillDepositChangeOfCreditPayment = get_WillDepositChangeOfCreditPayment();
             clsSysConfigDetails.CreditPaymentType = get_CreditPaymentType();

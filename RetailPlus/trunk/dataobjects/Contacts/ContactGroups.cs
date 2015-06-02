@@ -254,48 +254,23 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL =	SQLSelect() + "WHERE ContactGroupID = @ContactGroupID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmContactGroupID = new MySqlParameter("@ContactGroupID",MySqlDbType.Int16);
-				prmContactGroupID.Value = ContactGroupID;
-				cmd.Parameters.Add(prmContactGroupID);
+                string SQL = SQLSelect() + "WHERE ContactGroupID = @ContactGroupID;";
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				ContactGroupDetails Details = new ContactGroupDetails();
+                cmd.Parameters.AddWithValue("@ContactGroupID", ContactGroupID);
 
-				while (myReader.Read()) 
-				{
-					Details.ContactGroupID = ContactGroupID;
-					Details.ContactGroupCode = "" + myReader["ContactGroupCode"].ToString();
-					Details.ContactGroupName = "" + myReader["ContactGroupName"].ToString();
-                    Details.ContactGroupCategory = (ContactGroupCategory)Enum.Parse(typeof(ContactGroupCategory), myReader.GetString("ContactGroupCategory"));
-				}
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
+                ContactGroupDetails Details = setDetails(dt);
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -303,49 +278,65 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE ContactGroupCode = @ContactGroupCode;";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = SQLSelect() + "WHERE ContactGroupCode = @ContactGroupCode;";
 
                 cmd.Parameters.AddWithValue("@ContactGroupCode", ContactGroupCode);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                ContactGroupDetails Details = new ContactGroupDetails();
-
-                while (myReader.Read())
-                {
-                    Details.ContactGroupID = myReader.GetInt32("ContactGroupID");
-                    Details.ContactGroupCode = "" + myReader["ContactGroupCode"].ToString();
-                    Details.ContactGroupName = "" + myReader["ContactGroupName"].ToString();
-                    Details.ContactGroupCategory = (ContactGroupCategory)Enum.Parse(typeof(ContactGroupCategory), myReader.GetString("ContactGroupCategory"));
-                }
-
-                myReader.Close();
+                ContactGroupDetails Details = setDetails(dt);
 
                 return Details;
             }
-
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
+        public ContactGroupDetails DetailsByName(string ContactGroupName)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE ContactGroupName = @ContactGroupName;";
+
+                cmd.Parameters.AddWithValue("@ContactGroupName", ContactGroupName);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                ContactGroupDetails Details = setDetails(dt);
+                
+                return Details;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        private ContactGroupDetails setDetails(System.Data.DataTable dt)
+        {
+            ContactGroupDetails Details = new ContactGroupDetails();
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                Details.ContactGroupID = Int32.Parse(dr["ContactGroupID"].ToString());
+                Details.ContactGroupCode = "" + dr["ContactGroupCode"].ToString();
+                Details.ContactGroupName = "" + dr["ContactGroupName"].ToString();
+                Details.ContactGroupCategory = (ContactGroupCategory)Enum.Parse(typeof(ContactGroupCategory), dr["ContactGroupCategory"].ToString());
+            }
+
+            return Details;
+        }
+
 
 		#endregion
 
@@ -471,9 +462,10 @@ namespace AceSoft.RetailPlus.Data
 
         #region DataTables
 
-        public System.Data.DataTable ListAsDataTable(ContactGroupCategory Category = ContactGroupCategory.BOTH, string SearchKey = null, string SortField = "ContactGroupName", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(ContactGroupCategory Category = ContactGroupCategory.BOTH, string SearchKey = null, string SortField = "ContactGroupName", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
 
             string SQL = SQLSelect() + "WHERE 1=1 ";
 
@@ -487,23 +479,14 @@ namespace AceSoft.RetailPlus.Data
                 SQL += "AND (ContactGroupCategory = @Category OR ContactGroupCategory = 3) ";
                 cmd.Parameters.AddWithValue("@Category", Category.ToString("d"));
             }
-            
-            SQL += "ORDER BY " + SortField;
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC ";
-            else
-                SQL += " DESC ";
 
-            
+            SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ContactGroupCode") + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-            
-            
-            cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
-            
-            System.Data.DataTable dt = new System.Data.DataTable("tblContactGroups");
-            base.MySqlDataAdapterFill(cmd, dt);
-            
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);            
 
             return dt;
         }

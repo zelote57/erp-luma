@@ -205,7 +205,7 @@
 							<tr>
 								<td class="ms-toolbar" nowrap><asp:imagebutton id="imgSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgSaveThresholds_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Save All Thresholds" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
 								</td>
-								<td nowrap><asp:linkbutton id="cmdSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveThresholds_Click">Save All Actual Quantity</asp:linkbutton></td>
+								<td nowrap><asp:linkbutton id="cmdSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveThresholds_Click">Save All Thresholds</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>	

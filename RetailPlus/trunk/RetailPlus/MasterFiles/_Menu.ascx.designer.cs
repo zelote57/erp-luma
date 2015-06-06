@@ -22,13 +22,31 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuMasterFiles;
         
         /// <summary>
-        /// Menu_Product control.
+        /// divlblProductSetup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Menu_Product;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblProductSetup;
+        
+        /// <summary>
+        /// divtblProductSetup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divtblProductSetup;
+        
+        /// <summary>
+        /// divlnkProductsDetailed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkProductsDetailed;
         
         /// <summary>
         /// lnkProductsDetailed control.
@@ -40,6 +58,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkProductsDetailed;
         
         /// <summary>
+        /// divlnkProducts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkProducts;
+        
+        /// <summary>
         /// lnkProducts control.
         /// </summary>
         /// <remarks>
@@ -47,6 +74,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkProducts;
+        
+        /// <summary>
+        /// divlnkProductGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkProductGroup;
         
         /// <summary>
         /// lnkProductGroup control.
@@ -58,6 +94,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkProductGroup;
         
         /// <summary>
+        /// divlnkProductSubGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkProductSubGroup;
+        
+        /// <summary>
         /// lnkProductSubGroup control.
         /// </summary>
         /// <remarks>
@@ -65,6 +110,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkProductSubGroup;
+        
+        /// <summary>
+        /// divlnkPromo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkPromo;
         
         /// <summary>
         /// lnkPromo control.
@@ -76,6 +130,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkPromo;
         
         /// <summary>
+        /// divlnkVariation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkVariation;
+        
+        /// <summary>
         /// lnkVariation control.
         /// </summary>
         /// <remarks>
@@ -83,6 +146,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkVariation;
+        
+        /// <summary>
+        /// divlnkUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkUnit;
         
         /// <summary>
         /// lnkUnit control.
@@ -94,6 +166,33 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkUnit;
         
         /// <summary>
+        /// divlblContactSetup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblContactSetup;
+        
+        /// <summary>
+        /// divtblContactSetup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divtblContactSetup;
+        
+        /// <summary>
+        /// divlnkContactGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkContactGroup;
+        
+        /// <summary>
         /// lnkContactGroup control.
         /// </summary>
         /// <remarks>
@@ -101,6 +200,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkContactGroup;
+        
+        /// <summary>
+        /// divlnkContact control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkContact;
         
         /// <summary>
         /// lnkContact control.
@@ -112,6 +220,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkContact;
         
         /// <summary>
+        /// divlnkContactDetailed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkContactDetailed;
+        
+        /// <summary>
         /// lnkContactDetailed control.
         /// </summary>
         /// <remarks>
@@ -119,6 +236,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkContactDetailed;
+        
+        /// <summary>
+        /// divlnkPositions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkPositions;
         
         /// <summary>
         /// lnkPositions control.
@@ -130,6 +256,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkPositions;
         
         /// <summary>
+        /// divlnkDepartments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkDepartments;
+        
+        /// <summary>
         /// lnkDepartments control.
         /// </summary>
         /// <remarks>
@@ -137,6 +272,33 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkDepartments;
+        
+        /// <summary>
+        /// divlblMiscSetup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblMiscSetup;
+        
+        /// <summary>
+        /// divtblMiscSetup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divtblMiscSetup;
+        
+        /// <summary>
+        /// divlnkDiscount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkDiscount;
         
         /// <summary>
         /// lnkDiscount control.
@@ -148,6 +310,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkDiscount;
         
         /// <summary>
+        /// divlnkCardType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkCardType;
+        
+        /// <summary>
         /// lnkCardType control.
         /// </summary>
         /// <remarks>
@@ -155,6 +326,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkCardType;
+        
+        /// <summary>
+        /// divlnkChargeType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkChargeType;
         
         /// <summary>
         /// lnkChargeType control.
@@ -166,6 +346,33 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkChargeType;
         
         /// <summary>
+        /// divlblActionBar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblActionBar;
+        
+        /// <summary>
+        /// ActionBar1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell ActionBar1;
+        
+        /// <summary>
+        /// divlnkSynchronize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkSynchronize;
+        
+        /// <summary>
         /// lnkSynchronize control.
         /// </summary>
         /// <remarks>
@@ -173,6 +380,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkSynchronize;
+        
+        /// <summary>
+        /// divlnkAddvariationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkAddvariationType;
         
         /// <summary>
         /// lnkAddvariationType control.
@@ -184,6 +400,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkAddvariationType;
         
         /// <summary>
+        /// divlnkChangeRewardPoints control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkChangeRewardPoints;
+        
+        /// <summary>
         /// lnkChangeRewardPoints control.
         /// </summary>
         /// <remarks>
@@ -191,6 +416,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkChangeRewardPoints;
+        
+        /// <summary>
+        /// divlnkChangeProductPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkChangeProductPrice;
         
         /// <summary>
         /// lnkChangeProductPrice control.
@@ -202,6 +436,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkChangeProductPrice;
         
         /// <summary>
+        /// divlnkChangePriceLevel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkChangePriceLevel;
+        
+        /// <summary>
         /// lnkChangePriceLevel control.
         /// </summary>
         /// <remarks>
@@ -211,6 +454,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkChangePriceLevel;
         
         /// <summary>
+        /// divlnkChangeTax control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkChangeTax;
+        
+        /// <summary>
         /// lnkChangeTax control.
         /// </summary>
         /// <remarks>
@@ -218,6 +470,15 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkChangeTax;
+        
+        /// <summary>
+        /// divlnkChangeOSPrinter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkChangeOSPrinter;
         
         /// <summary>
         /// lnkChangeOSPrinter control.

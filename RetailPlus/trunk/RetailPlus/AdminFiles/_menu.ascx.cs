@@ -38,28 +38,72 @@ namespace AceSoft.RetailPlus.Security
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
+            bool boShowAdminFiles = false;
+            bool boShowActionBar = false;
+
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CompanyInfo); 
-			lnkCompany.Visible = clsDetails.Read; 
+			lnkCompany.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkCompany.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowAdminFiles) boShowAdminFiles = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Terminal); 
-			lnkTerminal.Visible = clsDetails.Read; 
+			lnkTerminal.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkTerminal.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowAdminFiles) boShowAdminFiles = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.AccessGroups); 
-			lnkAccessGroup.Visible = clsDetails.Read; 
-			lnkAccessGroupAdd.Visible = clsDetails.Write; 
+			lnkAccessGroup.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkAccessGroup.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowAdminFiles) boShowAdminFiles = true;
+
+			lnkAccessGroupAdd.Visible = clsDetails.Write;
+            if (!clsDetails.Write) divlnkAccessGroupAdd.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Write && !boShowActionBar) boShowActionBar = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.AccessUsers); 
-			lnkAccessUser.Visible = clsDetails.Read; 
-			lnkAccessUserAdd.Visible = clsDetails.Write; 
+			lnkAccessUser.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkAccessUser.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowAdminFiles) boShowAdminFiles = true;
+
+			lnkAccessUserAdd.Visible = clsDetails.Write;
+            if (!clsDetails.Write) divlnkAccessUserAdd.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Write && !boShowActionBar) boShowActionBar = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ReportFormat); 
-			lnkReceiptFormat.Visible = clsDetails.Read; 
-			lnkReceiptFormatEdit.Visible = clsDetails.Write; 
+			lnkReceiptFormat.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkReceiptFormat.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowAdminFiles) boShowAdminFiles = true;
+
+			lnkReceiptFormatEdit.Visible = clsDetails.Write;
+            if (!clsDetails.Write) divlnkReceiptFormatEdit.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Write && !boShowActionBar) boShowActionBar = true;
 
             clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.RewardPointsSetup);
-            lnkRewardPointSystem.Visible = clsDetails.Read; 
+            lnkRewardPointSystem.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkRewardPointSystem.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Write && !boShowActionBar) boShowActionBar = true;
 
 			clsAccessRights.CommitAndDispose();
+
+            if (!boShowAdminFiles)
+            {
+                divlblAdminFiles.Style.Add("display", "none");
+                divtblAdminFiles.Style.Add("display", "none");
+            }
+
+            if (!boShowActionBar)
+            {
+                divlblActionBar.Style.Add("display", "none");
+            }
 		}
 
 		#region Web Form Designer generated code

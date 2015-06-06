@@ -62,7 +62,7 @@
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
 								</table>
-								<IMG height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
 							</div>
 						</td>
 					</tr>
@@ -119,12 +119,12 @@
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
 								</table>
-								<IMG height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126">
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126" />
 							</div>
 						</td>
 					</tr>
 				</table>
-				<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="180" alt="">
+				<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="180" alt="" />
 			</div>
 			<table id="ActionBar" class="ms-pvtb" width="100%" cellspacing="0" cellpadding="0">
 				<tbody>
@@ -152,7 +152,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="">
+			<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="" />
 		</td>
 	</tr>
 </table>

@@ -330,9 +330,7 @@ namespace AceSoft.RetailPlus.Reports
 			{	PostingDateTo = Convert.ToDateTime(txtEndDate.Text + " " + txtEndTime.Text);	}
 			catch{}
 
-			DataClass clsDataClass = new DataClass();
 			System.Data.DataTable dt;
-
 			string ReportType = cboReportType.SelectedItem.Text;
 
 			switch (ReportType)
@@ -354,7 +352,7 @@ namespace AceSoft.RetailPlus.Reports
 					break;
 				case "Posted PO Returns":
 					Data.POReturns clsPOReturns = new Data.POReturns();
-					dt =  clsDataClass.DataReaderToDataTable(clsPOReturns.List(POReturnStatus.Posted, PostingDateFrom, PostingDateTo));
+					dt =  clsPOReturns.ListAsDataTable(POReturnStatus.Posted, PostingStartDate: PostingDateFrom, PostingEndDate: PostingDateTo);
 					clsPOReturns.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)
@@ -369,7 +367,7 @@ namespace AceSoft.RetailPlus.Reports
 					break;
 				case "Posted Debit Memo":
 					Data.DebitMemos clsDebitMemos = new Data.DebitMemos();
-					dt =  clsDataClass.DataReaderToDataTable(clsDebitMemos.List(DebitMemoStatus.Posted, PostingDateFrom, PostingDateTo));
+					dt =  clsDebitMemos.ListAsDataTable(DebitMemoStatus.Posted, PostingStartDate: PostingDateFrom, PostingEndDate: PostingDateTo);
 					clsDebitMemos.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)

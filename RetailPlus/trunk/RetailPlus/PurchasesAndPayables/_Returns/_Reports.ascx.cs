@@ -104,7 +104,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
 		private void SetDataSource(ReportDocument Report)
 		{
-            long iID = 0;
+            Int64 iID = 0;
             try
             {
                 if (Request.QueryString["task"].ToString().ToLower() == "reportfromposted" && Request.QueryString["retid"].ToString() != null)
@@ -118,31 +118,32 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 			ReportDataset rptds = new ReportDataset();
 
 			POReturns clsPOReturns = new POReturns();
-			MySqlDataReader myreader = clsPOReturns.List(iID, "DebitMemoID", SortOption.Ascending);
-            while(myreader.Read())
+            System.Data.DataTable dt = clsPOReturns.ListAsDataTable(DebitMemoID: iID);
+
+            POReturnItems clsPOReturnItems = new POReturnItems(clsPOReturns.Connection, clsPOReturns.Transaction);
+            System.Data.DataTable dtitems = clsPOReturnItems.ListAsDataTable(iID);
+
+            clsPOReturns.CommitAndDispose();
+
+			foreach(System.Data.DataRow dr in dt.Rows)
 			{
 				DataRow drNew = rptds.POReturns.NewRow();
 				
 				foreach (DataColumn dc in rptds.POReturns.Columns)
-					drNew[dc] = "" + myreader[dc.ColumnName]; 
+					drNew[dc] = dr[dc.ColumnName]; 
 				
 				rptds.POReturns.Rows.Add(drNew);
 			}
-            myreader.Close();
-
-            POReturnItems clsPOReturnItems = new POReturnItems(clsPOReturns.Connection, clsPOReturns.Transaction);
-            MySqlDataReader myreaderitems = clsPOReturnItems.List(iID, "DebitMemoItemID", SortOption.Ascending);
-			while(myreaderitems.Read())
+            
+			foreach(System.Data.DataRow dr in dtitems.Rows)
 			{
 				DataRow drNew = rptds.POReturnItems.NewRow();
 				
 				foreach (DataColumn dc in rptds.POReturnItems.Columns)
-					drNew[dc] = "" + myreaderitems[dc.ColumnName]; 
+					drNew[dc] = dr[dc.ColumnName]; 
 				
 				rptds.POReturnItems.Rows.Add(drNew);
 			}
-            myreaderitems.Close();
-            clsPOReturns.CommitAndDispose();
 
 			Report.SetDataSource(rptds); 
 			SetParameters(Report);

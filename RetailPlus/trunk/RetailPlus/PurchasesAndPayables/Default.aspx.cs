@@ -54,6 +54,22 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables
 						SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlPurchasesAndPayables.Visible = true;
 						break;
+
+                    case "postedpoesales":
+                        stHeading = "Posted Purchase Orders Report";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlPurchasesAndPayables.Visible = true;
+                        break;
+                    case "postedporeturnsesales":
+                        stHeading = "Posted Purchase Returns Report";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlPurchasesAndPayables.Visible = true;
+                        break;
+                    case "posteddebitmemoesales":
+                        stHeading = "Posted Purchase Debit Memo Report";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlPurchasesAndPayables.Visible = true;
+                        break;
 					default:	
 						break;
 				}

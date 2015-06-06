@@ -115,29 +115,29 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			ReportDataset rptds = new ReportDataset();
 
 			DebitMemos clsDebitMemos = new DebitMemos();
-			MySqlDataReader myreader = clsDebitMemos.List(iID, "DebitMemoID", SortOption.Ascending);
-
-			while(myreader.Read())
-			{
-				DataRow drNew = rptds.DebitMemo.NewRow();
-				
-				foreach (DataColumn dc in rptds.DebitMemo.Columns)
-					drNew[dc] = "" + myreader[dc.ColumnName]; 
-				
-				rptds.DebitMemo.Rows.Add(drNew);
-			}
-            myreader.Close();
+			System.Data.DataTable dt = clsDebitMemos.ListAsDataTable(DebitMemoID: iID);
 
             DebitMemoItems clsDebitMemoItems = new DebitMemoItems(clsDebitMemos.Connection, clsDebitMemos.Transaction);
-            System.Data.DataTable dt = clsDebitMemoItems.ListAsDataTable(iID);
+            System.Data.DataTable dtitems = clsDebitMemoItems.ListAsDataTable(DebitMemoID: iID);
+            
             clsDebitMemos.CommitAndDispose();
 
 			foreach(System.Data.DataRow dr in dt.Rows)
 			{
+				DataRow drNew = rptds.DebitMemo.NewRow();
+				
+				foreach (DataColumn dc in rptds.DebitMemo.Columns)
+					drNew[dc] = dr[dc.ColumnName]; 
+				
+				rptds.DebitMemo.Rows.Add(drNew);
+			}
+
+            foreach (System.Data.DataRow dr in dtitems.Rows)
+			{
 				DataRow drNew = rptds.DebitMemoItem.NewRow();
 				
 				foreach (DataColumn dc in rptds.DebitMemoItem.Columns)
-					drNew[dc] = "" + dr[dc.ColumnName]; 
+					drNew[dc] = dr[dc.ColumnName]; 
 				
 				rptds.DebitMemoItem.Rows.Add(drNew);
 			}

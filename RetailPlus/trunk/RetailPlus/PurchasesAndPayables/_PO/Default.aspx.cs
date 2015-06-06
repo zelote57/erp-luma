@@ -107,9 +107,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.PurchasesAndPayablesMenu); 
-			if (clsDetails.Read==false)
-				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home.aspx");
 			clsAccessRights.CommitAndDispose();
+
+            if (!clsDetails.Read) Server.Transfer(Constants.ROOT_DIRECTORY + "/Home.aspx");
 		}
 
 		#region Web Form Designer generated code

@@ -3,6 +3,7 @@
 <link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css" rel="stylesheet" type="text/css" />
 <asp:UpdatePanel id="UpdatePanel1" runat="server">
 <ContentTemplate>
+<asp:label id="lblTask" runat="server" Visible="false"></asp:label>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
@@ -100,7 +101,7 @@
 									<label>Filter by Supplier</label>
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
-								<td nowrap="nowrap"colspan=5>
+								<td nowrap="nowrap"colspan="5">
 								    <asp:DropDownList id="cboSupplier" runat="server"></asp:DropDownList>
 									<asp:TextBox id="txtSupplier" accesskey="O" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="15"></asp:TextBox>
                                     <asp:ImageButton id="cmdSupplierSearch" runat="server" CausesValidation="False" ImageUrl="../_layouts/images/SPSSearch2.gif"

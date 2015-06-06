@@ -89,21 +89,6 @@
 													Void Items</asp:HyperLink></td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<%--<tr>
-										<td class="Ms-pvnavmidl1"></td>
-										<td class="Ms-pvtbbutton">
-											<asp:HyperLink id="lnkMostSalableItems" runat="server" title="Display Most Salable Items Report">
-													Most Salable Items</asp:HyperLink>
-										</td>
-										<td class="Ms-pvnavmidr1"></td>
-									</tr>
-									<tr>
-										<td class="Ms-pvnavmidl1"></td>
-										<td class="Ms-pvtbbutton">
-											<asp:HyperLink id="lnkLeastSalableItems" title="Display Least Salable Items Report" runat="server">
-													Least Salable Items</asp:HyperLink></td>
-										<td class="Ms-pvnavmidr1"></td>
-									</tr>--%>
 									<tr id="divlnkStockTransaction" runat="server" style="display: none">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
@@ -212,14 +197,14 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr id="divlnkDiscountReports" runat="server">
+									<tr id="divlnkDiscountReports" runat="server" style="display: none">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkDiscountReports" title="Display Reports with discounts" runat="server" Visible="False">
 													Discounts Reports</asp:HyperLink></td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr id="divlnkElectroniJournal" runat="server">
+									<tr id="divlnkElectroniJournal" runat="server" style="display: none">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkElectroniJournal" title="Display Electronic Journal" runat="server" Visible="False">

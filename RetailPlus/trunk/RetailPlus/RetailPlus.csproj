@@ -629,6 +629,48 @@
     <Compile Include="MasterFiles\_Product\_changeosprinter.ascx.designer.cs">
       <DependentUpon>_changeosprinter.ascx</DependentUpon>
     </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_listesales.ascx.cs">
+      <DependentUpon>_listesales.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_listesales.ascx.designer.cs">
+      <DependentUpon>_listesales.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_elist.ascx.cs">
+      <DependentUpon>_elist.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_elist.ascx.designer.cs">
+      <DependentUpon>_elist.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_listesales.ascx.cs">
+      <DependentUpon>_listesales.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_listesales.ascx.designer.cs">
+      <DependentUpon>_listesales.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_elist.ascx.cs">
+      <DependentUpon>_elist.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_elist.ascx.designer.cs">
+      <DependentUpon>_elist.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_elist.ascx.cs">
+      <DependentUpon>_elist.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_elist.ascx.designer.cs">
+      <DependentUpon>_elist.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_listesales.ascx.cs">
+      <DependentUpon>_listesales.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_listesales.ascx.designer.cs">
+      <DependentUpon>_listesales.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\BranchTransferReport.cs">
       <DependentUpon>BranchTransferReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -3797,6 +3839,12 @@
     <Content Include="MasterFiles\_ContactDetailed\_insert.ascx" />
     <Content Include="MasterFiles\_ContactDetailed\_list.ascx" />
     <Content Include="MasterFiles\_ContactDetailed\_update.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_listesales.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_elist.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_listesales.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_elist.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_elist.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_listesales.ascx" />
     <Content Include="Reports\_analyticsreport\_analyticsreport.ascx" />
     <Content Include="Reports\_esalesreport\_esalesreport.ascx" />
     <Content Include="Reports\_managementreport\_managementreport.ascx" />

@@ -103,7 +103,7 @@
 							<tr valign="top">
 								<td class="ms-navwatermark" id="onetidWatermark" dir="ltr"></td>
 								<td style="padding-RIGHT: 2px" width="126">
-									<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126">
+									<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126" />
 									<CTRL:ctrlMenu id="ctrlMenu" runat="server"></CTRL:ctrlMenu>&nbsp;
 								</td>
 							</tr>

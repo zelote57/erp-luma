@@ -9,10 +9,10 @@
 		<td width="150" style="PADDING-RIGHT: 2px">
 			<div id="mnuMasterFiles" runat="server">
 				<table id="SPSWC_NavBar" width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnav" DisplayType="v1">
-					<tr>
+					<tr id="divlblAdminFiles" runat="server">
 						<td class="ms-navheader">Administration Files</td>
 					</tr>
-					<tr>
+					<tr id="divtblAdminFiles" runat="server">
 						<td>
 							<div id="Menu_0_0">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
@@ -21,7 +21,7 @@
 										<td class="Ms-pvnavtopc1"></td>
 										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
-									<tr>
+									<tr id="divlnkCompany" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkCompany" runat="server" title="Display Company Information">
@@ -29,7 +29,7 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr>
+									<tr id="divlnkTerminal" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkTerminal" runat="server" title="Display List of Terminal Clients">
@@ -37,7 +37,7 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr>
+									<tr id="divlnkAccessGroup" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkAccessGroup" runat="server" title="Display List of Access Groups">
@@ -45,7 +45,7 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr>
+									<tr id="divlnkAccessUser" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkAccessUser" runat="server" title="Display List of Access Users">
@@ -53,7 +53,7 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr>
+									<tr id="divlnkReceiptFormat" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkReceiptFormat" runat="server" title="Display Receipt Format">
@@ -61,24 +61,19 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr>
-										<td class="Ms-pvnavbotl1" background="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
-										<td class="Ms-pvnavbotc1"></td>
-										<td class="Ms-pvnavbotr1" background="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
-									</tr>
 								</table>
-								<IMG height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126">
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126" />
 							</div>
 						</td>
 					</tr>
 				</table>
-				<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="">
+				<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="" />
 			</div>
 			<table id="ActionBar" class="ms-pvtb" width="100%" cellspacing="0" cellpadding="0">
-				<tr>
+				<tr id="divlblActionBar" runat="server">
 					<td colspan="2" id="ActionBart" class="ms-pvtbt">Actions</td>
 				</tr>
-				<tr>
+				<tr id="divlnkAccessGroupAdd" runat="server">
 					<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 					<td class="ms-pvtbbutton" style="WIDTH:150px;WORD-WRAP:break-word">
 						<asp:HyperLink id="lnkAccessGroupAdd" runat="server" ToolTip="Add New Access Group">
@@ -86,7 +81,7 @@
 								New Access Group</li></asp:HyperLink>
 					</td>
 				</tr>
-				<tr>
+				<tr id="divlnkAccessUserAdd" runat="server">
 					<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 					<td class="ms-pvtbbutton" style="WIDTH:150px;WORD-WRAP:break-word">
 						<asp:HyperLink id="lnkAccessUserAdd" runat="server" ToolTip="Add New Access User">
@@ -94,7 +89,7 @@
 								New Access User</li></asp:HyperLink>
 					</td>
 				</tr>
-				<tr>
+				<tr id="divlnkReceiptFormatEdit" runat="server">
 					<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 					<td class="ms-pvtbbutton" style="WIDTH:150px;WORD-WRAP:break-word">
 						<asp:HyperLink id="lnkReceiptFormatEdit" runat="server" title="Update Receipt Format">
@@ -102,7 +97,7 @@
 								Edit Receipt Format</li></asp:HyperLink>
 					</td>
 				</tr>
-				<tr>
+				<tr id="divlnkRewardPointSystem" runat="server">
 					<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 					<td class="ms-pvtbbutton" style="WIDTH:150px;WORD-WRAP:break-word">
 						<asp:HyperLink id="lnkRewardPointSystem" runat="server" title="Update Reward Point System">

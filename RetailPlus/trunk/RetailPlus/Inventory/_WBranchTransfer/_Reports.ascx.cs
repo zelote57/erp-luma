@@ -43,7 +43,7 @@ namespace AceSoft.RetailPlus.Inventory._WBranchTransfer
             if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
                 if (Session["ReportType"].ToString() == "WBranchTransferreport")
-                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                    try { CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"]; } catch { }
             }
         }
 

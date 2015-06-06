@@ -61,59 +61,123 @@ namespace AceSoft.RetailPlus.Inventory
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
+            bool boShowInventory = false;
+            bool boShowActionBar = false;
+            bool boShowReports = false;
+
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Branch); 
-			lnkBranch.Visible = clsDetails.Read; 
+			lnkBranch.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkBranch.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InventoryList); 
-			lnkInventoryList.Visible = clsDetails.Read; 
+			lnkInventoryList.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkInventoryList.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.StockTypes); 
 			lnkStockType.Visible = clsDetails.Read;
- 
+            if (!clsDetails.Write) divlnkStockType.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
+
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.StockTransactions); 
-			lnkStock.Visible = clsDetails.Read; 
+			lnkStock.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkStock.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
+
 			lnkUpload.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkUpload.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowActionBar) boShowActionBar = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.BranchInventoryTransfer);
             lnkBranchTransfer.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkBranchTransfer.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.WarehouseToBranchTransfer);
             lnkWarehouseTransfer.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkWarehouseTransfer.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.TransferIn);
 			lnkTransferIn.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkTransferIn.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.TransferOut);
-			lnkTransferOut.Visible = clsDetails.Read; 
+			lnkTransferOut.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkTransferOut.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InvThreshold); 
 			lnkInvAdjustment.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkInvAdjustment.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InvThreshold);
             lnkInvThreshold.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkInvThreshold.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InventoryAnalyst);
             lnkInventoryAnalyst.Visible = false;
+            if (!clsDetails.Write) divlnkInventoryAnalyst.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowActionBar) boShowInventory = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CloseInventory);
             lnkCloseInventory.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkCloseInventory.Style.Add("display", "none"); 
+            
             lnkCloseInventoryProduct.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkCloseInventoryProduct.Style.Add("display", "none");
+
             lnkCloseInventoryDetailed.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkCloseInventoryDetailed.Style.Add("display", "none");
+
             lnkCLosingInventoryReport.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkCLosingInventoryReport.Style.Add("display", "none");
+            
+            // show label for reporting
+            if (clsDetails.Read && !boShowActionBar) boShowActionBar = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.SynchronizeInventoryCount);
             lnkSynchronize.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkSynchronize.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowActionBar) boShowActionBar = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ExportInventoryCount);
             lnkExport.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkExport.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowActionBar) boShowActionBar = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ImportInventoryCount);
-            lnkImport.Visible = clsDetails.Read; 
+            lnkImport.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkImport.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowActionBar) boShowActionBar = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InventoryReport); 
 			lnkInventory.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkInventory.Style.Add("display", "none");
 
-            lnkBranchInventory.Visible = clsDetails.Read; 
+            lnkBranchInventory.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkBranchInventory.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Write && !boShowReports) boShowReports = true;
 
             //lnkExpiredInventory.Visible = clsDetails.Read; 
 
@@ -127,6 +191,22 @@ namespace AceSoft.RetailPlus.Inventory
             //lnkTotalStock.Visible = clsDetails.Read; 
 
 			clsAccessRights.CommitAndDispose();
+
+            if (!boShowInventory)
+            {
+                divlblInventory.Style.Add("display", "none");
+                divtblInventory.Style.Add("display", "none");
+            }
+
+            if (!boShowActionBar)
+            {
+                divlblActionBar.Style.Add("display", "none");
+            }
+
+            if (!boShowReports)
+            {
+                divlblReports.Style.Add("display", "none");
+            }
 		}
 
 		#region Web Form Designer generated code

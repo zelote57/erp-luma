@@ -22,6 +22,33 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuInventory;
         
         /// <summary>
+        /// divlblInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblInventory;
+        
+        /// <summary>
+        /// divtblInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divtblInventory;
+        
+        /// <summary>
+        /// divlnkBranch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkBranch;
+        
+        /// <summary>
         /// lnkBranch control.
         /// </summary>
         /// <remarks>
@@ -29,6 +56,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkBranch;
+        
+        /// <summary>
+        /// divlnkBranchTransfer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkBranchTransfer;
         
         /// <summary>
         /// lnkBranchTransfer control.
@@ -40,6 +76,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkBranchTransfer;
         
         /// <summary>
+        /// divlnkWarehouseTransfer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkWarehouseTransfer;
+        
+        /// <summary>
         /// lnkWarehouseTransfer control.
         /// </summary>
         /// <remarks>
@@ -47,6 +92,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkWarehouseTransfer;
+        
+        /// <summary>
+        /// divlnkInventoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkInventoryList;
         
         /// <summary>
         /// lnkInventoryList control.
@@ -58,6 +112,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkInventoryList;
         
         /// <summary>
+        /// divlnkStockType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkStockType;
+        
+        /// <summary>
         /// lnkStockType control.
         /// </summary>
         /// <remarks>
@@ -65,6 +128,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkStockType;
+        
+        /// <summary>
+        /// divlnkStock control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkStock;
         
         /// <summary>
         /// lnkStock control.
@@ -76,6 +148,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkStock;
         
         /// <summary>
+        /// divlnkTransferIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkTransferIn;
+        
+        /// <summary>
         /// lnkTransferIn control.
         /// </summary>
         /// <remarks>
@@ -83,6 +164,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkTransferIn;
+        
+        /// <summary>
+        /// divlnkTransferOut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkTransferOut;
         
         /// <summary>
         /// lnkTransferOut control.
@@ -94,6 +184,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkTransferOut;
         
         /// <summary>
+        /// divlnkInvAdjustment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkInvAdjustment;
+        
+        /// <summary>
         /// lnkInvAdjustment control.
         /// </summary>
         /// <remarks>
@@ -101,6 +200,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkInvAdjustment;
+        
+        /// <summary>
+        /// divlnkInvThreshold control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkInvThreshold;
         
         /// <summary>
         /// lnkInvThreshold control.
@@ -112,6 +220,33 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkInvThreshold;
         
         /// <summary>
+        /// divlblActionBar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblActionBar;
+        
+        /// <summary>
+        /// ActionBar1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell ActionBar1;
+        
+        /// <summary>
+        /// divlnkInventoryAnalyst control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkInventoryAnalyst;
+        
+        /// <summary>
         /// lnkInventoryAnalyst control.
         /// </summary>
         /// <remarks>
@@ -119,6 +254,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkInventoryAnalyst;
+        
+        /// <summary>
+        /// divlnkCloseInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkCloseInventory;
         
         /// <summary>
         /// lnkCloseInventory control.
@@ -130,6 +274,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkCloseInventory;
         
         /// <summary>
+        /// divlnkCloseInventoryProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkCloseInventoryProduct;
+        
+        /// <summary>
         /// lnkCloseInventoryProduct control.
         /// </summary>
         /// <remarks>
@@ -137,6 +290,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkCloseInventoryProduct;
+        
+        /// <summary>
+        /// divlnkCloseInventoryDetailed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkCloseInventoryDetailed;
         
         /// <summary>
         /// lnkCloseInventoryDetailed control.
@@ -148,6 +310,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkCloseInventoryDetailed;
         
         /// <summary>
+        /// divlnkUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkUpload;
+        
+        /// <summary>
         /// lnkUpload control.
         /// </summary>
         /// <remarks>
@@ -155,6 +326,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkUpload;
+        
+        /// <summary>
+        /// divlnkSynchronize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkSynchronize;
         
         /// <summary>
         /// lnkSynchronize control.
@@ -166,6 +346,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkSynchronize;
         
         /// <summary>
+        /// divlnkExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkExport;
+        
+        /// <summary>
         /// lnkExport control.
         /// </summary>
         /// <remarks>
@@ -173,6 +362,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkExport;
+        
+        /// <summary>
+        /// divlnkImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkImport;
         
         /// <summary>
         /// lnkImport control.
@@ -184,6 +382,33 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkImport;
         
         /// <summary>
+        /// divlblReports control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlblReports;
+        
+        /// <summary>
+        /// ActionBar2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell ActionBar2;
+        
+        /// <summary>
+        /// divlnkInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkInventory;
+        
+        /// <summary>
         /// lnkInventory control.
         /// </summary>
         /// <remarks>
@@ -193,6 +418,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkInventory;
         
         /// <summary>
+        /// divlnkBranchInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkBranchInventory;
+        
+        /// <summary>
         /// lnkBranchInventory control.
         /// </summary>
         /// <remarks>
@@ -200,6 +434,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkBranchInventory;
+        
+        /// <summary>
+        /// divlnkCLosingInventoryReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkCLosingInventoryReport;
         
         /// <summary>
         /// lnkCLosingInventoryReport control.

@@ -42,7 +42,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
                 if (Session["ReportType"].ToString() == "debitmemo")
-                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                    try { CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"]; } catch { }
             }
         }
 

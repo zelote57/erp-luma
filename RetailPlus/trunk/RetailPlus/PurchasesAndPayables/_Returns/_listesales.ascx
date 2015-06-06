@@ -1,4 +1,4 @@
-<%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo.__List" Codebehind="_List.ascx.cs" %>
+<%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._Returns.__ListeSales" Codebehind="_listesales.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/sExpCollapse.js"></script>
 <script language="JavaScript" src="../../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
@@ -14,9 +14,9 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgAdd" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add New Purchase Debit Memo" border="0" width="16" height="16" OnClick="imgAdd_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgAdd" ToolTip="Add New Purchase Return" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/newuser.gif" alt="Add New Purchase Return" border="0" width="16" height="16" OnClick="imgAdd_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdAdd" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Purchase Debit Memo</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdAdd" ToolTip="Add New Purchase Return" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Purchase Return</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -24,8 +24,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/delitem.gif" ToolTip="Cancel Selected Purchase Debit Memo" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Cancel Selected Purchase Debit Memo</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" title="Cancel Selected Purchase Return" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/delitem.gif" alt="Cancel Selected Purchase Return" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" title="Cancel Selected Purchase Return" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Cancel Selected Purchase Return</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -33,8 +33,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgEdit" title="Update Purchase Debit Memo" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Purchase Debit Memo" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdEdit" title="Update Purchase Debit Memo" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Update Purchase Debit Memo</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgEdit" title="Update Purchase Return" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Update Purchase Return" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdEdit" title="Update Purchase Return" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" OnClick="cmdEdit_Click">Update Purchase Return</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -42,22 +42,11 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPost" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/post.gif" ToolTip="Post this order" border="0" width="16" height="16" OnClick="imgPost_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdPost" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdPost_Click">Post</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPost" title="Post this return order" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/post.gif" alt="Post this return order" border="0" width="16" height="16" OnClick="imgPost_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdPost" title="Post this return order" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdPost_Click">Post</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-                    <div runat="server" id="divesales">
-                    <td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
-					<td class="ms-toolbar">
-						<table cellspacing="0" cellpadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgeSales" ToolTip="Manage eSales List" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/esales.gif" alt="Manage eSales List" border="0" width="16" height="16" OnClick="imgeSales_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdeSales" ToolTip="Manage eSales List" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdeSales_Click">Manage eSales List</asp:linkbutton></td>
-							</tr>
-						</table>
-					</td>
-                    </div>
 					<td class="ms-toolbar" id="align01" nowrap="nowrap" align="right" width="99%">
 						<table cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
@@ -67,7 +56,7 @@
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -147,7 +136,7 @@
 				</tr>
 				<tr>
 					<td style="padding-bottom:2px" nowrap>
-						<label>Memo No /Vendor /Remarks</label>&nbsp;
+						<label>PO Return No /Vendor /Remarks</label>&nbsp;
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					<td nowrap colspan=4>
@@ -191,7 +180,7 @@
 					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; padding-bottom: 0px; PADDING-TOP: 0px">
 					</td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px"></td>
-					<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+					<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 				</tr>
 				<tr>
 					<td colspan="4" height="5"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
@@ -218,20 +207,20 @@
 						        </colgroup>
 						        <tr>
 							        <TH class="ms-vh2" style="padding-bottom: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-								    <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByMemoNo" runat="server">Memo No.</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByMemoDate" runat="server">Memo Date</asp:hyperlink></TH>
+								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByReturnNo" runat="server">Return No.</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByReturnDate" runat="server">Return Date</asp:hyperlink></TH>
 							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortBySupplierCode" runat="server">Vendor/Supplier</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByPostingDate" runat="server">Posting Date</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByBranchCode" runat="server">Affected Branch</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortBySubTotal" runat="server">Amount</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByReqReturnDate" runat="server">Req Return Date</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByBranchCode" runat="server">Return From Branch</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px; text-align: right"><asp:hyperlink id="SortBySubTotal" runat="server">Amount</asp:hyperlink></TH>
 							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
 							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 						        </tr>
 				        </HeaderTemplate>
-				        <ItemTemplate> 
+				        <ItemTemplate>
 						        <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							        <td class="ms-vb-user">
 								        <input type="checkbox" id="chkList" runat="server" name="chkList" />
@@ -246,17 +235,17 @@
 							            <asp:imagebutton id="imgItemPost" CommandName="imgItemPost" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Post for this order" ImageUrl="../../_layouts/images/post.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
 						            </td>
 							        <td class="ms-vb-user">
-								        <asp:HyperLink id="lnkMemoNo" runat="server"></asp:HyperLink>
+								        <asp:HyperLink id="lnkReturnNo" runat="server"></asp:HyperLink>
 							        </td>
 							        <td class="ms-vb-user">
-								        <asp:Label ID="lblMemoDate" Runat="server"></asp:Label>
+								        <asp:Label ID="lblReturnDate" Runat="server"></asp:Label>
 							        </td>
 							        <td class="ms-vb-user">
-								        <asp:HyperLink ID="lblSupplierCode" Runat="server" Target="_blank"></asp:HyperLink>
+								        <asp:HyperLink ID="lblSupplierCode" Runat="server"></asp:HyperLink>
 								        <asp:Label ID="lblSupplierID" Runat="server" Visible="False"></asp:Label>
 							        </td>
 							        <td class="ms-vb-user">
-								        <asp:Label ID="lblPostingDate" Runat="server"></asp:Label>
+								        <asp:Label ID="lblReqreturnDate" Runat="server"></asp:Label>
 							        </td>
 							        <td class="ms-vb-user">
 								        <asp:Label ID="lblBranchCode" Runat="server"></asp:Label>
@@ -269,7 +258,7 @@
 								        <asp:Label ID="lblRemarks" Runat="server"></asp:Label>
 							        </td>
 							        <td class="ms-vb2">
-								        <a class="DropDown" id="anchorDown" href="" runat="server">
+								        <A class="DropDown" id="anchorDown" href="" runat="server">
 									        <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
 							        </td>
 						        </tr>
@@ -277,7 +266,7 @@
                         <FooterTemplate>
                             </table>
                         </FooterTemplate>
-			        </asp:datalist>
+			        </asp:datalist>    
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="cboCurrentPage" EventName="SelectedIndexChanged" />

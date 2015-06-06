@@ -43,7 +43,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
                 if (Session["ReportType"].ToString() == "poreturns")
-                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                    try { CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"]; } catch { }
             }
         }
 

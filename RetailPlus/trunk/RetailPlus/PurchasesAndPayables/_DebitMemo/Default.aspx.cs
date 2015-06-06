@@ -46,6 +46,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
                             SearchIndex = SearchCategoryID.PurchaseDebitMemo;
                             ctrlList.Visible = true;
                             break;
+                        case "listesales":
+                            stHeading = "Purchase Debit Memo list";
+                            SearchIndex = SearchCategoryID.NotApplicable;
+                            ctrlListeSales.Visible = true;
+                            break;
+                        case "elist":
+                            stHeading = "Manage Purchase Debit Memo for eSales";
+                            SearchIndex = SearchCategoryID.NotApplicable;
+                            ctrleList.Visible = true;
+                            break;
                         case "add":
                             stHeading = "Add new Debit Memo";
                             SearchIndex = SearchCategoryID.PurchaseReturns;

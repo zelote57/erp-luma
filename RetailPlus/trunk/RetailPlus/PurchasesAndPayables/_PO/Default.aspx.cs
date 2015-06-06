@@ -46,6 +46,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                             SearchIndex = SearchCategoryID.NotApplicable;
                             ctrlList.Visible = true;
                             break;
+                        case "listesales":
+                            stHeading = "Purchase order list";
+                            SearchIndex = SearchCategoryID.NotApplicable;
+                            ctrlListeSales.Visible = true;
+                            break;
+                        case "elist":
+                            stHeading = "Manage Purchase order for eSales";
+                            SearchIndex = SearchCategoryID.NotApplicable;
+                            ctrleList.Visible = true;
+                            break;
                         case "add":
                             stHeading = "Add new purchase order";
                             SearchIndex = SearchCategoryID.NotApplicable;

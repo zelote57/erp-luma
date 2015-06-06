@@ -7,189 +7,252 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
+namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
     
     
-    public partial class _Default {
+    public partial class @__eList {
         
         /// <summary>
-        /// frmDedault control.
+        /// imgCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm frmDedault;
+        protected global::System.Web.UI.WebControls.ImageButton imgCancel;
         
         /// <summary>
-        /// ToolkitScriptManager1 control.
+        /// cmdCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
+        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
         
         /// <summary>
-        /// ctrlProcessing control.
+        /// lblDataCount1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__Processing ctrlProcessing;
+        protected global::System.Web.UI.WebControls.Label lblDataCount1;
         
         /// <summary>
-        /// PageHeader control.
+        /// cboCurrentPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__PageHeader PageHeader;
+        protected global::System.Web.UI.WebControls.DropDownList cboCurrentPage;
         
         /// <summary>
-        /// HorizontalNavBar control.
+        /// lblDataCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__HorizontalNavBar HorizontalNavBar;
+        protected global::System.Web.UI.WebControls.Label lblDataCount;
         
         /// <summary>
-        /// ctrlExpiry control.
+        /// CompareValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__Expiry ctrlExpiry;
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
         
         /// <summary>
-        /// SiteTitle control.
+        /// lblStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__SiteTitle SiteTitle;
+        protected global::System.Web.UI.WebControls.Label lblStatus;
         
         /// <summary>
-        /// LargeHeading control.
+        /// CompareValidator2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__LargeHeading LargeHeading;
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator2;
         
         /// <summary>
-        /// RightBodySectionSearch control.
+        /// CompareValidator3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__RightBodySectionSearch RightBodySectionSearch;
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator3;
         
         /// <summary>
-        /// ctrlMenu control.
+        /// CompareValidator4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables.@__Menu ctrlMenu;
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator4;
         
         /// <summary>
-        /// PageLevelError control.
+        /// txtOrderStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.@__PageLevelError PageLevelError;
+        protected global::System.Web.UI.WebControls.TextBox txtOrderStartDate;
         
         /// <summary>
-        /// ctrlList control.
+        /// txtOrderStartTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__List ctrlList;
+        protected global::System.Web.UI.WebControls.TextBox txtOrderStartTime;
         
         /// <summary>
-        /// ctrlListeSales control.
+        /// txtOrderEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__ListeSales ctrlListeSales;
+        protected global::System.Web.UI.WebControls.TextBox txtOrderEndDate;
         
         /// <summary>
-        /// ctrleList control.
+        /// txtOrderEndTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__eList ctrleList;
+        protected global::System.Web.UI.WebControls.TextBox txtOrderEndTime;
         
         /// <summary>
-        /// ctrlInsert control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__Insert ctrlInsert;
+        protected global::System.Web.UI.WebControls.Label Label3;
         
         /// <summary>
-        /// ctrlUpdate control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__Update ctrlUpdate;
+        protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// ctrlDetails control.
+        /// txtPostingStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__Details ctrlDetails;
+        protected global::System.Web.UI.WebControls.TextBox txtPostingStartDate;
         
         /// <summary>
-        /// ctrlPost control.
+        /// txtPostingStartTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__Post ctrlPost;
+        protected global::System.Web.UI.WebControls.TextBox txtPostingStartTime;
         
         /// <summary>
-        /// ctrlReports control.
+        /// txtPostingEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__Reports ctrlReports;
+        protected global::System.Web.UI.WebControls.TextBox txtPostingEndDate;
         
         /// <summary>
-        /// ctrlCancel control.
+        /// txtPostingEndTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.PurchasesAndPayables._PO.@__Cancel ctrlCancel;
+        protected global::System.Web.UI.WebControls.TextBox txtPostingEndTime;
+        
+        /// <summary>
+        /// Label4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label4;
+        
+        /// <summary>
+        /// Label5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label5;
+        
+        /// <summary>
+        /// txtSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        
+        /// <summary>
+        /// cboStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboStatus;
+        
+        /// <summary>
+        /// cmdSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton cmdSearch;
+        
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
+        /// lstItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataList lstItem;
     }
 }

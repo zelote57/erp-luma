@@ -10,7 +10,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 	using System.Web.UI.HtmlControls;
 	using AceSoft.RetailPlus.Data; 
 
-	public partial  class __List : System.Web.UI.UserControl
+	public partial  class __eList : System.Web.UI.UserControl
 	{
 		protected PagedDataSource PageData = new PagedDataSource();
 	
@@ -22,29 +22,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             if (!IsPostBack && Visible)
 			{
                 cboStatus.Items.Clear();
-                cboStatus.Items.Add(new ListItem("Show " + POReturnStatus.Open.ToString("G").ToUpper() + " Returns", POReturnStatus.Open.ToString("d")));
-                cboStatus.Items.Add(new ListItem("Show " + POReturnStatus.Posted.ToString("G").ToUpper() + " Returns", POReturnStatus.Posted.ToString("d")));
-                cboStatus.Items.Add(new ListItem("Show " + POReturnStatus.Cancelled.ToString("G").ToUpper() + " Returns", POReturnStatus.Cancelled.ToString("d")));
-                cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(POReturnStatus.Open.ToString("d")));
-
-                try
-                {
-                    lblStatus.Text = Request.QueryString["status"].ToString();
-                    cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
-                }
-                catch { }
+                cboStatus.Items.Add(new ListItem("Show All", "0"));
+                cboStatus.Items.Add(new ListItem("Show eSales Only", "1"));
+                cboStatus.Items.Add(new ListItem("Show Not included in eSales", "2"));
+                cboStatus.SelectedIndex = 0;
 
                 txtOrderStartDate.Text = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
                 txtOrderEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
 				ManageSecurity();
 				LoadList();
-				cmdDelete.Attributes.Add("onClick", "return confirm_cancel();");
-				imgDelete.Attributes.Add("onClick", "return confirm_cancel();");
-				cmdEdit.Attributes.Add("onClick", "return confirm_select();");
-				imgEdit.Attributes.Add("onClick", "return confirm_select();");
-				cmdPost.Attributes.Add("onClick", "return confirm_select();");
-				imgPost.Attributes.Add("onClick", "return confirm_select();");
 			}
 		}
 
@@ -66,49 +53,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
 		#region Web Control Methods
 
-        protected void imgAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-		{
-			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);			
-			Response.Redirect("Default.aspx" + stParam);
-		}
-		protected void cmdAdd_Click(object sender, System.EventArgs e)
-		{
-			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);			
-			Response.Redirect("Default.aspx" + stParam);
-		}
-        protected void imgDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-		{
-			Delete();
-		}
-		protected void cmdDelete_Click(object sender, System.EventArgs e)
-		{
-			Delete();
-		}
-        protected void imgEdit_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-		{
-			Update();
-		}
-		protected void cmdEdit_Click(object sender, System.EventArgs e)
-		{
-			Update();
-		}
-        protected void imgPost_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-		{
-			IssueGRN();
-		}
-        protected void cmdPost_Click(object sender, System.EventArgs e)
-		{
-			IssueGRN();
-		}
-        protected void imgeSales_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            Response.Redirect("Default.aspx?task=" + Common.Encrypt("elist", Session.SessionID));
+            Response.Redirect("Default.aspx?task=" + Common.Encrypt("list", Session.SessionID));
         }
-        protected void cmdeSales_Click(object sender, System.EventArgs e)
+        protected void cmdCancel_Click(object sender, System.EventArgs e)
         {
-            Response.Redirect("Default.aspx?task=" + Common.Encrypt("elist", Session.SessionID));
+            Response.Redirect("Default.aspx?task=" + Common.Encrypt("list", Session.SessionID));
         }
 		protected void cboCurrentPage_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -131,12 +82,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 if (status == POReturnStatus.Posted || status == POReturnStatus.Cancelled)
                 {
                     chkList.Attributes.Add("disabled", "false");
-                    ImageButton imgItemDelete = (ImageButton)e.Item.FindControl("imgItemDelete");
-                    ImageButton imgItemEdit = (ImageButton)e.Item.FindControl("imgItemEdit");
-                    ImageButton imgItemPost = (ImageButton)e.Item.FindControl("imgItemPost");
-                    imgItemDelete.Enabled = false; imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
-                    imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
-                    imgItemPost.Enabled = false; imgItemPost.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                 }
 
                 HyperLink lnkReturnNo = (HyperLink)e.Item.FindControl("lnkReturnNo");
@@ -170,6 +115,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 Label lblRemarks = (Label)e.Item.FindControl("lblRemarks");
                 lblRemarks.Text = dr["Remarks"].ToString();
 
+                CheckBox chkIncludeIneSales = (CheckBox)e.Item.FindControl("chkIncludeIneSales");
+                chkIncludeIneSales.Checked = bool.Parse(dr["IncludeIneSales"].ToString());
+
                 //For anchor
                 //				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");
 
@@ -179,28 +127,63 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
         }
         protected void lstItem_ItemCommand(object sender, DataListCommandEventArgs e)
         {
-            HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
-            string stParam = string.Empty;
-            switch (e.CommandName)
-            {
-                case "imgItemDelete":
-                    stParam = "?task=" + Common.Encrypt("cancel", Session.SessionID) + "&retid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#cancelsection";
-                    Response.Redirect("Default.aspx" + stParam);
-                    break;
-                case "imgItemEdit":
-                    stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&retid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#itemsection";	
-                    Response.Redirect("Default.aspx" + stParam);
-                    break;
-                case "imgItemPost":
-                    stParam = stParam = "?task=" + Common.Encrypt("post", Session.SessionID) + "&retid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#postsection";	
-                    Response.Redirect("Default.aspx" + stParam);
-                    break;
+            //HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
+            //string stParam = string.Empty;
+            //switch (e.CommandName)
+            //{
+            //    case "imgItemDelete":
+            //        stParam = "?task=" + Common.Encrypt("cancel", Session.SessionID) + "&retid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#cancelsection";
+            //        Response.Redirect("Default.aspx" + stParam);
+            //        break;
+            //    case "imgItemEdit":
+            //        stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&retid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#itemsection";	
+            //        Response.Redirect("Default.aspx" + stParam);
+            //        break;
+            //    case "imgItemPost":
+            //        stParam = stParam = "?task=" + Common.Encrypt("post", Session.SessionID) + "&retid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#postsection";	
+            //        Response.Redirect("Default.aspx" + stParam);
+            //        break;
 
-            }
+            //}
         }
         protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             LoadList();
+        }
+
+        protected void chkIncludeIneSalesAll_CheckedChanged(Object sender, EventArgs e)
+        {
+            HtmlInputCheckBox chkList = null;
+            CheckBox chkIncludeIneSalesAll = (CheckBox)sender;
+            CheckBox chkIncludeIneSales = null;
+            Int64 iDebitMemoID = 0;
+
+            POReturns clsPOReturns = new POReturns();
+            foreach (DataListItem item in lstItem.Items)
+            {
+                chkList = (HtmlInputCheckBox)item.FindControl("chkList");
+
+                iDebitMemoID = Int64.Parse(chkList.Value);
+
+                chkIncludeIneSales = (CheckBox)item.FindControl("chkIncludeIneSales");
+
+                clsPOReturns.UpdateIncludeIneSales(iDebitMemoID, chkIncludeIneSalesAll.Checked);
+                chkIncludeIneSales.Checked = chkIncludeIneSalesAll.Checked;
+            }
+            clsPOReturns.CommitAndDispose();
+        }
+
+        protected void chkIncludeIneSales_CheckedChanged(Object sender, EventArgs e)
+        {
+            CheckBox chkIncludeIneSales = (CheckBox)sender;
+            DataListItem item = (DataListItem)chkIncludeIneSales.NamingContainer;
+
+            HtmlInputCheckBox chkList = (HtmlInputCheckBox)item.FindControl("chkList");
+            Int64 iDebitMemoID = Int64.Parse(chkList.Value);
+
+            POReturns clsPOReturns = new POReturns();
+            clsPOReturns.UpdateIncludeIneSales(iDebitMemoID, chkIncludeIneSales.Checked);
+            clsPOReturns.CommitAndDispose();
         }
 
 		#endregion
@@ -269,30 +252,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		}
 		private void ManageSecurity()
 		{
-			Int64 UID = Convert.ToInt64(Session["UID"]);
-			AccessRights clsAccessRights = new AccessRights(); 
-			AccessRightsDetails clsDetails = new AccessRightsDetails();
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.PurchaseReturns); 
-			imgAdd.Visible = clsDetails.Write; 
-			cmdAdd.Visible = clsDetails.Write; 
-			imgDelete.Visible = clsDetails.Write; 
-			cmdDelete.Visible = clsDetails.Write; 
-			cmdEdit.Visible = clsDetails.Write; 
-			imgEdit.Visible = clsDetails.Write; 
-			lblSeparator1.Visible = clsDetails.Write;
-			lblSeparator2.Visible = clsDetails.Write;
-//			lblSeparator3.Visible = clsDetails.Write;
-
-            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ManagePurchaseReturnsSales);
-            divesales.Visible = clsDetails.Write;
-
-			clsAccessRights.CommitAndDispose();
+			
 		}
 		private void LoadSortFieldOptions(DataListItemEventArgs e)
 		{
             Common Common = new Common();
-            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&status=" + cboStatus.SelectedIndex.ToString();
+            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&status=" + POReturnStatus.Posted.ToString("d");
 
             SortOption sortoption = SortOption.Ascending;
             if (Request.QueryString["sortoption"] != null)
@@ -356,9 +321,24 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
             catch { }
 
+            eSalesFilter clseSalesFilter = new eSalesFilter();
+            switch (cboStatus.SelectedIndex)
+            {
+                case 0:
+                    clseSalesFilter.FilterIncludeIneSales = false;
+                    break;
+                case 1:
+                    clseSalesFilter.FilterIncludeIneSales = true;
+                    clseSalesFilter.IncludeIneSales = true;
+                    break;
+                case 2:
+                    clseSalesFilter.FilterIncludeIneSales = true;
+                    clseSalesFilter.IncludeIneSales = false;
+                    break;
+            }
+
             string SearchKey = txtSearch.Text;
-            POReturnStatus status = (POReturnStatus)Enum.Parse(typeof(POReturnStatus), cboStatus.SelectedItem.Value);
-            PageData.DataSource = clsPOReturns.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
+            PageData.DataSource = clsPOReturns.SearchAsDataTable(POReturnStatus.Posted, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption, 0, clseSalesFilter).DefaultView; 
 
 			clsPOReturns.CommitAndDispose();
 

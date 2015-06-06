@@ -1,4 +1,6 @@
 <%@ Reference Page="~/adminfiles/default.aspx" %>
+<%@ Page language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._Returns._Default" Codebehind="Default.aspx.cs" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInsert" Src="_Insert.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlCancel" Src="_Cancel.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlReports" Src="_Reports.ascx" %>
@@ -6,6 +8,8 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlUpdate" Src="_Update.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlList" Src="_List.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlListeSales" Src="_ListeSales.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrleList" Src="_eList.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="../../PurchasesAndPayables/_Menu.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlExpiry" Src="../../_Expiry.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../../_Processing.ascx" %>
@@ -15,8 +19,6 @@
 <%@ Register TagPrefix="CTRL" TagName="LargeHeading" Src="../../_LargeHeading.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="HorizontalNavBar" Src="../../_HorizontalNavBar.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../../_PageHeader.ascx" %>
-<%@ Page language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._Returns._Default" Codebehind="Default.aspx.cs" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
 	<HEAD>
@@ -115,6 +117,8 @@
 							<tr id="TopRow">
 								<td class="ms-tztop" id="TopCell" valign="top" width="100%">
 									<CTRL:ctrlList id="ctrlList" runat="server" Visible="False"></CTRL:ctrlList>
+                                    <CTRL:ctrlListeSales id="ctrlListeSales" runat="server" Visible="False"></CTRL:ctrlListeSales>
+                                    <CTRL:ctrleList id="ctrleList" runat="server" Visible="False"></CTRL:ctrleList>
 									<CTRL:ctrlInsert id="ctrlInsert" runat="server" Visible="False"></CTRL:ctrlInsert>
 									<CTRL:ctrlUpdate id="ctrlUpdate" runat="server" Visible="False"></CTRL:ctrlUpdate>
 									<CTRL:ctrlDetails id="ctrlDetails" runat="server" Visible="False"></CTRL:ctrlDetails>

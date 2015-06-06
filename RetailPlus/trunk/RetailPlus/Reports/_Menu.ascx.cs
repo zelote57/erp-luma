@@ -60,53 +60,104 @@ namespace AceSoft.RetailPlus.Reports
 			Security.AccessRights clsAccessRights = new Security.AccessRights(); 
 			Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
 
+            bool boShowCommonReports = false;
+            bool boShowRetailPOSReports = false;
+            bool boShowFinancialReports = false;
+
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ProductsListReport); 
 			lnkProducts.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkProducts.Style.Add("display", "none");
+            
+            // show label for reporting
+            if (clsDetails.Read && !boShowCommonReports) boShowCommonReports = true;
 
             //if (clsDetails.Read || clsAccessRights.Details(UID,(int) AccessTypes.PricesReport).Read)
-            lnkProductHistory.Visible = clsDetails.Read || clsAccessRights.Details(UID, (int)AccessTypes.PricesReport).Read; 
+            lnkProductHistory.Visible = clsDetails.Read;
+            if (!clsDetails.Read)
+            {
+                clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.PricesReport);
+                lnkProductHistory.Visible = clsDetails.Read;
+                if (!clsDetails.Read) divlnkProductHistory.Style.Add("display", "none");
+            }
+            // show label for reporting
+            if (clsDetails.Read && !boShowCommonReports) boShowCommonReports = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InventoryReport); 
 			lnkInventory.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkInventory.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowCommonReports) boShowCommonReports = true;
 
+            // initially hide these links 
             lnkTransaction.Visible = false;
             lnkDatedReport.Visible = false;
             lnkTerminalReports.Visible = false;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport);
-            if (clsDetails.Read)
+            lnkTransaction.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkTransaction.Style.Add("display", "none");
+
+            lnkDatedReport.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkDatedReport.Style.Add("display", "none");
+
+            lnkTerminalReports.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkTerminalReports.Style.Add("display", "none");
+            
+            if (!clsDetails.Read)
             {
-                lnkTransaction.Visible = true;
-                lnkDatedReport.Visible = true;
-                lnkTerminalReports.Visible = true;
+                // check SummarizedDailySales
+                clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySales);
+                lnkDatedReport.Visible = clsDetails.Read;
+                if (!clsDetails.Read) divlnkDatedReport.Style.Add("display", "none");
+
+                if (!clsDetails.Read)
+                {
+                    // check PaidOutDisburseROC
+                    clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.PaidOutDisburseROC);
+                    lnkDatedReport.Visible = clsDetails.Read;
+                    if (!clsDetails.Read) divlnkDatedReport.Style.Add("display", "none");
+                }
             }
-            else if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySales).Read)
-            {
-                lnkDatedReport.Visible = true;
-            }
-            else if (clsAccessRights.Details(UID, (int)AccessTypes.PaidOutDisburseROC).Read)
-            {
-                lnkDatedReport.Visible = true;
-            }
+
+            // show label for reporting
+            if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ManagementReports);
             lnkManagementReport.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkManagementReport.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.AnalyticsReports);
             lnkAnalyticsReport.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkAnalyticsReport.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF);
             lnkeSalesReport.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkeSalesReport.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport); 
-			lnkStockTransaction.Visible = clsDetails.Read; 
+			lnkStockTransaction.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkStockTransaction.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ContactsReport); 
-			lnkContacts.Visible = clsDetails.Read; 
+			lnkContacts.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkContacts.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowCommonReports) boShowCommonReports = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CustomerCreditReport); 
 			lnkCustomerCredit.Visible = clsDetails.Read;
- 
+            if (!clsDetails.Read) divlnkCustomerCredit.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowFinancialReports) boShowFinancialReports = true;
+
             //clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CustomersWithCreditReport); 
             //lnkCustomersWithCreditReport.Visible = clsDetails.Read; 
 
@@ -117,15 +168,42 @@ namespace AceSoft.RetailPlus.Reports
             //lnkLeastSalableItems.Visible = clsDetails.Read; 
 			
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.LoginLogoutReport); 
-			lnkLoginLogoutReport.Visible = clsDetails.Read; 
+			lnkLoginLogoutReport.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkLoginLogoutReport.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowCommonReports) boShowCommonReports = true;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.PurchaseAnalysis); 
 			lnkPurchaseAnalysis.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkPurchaseAnalysis.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.AgentCommisionReport); 
             lnkAgentsCommision.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkAgentsCommision.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowFinancialReports) boShowFinancialReports = true;
 
 			clsAccessRights.CommitAndDispose();
+
+            if (!boShowCommonReports)
+            {
+                divlblCommonReports.Style.Add("display", "none");
+                divtblCommonReports.Style.Add("display", "none");
+            }
+
+            if (!boShowRetailPOSReports)
+            {
+                divlblRetailPOSReports.Style.Add("display", "none");
+                divtblRetailPOSReports.Style.Add("display", "none");
+            }
+
+            if (!boShowFinancialReports)
+            {
+                divlblFinancialReports.Style.Add("display", "none");
+                divtblFinancialReports.Style.Add("display", "none");
+            }
 		}
 
 		#region Web Form Designer generated code

@@ -38,6 +38,14 @@ namespace AceSoft.RetailPlus.Reports
 
 		private void LoadOptions()
 		{
+            if (Request.QueryString["task"] != null)
+            {
+                string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
+                if (task.ToLower().IndexOf("esales") >= 0)
+                    lblTask.Text = "esales";
+                else
+                    lblTask.Text = "";
+            }
 			txtStartDate.Text = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
 			txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -174,6 +182,13 @@ namespace AceSoft.RetailPlus.Reports
 			{	PostingDateTo = Convert.ToDateTime(txtEndDate.Text + " " + txtEndTime.Text);	}
 			catch{}
 
+            eSalesFilter clseSalesFilter = new eSalesFilter();
+            if (lblTask.Text == "esales")
+            {
+                clseSalesFilter.FilterIncludeIneSales = true;
+                clseSalesFilter.IncludeIneSales = true;
+            }
+
 			DataClass clsDataClass = new DataClass();
 			System.Data.DataTable dt;
 
@@ -183,7 +198,7 @@ namespace AceSoft.RetailPlus.Reports
 			{
 				case "Posted PO":
 					Data.PO clsPO = new Data.PO();
-                    dt = clsPO.ListAsDataTable(POStatus.Posted, new Data.PODetails(), Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, PostingDateFrom, PostingDateTo, SupplierID: lngSupplierID);
+                    dt = clsPO.ListAsDataTable(POStatus.Posted, new Data.PODetails(), Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, PostingDateFrom, PostingDateTo, SupplierID: lngSupplierID, clseSalesFilter: clseSalesFilter);
                     clsPO.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)
@@ -198,11 +213,7 @@ namespace AceSoft.RetailPlus.Reports
 					break;
 				case "Posted PO Returns":
 					Data.POReturns clsPOReturns = new Data.POReturns();
-                    if (lngSupplierID == 0)
-					    dt =  clsDataClass.DataReaderToDataTable(clsPOReturns.List(POReturnStatus.Posted, PostingDateFrom, PostingDateTo));
-                    else
-                        dt = clsDataClass.DataReaderToDataTable(clsPOReturns.List(POReturnStatus.Posted, lngSupplierID, PostingDateFrom, PostingDateTo));
-
+                    dt =  clsPOReturns.ListAsDataTable(POReturnStatus.Posted, PostingStartDate: PostingDateFrom, PostingEndDate: PostingDateTo, SupplierID: lngSupplierID, clseSalesFilter: clseSalesFilter);
 					clsPOReturns.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)
@@ -217,11 +228,7 @@ namespace AceSoft.RetailPlus.Reports
 					break;
 				case "Posted Debit Memo":
 					Data.DebitMemos clsDebitMemos = new Data.DebitMemos();
-                    if (lngSupplierID == 0)
-					    dt =  clsDataClass.DataReaderToDataTable(clsDebitMemos.List(DebitMemoStatus.Posted, PostingDateFrom, PostingDateTo));
-                    else
-                        dt = clsDataClass.DataReaderToDataTable(clsDebitMemos.List(DebitMemoStatus.Posted, lngSupplierID, PostingDateFrom, PostingDateTo));
-
+                    dt = clsDebitMemos.ListAsDataTable(DebitMemoStatus.Posted, PostingStartDate: PostingDateFrom, PostingEndDate: PostingDateTo, SupplierID: lngSupplierID, clseSalesFilter: clseSalesFilter);
 					clsDebitMemos.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)

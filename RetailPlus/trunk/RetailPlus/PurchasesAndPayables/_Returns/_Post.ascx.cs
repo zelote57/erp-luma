@@ -978,10 +978,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
         }
 		private void LoadItems()
 		{
-			DataClass clsDataClass = new DataClass();
-
 			POReturnItems clsPOReturnItems = new POReturnItems();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOReturnItems.List(Convert.ToInt64(lblDebitMemoID.Text), "DebitMemoItemID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsPOReturnItems.ListAsDataTable(Convert.ToInt64(lblDebitMemoID.Text), SortField: "DebitMemoItemID", SortOrder: SortOption.Ascending).DefaultView;
 			lstItem.DataBind();
 			clsPOReturnItems.CommitAndDispose();
             lstItemFixCssClass();

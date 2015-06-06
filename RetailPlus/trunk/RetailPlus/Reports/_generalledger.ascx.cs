@@ -33,7 +33,7 @@ namespace AceSoft.RetailPlus.Reports
             if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
                 //if (Session["ReportType"].ToString() == "gl")
-                    //CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                    //try { CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"]; } catch { }
             }
         }
 
@@ -339,7 +339,7 @@ namespace AceSoft.RetailPlus.Reports
 			{
 				case "Posted PO":
 					Data.PO clsPO = new Data.PO();
-                    dt = clsPO.ListAsDataTable(POStatus.Posted, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, PostingDateFrom, PostingDateTo);
+                    dt = clsPO.ListAsDataTable(POStatus.Posted, new Data.PODetails(), Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, PostingDateFrom, PostingDateTo);
 					clsPO.CommitAndDispose();
 
 					foreach(System.Data.DataRow dr in dt.Rows)

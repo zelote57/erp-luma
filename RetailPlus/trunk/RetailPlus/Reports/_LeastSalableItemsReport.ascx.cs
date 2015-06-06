@@ -33,7 +33,7 @@ namespace AceSoft.RetailPlus.Reports
             if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
                 if (Session["ReportType"].ToString() == "leastsaleable")
-                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                    try { CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"]; } catch { }
             }
         }
 

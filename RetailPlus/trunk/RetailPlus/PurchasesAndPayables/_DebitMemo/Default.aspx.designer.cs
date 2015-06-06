@@ -121,6 +121,24 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
         protected global::AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo.@__List ctrlList;
         
         /// <summary>
+        /// ctrlListeSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo.@__ListeSales ctrlListeSales;
+        
+        /// <summary>
+        /// ctrleList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo.@__eList ctrleList;
+        
+        /// <summary>
         /// ctrlInsert control.
         /// </summary>
         /// <remarks>

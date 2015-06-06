@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
+namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
     
     
-    public partial class @__List {
+    public partial class @__ListeSales {
         
         /// <summary>
         /// imgAdd control.
@@ -94,58 +94,31 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
         protected global::System.Web.UI.WebControls.Label lblSeparator2;
         
         /// <summary>
-        /// imgPost control.
+        /// imgGRN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgPost;
+        protected global::System.Web.UI.WebControls.ImageButton imgGRN;
         
         /// <summary>
-        /// cmdPost control.
+        /// cmdGRN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdPost;
+        protected global::System.Web.UI.WebControls.LinkButton cmdGRN;
         
         /// <summary>
-        /// divesales control.
+        /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divesales;
-        
-        /// <summary>
-        /// lblSeparator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSeparator4;
-        
-        /// <summary>
-        /// imgeSales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgeSales;
-        
-        /// <summary>
-        /// cmdeSales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdeSales;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// lblDataCount1 control.

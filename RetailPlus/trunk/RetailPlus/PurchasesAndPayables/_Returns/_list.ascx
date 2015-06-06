@@ -47,6 +47,17 @@
 							</tr>
 						</table>
 					</td>
+                    <div runat="server" id="divesales">
+                    <td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
+					<td class="ms-toolbar">
+						<table cellspacing="0" cellpadding="1" border="0">
+							<tr>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgeSales" ToolTip="Manage eSales List" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/esales.gif" alt="Manage eSales List" border="0" width="16" height="16" OnClick="imgeSales_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdeSales" ToolTip="Manage eSales List" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdeSales_Click">Manage eSales List</asp:linkbutton></td>
+							</tr>
+						</table>
+					</td>
+                    </div>
 					<td class="ms-toolbar" id="align01" nowrap="nowrap" align="right" width="99%">
 						<table cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>

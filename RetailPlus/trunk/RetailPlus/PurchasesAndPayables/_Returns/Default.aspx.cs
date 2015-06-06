@@ -47,6 +47,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                              SearchIndex = SearchCategoryID.PurchaseReturns;
                              ctrlList.Visible = true;
                              break;
+                         case "listesales":
+                             stHeading = "Purchase returns list";
+                             SearchIndex = SearchCategoryID.NotApplicable;
+                             ctrlListeSales.Visible = true;
+                             break;
+                         case "elist":
+                             stHeading = "Manage Purchase returns for eSales";
+                             SearchIndex = SearchCategoryID.NotApplicable;
+                             ctrleList.Visible = true;
+                             break;
                          case "add":
                              stHeading = "Add new purchase returns";
                              SearchIndex = SearchCategoryID.PurchaseReturns;

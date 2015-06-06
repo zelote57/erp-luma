@@ -1,4 +1,4 @@
-<%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo.__List" Codebehind="_List.ascx.cs" %>
+<%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._PO.__ListeSales" Codebehind="_listesales.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/sExpCollapse.js"></script>
 <script language="JavaScript" src="../../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
@@ -9,14 +9,14 @@
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellspacing="0" cellpadding="2" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgAdd" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add New Purchase Debit Memo" border="0" width="16" height="16" OnClick="imgAdd_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgAdd" ToolTip="Add New Purchase Order" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/newuser.gif" alt="Add New Purchase Order" border="0" width="16" height="16" OnClick="imgAdd_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdAdd" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Purchase Debit Memo</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdAdd" ToolTip="Add New Purchase Order" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Purchase Order</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -24,8 +24,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/delitem.gif" ToolTip="Cancel Selected Purchase Debit Memo" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Cancel Selected Purchase Debit Memo</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" ToolTip="Cancel Selected Purchase Order" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/delitem.gif" alt="Cancel Selected Purchase Order" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" ToolTip="Cancel Selected Purchase Order" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Cancel Selected Purchase Order</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -33,8 +33,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgEdit" title="Update Purchase Debit Memo" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Purchase Debit Memo" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdEdit" title="Update Purchase Debit Memo" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Update Purchase Debit Memo</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgEdit" ToolTip="Update Purchase order" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Update Purchase Order" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdEdit" ToolTip="Update Purchase Order" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Update Purchase Order</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -42,28 +42,27 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPost" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/post.gif" ToolTip="Post this order" border="0" width="16" height="16" OnClick="imgPost_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdPost" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdPost_Click">Post</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgGRN" ToolTip="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/issuegrn.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdGRN" ToolTip="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-                    <div runat="server" id="divesales">
-                    <td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
-					<td class="ms-toolbar">
-						<table cellspacing="0" cellpadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgeSales" ToolTip="Manage eSales List" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/esales.gif" alt="Manage eSales List" border="0" width="16" height="16" OnClick="imgeSales_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdeSales" ToolTip="Manage eSales List" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdeSales_Click">Manage eSales List</asp:linkbutton></td>
-							</tr>
-						</table>
-					</td>
-                    </div>
 					<td class="ms-toolbar" id="align01" nowrap="nowrap" align="right" width="99%">
 						<table cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap" align="right"><asp:label id="lblDataCount1" CssClass="Normal" runat="server"> Go to page </asp:label><asp:dropdownlist id="cboCurrentPage" runat="server" AutoPostBack="True" onselectedindexchanged="cboCurrentPage_SelectedIndexChanged">
-										<asp:ListItem Value="1" Selected="True">1</asp:ListItem>
-									</asp:dropdownlist><asp:label id="lblDataCount" CssClass="class=ms-vb-user" runat="server"> of 0</asp:label></td>
+								<td class="ms-toolbar" nowrap="nowrap" align="right">
+								    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                        <ContentTemplate>
+                                            <asp:label id="lblDataCount1" CssClass="Normal" runat="server"> Go to page </asp:label>
+							                <asp:dropdownlist id="cboCurrentPage" runat="server" AutoPostBack="True" onselectedindexchanged="cboCurrentPage_SelectedIndexChanged">
+									            <asp:ListItem Value="1" Selected="True">1</asp:ListItem>
+								            </asp:dropdownlist><asp:label id="lblDataCount" CssClass="class=ms-vb-user" runat="server"> of 0</asp:label>
+								        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="cmdSearch" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+								</td>
 							</tr>
 						</table>
 					</td>
@@ -74,7 +73,7 @@
 		</td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
-    <tr>
+	<tr>
 		<td></td>
 		<td><asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Order Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtOrderStartDate"></asp:CompareValidator><asp:Label
                 ID="lblStatus" runat="server" CssClass="ms-error" Visible="False"></asp:Label></td>
@@ -91,7 +90,7 @@
 		<td></td>
 		<td><asp:CompareValidator id="CompareValidator4" CssClass="ms-error" runat="server" ErrorMessage="'Posting End Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtPostingEndDate"></asp:CompareValidator></td>
 	</tr>
-    <tr>
+	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td class="ms-authoringcontrols">
 		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -147,7 +146,7 @@
 				</tr>
 				<tr>
 					<td style="padding-bottom:2px" nowrap>
-						<label>Memo No /Vendor /Remarks</label>&nbsp;
+						<label>PO No /Vendor /Remarks</label>&nbsp;
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					<td nowrap colspan=4>
@@ -170,33 +169,7 @@
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<td>
-			<table cellspacing="0" cellpadding="0" width="100%" border="0">
-				<colgroup>
-					<col width="1">
-					<col width="25%">
-					<col width="25%">
-					<col width="50%">
-				</colgroup>
-				<tr>
-					<th class="ms-vh2">
-						<img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></th>
-					<th class="ms-vh2">
-						<img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></th></tr>
-				<tr>
-					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; padding-bottom: 0px; PADDING-TOP: 0px">
-					</td>
-					<td class="ms-vb2" style="BORDER-TOP: 0px"></td>
-					<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
-				</tr>
-				<tr>
-					<td colspan="4" height="5"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-				</tr>
-			</table>
+		<td style="PADDING-TOP:	10px">
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
                     <asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand" AlternatingItemStyle-CssClass="ms-alternating">
@@ -207,83 +180,105 @@
 							        <col width="10">
 							        <col width="10">
 							        <col width="10">
-							        <col width="20%">
-							        <col width="14%">
 							        <col width="16%">
 							        <col width="14%">
-							        <col width="16%">
-							        <col width="10%" align="right">
-							        <col width="10%">
+							        <col width="26%">
+							        <col width="14%">
+							        <col width="15%">
+							        <col width="15%" align="right">
 							        <col width="1">
 						        </colgroup>
 						        <tr>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-								    <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByMemoNo" runat="server">Memo No.</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByMemoDate" runat="server">Memo Date</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortBySupplierCode" runat="server">Vendor/Supplier</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByPostingDate" runat="server">Posting Date</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByBranchCode" runat="server">Affected Branch</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortBySubTotal" runat="server">Amount</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+							        <th class="ms-vh2" style="padding-bottom: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></th>
+								    <th class="ms-vh2" style="padding-bottom: 4px"></th>
+								    <th class="ms-vh2" style="padding-bottom: 4px"></th>
+								    <th class="ms-vh2" style="padding-bottom: 4px"></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByPONo" runat="server">PO No.</asp:hyperlink></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByPODate" runat="server">Order Date</asp:hyperlink></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortBySupplierCode" runat="server">Vendor/Supplier</asp:hyperlink></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByReqDeliveryDate" runat="server">Req Delivery Date</asp:hyperlink></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByBranchCode" runat="server">Deliver to Branch</asp:hyperlink></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortByPOSubTotal" runat="server">Amount</asp:hyperlink></th>
+							        <th class="ms-vh2" style="padding-bottom: 4px"></th>
 						        </tr>
 				        </HeaderTemplate>
-				        <ItemTemplate> 
+				        <ItemTemplate>
 						        <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							        <td class="ms-vb-user">
 								        <input type="checkbox" id="chkList" runat="server" name="chkList" />
 							        </td>
 							        <td class="ms-vb2">
-							            <asp:imagebutton id="imgItemDelete" CommandName="imgItemDelete" accessKey="D" tabIndex="1" height="16" width="16" border="0" tooltip="Cancel this order" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
+							            <asp:imagebutton id="imgItemDelete" CommandName="imgItemDelete" accessKey="D" tabIndex="1" height="16" width="16" border="0" tooltip="Cancel this Purchase Order" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
 						            </td>
 							        <td class="ms-vb2">
-							            <asp:imagebutton id="imgItemEdit" CommandName="imgItemEdit" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Update this order" ImageUrl="../../_layouts/images/edit.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
+							            <asp:imagebutton id="imgItemEdit" CommandName="imgItemEdit" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Update this Purchase Order" ImageUrl="../../_layouts/images/edit.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
 						            </td>
 						            <td class="ms-vb2">
-							            <asp:imagebutton id="imgItemPost" CommandName="imgItemPost" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Post for this order" ImageUrl="../../_layouts/images/post.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
+							            <asp:imagebutton id="imgItemPost" CommandName="imgItemPost" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Issue GRN for this Purchase Order" ImageUrl="../../_layouts/images/issuegrn.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
 						            </td>
 							        <td class="ms-vb-user">
-								        <asp:HyperLink id="lnkMemoNo" runat="server"></asp:HyperLink>
+								        <asp:HyperLink id="lnkPONo" runat="server"></asp:HyperLink>
 							        </td>
 							        <td class="ms-vb-user">
-								        <asp:Label ID="lblMemoDate" Runat="server"></asp:Label>
+								        <asp:Label ID="lblPODate" Runat="server"></asp:Label>
 							        </td>
 							        <td class="ms-vb-user">
 								        <asp:HyperLink ID="lblSupplierCode" Runat="server" Target="_blank"></asp:HyperLink>
 								        <asp:Label ID="lblSupplierID" Runat="server" Visible="False"></asp:Label>
 							        </td>
 							        <td class="ms-vb-user">
-								        <asp:Label ID="lblPostingDate" Runat="server"></asp:Label>
+								        <asp:Label ID="lblReqDeliveryDate" Runat="server"></asp:Label>
 							        </td>
 							        <td class="ms-vb-user">
 								        <asp:Label ID="lblBranchCode" Runat="server"></asp:Label>
 								        <asp:Label ID="lblBranchID" Runat="server" Visible="False"></asp:Label>
 							        </td>
-							        <td class="ms-vb-user" style="text-align: right">
-								        <asp:Label ID="lblSubTotal" Runat="server"></asp:Label>
+							        <td class="ms-vb-user" style="text-align:right">
+								        <asp:Label ID="lblPOSubTotal" Runat="server"></asp:Label>
 							        </td>
-							        <td class="ms-vb-user">
-								        <asp:Label ID="lblRemarks" Runat="server"></asp:Label>
-							        </td>
+							        
 							        <td class="ms-vb2">
-								        <a class="DropDown" id="anchorDown" href="" runat="server">
-									        <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
+								        <A class="DropDown" id="anchorDown" href="" runat="server">
+									        <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="true"></asp:Image></A>
 							        </td>
 						        </tr>
+						        <tr>
+					                <td class="ms-vh2" height="1" colspan=4><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+					                <td colspan="5" height="1">
+						                <DIV class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
+							                <asp:panel id="panItem" runat="server" Width="100%" Height="100%" >
+								                <table id="tblpanItem" cellspacing="0" cellpadding="0" width="100%" border="0">
+									                <tr>
+										                <td class="ms-formspacer" colspan="1"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+									                </tr>
+									                <tr>
+										                <td width="10%">
+											                <asp:Label id="Label4" CssClass="ms-vh2" runat="server" text="<b>Remarks</b>"></asp:Label>
+										                </td>
+										                <td width="1%">
+											                <asp:Label id="Label7" CssClass="ms-vh2" runat="server" text="<b>:</b>"></asp:Label>
+										                </td>
+										                <td width="80%">
+								                            <asp:Label ID="lblPORemarks" CssClass="ms-vh2" Runat="server"></asp:Label>
+										                </td>
+									                </tr>
+								                </table>
+							                </asp:panel></DIV>
+					                </td>
+					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+				                </tr>
 				        </ItemTemplate>
                         <FooterTemplate>
-                            </table>
+					        </table>
                         </FooterTemplate>
 			        </asp:datalist>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="cboCurrentPage" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="cmdSearch" EventName="Click" />
                 </Triggers>
             </asp:UpdatePanel>
-		</td>
+			</td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>

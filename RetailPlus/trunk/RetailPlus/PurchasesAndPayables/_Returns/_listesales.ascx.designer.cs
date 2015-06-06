@@ -10,7 +10,7 @@
 namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
     
     
-    public partial class @__List {
+    public partial class @__ListeSales {
         
         /// <summary>
         /// imgAdd control.
@@ -110,42 +110,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdPost;
-        
-        /// <summary>
-        /// divesales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divesales;
-        
-        /// <summary>
-        /// lblSeparator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSeparator4;
-        
-        /// <summary>
-        /// imgeSales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgeSales;
-        
-        /// <summary>
-        /// cmdeSales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdeSales;
         
         /// <summary>
         /// lblDataCount1 control.

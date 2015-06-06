@@ -9,7 +9,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 	using AceSoft.RetailPlus.Data; 
 	using AceSoft.RetailPlus.Security;
 
-	public partial  class __List : System.Web.UI.UserControl
+	public partial  class __ListeSales : System.Web.UI.UserControl
 	{
 		protected PagedDataSource PageData = new PagedDataSource();
 	
@@ -112,11 +112,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		}
         protected void imgeSales_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            Response.Redirect("Default.aspx?task=" + Common.Encrypt("elist", Session.SessionID));
+            Response.Redirect("Default.aspx?task=" + Common.Encrypt("listesales", Session.SessionID));
         }
         protected void cmdeSales_Click(object sender, System.EventArgs e)
         {
-            Response.Redirect("Default.aspx?task=" + Common.Encrypt("elist", Session.SessionID));
+            Response.Redirect("Default.aspx?task=" + Common.Encrypt("listesales", Session.SessionID));
         }
 		protected void cboCurrentPage_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -292,10 +292,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			lblSeparator1.Visible = clsDetails.Write;
 			lblSeparator2.Visible = clsDetails.Write;
 //			lblSeparator3.Visible = clsDetails.Write;
-
-            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ManagePurchaseOrderseSales);
-            divesales.Visible = clsDetails.Write;
-
 			clsAccessRights.CommitAndDispose();
 		}
 		private void LoadSortFieldOptions(DataListItemEventArgs e)
@@ -363,9 +359,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
             catch { }
 
+            eSalesFilter clseSalesFilter = new eSalesFilter();
+            clseSalesFilter.FilterIncludeIneSales = true;
+            clseSalesFilter.IncludeIneSales = true;
+
             string SearchKey = txtSearch.Text;
             POStatus status = (POStatus)Enum.Parse(typeof(POStatus), cboStatus.SelectedItem.Value);
-            PageData.DataSource = clsPO.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
+            PageData.DataSource = clsPO.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption, 0, clseSalesFilter).DefaultView; 
 
 			clsPO.CommitAndDispose();
 

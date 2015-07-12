@@ -129,7 +129,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -957,8 +957,21 @@ namespace AceSoft.RetailPlus.Client.UI
 				    clsContactWnd.Dispose();
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
-                        LoadData();
-                        txtScan.Text = details.CreditDetails.CreditCardNo;
+                        switch (SysConfigDetails.CreditPaymentType)
+                        {
+                            case CreditPaymentType.Houseware:
+                                LoadData();
+                                txtScan.Text = details.CreditDetails.CreditCardNo;
+                                break;
+                            case CreditPaymentType.Normal:
+                            case CreditPaymentType.MPC:
+                            default:
+                                txtScan.Text = details.ContactCode;
+                                LoadData();
+                                txtScan.Text = details.ContactCode;
+                                break;
+                        }
+                        
                     }
                     break;
 
@@ -1136,7 +1149,17 @@ namespace AceSoft.RetailPlus.Client.UI
             mGuarantorDetails = new Data.ContactDetails();
 
             Data.Contacts clsContacts = new Data.Contacts();
-            mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text);
+            switch (SysConfigDetails.CreditPaymentType)
+            {
+                case CreditPaymentType.Houseware:
+                    mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text);
+                    break;
+                case CreditPaymentType.Normal:
+                case CreditPaymentType.MPC:
+                default:
+                    mContactDetails = clsContacts.Details(txtScan.Text);
+                    break;
+            }
 
             if (mContactDetails.ContactID == 0)
             {

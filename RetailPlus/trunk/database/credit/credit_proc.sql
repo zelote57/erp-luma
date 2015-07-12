@@ -1341,6 +1341,8 @@ delimiter ;
 
 	CALL procContactCreditPaymentSelect(0, '', 0, 2, 0, '1900-01-01', '1900-01-01', '', '', '', '', '', 'ASC', 10);
 
+	-- 08Jul2015 : use LEFT OUTER JOIN on CCI for Normal/MPC CreditPaymentType, check effect on HP if slow.
+
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procContactCreditPaymentSelect
@@ -1377,8 +1379,8 @@ BEGIN
 							IFNULL(gua.ContactCode, '''') GuarantorCode, 
 							IFNULL(gua.ContactName,'''') GuarantorName
 						FROM tblTransactions trx
-						INNER JOIN tblContactCreditCardInfo cci ON cci.CustomerID = trx.CustomerID
 						INNER JOIN tblContacts cntct ON cntct.ContactID =  trx.CustomerID
+						LEFT OUTER JOIN tblContactCreditCardInfo cci ON cci.CustomerID = trx.CustomerID
 						LEFT OUTER JOIN tblContactCreditCardInfo gci ON gci.CustomerID = cci.GuarantorID
 						LEFT OUTER JOIN tblContacts gua ON gua.ContactID = cci.GuarantorID
 						WHERE TransactionStatus = 7 ';
@@ -1491,6 +1493,8 @@ delimiter ;
 
 	CALL procContactCreditPurchaseSelect(0, '', 7489, 2, 0, '2014-11-18', '2015-01-17', '', '', '', '', '', 'ASC', 10);
 
+	-- 08Jul2015 : use LEFT OUTER JOIN on CCI for Normal/MPC CreditPaymentType, check effect on HP if slow.
+
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procContactCreditPurchaseSelect
@@ -1525,8 +1529,8 @@ BEGIN
 							IFNULL(gua.ContactCode, '''') GuarantorCode, 
 							IFNULL(gua.ContactName,'''') GuarantorName
 						FROM tblCreditPayment CP
-						INNER JOIN tblContactCreditCardInfo cci ON cci.CustomerID = CP.ContactID
 						INNER JOIN tblContacts cntct ON cntct.ContactID = CP.ContactID
+						LEFT OUTER JOIN tblContactCreditCardInfo cci ON cci.CustomerID = CP.ContactID
 						LEFT OUTER JOIN tblContactCreditCardInfo gci ON gci.CustomerID = cci.GuarantorID
 						LEFT OUTER JOIN tblContacts gua ON gua.ContactID = cci.GuarantorID
 						WHERE CP.CreditReasonID <> 8 '; -- exclude the deposits 

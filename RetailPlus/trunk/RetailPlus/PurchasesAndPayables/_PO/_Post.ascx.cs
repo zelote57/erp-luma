@@ -234,8 +234,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		}
 		protected void cmdProductCode_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			DataClass clsDataClass = new DataClass();
-
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";

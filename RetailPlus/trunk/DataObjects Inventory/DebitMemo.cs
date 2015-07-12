@@ -272,6 +272,28 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+        public void UpdateIncludeIneSales(Int64 DebitMemoID, bool IncludeIneSales)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblPODebitMemo SET " +
+                                "IncludeIneSales          =   @IncludeIneSales " +
+                            "WHERE DebitMemoID = @DebitMemoID;";
+
+                cmd.Parameters.AddWithValue("@IncludeIneSales", IncludeIneSales);
+                cmd.Parameters.AddWithValue("@DebitMemoID", DebitMemoID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
         public void UpdateIsVatInclusive(long DebitMemoID, bool IsVatInclusive)
         {
             try
@@ -532,7 +554,7 @@ namespace AceSoft.RetailPlus.Data
             ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
             ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
 
-            System.Data.DataTable dt = clsDebitMemoItems.ListAsDataTable(pvtDebitMemoID, "DebitMemoItemID", SortOption.Ascending);
+            System.Data.DataTable dt = clsDebitMemoItems.ListAsDataTable(pvtDebitMemoID, SortField: "DebitMemoItemID", SortOrder: SortOption.Ascending);
 
             foreach (System.Data.DataRow dr in dt.Rows)
             {
@@ -730,9 +752,10 @@ namespace AceSoft.RetailPlus.Data
                             "ChartOfAccountIDAPFreight, " +
                             "ChartOfAccountIDAPVDeposit, " +
                             "ChartOfAccountIDAPContra, " +
-                            "ChartOfAccountIDAPLatePayment " +
+                            "ChartOfAccountIDAPLatePayment, " +
+                            "a.IncludeIneSales " +
                         "FROM tblPODebitMemo a INNER JOIN tblBranch b ON a.BranchID = b.BranchID " +
-                        "WHERE 1=1 AND POReturnStatus = " + POReturnStatus.Posted.ToString("d") + " ";
+                        "WHERE POReturnStatus = " + POReturnStatus.Posted.ToString("d") + " ";
 
             return SQL;
 
@@ -823,199 +846,73 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams: ListAsDataTable, List, Search
 
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
-        {
-            if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
-
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-        }
-        public MySqlDataReader List(long DebitMemoID, string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(DebitMemoStatus DebitMemoStatus = DebitMemoStatus.All, DebitMemoDetails searchKey = new DebitMemoDetails(), DateTime? MemoStartDate = null, DateTime? MemoEndDate = null, DateTime? PostingStartDate = null, DateTime? PostingEndDate = null, string SortField = "DebitMemoID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0, Int64 SupplierID = 0, Int64 DebitMemoID = 0, eSalesFilter clseSalesFilter = new eSalesFilter())
         {
             try
             {
-                string SQL = SQLSelect() + "AND DebitMemoID = @DebitMemoID ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                // Note WHERE is already included in  SQLSelect()
+                string SQL = SQLSelect();
+
+                if (DebitMemoStatus != DebitMemoStatus.All)
+                {
+                    SQL += "AND DebitMemoStatus = @DebitMemoStatus ";
+                    cmd.Parameters.AddWithValue("@DebitMemoStatus", DebitMemoStatus.ToString("d"));
+                }
+
+                if (DebitMemoID != 0)
+                {
+                    SQL += "AND DebitMemoID = @DebitMemoID ";
+                    cmd.Parameters.AddWithValue("@DebitMemoID", DebitMemoID);
+                }
+
+                if (SupplierID != 0)
+                {
+                    SQL += "AND SupplierID >= @SupplierID ";
+                    cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+                }
+
+                if ((MemoStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : MemoStartDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND MemoDate >= @MemoStartDate ";
+                    cmd.Parameters.AddWithValue("@MemoStartDate", MemoStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+
+                if ((MemoEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : MemoEndDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND MemoDate <= @MemoEndDate ";
+                    cmd.Parameters.AddWithValue("@MemoEndDate", MemoEndDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+
+                if ((PostingStartDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PostingStartDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND PostingDate >= @PostingStartDate ";
+                    cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+
+                if ((PostingEndDate.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : PostingEndDate) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND PostingDate <= @PostingEndDate ";
+                    cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+
+                if (clseSalesFilter.FilterIncludeIneSales)
+                {
+                    SQL += "AND a.IncludeIneSales = @IncludeIneSales ";
+                    cmd.Parameters.AddWithValue("@IncludeIneSales", clseSalesFilter.IncludeIneSales);
+                }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "DebitMemoID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
                 cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID",MySqlDbType.Int64);
-                prmDebitMemoID.Value = DebitMemoID;
-                cmd.Parameters.Add(prmDebitMemoID);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader List(string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader List(DebitMemoStatus DebitMemoStatus, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "AND DebitMemoStatus = @DebitMemoStatus " +
-                            "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoStatus = new MySqlParameter("@DebitMemoStatus",MySqlDbType.Int16);
-                prmDebitMemoStatus.Value = DebitMemoStatus.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoStatus);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader List(DebitMemoStatus DebitMemoStatus, long SupplierID, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "AND DebitMemoStatus = @DebitMemoStatus " +
-                                "AND SupplierID = @SupplierID " +
-                            "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoStatus = new MySqlParameter("@DebitMemoStatus",MySqlDbType.Int16);
-                prmDebitMemoStatus.Value = DebitMemoStatus.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoStatus);
-
-                MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);
-                prmSupplierID.Value = SupplierID;
-                cmd.Parameters.Add(prmSupplierID);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader List(DebitMemoStatus DebitMemoStatus, DateTime StartDate, DateTime EndDate)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "AND DebitMemoStatus = @DebitMemoStatus " +
-                        "AND PostingDate BETWEEN @StartDate AND @EndDate " +
-                    "ORDER BY DebitMemoID ASC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoStatus = new MySqlParameter("@DebitMemoStatus",MySqlDbType.Int16);
-                prmDebitMemoStatus.Value = DebitMemoStatus.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoStatus);
-
-                MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);
-                prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmStartDate);
-
-                MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);
-                prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmEndDate);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader List(DebitMemoStatus DebitMemoStatus, long SupplierID, DateTime StartDate, DateTime EndDate)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "AND DebitMemoStatus = @DebitMemoStatus " +
-                        "AND SupplierID = @SupplierID " +
-                        "AND PostingDate BETWEEN @StartDate AND @EndDate " +
-                    "ORDER BY DebitMemoID ASC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoStatus = new MySqlParameter("@DebitMemoStatus",MySqlDbType.Int16);
-                prmDebitMemoStatus.Value = DebitMemoStatus.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoStatus);
-
-                cmd.Parameters.AddWithValue("@DebitMemoStatus", DebitMemoStatus.ToString("d"));
-                cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-                cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
+                return dt;
             }
             catch (Exception ex)
             {
@@ -1023,71 +920,6 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "AND (MemoNo LIKE @SearchKey or MemoDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredPostingDate LIKE @SearchKey) " +
-                                "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-                prmSearchKey.Value = "%" + SearchKey + "%";
-                cmd.Parameters.Add(prmSearchKey);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-        public MySqlDataReader Search(DebitMemoStatus Status, string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "AND DebitMemoStatus = @DebitMemoStatus " +
-                                "AND (MemoNo LIKE @SearchKey or MemoDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredPostingDate LIKE @SearchKey) " +
-                            "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoStatus = new MySqlParameter("@DebitMemoStatus",MySqlDbType.Int16);
-                prmDebitMemoStatus.Value = Status.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoStatus);
-
-                MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-                prmSearchKey.Value = "%" + SearchKey + "%";
-                cmd.Parameters.Add(prmSearchKey);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
         public System.Data.DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
         {
             try
@@ -1116,12 +948,13 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable SearchAsDataTable(DebitMemoStatus status, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
+        public System.Data.DataTable SearchAsDataTable(DebitMemoStatus status, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder, Int32 limit = 0, eSalesFilter clseSalesFilter = new eSalesFilter())
         {
             try
             {
-                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
-
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = SQLSelect() + "AND DebitMemoStatus = @Status " +
                                 "AND (MemoNo LIKE @SearchKey or MemoDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
                                         "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredPostingDate LIKE @SearchKey) ";
@@ -1131,16 +964,15 @@ namespace AceSoft.RetailPlus.Data
                 if (PostingStartDate != DateTime.MinValue) SQL += "AND PostingDate >= @PostingStartDate ";
                 if (PostingEndDate != DateTime.MinValue) SQL += "AND PostingDate <= @PostingEndDate ";
 
-                SQL += "ORDER BY " + SortField;
+                if (clseSalesFilter.FilterIncludeIneSales)
+                {
+                    SQL += "AND a.IncludeIneSales = @IncludeIneSales ";
+                    cmd.Parameters.AddWithValue("@IncludeIneSales", clseSalesFilter.IncludeIneSales);
+                }
 
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "DebitMemoID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
                 cmd.Parameters.AddWithValue("@Status", status.ToString("d"));
                 cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
@@ -1150,6 +982,7 @@ namespace AceSoft.RetailPlus.Data
                 if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 

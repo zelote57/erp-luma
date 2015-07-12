@@ -195,7 +195,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AceSoft.RetailPlus.snk" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <BaseApplicationManifest Include="Properties\app.manifest" />
     <None Include="bin\Debug\images\blank_small_dark_red.jpg" />
     <None Include="bin\Debug\images\blank_small_dark_yellow.jpg" />
@@ -609,12 +611,12 @@
   <ItemGroup>
     <PublishFile Include="bin\Debug\version.xml">
       <Visible>False</Visible>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>

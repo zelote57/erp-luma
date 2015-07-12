@@ -50,7 +50,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private TextBox txtContactCode;
         private Label label16;
         private TextBox txtRemarks;
-        private Label label11;
+        private Label labelLTONo;
         private TextBox txtLTONo;
         private Label label12;
         private TextBox txtTINNo;
@@ -83,6 +83,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
         public Data.TerminalDetails TerminalDetails { get; set; }
 
+        public Data.SysConfigDetails SysConfigDetails { get; set; }
+
 		#region Constructors And Desctructors
 		public ContactAddWnd()
 		{
@@ -107,7 +109,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -144,7 +146,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtPriceLevel = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.cmdGenerateCustomerCode = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
+            this.labelLTONo = new System.Windows.Forms.Label();
             this.txtLTONo = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.txtTINNo = new System.Windows.Forms.TextBox();
@@ -211,7 +213,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.Controls.Add(this.txtPriceLevel);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.cmdGenerateCustomerCode);
-            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.labelLTONo);
             this.groupBox1.Controls.Add(this.txtLTONo);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.txtTINNo);
@@ -293,16 +295,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdGenerateCustomerCode.UseVisualStyleBackColor = true;
             this.cmdGenerateCustomerCode.Click += new System.EventHandler(this.cmdGenerateCustomerCode_Click);
             // 
-            // label11
+            // labelLTONo
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label11.Location = new System.Drawing.Point(349, 90);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(104, 13);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "LTO No (BFAD No)";
+            this.labelLTONo.AutoSize = true;
+            this.labelLTONo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLTONo.ForeColor = System.Drawing.Color.MediumBlue;
+            this.labelLTONo.Location = new System.Drawing.Point(349, 90);
+            this.labelLTONo.Name = "labelLTONo";
+            this.labelLTONo.Size = new System.Drawing.Size(104, 13);
+            this.labelLTONo.TabIndex = 28;
+            this.labelLTONo.Text = "LTO No (BFAD No)";
             // 
             // txtLTONo
             // 
@@ -920,11 +922,13 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtCustomerName.Text = mContactDetails.ContactName;
                 txtBusinessName.Text = mContactDetails.BusinessName;
                 txtTelNo.Text = mContactDetails.TelephoneNo;
+                txtRemarks.Text = mContactDetails.Remarks;
                 txtAddress.Text = mContactDetails.Address;
                 txtTINNo.Text = mContactDetails.TINNo;
                 txtLTONo.Text = mContactDetails.LTONo;
                 txtPriceLevel.Text = mContactDetails.PriceLevel.ToString("G").ToUpper();
 
+                // 18Jun2013 : For credit information
                 txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
                 txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
                 txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
@@ -932,13 +936,27 @@ namespace AceSoft.RetailPlus.Client.UI
                 cboTerms.SelectedIndex = int.Parse(mContactDetails.ModeOfTerms.ToString("d"));
                 chkIsCreditAllowed.Checked = mContactDetails.IsCreditAllowed;
             }
-            else
+            else if (mContactDetails.ContactID == 0)
             {
                 Data.ERPConfig clsERPConfig = new Data.ERPConfig();
                 BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
                 txtContactCode.Text = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
                 clsERPConfig.CommitAndDispose();
+
+                if (mstCaption == "Please enter customer name for deposit.")
+                { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
+                else if (mstCaption == "Quickly add new customer")
+                { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
+                else if (mContactDetails.ContactID == 0) // means not edit
+                { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
             }
+
+            if (SysConfigDetails.ContactAddWndType == ContactAddWndType.ContactAddNoLTOWnd)
+            {
+                labelLTONo.Text = "Additional Info";
+            }
+            else
+                labelLTONo.Text = "LTO No (BFAD No)";
         }
 
         private bool SaveRecord()
@@ -975,12 +993,13 @@ namespace AceSoft.RetailPlus.Client.UI
                 
                 if (mContactDetails.ContactID == 0)
                 {
-                    if (mstCaption == "Please enter customer name for deposit.")
-                    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
-                    else if (mstCaption == "Quickly add new customer")
-                    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
-                    else if (mContactDetails.ContactID == 0) // means not edit
-                    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+                    //if (mstCaption == "Please enter customer name for deposit.")
+                    //{ clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
+                    //else if (mstCaption == "Quickly add new customer")
+                    //{ clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
+                    //else if (mContactDetails.ContactID == 0) // means not edit
+                    //{ clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+                    clsDetails.Remarks = txtRemarks.Text;
 
                     clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
                     clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
@@ -988,6 +1007,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else
                 {
+                    clsDetails.PositionID = mContactDetails.PositionID;
+                    clsDetails.DepartmentID = mContactDetails.DepartmentID;
+                    clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
                     clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
                     clsContact.Update(clsDetails);
                 }

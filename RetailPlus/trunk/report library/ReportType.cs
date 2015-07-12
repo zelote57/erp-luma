@@ -9,6 +9,7 @@ namespace AceSoft.RetailPlus
     {
         public const string ProductList = "Product List";
         public const string ProductPriceList = "Product Price List";
+        public const string ProductListWithInvalidMatrix = "Product List With Invalid Unit Matrix";
         public const string WeightedProductsForWeighingScale = "Weighted Products For Weighing Scale";
         public const string CountedProductsForWeighingScale = "Counted Products For Weighing Scale";
 
@@ -16,6 +17,7 @@ namespace AceSoft.RetailPlus
         public const string ProductHistoryPrice = "Price History";
         public const string ProductHistoryMostSaleable = "Most Saleable Items";
         public const string ProductHistoryLeastSaleable = "Least Saleable Items";
+        public const string ProductsInDemoReport = "Products In Demo";
 
         public const string InventoryPerBranch = "Inventory Per Branch";
         public const string DetailedInventory = "Detailed Inventory";
@@ -59,6 +61,7 @@ namespace AceSoft.RetailPlus
         public const string SalesTransactionPerItemWoutPurchaseDetails = "Sales Transaction Per Item W/Out Purchase Details";
         public const string CashSalesDaily = "Cash-Sales Daily";
         public const string CashSalesMonthly = "Cash-Sales Monthly";
+        public const string ChequePaymentList = "Cheque Payments";
         public const string ChequeSalesDaily = "Cheque-Sales Daily";
         public const string ChequeSalesMonthly = "Cheque-Sales Monthly";
         public const string CreditCardSalesDaily = "Credit Card-Sales Daily";

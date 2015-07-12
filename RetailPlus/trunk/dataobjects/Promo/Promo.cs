@@ -68,24 +68,8 @@ namespace AceSoft.RetailPlus.Data
 			{
                 Save(Details);
 
-                string SQL = "SELECT LAST_INSERT_ID();";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-                Int64 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -98,7 +82,6 @@ namespace AceSoft.RetailPlus.Data
 			{
                 Save(Details);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -109,11 +92,10 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSavePromo(@PromoID, @PromoCode, @PromoName, @StartDate, @EndDate, @PromoTypeID, @Status, @CreatedOn, @LastModified);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = "CALL procSavePromo(@PromoID, @PromoCode, @PromoName, @StartDate, @EndDate, @PromoTypeID, @Status, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("PromoID", Details.PromoID);
                 cmd.Parameters.AddWithValue("PromoCode", Details.PromoCode);
@@ -125,9 +107,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -144,38 +126,23 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				
-				MySqlCommand cmd;
+				MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
 				string SQL=	"DELETE FROM tblPromoItems WHERE PromoID IN (" + IDs + ");";
-				cmd = new MySqlCommand();
 				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				SQL=	"DELETE FROM tblPromo WHERE PromoID IN (" + IDs + ");";
-				cmd = new MySqlCommand();
 				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -300,30 +267,16 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblPromo SET Status = 0 WHERE PromoID IN (" + IDs + ");";
-
 				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -332,30 +285,16 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblPromo SET Status = 1 WHERE PromoID IN (" + IDs + ");";
-
 				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -364,37 +303,18 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblPromo SET " + 
-					"Status = 1 " +  
-					"WHERE PromoID = @PromoID;";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+				string SQL=	"UPDATE tblPromo SET Status = 1 WHERE PromoID = @PromoID;";
 							
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("@PromoID", PromoID);
 
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int64);	
-				prmPromoID.Value = PromoID;
-				cmd.Parameters.Add(prmPromoID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

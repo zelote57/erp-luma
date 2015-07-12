@@ -1,10 +1,10 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Reports.__GeneralLedger" Codebehind="_generalledger.ascx.cs" %>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1"></td>
 	</tr>
 	<tr>
-		<td><img src="../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
+		<td><img src="/RetailPlus/_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -13,7 +13,7 @@
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap">
 									<a tabindex="2" id="idGroup" class="ms-toolbar" accesskey="N" title="Select Group"></a>
-									&nbsp;<asp:imagebutton id="imgView" ToolTip="Show Report" accesskey="V" tabIndex="1" height="16" width="16" border="0" alt="Show Report" ImageUrl="../_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+									&nbsp;<asp:imagebutton id="imgView" ToolTip="Show Report" accesskey="V" tabIndex="1" height="16" width="16" border="0" alt="Show Report" ImageUrl="/RetailPlus/_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 								</td>
 								<td class="ms-toolbar" nowrap="nowrap">
 									<asp:Label id="Label2" Runat="server" text="Report Options: "></asp:Label>
@@ -54,7 +54,7 @@
                         </asp:UpdatePanel>
 					</td>
 					<td class="ms-toolbar" align="right" nowrap="nowrap"id="align032">
-						<img src="../_layouts/images/blank.gif" width="1" height="1" alt="">
+						<img src="/RetailPlus/_layouts/images/blank.gif" width="1" height="1" alt="">
 					</td>
 				</tr>
 			</table>
@@ -76,7 +76,7 @@
 		<td></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="10"></td>
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -109,7 +109,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/empty.gif"></td>
+					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="/RetailPlus/_layouts/images/empty.gif"></td>
 				</tr>
 				<tr>
 					<td colspan="3" height="2">
@@ -118,9 +118,9 @@
 				</tr>
 			</table>
 		</td>
-		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="10"></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1"></td>
 	</tr>
 </table>

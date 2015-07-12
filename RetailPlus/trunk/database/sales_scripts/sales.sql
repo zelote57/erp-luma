@@ -238,6 +238,43 @@ CREATE TABLE tblSOCreditMemoItems (
 ALTER TABLE tblERPConfig ADD DBVersionSales varchar(10);
 UPDATE tblERPConfig SET DBVersionSales = 'v_1.0.0.0';
 
+
+ALTER TABLE tblSO DROP CreatedOn;
+ALTER TABLE tblSOcreditmemo DROP CreatedOn;
+ALTER TABLE tblSOcreditmemoItems DROP CreatedOn;
+ALTER TABLE tblSOItems DROP CreatedOn;
+
+ALTER TABLE tblSO ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblSOcreditmemo ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblSOcreditmemoItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblSOItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+ALTER TABLE tblSO DROP LastModified;
+ALTER TABLE tblSOcreditmemo DROP LastModified;
+ALTER TABLE tblSOcreditmemoItems DROP LastModified;
+ALTER TABLE tblSOItems DROP LastModified;
+
+ALTER TABLE tblSO ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblSOcreditmemo ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblSOcreditmemoItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblSOItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+DROP TRIGGER IF EXISTS trgtblSOCreatedOn;
+DROP TRIGGER IF EXISTS trgtblSOcreditmemoCreatedOn;
+DROP TRIGGER IF EXISTS trgtblSOcreditmemoItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblSOItemsCreatedOn;
+
+CREATE TRIGGER trgtblSOCreatedOn BEFORE INSERT ON tblSO FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblSOcreditmemoCreatedOn BEFORE INSERT ON tblSOcreditmemo FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblSOcreditmemoItemsCreatedOn BEFORE INSERT ON tblSOcreditmemoItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblSOItemsCreatedOn BEFORE INSERT ON tblSOItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+
+UPDATE tblSO SET LastModified = NOW();
+UPDATE tblSOcreditmemo SET LastModified = NOW();
+UPDATE tblSOcreditmemoItems SET LastModified = NOW();
+UPDATE tblSOItems SET LastModified = NOW();
+
+
 /*********************************  v_3.0.0.0.sql START  *******************************************************/
 
 UPDATE tblERPConfig SET DBVersionSales = 'v_3.0.0.0';

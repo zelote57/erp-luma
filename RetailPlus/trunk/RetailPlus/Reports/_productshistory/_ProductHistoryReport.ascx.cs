@@ -260,7 +260,8 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                     #endregion
                 case ReportTypes.ProductHistoryMostSaleable:
-			        SalesTransactionItems clsSalesTransactionItemsMost = new SalesTransactionItems();
+                    #region Most Saleable
+                    SalesTransactionItems clsSalesTransactionItemsMost = new SalesTransactionItems();
                     System.Data.DataTable dtMostSaleable = clsSalesTransactionItemsMost.MostSalableItems(DateFrom, DateTo, intLimit);
                     clsSalesTransactionItemsMost.CommitAndDispose();
                     foreach (DataRow dr in dtMostSaleable.Rows)
@@ -273,7 +274,9 @@ namespace AceSoft.RetailPlus.Reports
                         rptds.MostSalableItems.Rows.Add(drNew);
                     }
                     break;
+                    #endregion
                 case ReportTypes.ProductHistoryLeastSaleable:
+                    #region Least Saleable
                     SalesTransactionItems clsSalesTransactionItemsLeast = new SalesTransactionItems();
                     System.Data.DataTable dtLeastSaleable = clsSalesTransactionItemsLeast.LeastSalableItems(DateFrom, DateTo, intLimit);
                     clsSalesTransactionItemsLeast.CommitAndDispose();
@@ -287,6 +290,7 @@ namespace AceSoft.RetailPlus.Reports
                         rptds.LeastSalableItems.Rows.Add(drNew);
                     }
                     break;
+                    #endregion
             }
             
 
@@ -393,6 +397,8 @@ namespace AceSoft.RetailPlus.Reports
 			        currentValues = new ParameterValues();
 			        currentValues.Add(discreteParam);
 			        paramField.ApplyCurrentValues(currentValues);
+                    break;
+                case ReportTypes.ProductsInDemoReport:
                     break;
             }
         }
@@ -538,17 +544,22 @@ namespace AceSoft.RetailPlus.Reports
 
         protected void cboReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            holderBranch.Visible = false;
             holderProductCode.Visible = false;
             holderMostSaleable.Visible = false;
             switch (cboReportType.SelectedValue)
             {
                 case ReportTypes.ProductHistoryMovement:
                 case ReportTypes.ProductHistoryPrice:
+                    holderBranch.Visible = true;
                     holderProductCode.Visible = true;
                     break;
                 case ReportTypes.ProductHistoryMostSaleable:
                 case ReportTypes.ProductHistoryLeastSaleable:
                     holderMostSaleable.Visible = true;
+                    break;
+                case ReportTypes.ProductsInDemoReport:
+                    holderProductCode.Visible = true;
                     break;
             }
         }

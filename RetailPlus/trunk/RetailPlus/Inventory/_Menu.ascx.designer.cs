@@ -418,6 +418,24 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.HyperLink lnkInventory;
         
         /// <summary>
+        /// divlnkeInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkeInventory;
+        
+        /// <summary>
+        /// lnkeInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkeInventory;
+        
+        /// <summary>
         /// divlnkBranchInventory control.
         /// </summary>
         /// <remarks>

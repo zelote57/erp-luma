@@ -1,43 +1,28 @@
 ﻿
-/********************************************
-	eventProcessCurrentBill12th
-	-- every 10th of the month as per HP
-********************************************/
-delimiter GO
-DROP EVENT IF EXISTS eventProcessCurrentBill12th
-GO
 
-CREATE EVENT eventProcessCurrentBill12th
-    ON SCHEDULE
-		AT '2015-05-12 01:00:00'
-    DO 
-	BEGIN
-		DECLARE strWillProcessCreditBillerInProgram VARCHAR(10) DEFAULT 'true';
 
-		CALL procsysAuditInsert(NOW(), 'CreditBiller Admin', 'CreditBiller: ALL', 'localhost', 'Starting process');
+-- check all indexes in a certain table in case mabagal
+SELECT DISTINCT 
+	TABLE_NAME, INDEX_NAME, COLUMN_NAME, Cardinality
+FROM INFORMATION_SCHEMA.STATISTICS
+	WHERE TABLE_SCHEMA = 'poshp' AND TABLE_NAME = 'tblTransactionItems';
 
-		SELECT ConfigValue
-		INTO strWillProcessCreditBillerInProgram
-		FROM sysConfig WHERE ConfigName = 'WillProcessCreditBillerInProgram';
+-- drop table index in case not needed
+ALTER TABLE tblTransactionItems DROP INDEX IX_tblTransactionItems01;
+ALTER TABLE tblTransactionItems DROP INDEX IX0_tblTransactionItems01;
+ALTER TABLE tblTransactionItems DROP INDEX IX1_tblTransactionItems01;
+ALTER TABLE tblTransactionItems DROP INDEX IX2_tblTransactionItems01;
+ALTER TABLE tblTransactionItems DROP INDEX IX3_tblTransactionItems01;
+ALTER TABLE tblTransactionItems DROP INDEX IX4_tblTransactionItems01;
+ALTER TABLE tblTransactionItems DROP INDEX IX_tblTransactionItems_IXSync;
 
-		SET strWillProcessCreditBillerInProgram = (SELECT IFNULL(strWillProcessCreditBillerInProgram, 'true'));
+-- optimize or repair a table is the same as rebuild index. do this after adding or deleting any index
+OPTIMIZE TABLE tblTransactionItems;
+REPAIR TABLE tblTransactionItems;
+
+-- check the table names that contains column names. Use this if me mga momodify na column names
+SELECT DISTINCT 
+	TABLE_NAME, COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA='poshp' AND COLUMN_NAME IN ('ProductDesc','ProductDescription');
 		
-		IF (strWillProcessCreditBillerInProgram = 'false') THEN
-			
-			IF (DAY(NOW()) = 12) THEN
-				-- process those without guarantor 
-				CALL procsysAuditInsert(NOW(), 'CreditBiller Admin', 'CreditBiller: HP CREDIT CARD', 'localhost', 'Starting process');
-				CALL procProcessCreditBills(0, 'HP CREDIT CARD');
-				CALL procsysAuditInsert(NOW(), 'CreditBiller Admin', 'CreditBiller: HP CREDIT CARD', 'localhost', 'Finish');
-
-				CALL procsysAuditInsert(NOW(), 'CreditBiller Admin', 'CreditBiller: HP CREDIT CARD', 'localhost', 'Closing process');
-				CALL procProcessCreditBillsClose('HP CREDIT CARD');
-				CALL procsysAuditInsert(NOW(), 'CreditBiller Admin', 'CreditBiller: HP CREDIT CARD', 'localhost', 'Finish');
-			END IF;
-		END IF;
-
-		CALL procsysAuditInsert(NOW(), 'CreditBiller Admin', 'CreditBiller: ALL', 'localhost', 'Finish');
-
-	END;
-GO
-delimiter ;

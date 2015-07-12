@@ -40,11 +40,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #region Public Properties
 
-        Data.TerminalDetails mclsTerminalDetails = new Data.TerminalDetails();
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
+        public Data.SysConfigDetails SysConfigDetails { get; set; }
+
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         Data.DepositDetails mclsDepositDetails = new Data.DepositDetails();
         public Data.DepositDetails DepositDetails
@@ -64,14 +62,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private Int64 mlngCashierID;
-        public Int64 CashierID
-        {
-            set
-            {
-                mlngCashierID = value;
-            }
-        }
+        public Int64 CashierID { get; set; }
 
         #endregion
 
@@ -87,11 +78,11 @@ namespace AceSoft.RetailPlus.Client.UI
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
-            this.ShowInTaskbar = mclsTerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         /// <summary>
@@ -525,9 +516,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (Convert.ToDecimal(txtAmount.Text) > 0)
             {
-                mclsDepositDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
-                mclsDepositDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
-                mclsDepositDetails.CashierID = mlngCashierID;
+                mclsDepositDetails.BranchDetails = TerminalDetails.BranchDetails;
+                mclsDepositDetails.TerminalNo = TerminalDetails.TerminalNo;
+                mclsDepositDetails.CashierID = CashierID;
                 mclsDepositDetails.Amount = Convert.ToDecimal(txtAmount.Text);
                 mclsDepositDetails.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboType.Text, true);
                 mclsDepositDetails.DateCreated = DateTime.Now;
@@ -549,16 +540,20 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             try
             {
-                ContactSelectWnd ContactWnd = new ContactSelectWnd();
-                ContactWnd.ShowDialog(this);
-                Data.ContactDetails details = ContactWnd.Details;
-                DialogResult result = ContactWnd.Result;
-                ContactWnd.Close();
-                ContactWnd.Dispose();
+                ContactSelectWnd clsContactWnd = new ContactSelectWnd();
+                clsContactWnd.EnableContactAddUpdate = false;
+                clsContactWnd.SysConfigDetails = SysConfigDetails;
+                clsContactWnd.TerminalDetails = TerminalDetails;
+                clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                clsContactWnd.ShowDialog(this);
+                Data.ContactDetails details = clsContactWnd.Details;
+                DialogResult result = clsContactWnd.Result;
+                clsContactWnd.Close();
+                clsContactWnd.Dispose();
 
-                if (ContactWnd.Result == DialogResult.OK)
+                if (clsContactWnd.Result == DialogResult.OK)
                 {
-                    if (details.ContactID <= 2)
+                    if (details.ContactID <= Constants.C_RETAILPLUS_CUSTOMERID)
                     {
                         MessageBox.Show("Sorry, you cannot use the default customer." +
                          "Please select another customer...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -569,27 +564,59 @@ namespace AceSoft.RetailPlus.Client.UI
                         txtContact.Text = details.ContactName;
                         txtContact.Tag = details.ContactID.ToString();
                     }
-                }
+                }	
             }
             catch { }
         }
 
         private void ContactAdd()
         {
-            ContactAddWnd addwnd = new ContactAddWnd();
-            addwnd.Caption = "Please enter customer name for deposit.";
-            addwnd.ShowDialog(this);
-            DialogResult addresult = addwnd.Result;
-            Data.ContactDetails details = addwnd.ContactDetails;
-            addwnd.Close();
-            addwnd.Dispose();
+            Data.ContactDetails details = new Data.ContactDetails();
+
+            System.Windows.Forms.DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
+
+            switch (SysConfigDetails.ContactAddWndType)
+            {
+                case ContactAddWndType.ContactAddWnd:
+                    ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                    clsContactAddWnd.Caption = "Please enter customer name for deposit.";
+                    clsContactAddWnd.ContactDetails = details;
+                    clsContactAddWnd.TerminalDetails = TerminalDetails;
+                    clsContactAddWnd.ShowDialog(this);
+                    addresult = clsContactAddWnd.Result;
+                    details = clsContactAddWnd.ContactDetails;
+                    clsContactAddWnd.Close();
+                    clsContactAddWnd.Dispose();
+                    break;
+                case ContactAddWndType.ContactAddHCareWnd:
+                    ContactAddHCareWnd clsContactAddHCareWnd = new ContactAddHCareWnd();
+                    clsContactAddHCareWnd.Caption = "Please enter customer name for deposit.";
+                    clsContactAddHCareWnd.ContactDetails = details;
+                    clsContactAddHCareWnd.TerminalDetails = TerminalDetails;
+                    clsContactAddHCareWnd.ShowDialog(this);
+                    addresult = clsContactAddHCareWnd.Result;
+                    details = clsContactAddHCareWnd.ContactDetails;
+                    clsContactAddHCareWnd.Close();
+                    clsContactAddHCareWnd.Dispose();
+                    break;
+                default:
+                    ContactAddDetWnd clsContactAddDetWnd = new ContactAddDetWnd();
+                    clsContactAddDetWnd.Caption = "Please enter customer name for deposit.";
+                    clsContactAddDetWnd.ContactDetails = details;
+                    clsContactAddDetWnd.TerminalDetails = TerminalDetails;
+                    clsContactAddDetWnd.ShowDialog(this);
+                    addresult = clsContactAddDetWnd.Result;
+                    details = clsContactAddDetWnd.ContactDetails;
+                    clsContactAddDetWnd.Close();
+                    clsContactAddDetWnd.Dispose();
+                    break;
+            }
 
             if (addresult == DialogResult.OK)
             {
                 txtContact.Text = details.ContactName;
                 txtContact.Tag = details.ContactID.ToString();
             }
-
         }
 
 

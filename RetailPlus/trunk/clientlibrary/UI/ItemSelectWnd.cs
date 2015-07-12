@@ -18,7 +18,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.Windows.Forms.DataGridTextBoxColumn BarCode;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductDesc;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductGroup;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductSubGroup;
+		private System.Windows.Forms.DataGridTextBoxColumn ProductSubGroupCode;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductUnitID;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductUnitName;
 		private System.Windows.Forms.DataGridTextBoxColumn Price;
@@ -112,7 +112,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ItemSelect.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -157,7 +157,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductDesc = new System.Windows.Forms.DataGridTextBoxColumn();
             this.MatrixDescription = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductGroup = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.ProductSubGroup = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductSubGroupCode = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductUnitID = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductUnitName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.Price = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -247,12 +247,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PackageID,
             this.ProductID,
             this.MatrixID,
+            this.ProductSubGroupCode,
             this.BarCode,
             this.ProductCode,
             this.ProductDesc,
             this.MatrixDescription,
             this.ProductGroup,
-            this.ProductSubGroup,
             this.ProductUnitID,
             this.ProductUnitName,
             this.Price,
@@ -359,12 +359,13 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // ProductSubGroup
             // 
-            this.ProductSubGroup.Format = "";
-            this.ProductSubGroup.FormatInfo = null;
-            this.ProductSubGroup.MappingName = "ProductSubGroup";
-            this.ProductSubGroup.NullText = "0";
-            this.ProductSubGroup.ReadOnly = true;
-            this.ProductSubGroup.Width = 0;
+            this.ProductSubGroupCode.Format = "";
+            this.ProductSubGroupCode.FormatInfo = null;
+            this.ProductSubGroupCode.HeaderText = "SubGroup";
+            this.ProductSubGroupCode.MappingName = "ProductSubGroupCode";
+            this.ProductSubGroupCode.NullText = "";
+            this.ProductSubGroupCode.ReadOnly = true;
+            this.ProductSubGroupCode.Width = 0;
             // 
             // ProductUnitID
             // 
@@ -694,6 +695,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         dgItems.UnSelect(index);
                         ShowProductTotalQuantity();
                     }
+                    if (!string.IsNullOrEmpty(txtSearch.Text)) txtSearch.SelectionStart = txtSearch.Text.Length - 1;
                     break;
 
                 case Keys.Down:
@@ -708,14 +710,15 @@ namespace AceSoft.RetailPlus.Client.UI
                         dgItems.UnSelect(index);
                         ShowProductTotalQuantity();
                     }
+                    if (!string.IsNullOrEmpty(txtSearch.Text)) txtSearch.SelectionStart = txtSearch.Text.Length - 1;
                     break;
 			}
 		}
 		
 		private void ItemSelectWnd_Load(object sender, System.EventArgs e)
-		{
-			LoadOptions();
-			LoadItemData();
+        {
+            LoadOptions();
+            LoadItemData();
 		}
 
 		#endregion
@@ -800,39 +803,93 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             if (TerminalDetails.IsParkingTerminal)
             {
-                dgStyle.GridColumnStyles["BarCode"].Width = 0;
                 dgStyle.GridColumnStyles["ProductCode"].HeaderText = "Parking Type";
-                dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495 + 150;
-                dgStyle.GridColumnStyles["MatrixDescription"].Width = 0;
-
                 this.Quantity.Format = "#,##0";
-                dgStyle.GridColumnStyles["Quantity"].Width = 320;
                 dgStyle.GridColumnStyles["Quantity"].HeaderText = "Available Slots";
                 this.lblHeader.Text = "Select Parking rate or enter 'Rate Code' to search:";
                 this.txtSearch.Text = mstSearchCode;
             }
 			else if (mboIsPriceInq)
+            {
+                this.lblHeader.Text = "Price Inquiry. Enter search criteria:";
+            }
+			else 
 			{
-                if (CONFIG.ShowBarcodeNotProductCodeItemSelect == true)
+				this.Price.HeaderText = "";
+                this.lblHeader.Text = "Select Item. Enter search criteria:";
+                this.txtSearch.Text = mstSearchCode;
+			}
+
+            lblProductCode.Text = "";
+            lblProductQuantity.Text = "";
+
+            lblQuantityPerBranch1.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
+            lblQuantityPerBranch2.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
+            lblQuantityPerBranch3.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
+		}
+
+        private void setGridColumnsWidth()
+        {
+            if (TerminalDetails.IsParkingTerminal)
+            {
+                dgStyle.GridColumnStyles["BarCode"].Width = 0;
+                dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495 + 150;
+                dgStyle.GridColumnStyles["MatrixDescription"].Width = 0;
+
+                dgStyle.GridColumnStyles["Quantity"].Width = 320;
+            }
+            else if (mboIsPriceInq)
+            {
+                #region mboIsPriceInq
+                switch (mclsSysConfigDetails.ItemSelectWndColumnType)
                 {
-                    dgStyle.GridColumnStyles["BarCode"].Width = 150;
-                    if (!CONFIG.ShowDescriptionDuringItemSelect)
-                    { 
-                        dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 590;
-                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200;
-                    }
-                    else
-                    {
-                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 590;
-                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200;
-                    }
-                }
-                else
-                {
-                    dgStyle.GridColumnStyles["BarCode"].Width = 0;
-                    dgStyle.GridColumnStyles["ProductCode"].Width = 200;
-                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 590;
-                    dgStyle.GridColumnStyles["MatrixDescription"].Width = 150;
+                    case ItemSelectWndColumnType.BcPc:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 370;
+                        break;
+                    case ItemSelectWndColumnType.BcDesc:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
+                        break;
+                    case ItemSelectWndColumnType.BcPcDescMtrx:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 690;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 120;
+                        break;
+                    case ItemSelectWndColumnType.PcDesc:
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 420;
+                        break;
+                    case ItemSelectWndColumnType.PcDescMtrx:
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 600;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 180;
+                        break;
+                    case ItemSelectWndColumnType.SgDesc:
+                        dgStyle.GridColumnStyles["ProductSubGroupCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 420;
+                        break;
+                    case ItemSelectWndColumnType.SgPcDesc:
+                        dgStyle.GridColumnStyles["ProductSubGroupCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        if (dgItems.DataSource == null)
+                            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 555;
+                        else if (((System.Data.DataTable)dgItems.DataSource).Rows.Count <= 16)
+                            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 555;
+                        else
+                            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 570;
+
+                        break;
+                    case ItemSelectWndColumnType.SgDescMtrx:
+                        dgStyle.GridColumnStyles["ProductSubGroupCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 550;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 180;
+                        break;
+                    default:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
+                        break;
                 }
 
                 switch (ContactDetails.PriceLevel)
@@ -862,59 +919,72 @@ namespace AceSoft.RetailPlus.Client.UI
                         dgStyle.GridColumnStyles["Price"].Width = 100;
                         break;
                 }
-				
-				dgStyle.GridColumnStyles["Quantity"].Width = 120;
-                this.lblHeader.Text = "Price Inquiry. Enter search criteria:";
-			}
-			else 
-			{
-				this.Price.HeaderText = "";
-				//dgStyle.GridColumnStyles["ProductCode"].Width = 340;
-                if (CONFIG.ShowBarcodeNotProductCodeItemSelect == true)
-                { 
-                    dgStyle.GridColumnStyles["BarCode"].Width = 150;
-                    if (!CONFIG.ShowDescriptionDuringItemSelect)
-                    {
-                        dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495;
-                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200; 
-                    }
-                    else
-                    {
-                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 495;
-                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200; 
-                    }
-                }
-                else
+
+                dgStyle.GridColumnStyles["Quantity"].Width = 100;
+                #endregion
+            }
+            else
+            {
+                switch (mclsSysConfigDetails.ItemSelectWndColumnType)
                 {
-                    dgStyle.GridColumnStyles["BarCode"].Width = 0;
-                    dgStyle.GridColumnStyles["ProductCode"].Width = 200;
-                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 495;
-                    dgStyle.GridColumnStyles["MatrixDescription"].Width = 150;
+                    case ItemSelectWndColumnType.BcPc:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 295;
+                        break;
+                    case ItemSelectWndColumnType.BcDesc:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 295;
+                        break;
+                    case ItemSelectWndColumnType.BcPcDescMtrx:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 645;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 150;
+                        break;
+                    case ItemSelectWndColumnType.PcDesc:
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 340;
+                        break;
+                    case ItemSelectWndColumnType.PcDescMtrx:
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 525;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 180;
+                        break;
+                    case ItemSelectWndColumnType.SgDesc:
+                        dgStyle.GridColumnStyles["ProductSubGroupCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 295;
+                        break;
+                    case ItemSelectWndColumnType.SgPcDesc:
+                        dgStyle.GridColumnStyles["ProductSubGroupCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductCode"].Width = 230;
+                        if (dgItems.DataSource == null)
+                            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 505;
+                        else if (((System.Data.DataTable)dgItems.DataSource).Rows.Count <= 16)
+                            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 505;
+                        else
+                            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 520;
+                        break;
+                    case ItemSelectWndColumnType.SgDescMtrx:
+                        dgStyle.GridColumnStyles["ProductSubGroupCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 465;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 180;
+                        break;
+                    default:
+                        dgStyle.GridColumnStyles["BarCode"].Width = 150;
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 295;
+                        break;
                 }
-                
-                //dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 480;
-                //dgStyle.GridColumnStyles["ProductGroupName"].Width = this.Width - 470;
-				dgStyle.GridColumnStyles["Quantity"].Width = 120;
-                this.lblHeader.Text = "Select Item. Enter search criteria:";
-                this.txtSearch.Text = mstSearchCode;
-			}
-
-            lblProductCode.Text = "";
-            lblProductQuantity.Text = "";
-
-            lblQuantityPerBranch1.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
-            lblQuantityPerBranch2.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
-            lblQuantityPerBranch3.Visible = mclsSysConfigDetails.WillShowProductBranchQuantityInItemSelect;
-		}
+                dgStyle.GridColumnStyles["Quantity"].Width = 120;
+            }
+        }
 
 		private void LoadItemData()
 		{	
 			try
 			{
-                string strSearchKey = Constants.MaskProductSearch + txtSearch.Text;
+                string strSearchKey = TerminalDetails.MaskProductSearch + txtSearch.Text;
                 Products clsProduct = new Products();
-                // System.Data.DataTable dt = clsProduct.ListAsDataTable(TerminalDetails.BranchID, clsSearchKeys: new ProductDetails(), mboShowInActiveProducts ? ProductListFilterType.ShowInactiveOnly : ProductListFilterType.ShowActiveOnly, Limit: 100, 
-                System.Data.DataTable dt = clsProduct.ListAsDataTableFE(TerminalDetails.BranchID, strSearchKey, mboShowInActiveProducts ? ProductListFilterType.ShowActiveAndInactive : ProductListFilterType.ShowActiveOnly, 100, mboShowItemMoreThanZeroQty); 
+                System.Data.DataTable dt = clsProduct.ListAsDataTableFE(TerminalDetails.BranchID, strSearchKey, mclsSysConfigDetails.ItemSelectWndColumnSearchType, mboShowInActiveProducts ? ProductListFilterType.ShowActiveAndInactive : ProductListFilterType.ShowActiveOnly, 100, mboShowItemMoreThanZeroQty); 
 				clsProduct.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;
@@ -930,6 +1000,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
 			}
+            setGridColumnsWidth();
 		}
 
         private void TagMinThreshold()

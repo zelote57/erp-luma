@@ -1,9 +1,9 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Inventory.__InvThreshold" Codebehind="_invthreshold.ascx.cs" %>
-<script language="JavaScript" src="../_Scripts/sExpCollapse.js"></script>
-<script language="JavaScript" src="../_Scripts/SelectAll.js"></script>
-<script language="JavaScript" src="../_Scripts/ConfirmDelete.js"></script>
-<script language="JavaScript" src="../_Scripts/Inventory.js"></script>
-<script language="JavaScript" src="../_Scripts/calendar.js"></script>
+<script language="JavaScript" src="/RetailPlus/_Scripts/sExpCollapse.js"></script>
+<script language="JavaScript" src="/RetailPlus/_Scripts/SelectAll.js"></script>
+<script language="JavaScript" src="/RetailPlus/_Scripts/ConfirmDelete.js"></script>
+<script language="JavaScript" src="/RetailPlus/_Scripts/Inventory.js"></script>
+<script language="JavaScript" src="/RetailPlus/_Scripts/calendar.js"></script>
 
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
@@ -71,19 +71,19 @@
 					            <td style="HEIGHT: 15px" colspan="3">
                                     <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                         <ContentTemplate>
-						                    <asp:dropdownlist id="cboProductSubGroup" CssClass="ms-long" runat="server" OnSelectedIndexChanged="cboProductSubGroup_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false"></asp:dropdownlist>
+						                    <asp:dropdownlist id="cboProductGroup" CssClass="ms-long" runat="server" OnSelectedIndexChanged="cboProductGroup_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false"></asp:dropdownlist>
                                         </ContentTemplate>
                                         <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="imgProductSubGroupSearch" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="imgProductGroupSearch" EventName="Click" />
                                         </Triggers>
                                     </asp:UpdatePanel>
 					            </td>
                                 <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
-                                    <asp:textbox id="txtProductSubGroup" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
-                                    <asp:imagebutton id="imgProductSubGroupSearch" ToolTip="Execute search" 
+                                    <asp:textbox id="txtProductGroup" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                    <asp:imagebutton id="imgProductGroupSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand; width: 16px;" accessKey="P" 
                                         ImageUrl="../_layouts/images/SPSSearch2.gif" runat="server" 
-                                        CausesValidation="False" onclick="imgProductSubGroupSearch_Click"></asp:imagebutton>
+                                        CausesValidation="False" onclick="imgProductGroupSearch_Click"></asp:imagebutton>
 					            </td>
 					            <td width="99%" id="Td5" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1" />
 					            </td>
@@ -119,7 +119,7 @@
 						                    </colgroup>
 						                    <tr style="padding-bottom: 4px">
 							                    <th class="ms-vh2">
-								                    <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" visible="false" style="display:none">&nbsp;&nbsp;</th>
+								                    <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" visible="false" style="display:none" />&nbsp;&nbsp;</th>
 							                    <th class="ms-vh2"><asp:hyperlink id="SortByDescription" runat="server">Barcode</asp:hyperlink></th>
 							                    <th class="ms-vh2"><asp:hyperlink id="SortByProductCode" runat="server">Product Code</asp:hyperlink></th>
                                                 <th class="ms-vh2"><asp:hyperlink id="SortByVariationDesc" runat="server"></asp:hyperlink></th>
@@ -175,7 +175,7 @@
 			                </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="cboBranch" EventName="SelectedIndexChanged" />
-                            <asp:AsyncPostBackTrigger ControlID="cboProductSubGroup" EventName="SelectedIndexChanged" />
+                            <asp:AsyncPostBackTrigger ControlID="cboProductGroup" EventName="SelectedIndexChanged" />
                         </Triggers>
                     </asp:UpdatePanel>
 					</td>
@@ -203,9 +203,9 @@
                     <td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap><asp:imagebutton id="imgSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgSaveThresholds_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Save All Thresholds" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgSaveThresholds_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Save All Thresholds" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
 								</td>
-								<td nowrap><asp:linkbutton id="cmdSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveThresholds_Click">Save All Thresholds</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSaveThresholds" ToolTip="Save All Thresholds" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveThresholds_Click">Save All Thresholds</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>	

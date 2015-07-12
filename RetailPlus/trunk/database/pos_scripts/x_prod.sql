@@ -16,15 +16,18 @@ DELETE FROM tblTransactions;
 
 DELETE FROM sysAccessUsers WHERE UID > 3;
 
-
+BENZYLPENICILLIN PEN G 5MILLION - HARBIPEN
 
 TRUNCATE TABLE tblproducthistory;
 TRUNCATE TABLE tblproductmovement;
 TRUNCATE TABLE tblproductpackagepricehistory;
 TRUNCATE TABLE tblproductpurchasepricehistory;
-
-
 TRUNCATE TABLE tblProductInventory;
+
+TRUNCATE TABLE tblproductinventoryaudit;
+TRUNCATE TABLE tblproductinventorydaily;
+TRUNCATE TABLE tblproductinventorymonthly;
+
 TRUNCATE TABLE tblProductBasevariationsMatrix;
 TRUNCATE TABLE tblProductVariationsMatrix;
 

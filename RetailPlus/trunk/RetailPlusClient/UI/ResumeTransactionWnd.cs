@@ -17,6 +17,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.DataGridTextBoxColumn CustomerName;
         private System.Windows.Forms.DataGridTextBoxColumn TransactionDate;
         private System.Windows.Forms.DataGridTextBoxColumn DateSuspended;
+        private System.Windows.Forms.DataGridTextBoxColumn DateClosed;
         private System.Windows.Forms.DataGridTextBoxColumn TransactionStatus;
         private System.Windows.Forms.DataGridTextBoxColumn TransDiscount;
         private System.Windows.Forms.DataGridTextBoxColumn TransDiscountType;
@@ -40,6 +41,12 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         private DialogResult dialog;
+        private Label labelTrxDateTo;
+        private Label labelTrxDate;
+        private TextBox txtTrxEndDate;
+        private TextBox txtTrxStartDate;
+        private Button cmdReload;
+    
         public DialogResult Result
         {
             get
@@ -59,6 +66,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
         public Data.TerminalDetails TerminalDetails { get; set; }
 
+        public TransactionStatus TransactionStatusToList { get; set; }
+
         #endregion
 
         #region Constructors and Destructors
@@ -67,7 +76,7 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             InitializeComponent();
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -103,6 +112,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.CustomerName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.TransactionDate = new System.Windows.Forms.DataGridTextBoxColumn();
             this.DateSuspended = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.DateClosed = new System.Windows.Forms.DataGridTextBoxColumn();
             this.TransactionStatus = new System.Windows.Forms.DataGridTextBoxColumn();
             this.TransDiscount = new System.Windows.Forms.DataGridTextBoxColumn();
             this.TransDiscountType = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -111,6 +121,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ChargeAmount = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ChargeCode = new System.Windows.Forms.DataGridTextBoxColumn();
             this.txtSearch = new System.Windows.Forms.TextBox();
+            this.labelTrxDateTo = new System.Windows.Forms.Label();
+            this.labelTrxDate = new System.Windows.Forms.Label();
+            this.txtTrxEndDate = new System.Windows.Forms.TextBox();
+            this.txtTrxStartDate = new System.Windows.Forms.TextBox();
+            this.cmdReload = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             this.SuspendLayout();
@@ -179,6 +194,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.CustomerName,
             this.TransactionDate,
             this.DateSuspended,
+            this.DateClosed,
             this.TransactionStatus,
             this.TransDiscount,
             this.TransDiscountType,
@@ -255,6 +271,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.DateSuspended.ReadOnly = true;
             this.DateSuspended.Width = 180;
             // 
+            // DateClosed
+            // 
+            this.DateClosed.Format = "";
+            this.DateClosed.FormatInfo = null;
+            this.DateClosed.HeaderText = "Date Closed";
+            this.DateClosed.MappingName = "DateClosed";
+            this.DateClosed.NullText = "";
+            this.DateClosed.ReadOnly = true;
+            this.DateClosed.Width = 180;
+            // 
             // TransactionStatus
             // 
             this.TransactionStatus.Format = "";
@@ -325,12 +351,74 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtSearch.TabIndex = 0;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
+            // labelTrxDateTo
+            // 
+            this.labelTrxDateTo.AutoSize = true;
+            this.labelTrxDateTo.BackColor = System.Drawing.Color.Transparent;
+            this.labelTrxDateTo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTrxDateTo.ForeColor = System.Drawing.Color.White;
+            this.labelTrxDateTo.Location = new System.Drawing.Point(819, 32);
+            this.labelTrxDateTo.Name = "labelTrxDateTo";
+            this.labelTrxDateTo.Size = new System.Drawing.Size(18, 13);
+            this.labelTrxDateTo.TabIndex = 94;
+            this.labelTrxDateTo.Text = " - ";
+            this.labelTrxDateTo.Visible = false;
+            // 
+            // labelTrxDate
+            // 
+            this.labelTrxDate.AutoSize = true;
+            this.labelTrxDate.BackColor = System.Drawing.Color.Transparent;
+            this.labelTrxDate.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTrxDate.ForeColor = System.Drawing.Color.White;
+            this.labelTrxDate.Location = new System.Drawing.Point(489, 32);
+            this.labelTrxDate.Name = "labelTrxDate";
+            this.labelTrxDate.Size = new System.Drawing.Size(172, 13);
+            this.labelTrxDate.TabIndex = 93;
+            this.labelTrxDate.Text = "Enter Transaction Date From:";
+            this.labelTrxDate.Visible = false;
+            // 
+            // txtTrxEndDate
+            // 
+            this.txtTrxEndDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTrxEndDate.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTrxEndDate.Location = new System.Drawing.Point(843, 27);
+            this.txtTrxEndDate.Name = "txtTrxEndDate";
+            this.txtTrxEndDate.Size = new System.Drawing.Size(136, 23);
+            this.txtTrxEndDate.TabIndex = 92;
+            this.txtTrxEndDate.Visible = false;
+            // 
+            // txtTrxStartDate
+            // 
+            this.txtTrxStartDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTrxStartDate.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTrxStartDate.Location = new System.Drawing.Point(677, 27);
+            this.txtTrxStartDate.Name = "txtTrxStartDate";
+            this.txtTrxStartDate.Size = new System.Drawing.Size(136, 23);
+            this.txtTrxStartDate.TabIndex = 91;
+            this.txtTrxStartDate.Visible = false;
+            // 
+            // cmdReload
+            // 
+            this.cmdReload.Location = new System.Drawing.Point(985, 25);
+            this.cmdReload.Name = "cmdReload";
+            this.cmdReload.Size = new System.Drawing.Size(27, 24);
+            this.cmdReload.TabIndex = 95;
+            this.cmdReload.Text = "...";
+            this.cmdReload.UseVisualStyleBackColor = true;
+            this.cmdReload.Visible = false;
+            this.cmdReload.Click += new System.EventHandler(this.cmdReload_Click);
+            // 
             // ResumeTransactionWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.cmdReload);
+            this.Controls.Add(this.labelTrxDateTo);
+            this.Controls.Add(this.labelTrxDate);
+            this.Controls.Add(this.txtTrxEndDate);
+            this.Controls.Add(this.txtTrxStartDate);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.dgItems);
             this.Controls.Add(this.label1);
@@ -343,8 +431,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.ResumeTransactionWnd_Load);
-            this.Resize += new System.EventHandler(this.ResumeTransactionWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ResumeTransactionWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.ResumeTransactionWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
             this.ResumeLayout(false);
@@ -413,7 +501,17 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             dgStyle.GridColumnStyles["TransactionNo"].Width = 180;
             dgStyle.GridColumnStyles["CustomerName"].Width = 180;
-            dgStyle.GridColumnStyles["DateSuspended"].Width = this.Width - 370;
+            switch (TransactionStatusToList)
+            {
+                case AceSoft.RetailPlus.TransactionStatus.Closed:
+                    dgStyle.GridColumnStyles["DateClosed"].Width = this.Width - 370;
+                    dgStyle.GridColumnStyles["DateSuspended"].Width = 0;
+                    break;
+                default:
+                    dgStyle.GridColumnStyles["DateClosed"].Width = 0;
+                    dgStyle.GridColumnStyles["DateSuspended"].Width = this.Width - 370;
+                    break;
+            }
         }
 
         private void ResumeTransactionWnd_Load(object sender, System.EventArgs e)
@@ -497,29 +595,62 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void LoadOptions()
         {
+            txtTrxStartDate.Text = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
+            txtTrxEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
             dgStyle.GridColumnStyles["TransactionNo"].Width = 200;
             dgStyle.GridColumnStyles["CustomerName"].Width = this.Width - 510;
-            dgStyle.GridColumnStyles["DateSuspended"].Width = 300;
+
+            switch (TransactionStatusToList)
+            {
+                case  AceSoft.RetailPlus.TransactionStatus.Closed:
+                    dgStyle.GridColumnStyles["DateClosed"].Width = 300;
+                    dgStyle.GridColumnStyles["DateSuspended"].Width = 0;
+                    
+                    labelTrxDate.Visible = true;
+                    labelTrxDateTo.Visible = true;
+                    txtTrxStartDate.Visible = true;
+                    txtTrxEndDate.Visible = true;
+                    cmdReload.Visible = true;
+
+                    break;
+                default:
+                    dgStyle.GridColumnStyles["DateClosed"].Width = 0;
+                    dgStyle.GridColumnStyles["DateSuspended"].Width = 300;
+                    break;
+            }
         }
 
         private void LoadData()
         {
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
+
                 Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
 
+                DateTime dteTransactionDateFrom = DateTime.TryParse(txtTrxStartDate.Text, out dteTransactionDateFrom) ? dteTransactionDateFrom : DateTime.Now.AddDays(-2);
+                DateTime dteTransactionDateTo = DateTime.TryParse(txtTrxEndDate.Text + " 23:59:59", out dteTransactionDateTo) ? dteTransactionDateTo : DateTime.Now;
+
                 Int64 iCashierID = TerminalDetails.ShowOneTerminalSuspendedTransactions ? mCashierID : 0;
-                System.Data.DataTable dt = clsTransactions.ListSuspendedDataTable(TerminalDetails.BranchID, TerminalDetails.TerminalNo, iCashierID, TerminalDetails.ShowOnlyPackedTransactions);
+                System.Data.DataTable dt = new System.Data.DataTable();
+                if (TransactionStatusToList == RetailPlus.TransactionStatus.Closed)
+                    dt = clsTransactions.ListClosedDataTable(TerminalDetails.BranchID, dteTransactionDateFrom, dteTransactionDateTo);
+                else
+                    dt = clsTransactions.ListSuspendedDataTable(TerminalDetails.BranchID, TerminalDetails.TerminalNo, iCashierID, TerminalDetails.ShowOnlyPackedTransactions);
                 clsTransactions.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;
                 dgItems.DataSource = dt;
                 dgItems.Select(0);
                 dgItems.CurrentRowIndex = 0;
+
+                Cursor.Current = Cursors.Default;
             }
-            catch (IndexOutOfRangeException) { }
+            catch (IndexOutOfRangeException) { Cursor.Current = Cursors.Default; }
             catch (Exception ex)
             {
+                Cursor.Current = Cursors.Default;
                 MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -537,7 +668,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
                 mDetails = clsTransactions.Details(mDetails.TransactionNo, TerminalDetails.TerminalNo, TerminalDetails.BranchID);
-                clsTransactions.Resume(mDetails.TransactionID);
+
+                // 14Jun2015 : Update to Status Resume only if the Status is not Closed.
+                if (TransactionStatusToList != RetailPlus.TransactionStatus.Closed)
+                    clsTransactions.Resume(mDetails.TransactionID);
 
                 Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems(clsTransactions.Connection, clsTransactions.Transaction);
                 mDetails.TransactionItems = clsItems.Details(mDetails.TransactionID, mDetails.TransactionDate);
@@ -556,6 +690,11 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         #endregion
+
+        private void cmdReload_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
 
     }
 }

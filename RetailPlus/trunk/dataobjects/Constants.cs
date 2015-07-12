@@ -63,25 +63,23 @@ namespace AceSoft.RetailPlus
             }
         }
 
-        public static string MaskProductSearch
-        {
-            get
-            {
-                string strRetValue = "";
-
-                if (System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"] != null)
-                {
-                    try { strRetValue = System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"].Replace("*", "%"); }
-                    catch { }
-                }
-                return strRetValue;
-            }
-        }
-
         public const string ALL = "ALL";
         public const string PLEASE_SELECT = "Please Select";
         public const long ZERO = 0;
         public const string ZERO_STRING = "0";
+
+        // 05Jun2015
+        public const string PLUSCARDMEMBERS = "PLUS-CARD MEMBERS";
+        public const long PLUSCARDMEMBERSID = 999999999999999;
+        public const string PLUSCARDMEMBERSID_STRING = "999999999999999";
+
+        public const string ICCARDMEMBERS = "ICCARD MEMBERS";
+        public const long ICCARDMEMBERSID = 999999999999998;
+        public const string ICCARDMEMBERSID_STRING = "999999999999998";
+
+        public const string GCCARDMEMBERS = "GROUP CREDIT CARD MEMBERS";
+        public const long GCCARDMEMBERSID = 999999999999997;
+        public const string GCCARDMEMBERSID_STRING = "999999999999997";
 
         //public static string C_DISCOUNT_CODE_SENIORCITIZEN
         //{
@@ -197,6 +195,11 @@ namespace AceSoft.RetailPlus
 
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
 
+        public const string SYS_CONFIG_INVENTORY_TRUSTFUND = "InventoryTrustFund";
+        public const string SYS_CONFIG_CONTACTADDWND_TYPE = "ContactAddWndType";
+        public const string SYS_CONFIG_ITEMSELECTWND_COLUMNTYPE = "ItemSelectWndColumnType";
+        public const string SYS_CONFIG_ITEMSELECTWND_COLUMN_SEARCH_TYPE = "ItemSelectWndColumnSearchType";
+
 
         /// <summary>
         /// GLA Files
@@ -232,5 +235,8 @@ namespace AceSoft.RetailPlus
 
         public const Int16 C_DEF_COUNTRY_ID = 1;
         public const string C_DEF_COUNTRY_CODE = "Philippines";
+
+        public const Int16 C_DEF_PROMO_TYPE_ID = 2;
+        public const string C_DEF_PROMO_TYPE_CODE = "Percent-Off after quantity reached.";
     }
 }

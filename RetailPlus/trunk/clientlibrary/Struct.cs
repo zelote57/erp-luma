@@ -143,34 +143,6 @@ namespace AceSoft.RetailPlus.Client
             }
         }
 
-        public static bool ShowBarcodeNotProductCodeItemSelect
-        {
-            get
-            {
-                bool bolRetValue = true;
-                try { bolRetValue = Convert.ToBoolean(Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["ShowBarcodeNotProductCodeItemSelect"])); }
-                catch {
-                    try { bolRetValue = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ShowBarcodeNotProductCodeItemSelect"]); }
-                    catch { }
-                }
-                return bolRetValue;
-            }
-        }
-
-        public static bool ShowDescriptionDuringItemSelect
-        {
-            get
-            {
-                bool bolRetValue = false;
-                try { bolRetValue = Convert.ToBoolean(Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["ShowDescriptionDuringItemSelect"])); }
-                catch {
-                    try { bolRetValue = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ShowDescriptionDuringItemSelect"]); }
-                    catch { }
-                }
-                return bolRetValue;
-            }
-        }
-
         public static void SaveConfig(Data.TerminalDetails clsTerminalDetails)
         {
             XmlDocument xmlDoc = new XmlDocument();

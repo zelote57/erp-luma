@@ -34,10 +34,14 @@ namespace AceSoft.RetailPlus.Inventory
 
                     mlngItemNo = 0;
 
+                    ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
+
+                    ProductSubGroupDetails clsSearchKey = new ProductSubGroupDetails() { ProductSubGroupName = txtProductSubGroup.Text };
+
                     ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsBranch.Connection, clsBranch.Transaction);
                     cboProductSubGroup.DataTextField = "ProductSubGroupName";
                     cboProductSubGroup.DataValueField = "ProductSubGroupID";
-                    cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(txtProductSubGroup.Text).DefaultView;
+                    cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKey, SortField: "ProductSubGroupName").DefaultView;
                     cboProductSubGroup.DataBind();
                     cboProductSubGroup.SelectedIndex = 0;
 
@@ -80,11 +84,16 @@ namespace AceSoft.RetailPlus.Inventory
 
         protected void imgProductSubGroupSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
+
+            ProductSubGroupDetails clsSearchKey = new ProductSubGroupDetails() { ProductSubGroupName = txtProductSubGroup.Text };
+
             ProductSubGroup clsProductSubGroup = new ProductSubGroup();
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
             cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(txtProductSubGroup.Text).DefaultView;
+            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKey, SortField: "ProductSubGroupName").DefaultView;
             cboProductSubGroup.DataBind();
+            cboProductSubGroup.SelectedIndex = 0;
             cboProductSubGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboProductSubGroup.Items.Count > 1 && txtProductSubGroup.Text.Trim() != string.Empty) cboProductSubGroup.SelectedIndex = 1; else cboProductSubGroup.SelectedIndex = 0;
             clsProductSubGroup.CommitAndDispose();

@@ -587,8 +587,114 @@ CREATE TABLE tblGJournalCredit (
 
 /*********************************  v_1.0.1.2.sql END  *******************************************************/    
 
-
-
 ALTER TABLE tblChartOfAccount MODIFY `Debit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblChartOfAccount MODIFY `Credit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
+ALTER TABLE tblPayment DROP CreatedOn;
+ALTER TABLE tblPaymentCredit DROP CreatedOn;
+ALTER TABLE tblPaymentDebit DROP CreatedOn;
+ALTER TABLE tblPaymentPODetails DROP CreatedOn;
+
+ALTER TABLE tblPayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPaymentCredit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPaymentDebit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPaymentPODetails ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+ALTER TABLE tblPayment DROP LastModified;
+ALTER TABLE tblPaymentCredit DROP LastModified;
+ALTER TABLE tblPaymentDebit DROP LastModified;
+ALTER TABLE tblPaymentPODetails DROP LastModified;
+
+ALTER TABLE tblPayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPaymentCredit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPaymentDebit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPaymentPODetails ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+DROP TRIGGER IF EXISTS trgtblPaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPaymentCreditCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPaymentDebitCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPaymentPODetailsCreatedOn;
+
+CREATE TRIGGER trgtblPaymentCreatedOn BEFORE INSERT ON tblPayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPaymentCreditCreatedOn BEFORE INSERT ON tblPaymentCredit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPaymentDebitCreatedOn BEFORE INSERT ON tblPaymentDebit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPaymentPODetailsCreatedOn BEFORE INSERT ON tblPaymentPODetails FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+
+UPDATE tblPayment SET LastModified = NOW();
+UPDATE tblPaymentCredit SET LastModified = NOW();
+UPDATE tblPaymentDebit SET LastModified = NOW();
+UPDATE tblPaymentPODetails SET LastModified = NOW();
+
+ALTER TABLE tblGJournal ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblGJournalCredit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblGJournalDebit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+ALTER TABLE tblGJournal DROP LastModified;
+ALTER TABLE tblGJournalCredit DROP LastModified;
+ALTER TABLE tblGJournalDebit DROP LastModified;
+
+ALTER TABLE tblGJournal ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblGJournalCredit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblGJournalDebit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+DROP TRIGGER IF EXISTS trgtblGJournalCreatedOn;
+DROP TRIGGER IF EXISTS trgtblGJournalCreditCreatedOn;
+DROP TRIGGER IF EXISTS trgtblGJournalDebitCreatedOn;
+
+CREATE TRIGGER trgtblGJournalCreatedOn BEFORE INSERT ON tblGJournal FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblGJournalCreditCreatedOn BEFORE INSERT ON tblGJournalCredit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblGJournalDebitCreatedOn BEFORE INSERT ON tblGJournalDebit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+
+UPDATE tblGJournal SET LastModified = NOW();
+UPDATE tblGJournalCredit SET LastModified = NOW();
+UPDATE tblGJournalDebit SET LastModified = NOW();
+
+ALTER TABLE tblGJournal DROP CreatedOn;
+ALTER TABLE tblGJournalCredit DROP CreatedOn;
+ALTER TABLE tblGJournalDebit DROP CreatedOn;
+
+ALTER TABLE tblChartOfAccount DROP CreatedOn;
+ALTER TABLE tblChartOfAccount ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblChartOfAccount DROP LastModified;
+ALTER TABLE tblChartOfAccount ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+DROP TRIGGER IF EXISTS trgtblChartOfAccountCreatedOn;
+CREATE TRIGGER trgtblChartOfAccountCreatedOn BEFORE INSERT ON tblChartOfAccount FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+UPDATE tblChartOfAccount SET LastModified = NOW();
+
+ALTER TABLE tblAccountCategory DROP CreatedOn;
+ALTER TABLE tblAccountClassification DROP CreatedOn;
+ALTER TABLE tblAccountSummary DROP CreatedOn;
+ALTER TABLE tblAccountCategory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblAccountClassification ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblAccountSummary ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblAccountCategory DROP LastModified;
+ALTER TABLE tblAccountClassification DROP LastModified;
+ALTER TABLE tblAccountSummary DROP LastModified;
+ALTER TABLE tblAccountCategory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblAccountClassification ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblAccountSummary ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+DROP TRIGGER IF EXISTS trgtblAccountCategoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblAccountClassificationCreatedOn;
+DROP TRIGGER IF EXISTS trgtblAccountSummaryCreatedOn;
+CREATE TRIGGER trgtblAccountCategoryCreatedOn BEFORE INSERT ON tblAccountCategory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblAccountClassificationCreatedOn BEFORE INSERT ON tblAccountClassification FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblAccountSummaryCreatedOn BEFORE INSERT ON tblAccountSummary FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+UPDATE tblAccountCategory SET LastModified = NOW();
+UPDATE tblAccountClassification SET LastModified = NOW();
+UPDATE tblAccountSummary SET LastModified = NOW();
+
+
+ALTER TABLE tblBank DROP CreatedOn;
+ALTER TABLE tblBankDeposit DROP CreatedOn;
+ALTER TABLE tblBank ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblBankDeposit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblBank DROP LastModified;
+ALTER TABLE tblBankDeposit DROP LastModified;
+ALTER TABLE tblBank ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblBankDeposit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+DROP TRIGGER IF EXISTS trgtblBankCreatedOn;
+DROP TRIGGER IF EXISTS trgtblBankDepositCreatedOn;
+CREATE TRIGGER trgtblBankCreatedOn BEFORE INSERT ON tblBank FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblBankDepositCreatedOn BEFORE INSERT ON tblBankDeposit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+UPDATE tblBank SET LastModified = NOW();
+UPDATE tblBankDeposit SET LastModified = NOW();

@@ -125,7 +125,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }

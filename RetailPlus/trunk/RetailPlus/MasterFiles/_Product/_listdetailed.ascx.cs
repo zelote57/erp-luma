@@ -237,6 +237,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 imgUnitsMatrixAdd.Enabled = Convert.ToBoolean(Convert.ToInt16(lblUnitMatrixAccess.Text));
                 if (!imgUnitsMatrixAdd.Enabled) imgUnitsMatrixAdd.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
 
+                lnkPackage.Enabled = Convert.ToBoolean(Convert.ToInt16(lblProductPackageAccess.Text));
+                if (!lnkPackage.Enabled) lnkPackage.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+
                 ImageButton imgPackageAdd = (ImageButton)e.Item.FindControl("imgPackageAdd");
                 imgPackageAdd.Enabled = Convert.ToBoolean(Convert.ToInt16(lblProductPackageAccess.Text));
                 if (!imgPackageAdd.Enabled) imgPackageAdd.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
@@ -265,14 +268,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         protected void lstItem_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
 		{
 			Common Common = new Common();
-			HtmlInputCheckBox chkList = null;
-			string stParam = null;
-
-            HyperLink lnkProductCode = null;
-			chkList = (HtmlInputCheckBox) e.Item.FindControl("chkList");
-			Common = new Common();
-			stParam = "?task=" + Common.Encrypt("list",Session.SessionID) + 
-				"&prodid=" + Common.Encrypt(chkList.Value,Session.SessionID);
+			HtmlInputCheckBox chkList = (HtmlInputCheckBox) e.Item.FindControl("chkList");
+            HyperLink lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
+			
+            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&prodid=" + Common.Encrypt(chkList.Value,Session.SessionID);
 
 			switch(e.CommandName)
 			{
@@ -350,25 +349,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_Package/Default.aspx" + stParam);
                     break;
                 case "imgInventoryAdjustmentClick":
-                    lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("invadjustment", Session.SessionID) +
                         "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam);
                     break;
                 case "imgProductHistoryClick":
-                    lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("producthistory", Session.SessionID) +
                                 "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam);
                     break;
                 case "imgProductPriceHistoryClick":
-                    lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("pricehistory", Session.SessionID) +
                                 "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect(Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam);
                     break;
                 case "imgChangePriceClick":
-                    lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
                     stParam = "?task=" + Common.Encrypt("changeprice", Session.SessionID) +
                                 "&productcode=" + Common.Encrypt(Server.UrlEncode(lnkProductCode.Text), Session.SessionID);
                     Response.Redirect("Default.aspx" + stParam);
@@ -416,6 +411,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			idEdit.Visible = clsDetails.Write; 
 			lblSeparator1.Visible = clsDetails.Write;
 			lblSeparator2.Visible = clsDetails.Write;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ProductUnitMatrix); 
             lblUnitMatrixAccess.Text = Convert.ToInt16(clsDetails.Write).ToString();
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ProductComposition); 

@@ -73,54 +73,36 @@ namespace AceSoft.RetailPlus.Reports
             cboGroup.DataBind();
             cboGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
             cboGroup.SelectedIndex = 0;
-
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-
-            ProductSubGroupDetails clsSearchKey = new ProductSubGroupDetails();
-
-            ProductSubGroup clsSubGroup = new ProductSubGroup(clsProductGroup.Connection, clsProductGroup.Transaction);
-            cboSubGroup.DataTextField = "ProductSubGroupName";
-            cboSubGroup.DataValueField = "ProductSubGroupID";
-            cboSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKey, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
-            cboSubGroup.DataBind();
-            cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
-            cboSubGroup.SelectedIndex = 0;
             clsProductGroup.CommitAndDispose();
+
+            cboGroup_SelectedIndexChanged(null, null);
         }
         private void LoadOptionsProductHistory()
         {
             txtStartDate.Text = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
             txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
-            DataClass clsDataClass = new DataClass();
+            try
+            {
+                if (Request.QueryString["productcode"].ToString() != null)
+                {
+                    txtProductCodeSearch.Text = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID);
+                }
+            }
+            catch { }
+
+            string stSearchKey = txtProductCodeSearch.Text;
 
             Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
-
-            try
-            {
-                if (Request.QueryString["productcode"].ToString() != null)
-                    txtProductCode.Text = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID);
-            }
-            catch { }
-            if (!string.IsNullOrEmpty(txtProductCode.Text))
-            {
-                string stSearchKey = txtProductCode.Text;
-                cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.Search(stSearchKey, "ProductCode", SortOption.Ascending));
-            }
-            else
-            {
-                cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.List("ProductCode", SortOption.Ascending)).DefaultView;
-            }
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, limit: 100);
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
-
-            if (cboProductCode.Items.Count == 0)
-                cboProductCode.Items.Add(new ListItem("No product", "0"));
-
+            if (cboProductCode.Items.Count == 0) cboProductCode.Items.Add(new ListItem("No product", "0"));
             cboProductCode.SelectedIndex = 0;
+
+            cboProductCode_SelectedIndexChanged(null, null);
 
             try
             {
@@ -229,10 +211,10 @@ namespace AceSoft.RetailPlus.Reports
             if (cboSubGroup.SelectedItem.Value != Constants.ZERO_STRING) SubGroupName = cboSubGroup.SelectedItem.Text;
 
             Products clsProduct = new Products();
-            System.Data.DataTable dtProductInventoryReport = clsProduct.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
+            System.Data.DataTable dtProductInventoryReport = clsProduct.InventoryReport(ProductGroupName, SubGroupName, txtProductCodeSearch.Text);
 
             //ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-            //System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
+            //System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCodeSearch.Text);
             clsProduct.CommitAndDispose();
 
             foreach (System.Data.DataRow dr in dtProductInventoryReport.Rows)
@@ -339,52 +321,48 @@ namespace AceSoft.RetailPlus.Reports
 		}
         protected void cboGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupCode = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-
             ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
             clsSearchKeys.ProductGroupID = long.Parse(cboGroup.SelectedItem.Value);
 
-            ProductSubGroup clsSubGroup = new ProductSubGroup();
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
+
+            ProductSubGroup clsProductSubGroup = new ProductSubGroup();
             cboSubGroup.DataTextField = "ProductSubGroupName";
             cboSubGroup.DataValueField = "ProductSubGroupID";
-            cboSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
+            cboSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, SortField: "ProductSubGroupName", SortOrder: System.Data.SqlClient.SortOrder.Ascending);
             cboSubGroup.DataBind();
-            cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
+            if (cboGroup.SelectedItem.Value != Constants.ZERO_STRING)
+                cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL + " " + cboGroup.SelectedItem.Text, Constants.ZERO_STRING));
+            else
+                cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
             cboSubGroup.SelectedIndex = 0;
-            clsSubGroup.CommitAndDispose();
+            clsProductSubGroup.CommitAndDispose();
         }
         protected void cmdProductCode_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataClass clsDataClass = new DataClass();
+            string stSearchKey = txtProductCodeSearch.Text;
 
             Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
-
-            if (!string.IsNullOrEmpty(txtProductCode.Text))
-            {
-                string stSearchKey = txtProductCode.Text;
-                cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.Search(stSearchKey, "ProductCode", SortOption.Ascending));
-            }
-            else
-            {
-                cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.List("ProductCode", SortOption.Ascending)).DefaultView;
-            }
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, limit: 100);
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
-
-            if (cboProductCode.Items.Count == 0)
-                cboProductCode.Items.Add(new ListItem("No product", "0"));
-
+            if (cboProductCode.Items.Count == 0) cboProductCode.Items.Add(new ListItem("No product", "0"));
             cboProductCode.SelectedIndex = 0;
+            clsProduct.CommitAndDispose();
+
+            cboProductCode_SelectedIndexChanged(null, null);
         }
+
         protected void cboProductCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                txtProductCode.Text = cboProductCode.SelectedItem.Text;
+                if (cboProductCode.SelectedItem.Text == "No product")
+                    txtProductCode.Text = "";
+                else
+                    txtProductCode.Text = cboProductCode.SelectedItem.Text;
             }
             catch { }
         }

@@ -67,16 +67,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         protected void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			SaveRecord();
-			
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);
+
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt(lblIsePurchaseOrder.Text, Session.SessionID);
 			Response.Redirect("Default.aspx" + stParam);	
 		}
 
 		protected void cmdSave_Click(object sender, System.EventArgs e)
 		{
 			SaveRecord();
-			
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);
+
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt(lblIsePurchaseOrder.Text, Session.SessionID);
 			Response.Redirect("Default.aspx" + stParam);			
 		}
 
@@ -158,6 +158,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));
 			cboBranch_SelectedIndexChanged(null, null);
 
+            bool boIsePurchaseOrder = bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder);
+            if (boIsePurchaseOrder)
+                lblIsePurchaseOrder.Text = "1";
+            else
+                lblIsePurchaseOrder.Text = "0";
+
 			NewTransaction();
 		}
 
@@ -206,7 +212,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             clsDetails.PurchaserName = Session["Name"].ToString();
 			clsDetails.Status = POStatus.Open;
 			clsDetails.Remarks = txtRemarks.Text;
-			
+
+            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder);
+            clsDetails.IncludeIneSales = boIsePurchaseOrder;
+
 			Int64 id = clsPO.Insert(clsDetails);
 			clsPO.CommitAndDispose();
 

@@ -300,55 +300,28 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string	SQL =	"SELECT a.MatrixID, a.ProductID, a.BaseUnitID, b.UnitCode 'BaseUnitCode', b.UnitName 'BaseUnitName', " +
-					"a.BaseUnitValue, a.BottomUnitID, c.UnitCode 'BottomUnitCode', c.UnitName 'BottomUnitName', a.BottomUnitValue " +
-					"FROM tblProductUnitMatrix a INNER JOIN " +
-					"tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN " + 
-					"tblUnit c ON a.BottomUnitID = c.UnitID LEFT OUTER JOIN " + 	
-					"tblProducts d ON a.ProductID = d.ProductID " +
-					"WHERE a.ProductID = " + ProductID  + " ORDER BY " + SortField;
+					                "a.BaseUnitValue, a.BottomUnitID, c.UnitCode 'BottomUnitCode', c.UnitName 'BottomUnitName', a.BottomUnitValue " +
+					            "FROM tblProductUnitMatrix a INNER JOIN " +
+					                "tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN " + 
+					                "tblUnit c ON a.BottomUnitID = c.UnitID LEFT OUTER JOIN " + 	
+					                "tblProducts d ON a.ProductID = d.ProductID " +
+                                "WHERE a.ProductID = @ProductID ";
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-				base.MySqlDataAdapterFill(cmd, dt);
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "b.UnitCode") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                //SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				return dt;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		public MySqlDataReader List(Int64 ProductID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string	SQL =	"SELECT a.MatrixID, a.ProductID, a.BaseUnitID, b.UnitCode 'BaseUnitCode', b.UnitName 'BaseUnitName', " +
-					"a.BaseUnitValue, a.BottomUnitID, c.UnitCode 'BottomUnitCode', c.UnitName 'BottomUnitName', a.BottomUnitValue " +
-					"FROM tblProductUnitMatrix a INNER JOIN " +
-					"tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN " + 
-					"tblUnit c ON a.BottomUnitID = c.UnitID LEFT OUTER JOIN " + 	
-					"tblProducts d ON a.ProductID = d.ProductID " +
-					"WHERE a.ProductID = " + ProductID  + " ORDER BY " + SortField;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				return base.ExecuteReader(cmd);			
+                return dt;	
 			}
 			catch (Exception ex)
 			{
@@ -356,34 +329,32 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public MySqlDataReader AvailableUnitsForProduct(Int64 ProductID, string SortField, SortOption SortOrder)
+		public System.Data.DataTable AvailableUnitsForProduct(Int64 ProductID, string SortField = "UnitName", SortOption SortOrder = SortOption.Ascending)
 		{
 			
 			try
 			{
-				string SQL = "SELECT " +
-					"UnitID, " +
-					"UnitCode, " +
-					"UnitName " +
-					"FROM tblUnit " +
-					"WHERE UnitID NOT IN (SELECT BaseUnitID FROM tblProductUnitMatrix WHERE ProductID = @ProductID) " +
-					"ORDER BY " + SortField;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                string SQL = "SELECT " +
+                                "UnitID, " +
+                                "UnitCode, " +
+                                "UnitName " +
+                            "FROM tblUnit " +
+                                "WHERE UnitID NOT IN (SELECT BaseUnitID FROM tblProductUnitMatrix WHERE ProductID = @ProductID) ";
 
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "UnitName") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                //SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				return base.ExecuteReader(cmd);			
+                return dt;		
 			}
 			catch (Exception ex)
 			{
@@ -391,37 +362,13 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		
-		public MySqlDataReader Search(string SearchKey, string SortField = "MatrixID", SortOption SortOrder = SortOption.Ascending)
-		{
-			try
-			{
-				string SQL ="SELECT * FROM tblProductUnitMatrix " +
-							"WHERE ProductID LIKE @SearchKey " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}		
 		public ProductUnitsMatrixDetails LastDetails(Int64 ProductID)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL =	"SELECT a.MatrixID, a.ProductID, a.BaseUnitID, b.UnitName 'BaseUnitName', " +
 					"a.BaseUnitValue, a.BottomUnitID, c.UnitName 'BottomUnitName', a.BottomUnitValue " +
 					"FROM tblProductUnitMatrix a INNER JOIN " +
@@ -429,56 +376,34 @@ namespace AceSoft.RetailPlus.Data
 					"tblUnit c ON a.BottomUnitID = c.UnitID LEFT OUTER JOIN " + 	
 					"tblProducts d ON a.ProductID = d.ProductID " +
 					"WHERE a.ProductID = @ProductID " +
-					"ORDER BY a.MatrixID DESC LIMIT 1;"; 
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+					"ORDER BY a.MatrixID DESC LIMIT 1;";
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 				
-				ProductUnitsMatrixDetails Details = new ProductUnitsMatrixDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
+                ProductUnitsMatrixDetails Details = new ProductUnitsMatrixDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.MatrixID = myReader.GetInt64(0);
-					Details.ProductID = myReader.GetInt64(1);;
-					Details.BaseUnitID = myReader.GetInt32(2);
-					Details.BaseUnitName = myReader.GetString(3);
-					Details.BaseUnitValue = myReader.GetDecimal(4);
-					Details.BottomUnitID = myReader.GetInt32(5);
-					Details.BottomUnitName = myReader.GetString(6);
-					Details.BottomUnitValue = myReader.GetDecimal(7);
+                    Details.MatrixID = Int64.Parse(dr["MatrixID"].ToString());
+                    Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+                    Details.BaseUnitID = Int32.Parse(dr["BaseUnitID"].ToString());
+                    Details.BaseUnitName = dr["BaseUnitName"].ToString();
+                    Details.BaseUnitValue = decimal.Parse(dr["BaseUnitValue"].ToString());
+                    Details.BottomUnitID = Int32.Parse(dr["BottomUnitID"].ToString());
+                    Details.BottomUnitName = dr["BottomUnitName"].ToString();
+                    Details.BottomUnitValue = decimal.Parse(dr["BottomUnitValue"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
-
 
 		#endregion
 	}

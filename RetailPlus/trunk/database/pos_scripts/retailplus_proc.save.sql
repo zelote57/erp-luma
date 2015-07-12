@@ -2058,7 +2058,7 @@ GO
 create procedure procSaveProduct(	
 	IN intProductID BIGINT(20),
 	IN strProductCode VARCHAR(30),
-	IN strProductDesc VARCHAR(50),
+	IN strProductDesc VARCHAR(100),
 	IN intProductSubGroupID BIGINT(20),
 	IN intBaseUnitID int(10),
 	IN dteDateCreated datetime,
@@ -2904,6 +2904,8 @@ create procedure procSaveContactAddOn(
 	IN strMobileNo        varchar(75),
 	IN strFaxNo           varchar(75),
 	IN strEmailAddress    varchar(85),
+	IN strSex			  varchar(6),
+	IN strAttendingPhysician	varchar(150),
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 	)
@@ -2936,17 +2938,20 @@ BEGIN
 			HomephoneNo				= strHomephoneNo,
 			MobileNo				= strMobileNo,
 			FaxNo					= strFaxNo,
+			EmailAddress			= strEmailAddress,
+			Sex						= strSex,
+			AttendingPhysician		= strAttendingPhysician,
 			LastModified			= dteLastModified
 		WHERE ContactID				= intContactID;
 	ELSE
 		INSERT INTO tblContactAddOn(ContactDetailID, ContactID, Salutation, FirstName, MiddleName, LastName, 
 								SpouseName, BirthDate, SpouseBirthDate, AnniversaryDate, Address1, Address2,
 								City, State, ZipCode, CountryID, BusinessphoneNo, HomephoneNo, MobileNo,
-								FaxNo, EmailAddress, CreatedOn, LastModified)
+								FaxNo, EmailAddress, Sex, AttendingPhysician, CreatedOn, LastModified)
 			VALUES(intContactDetailID, intContactID, strSalutation, strFirstName, strMiddleName, strLastName, 
 								strSpouseName, dteBirthDate, dteSpouseBirthDate, dteAnniversaryDate, strAddress1, strAddress2,
 								strCity, strState, strZipCode, intCountryID, strBusinessphoneNo, strHomephoneNo, strMobileNo,
-								strFaxNo, strEmailAddress, dteCreatedOn, dteLastModified);
+								strFaxNo, strEmailAddress, strSex, strAttendingPhysician, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;
@@ -4359,6 +4364,161 @@ BEGIN
 
 	INSERT INTO tblPLUReport(BranchID, TerminalNo, ProductID, ProductCode, ProductGroup, Quantity, Amount, OrderSlipPrinter, CreatedOn, LastModified)
 			VALUES(intBranchID, strTerminalNo, intProductID, strProductCode, strProductGroup, decQuantity, decAmount, intOrderSlipPrinter, dteCreatedOn, dteLastModified);
+				
+END;
+GO
+delimiter ;
+
+
+
+
+/********************************************
+	procSaveTransactionItemAttachments
+	Jun 16, 2015
+
+	CALL procSaveTransactionItemAttachments(0, 58475, 32575, 'TEST', 'test', 'Lemuel', null, now(), now());
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveTransactionItemAttachments
+GO
+
+create procedure procSaveTransactionItemAttachments(	
+	IN intTransactionItemAttachmentsID BIGINT(20),
+	IN intTransactionItemsID BIGINT(20),
+	IN intTransactionID BIGINT(20),
+	IN strOrigFileName VARCHAR(150),
+	IN strFileName VARCHAR(150),
+	IN strUploadedByName VARCHAR(100),
+	IN strLastUpdatedByName VARCHAR(100),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF EXISTS(SELECT TransactionItemAttachmentsID FROM tblTransactionItemAttachments WHERE TransactionItemAttachmentsID = intTransactionItemAttachmentsID) THEN 
+		UPDATE sysConfig SET
+			OrigFileName		= strOrigFileName,
+			FileName			= strFileName,
+			LastUpdatedByName	= strLastUpdatedByName,
+			LastModified		= dteLastModified
+		WHERE TransactionItemAttachmentsID		= intTransactionItemAttachmentsID;
+	ELSE
+		INSERT INTO tblTransactionItemAttachments(TransactionItemsID, TransactionID, OrigFileName, FileName, UploadedByName, CreatedOn, LastModified)
+			VALUES(intTransactionItemsID, intTransactionID, strOrigFileName, strFileName, strUploadedByName, dteCreatedOn, dteLastModified);
+	END IF;
+
+END;
+GO
+delimiter ;
+
+
+
+/********************************************
+	procSavePromoBySupplier
+	Jul 10, 2015
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSavePromoBySupplier
+GO
+
+create procedure procSavePromoBySupplier(	
+	IN intPromoBySupplierID BIGINT(20),
+	IN strPromoBySupplierCode VARCHAR(60),
+	IN strPromoBySupplierName VARCHAR(75),
+	IN dteStartDate DATETIME,
+	IN dteEndDate DATETIME,
+	IN intPromoTypeID INT(10),
+	IN intStatus TINYINT(1),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF EXISTS(SELECT PromoBySupplierID FROM tblPromoBySupplier WHERE PromoBySupplierID = intPromoBySupplierID) THEN 
+		UPDATE tblPromoBySupplier SET
+			PromoBySupplierCode		= strPromoBySupplierCode,
+			PromoBySupplierName		= strPromoBySupplierName,
+			StartDate				= dteStartDate,
+			EndDate					= dteEndDate,
+			PromoTypeID				= intPromoTypeID,
+			Status					= intStatus,
+			LastModified			= dteLastModified
+		WHERE PromoBySupplierID				= intPromoBySupplierID;
+	ELSE
+		INSERT INTO tblPromoBySupplier(PromoBySupplierID, PromoBySuppliercode, PromoBySupplierName, StartDate, EndDate, PromoTypeID, Status, CreatedOn, LastModified)
+			VALUES(intPromoBySupplierID, strPromoBySuppliercode, strPromoBySupplierName, dteStartDate, dteEndDate, intPromoTypeID, intStatus, dteCreatedOn, dteLastModified);
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+/********************************************
+	procSavePromoBySupplierItems
+	Jul 10, 2015
+
+	CALL procSavePromoBySupplierItems(1,2,3,4,5,6,7,8,'remarks',now(), now());
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSavePromoBySupplierItems
+GO
+
+create procedure procSavePromoBySupplierItems(	
+	IN intPromoBySupplierItemsID bigint(20),
+	IN intPromoBySupplierID bigint(20),
+	IN intContactID bigint(20),
+	IN intProductGroupID bigint(20),
+	IN intProductSubGroupID bigint(20),
+	IN intProductID bigint(20),
+	IN intVariationMatrixID bigint(20),
+	IN decPromoBySupplierValue decimal(18,2),
+	IN strCouponRemarks varchar(3000),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF EXISTS(SELECT PromoBySupplierItemsID FROM tblPromoBySupplierItems WHERE PromoBySupplierItemsID = intPromoBySupplierItemsID) THEN 
+		UPDATE tblPromoBySupplierItems SET
+			PromoBySupplierID					= intPromoBySupplierID,
+			ContactID				= intContactID,
+			ProductGroupID			= intProductGroupID,
+			ProductSubGroupID		= intProductSubGroupID,
+			ProductID				= intProductID,
+			VariationMatrixID		= intVariationMatrixID,
+			PromoBySupplierValue	= decPromoBySupplierValue,
+			CouponRemarks			= strCouponRemarks,
+			LastModified			= dteLastModified
+		WHERE PromoBySupplierItemsID			= intPromoBySupplierItemsID;
+	ELSE
+		INSERT INTO tblPromoBySupplierItems(PromoBySupplierItemsID, PromoBySupplierID, ContactID, ProductGroupID,
+							ProductSubGroupID, ProductID, VariationMatrixID, 
+							PromoBySupplierValue, CouponRemarks, CreatedOn, LastModified)
+			VALUES(intPromoBySupplierItemsID, intPromoBySupplierID, intContactID, intProductGroupID,
+							intProductSubGroupID, intProductID, intVariationMatrixID, 
+							decPromoBySupplierValue, strCouponRemarks, dteCreatedOn, dteLastModified);
+	END IF;
 				
 END;
 GO

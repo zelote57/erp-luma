@@ -26,6 +26,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #region Public Properties
 
+        public SysConfigDetails SysConfigDetails { get; set; }
+
         public Data.TerminalDetails TerminalDetails { get; set; }
 
         public bool HasCreditOnly { get; set; }
@@ -79,7 +81,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ContactSelect.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -622,28 +624,46 @@ namespace AceSoft.RetailPlus.Client.UI
 
             Data.ContactDetails details = new Data.ContactDetails();
             DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
-            if (!TerminalDetails.ShowCustomerSelection)
+
+            switch (SysConfigDetails.ContactAddWndType)
             {
-                ContactAddDetWnd addwnd = new ContactAddDetWnd();
-                addwnd.Caption = "Quickly add new customer.";
-                addwnd.TerminalDetails = TerminalDetails;
-                addwnd.ShowDialog(this);
-                addresult = addwnd.Result;
-                details = addwnd.ContactDetails;
-                addwnd.Close();
-                addwnd.Dispose();
+                case ContactAddWndType.ContactAddWnd:
+                case ContactAddWndType.ContactAddNoLTOWnd:
+                    ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                    clsContactAddWnd.Caption = "Quickly add new customer.";
+                    clsContactAddWnd.ContactDetails = details;
+                    clsContactAddWnd.TerminalDetails = TerminalDetails;
+                    clsContactAddWnd.SysConfigDetails = SysConfigDetails;
+                    clsContactAddWnd.ShowDialog(this);
+                    addresult = clsContactAddWnd.Result;
+                    details = clsContactAddWnd.ContactDetails;
+                    clsContactAddWnd.Close();
+                    clsContactAddWnd.Dispose();
+                    break;
+                case ContactAddWndType.ContactAddHCareWnd:
+                    ContactAddHCareWnd clsContactAddHCareWnd = new ContactAddHCareWnd();
+                    clsContactAddHCareWnd.Caption = "Quickly add new customer.";
+                    clsContactAddHCareWnd.ContactDetails = details;
+                    clsContactAddHCareWnd.TerminalDetails = TerminalDetails;
+                    clsContactAddHCareWnd.ShowDialog(this);
+                    addresult = clsContactAddHCareWnd.Result;
+                    details = clsContactAddHCareWnd.ContactDetails;
+                    clsContactAddHCareWnd.Close();
+                    clsContactAddHCareWnd.Dispose();
+                    break;
+                default:
+                    ContactAddDetWnd clsContactAddDetWnd = new ContactAddDetWnd();
+                    clsContactAddDetWnd.Caption = "Quickly add new customer.";
+                    clsContactAddDetWnd.ContactDetails = details;
+                    clsContactAddDetWnd.TerminalDetails = TerminalDetails;
+                    clsContactAddDetWnd.ShowDialog(this);
+                    addresult = clsContactAddDetWnd.Result;
+                    details = clsContactAddDetWnd.ContactDetails;
+                    clsContactAddDetWnd.Close();
+                    clsContactAddDetWnd.Dispose();
+                    break;
             }
-            else
-            {
-			    ContactAddWnd addwnd = new ContactAddWnd();
-			    addwnd.Caption = "Quickly add new customer.";
-                addwnd.TerminalDetails = TerminalDetails;
-			    addwnd.ShowDialog(this);
-			    addresult = addwnd.Result;
-			    details = addwnd.ContactDetails;
-			    addwnd.Close();
-			    addwnd.Dispose();
-            }
+
             if (addresult == DialogResult.OK)
             {
                 txtSearch.Text = details.ContactCode;
@@ -665,29 +685,44 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsContact.CommitAndDispose();
 
                     DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
-                    if (!TerminalDetails.ShowCustomerSelection)
+
+                    switch (SysConfigDetails.ContactAddWndType)
                     {
-                        ContactAddDetWnd clsContactAddWnd = new ContactAddDetWnd();
-                        clsContactAddWnd.Caption = "Update Customer [" + details.ContactName + "]";
-                        clsContactAddWnd.ContactDetails = details;
-                        clsContactAddWnd.TerminalDetails = TerminalDetails;
-                        clsContactAddWnd.ShowDialog(this);
-                        addresult = clsContactAddWnd.Result;
-                        details = clsContactAddWnd.ContactDetails;
-                        clsContactAddWnd.Close();
-                        clsContactAddWnd.Dispose();
-                    }
-                    else
-                    {
-                        ContactAddWnd clsContactAddWnd = new ContactAddWnd();
-                        clsContactAddWnd.Caption = "Update Customer [" + details.ContactName + "]";
-                        clsContactAddWnd.ContactDetails = details;
-                        clsContactAddWnd.TerminalDetails = TerminalDetails;
-                        clsContactAddWnd.ShowDialog(this);
-                        addresult = clsContactAddWnd.Result;
-                        details = clsContactAddWnd.ContactDetails;
-                        clsContactAddWnd.Close();
-                        clsContactAddWnd.Dispose();
+                        case ContactAddWndType.ContactAddWnd:
+                        case ContactAddWndType.ContactAddNoLTOWnd:
+                            ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                            clsContactAddWnd.Caption = "Update Customer [" + details.ContactName + "]";
+                            clsContactAddWnd.ContactDetails = details;
+                            clsContactAddWnd.TerminalDetails = TerminalDetails;
+                            clsContactAddWnd.SysConfigDetails = SysConfigDetails;
+                            clsContactAddWnd.ShowDialog(this);
+                            addresult = clsContactAddWnd.Result;
+                            details = clsContactAddWnd.ContactDetails;
+                            clsContactAddWnd.Close();
+                            clsContactAddWnd.Dispose();
+                            break;
+                        case ContactAddWndType.ContactAddHCareWnd:
+                            ContactAddHCareWnd clsContactAddHCareWnd = new ContactAddHCareWnd();
+                            clsContactAddHCareWnd.Caption = "Update Customer [" + details.ContactName + "]";
+                            clsContactAddHCareWnd.ContactDetails = details;
+                            clsContactAddHCareWnd.TerminalDetails = TerminalDetails;
+                            clsContactAddHCareWnd.ShowDialog(this);
+                            addresult = clsContactAddHCareWnd.Result;
+                            details = clsContactAddHCareWnd.ContactDetails;
+                            clsContactAddHCareWnd.Close();
+                            clsContactAddHCareWnd.Dispose();
+                            break;
+                        default:
+                            ContactAddDetWnd clsContactAddDetWnd = new ContactAddDetWnd();
+                            clsContactAddDetWnd.Caption = "Update Customer [" + details.ContactName + "]";
+                            clsContactAddDetWnd.ContactDetails = details;
+                            clsContactAddDetWnd.TerminalDetails = TerminalDetails;
+                            clsContactAddDetWnd.ShowDialog(this);
+                            addresult = clsContactAddDetWnd.Result;
+                            details = clsContactAddDetWnd.ContactDetails;
+                            clsContactAddDetWnd.Close();
+                            clsContactAddDetWnd.Dispose();
+                            break;
                     }
                     if (addresult == DialogResult.OK)
                     {

@@ -73,7 +73,12 @@ namespace AceSoft.RetailPlus.Inventory
                         stHeading = "Set Inventory Threshold";
                         SearchIndex = SearchCategoryID.Products;
                         ctrlInvThreshold.Visible = true;
-                        break;	
+                        break;
+                    case "einventoryrep":
+                        stHeading = "View eInventory Report";
+                        SearchIndex = SearchCategoryID.InventoryList;
+                        ctrlProducteInventoryReport.Visible = true;
+                        break;
                     case "inventoryrep":
                         stHeading = "View Inventory Report";
                         SearchIndex = SearchCategoryID.InventoryList;

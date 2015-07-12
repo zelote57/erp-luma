@@ -44,6 +44,7 @@ namespace AceSoft.RetailPlus.MasterFiles
 				lnkProductGroup.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_ProductGroup/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
 				lnkProductSubGroup.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_ProductSubGroup/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
 				lnkPromo.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Promo/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
+                lnkPromoBySupplier.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_PromoBySupplier/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
 
                 lnkPositions.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Position/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
                 lnkDepartments.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Department/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
@@ -94,7 +95,13 @@ namespace AceSoft.RetailPlus.MasterFiles
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Promos);
             lnkPromo.Visible = clsDetails.Read;
             if (!clsDetails.Write) divlnkPromo.Style.Add("display", "none");
-            // show label for reporting
+            // show label for Misc
+            if (clsDetails.Read && !boShowProductSetup) boShowProductSetup = true;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.PromosBySupplier);
+            lnkPromoBySupplier.Visible = clsDetails.Read;
+            if (!clsDetails.Write) divlnkPromoBySupplier.Style.Add("display", "none");
+            // show label for Misc
             if (clsDetails.Read && !boShowProductSetup) boShowProductSetup = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Variations);

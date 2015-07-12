@@ -227,35 +227,40 @@ namespace AceSoft.RetailPlus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+		Cancelled		=	2,
+        All             =   9
 	}
 
 	public enum POReturnItemStatus
 	{
 		Valid			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+		Cancelled		=	2,
+        All = 9
 	}
 
 	public enum DebitMemoStatus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+        Cancelled = 2,
+        All = 9
 	}
 
 	public enum DebitMemoItemStatus
 	{
 		Valid			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+		Cancelled		=	2,
+        All = 9
 	}
 
 	public enum SOStatus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+        Cancelled = 2,
+        All = 9
 	}
 
 	public enum SOItemStatus
@@ -283,7 +288,8 @@ namespace AceSoft.RetailPlus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+        Cancelled = 2,
+        All = 9
 	}
 
 	public enum CreditMemoItemStatus
@@ -297,7 +303,8 @@ namespace AceSoft.RetailPlus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+        Cancelled = 2,
+        All = 9
 	}
 
 	public enum TransferInItemStatus
@@ -311,14 +318,16 @@ namespace AceSoft.RetailPlus
 	{
 		Open			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+        Cancelled = 2,
+        All = 9
 	}
 
 	public enum TransferOutItemStatus
 	{
 		Valid			=	0,
 		Posted			=	1,
-		Cancelled		=	2
+        Cancelled = 2,
+        All = 9
 	}
 
 	public enum PrintingPreference
@@ -557,5 +566,53 @@ namespace AceSoft.RetailPlus
         Normal,
         Houseware,
         MPC
+    }
+
+    // 05Jun2015 use to filter the list for those included in esale
+    public struct eSalesFilter
+    {
+        public bool FilterIncludeIneSales;
+        public bool IncludeIneSales;
+    }
+
+    public enum Sex
+    {
+        Male,
+        Female
+    }
+
+    public enum ContactAddWndType
+    {
+        ContactAddWnd,
+        ContactAddNoLTOWnd,
+        ContactAddDetWnd,
+        ContactAddHCareWnd
+    }
+
+    public enum ItemSelectWndColumnType
+    {
+        BcPc,
+        BcDesc,
+        BcPcDescMtrx,
+        PcDesc,
+        PcDescMtrx,
+        SgDesc,
+        SgPcDesc,
+        SgDescMtrx
+    }
+
+    public enum ItemSelectWndColumnSearchType
+    {
+        BcPc,
+        BcDesc,
+        PcDesc,
+        SgDesc,
+        SgPcDesc
+    }
+
+    public enum SQLSelectType
+    {
+        SQLForList,
+        SQLForReport
     }
 }

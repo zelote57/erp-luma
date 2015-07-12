@@ -5,15 +5,15 @@ function InsertComputeMargin()
 	var purchaseprice = 0;
 	var saleprice = 0;
 	
-	purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value;
-	margin = document.getElementById("ctrlInsert_txtMargin").value;
+	purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value.replace(/\,/g, '');
+	margin = document.getElementById("ctrlInsert_txtMargin").value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
 	document.getElementById("ctrlInsert_txtProductPrice").value = saleprice.toFixed(3);
     try {
-	    purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value;
-	    margin = document.getElementById("ctrlInsert_txtWSPriceMarkUp").value;
+	    purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value.replace(/\,/g, '');
+	    margin = document.getElementById("ctrlInsert_txtWSPriceMarkUp").value.replace(/\,/g, '');
 	    margin = margin / 100;
 	    margin = purchaseprice * margin;
 	    saleprice = +purchaseprice + +margin;
@@ -28,15 +28,15 @@ function InsertComputeMarginByPrice()
 	var purchaseprice = 0;
 	var saleprice = 0;
 	
-	saleprice = document.getElementById("ctrlInsert_txtProductPrice").value;
-	purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value;
+	saleprice = document.getElementById("ctrlInsert_txtProductPrice").value.replace(/\,/g, '');
+	purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
 	document.getElementById("ctrlInsert_txtMargin").value = margin.toFixed(3);
 	try {
-	    saleprice = document.getElementById("ctrlInsert_txtWSPrice").value;
-	    purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value;
+	    saleprice = document.getElementById("ctrlInsert_txtWSPrice").value.replace(/\,/g, '');
+	    purchaseprice = document.getElementById("ctrlInsert_txtPurchasePrice").value.replace(/\,/g, '');
 	    margin = saleprice - purchaseprice;
 	    margin = margin / purchaseprice;
 	    margin = margin * 100;
@@ -51,16 +51,16 @@ function UpdateComputeMargin()
 	var margin = 0;
 	var purchaseprice = 0;
 	var saleprice = 0;
-	
-	purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value;
-	margin = document.getElementById("ctrlUpdate_txtMargin").value;
+
+	purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value.replace(/\,/g, '');
+	margin = document.getElementById("ctrlUpdate_txtMargin").value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
 	document.getElementById("ctrlUpdate_txtProductPrice").value = saleprice.toFixed(3);
 	try {
-	    purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value;
-	    margin = document.getElementById("ctrlUpdate_txtWSPriceMarkUp").value;
+	    purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value.replace(/\,/g, '');
+	    margin = document.getElementById("ctrlUpdate_txtWSPriceMarkUp").value.replace(/\,/g, '');
 	    margin = margin / 100;
 	    margin = purchaseprice * margin;
 	    saleprice = +purchaseprice + +margin;
@@ -75,15 +75,15 @@ function UpdateComputeMarginByPrice()
 	var purchaseprice = 0;
 	var saleprice = 0;
 	
-	saleprice = document.getElementById("ctrlUpdate_txtProductPrice").value;
-	purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value;
+	saleprice = document.getElementById("ctrlUpdate_txtProductPrice").value.replace(/\,/g, '');
+	purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
 	document.getElementById("ctrlUpdate_txtMargin").value = margin.toFixed(3);
 	try {
-	    saleprice = document.getElementById("ctrlUpdate_txtWSPrice").value;
-	    purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value;
+	    saleprice = document.getElementById("ctrlUpdate_txtWSPrice").value.replace(/\,/g, '');
+	    purchaseprice = document.getElementById("ctrlUpdate_txtPurchasePrice").value.replace(/\,/g, '');
 	    margin = saleprice - purchaseprice;
 	    margin = margin / purchaseprice;
 	    margin = margin * 100;
@@ -136,15 +136,15 @@ function ChangePriceComputeMarginPP(obj)
         }
     }
 
-    purchaseprice = txtPurchasePrice.value;
-	margin = txtMargin.value;
+    purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
+	margin = txtMargin.value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
 	txtSellingPrice.value = saleprice.toFixed(2);
 	
-	purchaseprice = txtPurchasePrice.value;
-	margin = txtWSPriceMarkUp.value;
+	purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
+	margin = txtWSPriceMarkUp.value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
@@ -196,15 +196,15 @@ function ChangePriceComputeMarginByPricePP(obj)
         }
     }
 	
-	saleprice = txtSellingPrice.value;
-	purchaseprice = txtPurchasePrice.value;
+	saleprice = txtSellingPrice.value.replace(/\,/g, '');
+	purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
 	txtMargin.value = margin.toFixed(3);
 
-	saleprice = txtWSPrice.value;
-	purchaseprice = txtPurchasePrice.value;
+	saleprice = txtWSPrice.value.replace(/\,/g, '');
+	purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
@@ -236,7 +236,7 @@ function ChangePriceComputeMarginMP(obj)
             // txtPurchasePrice
             if (tb[i].id.indexOf("txtPurchasePrice")!=-1)
             {   txtPurchasePrice = tb[i];    
-                purchaseprice = txtPurchasePrice.value;
+                purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
             }
             
             // txtPrice -- Purchase price for PO
@@ -258,13 +258,13 @@ function ChangePriceComputeMarginMP(obj)
     }
 	
 	
-	margin = txtMargin.value;
+	margin = txtMargin.value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
 	txtSellingPrice.value = saleprice.toFixed(3);
 	
-	margin = txtWSPriceMarkUp.value;
+	margin = txtWSPriceMarkUp.value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
@@ -315,15 +315,15 @@ function ChangePriceComputeMarginByPriceMP(obj)
         }
     }
     
-	saleprice = txtSellingPrice.value;
-	purchaseprice = txtPurchasePrice.value;
+	saleprice = txtSellingPrice.value.replace(/\,/g, '');
+	purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
 	txtMargin.value = margin.toFixed(3);
 	
-	saleprice = txtWSPrice.value;
-	purchaseprice = txtPurchasePrice.value;
+	saleprice = txtWSPrice.value.replace(/\,/g, '');
+	purchaseprice = txtPurchasePrice.value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
@@ -336,8 +336,8 @@ function InvAdjustmentComputeByDiff()
 	var intQuantityBefore = 0; 
 	var intQuantityNow = 0;
 
-	intQuantityBefore = document.getElementById("ctrlInvAdjustment_txtQuantityBefore").value;
-	intDifference = document.getElementById("ctrlInvAdjustment_txtDifference").value;
+	intQuantityBefore = document.getElementById("ctrlInvAdjustment_txtQuantityBefore").value.replace(/\,/g, '');
+	intDifference = document.getElementById("ctrlInvAdjustment_txtDifference").value.replace(/\,/g, '');
 	intDifference = +intQuantityBefore + +intDifference;
 	document.getElementById("ctrlInvAdjustment_txtQuantityNow").value = intDifference.toFixed(3);
 }
@@ -348,8 +348,8 @@ function InvAdjustmentComputeByQty()
 	var intQuantityBefore = 0; 
 	var intQuantityNow = 0;
 
-	intQuantityBefore = document.getElementById("ctrlInvAdjustment_txtQuantityBefore").value;
-	intQuantityNow = document.getElementById("ctrlInvAdjustment_txtQuantityNow").value;
+	intQuantityBefore = document.getElementById("ctrlInvAdjustment_txtQuantityBefore").value.replace(/\,/g, '');
+	intQuantityNow = document.getElementById("ctrlInvAdjustment_txtQuantityNow").value.replace(/\,/g, '');
 	intDifference = +intQuantityNow - +intQuantityBefore;
 	document.getElementById("ctrlInvAdjustment_txtDifference").value = intDifference.toFixed(3);
 }
@@ -384,8 +384,8 @@ function InvAdjustmentComputeMatrixByDiff(obj)
         }
     }
     
-	intQuantityBefore = txtQuantityBefore.value;
-	intDifference = txtDifference.value;
+	intQuantityBefore = txtQuantityBefore.value.replace(/\,/g, '');
+	intDifference = txtDifference.value.replace(/\,/g, '');
 	intDifference = +intQuantityBefore + +intDifference;
 	txtQuantityNow.value = intDifference.toFixed(3);
 }
@@ -420,8 +420,8 @@ function InvAdjustmentComputeMatrixByQty(obj)
         }
     }
     
-	intQuantityBefore = txtQuantityBefore.value;
-	intQuantityNow = txtQuantityNow.value;
+	intQuantityBefore = txtQuantityBefore.value.replace(/\,/g, '');
+	intQuantityNow = txtQuantityNow.value.replace(/\,/g, '');
 	intDifference = +intQuantityNow - +intQuantityBefore;
 	txtDifference.value = intDifference.toFixed(3);
 }
@@ -463,8 +463,8 @@ function ChangePriceComputeMarginPPPO(obj)
 	var purchaseprice = 0; 
 	var saleprice = 0;
 	
-	purchaseprice = document.getElementById("ctrlPost_txtPrice").value;
-	margin = document.getElementById("ctrlPost_txtMargin").value;
+	purchaseprice = document.getElementById("ctrlPost_txtPrice").value.replace(/\,/g, '');
+	margin = document.getElementById("ctrlPost_txtMargin").value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;
@@ -477,8 +477,8 @@ function ChangePriceComputeMarginByPriceMPPO(obj)
 	var purchaseprice = 0; 
 	var saleprice = 0;
 	
-	saleprice = document.getElementById("ctrlPost_txtSellingPrice").value;
-	purchaseprice = document.getElementById("ctrlPost_txtPrice").value;
+	saleprice = document.getElementById("ctrlPost_txtSellingPrice").value.replace(/\,/g, '');
+	purchaseprice = document.getElementById("ctrlPost_txtPrice").value.replace(/\,/g, '');
 	margin = saleprice - purchaseprice;
 	margin = margin / purchaseprice;
 	margin = margin * 100;
@@ -491,8 +491,8 @@ function ChangePriceComputeMarginMPPO(obj) {
 	var purchaseprice = 0; 
 	var saleprice = 0;
 	
-	purchaseprice = document.getElementById("ctrlPost_txtPrice").value;
-	margin = document.getElementById("ctrlPost_txtMargin").value;
+	purchaseprice = document.getElementById("ctrlPost_txtPrice").value.replace(/\,/g, '');
+	margin = document.getElementById("ctrlPost_txtMargin").value.replace(/\,/g, '');
 	margin = margin / 100;
 	margin = purchaseprice * margin;
 	saleprice = +purchaseprice + +margin;

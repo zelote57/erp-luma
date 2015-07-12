@@ -86,6 +86,7 @@ namespace AceSoft.RetailPlus.Reports
                 cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesDaily, ReportTypes.CashSalesDaily));
                 cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesMonthly, ReportTypes.CashSalesMonthly));
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.ChequePaymentList, ReportTypes.ChequePaymentList));
                 cboReportType.Items.Add(new ListItem(ReportTypes.ChequeSalesDaily, ReportTypes.ChequeSalesDaily));
                 cboReportType.Items.Add(new ListItem(ReportTypes.ChequeSalesMonthly, ReportTypes.ChequeSalesMonthly));
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
@@ -104,6 +105,8 @@ namespace AceSoft.RetailPlus.Reports
                 cboReportType.Items.Add(new ListItem(ReportTypes.RecieveOnAccount, ReportTypes.RecieveOnAccount));
             }
 			cboReportType.SelectedIndex = 0;
+
+            clsAccessRights.CommitAndDispose();
 
             cboConsignment.Items.Clear();
             cboConsignment.Items.Add(new ListItem("Both", "-1"));
@@ -124,9 +127,12 @@ namespace AceSoft.RetailPlus.Reports
 			}
 			cboPaymentType.SelectedIndex = cboPaymentType.Items.IndexOf( cboPaymentType.Items.FindByText(PaymentTypes.NotYetAssigned.ToString()));
 
-			txtStartTransactionDate.Text = Common.ToShortDateString(DateTime.Now.AddDays(-1));
-            txtEndTransactionDate.Text = Common.ToShortDateString(DateTime.Now);
+			txtStartValidityDate.Text = Common.ToShortDateString(DateTime.Now);
+            txtEndValidityDate.Text = Common.ToShortDateString(DateTime.Now.AddDays(30));
 
+            txtStartTransactionDate.Text = Common.ToShortDateString(DateTime.Now.AddDays(-1));
+            txtEndTransactionDate.Text = Common.ToShortDateString(DateTime.Now);
+            
             Customer clsCustomer = new Customer();
             cboContactName.DataTextField = "ContactName";
             cboContactName.DataValueField = "ContactID";
@@ -137,6 +143,18 @@ namespace AceSoft.RetailPlus.Reports
             else
                 cboContactName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactName.Text, Constants.ZERO_STRING));
             cboContactName.SelectedIndex = 0;
+
+            ContactGroups clsContactGroups = new ContactGroups(clsCustomer.Connection, clsCustomer.Transaction);
+            cboContactGroupName.DataTextField = "ContactGroupName";
+            cboContactGroupName.DataValueField = "ContactGroupID";
+            cboContactGroupName.DataSource = clsContactGroups.ListAsDataTable(ContactGroupCategory.CUSTOMER, txtContactGroupName.Text);
+            cboContactGroupName.DataBind();
+            if (string.IsNullOrEmpty(txtContactName.Text))
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactGroupName.Text, Constants.ZERO_STRING));
+            cboContactGroupName.SelectedIndex = 0;
+
 
             cboAgent.Items.Clear();
             Contacts clsContact = new Contacts(clsCustomer.Connection, clsCustomer.Transaction);
@@ -209,6 +227,7 @@ namespace AceSoft.RetailPlus.Reports
             }
             cboYear.SelectedIndex = cboYear.Items.Count - 1;
             #endregion
+
         }
 
         private ReportDocument getReportDocument()
@@ -276,6 +295,9 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.CashSalesMonthly:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportCashSalesMonthly.rpt"));
+                    break;
+                case ReportTypes.ChequePaymentList:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportChequePaymentList.rpt"));
                     break;
                 case ReportTypes.ChequeSalesDaily:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportChequeSalesDaily.rpt"));
@@ -357,18 +379,18 @@ namespace AceSoft.RetailPlus.Reports
 		{
             string strProductGroup = cboProductGroup.SelectedItem.Text == Constants.ALL ? string.Empty : cboProductGroup.SelectedItem.Text;
             string TransactionNo = txtTransactionNo.Text;
+            string CustomerGroupName = cboContactGroupName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboContactGroupName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboContactGroupName.SelectedItem.Text;
             string CustomerName = cboContactName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboContactName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE","").Trim() : cboContactName.SelectedItem.Text;
             string AgentName = cboAgent.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboAgent.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboAgent.SelectedItem.Text;
             string CashierName = cboCashierName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboCashierName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboCashierName.SelectedItem.Text;
             string TerminalNo = cboTerminalNo.SelectedItem.Text == Constants.ALL ? string.Empty : cboTerminalNo.SelectedItem.Text;
-            DateTime StartTransactionDate = DateTime.MinValue;
-            try
-            { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text + " " + txtStartTime.Text); }
-            catch { }
-            DateTime EndTransactionDate = DateTime.MinValue;
-            try
-            { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text + " " + txtEndTime.Text); }
-            catch { }
+
+            DateTime StartValidityDate = DateTime.TryParse(txtStartValidityDate.Text + " 00:00:00" + txtStartTime.Text, out StartValidityDate) ? StartValidityDate : DateTime.MinValue;
+            DateTime EndValidityDate = DateTime.TryParse(txtEndValidityDate.Text + " 23:59:59", out EndValidityDate) ? EndValidityDate : DateTime.MinValue;
+
+            DateTime StartTransactionDate = DateTime.TryParse(txtStartTransactionDate.Text + " " + txtStartTime.Text, out StartTransactionDate) ? StartTransactionDate : DateTime.MinValue;
+            DateTime EndTransactionDate = DateTime.TryParse(txtEndTransactionDate.Text + " " + txtEndTime.Text, out EndTransactionDate) ? EndTransactionDate : DateTime.MinValue;
+
             TransactionStatus Status = (TransactionStatus)Enum.Parse(typeof(TransactionStatus), cboTransactionStatus.SelectedItem.Value);
             PaymentTypes PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboPaymentType.SelectedItem.Value);
 
@@ -417,6 +439,7 @@ namespace AceSoft.RetailPlus.Reports
             SalesTransactionDetails clsSearchKey = new SalesTransactionDetails();
             clsSearchKey = new SalesTransactionDetails();
             clsSearchKey.TransactionNo = TransactionNo;
+            clsSearchKey.CustomerGroupName = CustomerGroupName;
             clsSearchKey.CustomerName = CustomerName;
             clsSearchKey.CashierName = CashierName;
             clsSearchKey.TerminalNo = TerminalNo;
@@ -695,6 +718,40 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                     #endregion
 
+                case ReportTypes.ChequePaymentList:
+                    #region ChequePaymentList
+                    
+                    ChequePaymentDetails clsChequeSearchKeys = new ChequePaymentDetails();
+
+                    clsChequeSearchKeys.TransactionNo = TransactionNo;
+                    clsChequeSearchKeys.CustomerGroupName = CustomerGroupName;
+                    clsChequeSearchKeys.CustomerName = CustomerName;
+                    clsChequeSearchKeys.CashierName = CashierName;
+                    clsChequeSearchKeys.TerminalNo = TerminalNo;
+                    clsChequeSearchKeys.BranchDetails.BranchID = int.Parse(cboBranch.SelectedItem.Value);
+                    clsChequeSearchKeys.TransactionDateFrom = StartTransactionDate;
+                    clsChequeSearchKeys.TransactionDateTo = EndTransactionDate;
+                    clsChequeSearchKeys.ValidityDateFrom = StartValidityDate;
+                    clsChequeSearchKeys.ValidityDateTo = StartValidityDate;
+                    clsChequeSearchKeys.TransactionStatus = Status;
+                    clsChequeSearchKeys.PaymentType = PaymentType;
+                    clsChequeSearchKeys.AgentName = AgentName;
+
+                    ChequePayments clsChequePayments = new ChequePayments();
+                    dt = clsChequePayments.ListAsReport(clsChequeSearchKeys);
+                    clsChequePayments.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.ChequePayments.NewRow();
+
+                        foreach (DataColumn dc in rptds.ChequePayments.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.ChequePayments.Rows.Add(drNew);
+                    }
+                    break;
+                    #endregion
                 case ReportTypes.ChequeSalesDaily:
                 case ReportTypes.ChequeSalesMonthly:
                     #region Cheque-Sales Daily & Cheque-Sales Monthly
@@ -1029,6 +1086,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerTerminal:
                 case ReportTypes.CashSalesDaily:
                 case ReportTypes.CashSalesMonthly:
+                case ReportTypes.ChequePaymentList:
                 case ReportTypes.ChequeSalesDaily:
                 case ReportTypes.ChequeSalesMonthly:
                 case ReportTypes.CreditCardSalesDaily:
@@ -1040,6 +1098,8 @@ namespace AceSoft.RetailPlus.Reports
 
                 case ReportTypes.SalesTransactionPerItem:
                 case ReportTypes.SalesTransactionPerItemWoutPurchaseDetails:
+                    holderTransaction.Visible = true;
+                    holderTerminaNo.Visible = true;
                     holderSalesperItem.Visible = true;
                     break;
 
@@ -1069,6 +1129,22 @@ namespace AceSoft.RetailPlus.Reports
         //    if (cboTerminalNo.Items.Count > 1 && txtTerminalNo.Text.Trim() != string.Empty) cboTerminalNo.SelectedIndex = 1; else cboTerminalNo.SelectedIndex = 0;
         //    clsTerminal.CommitAndDispose();
         //}
+
+        protected void imgContactGroupNameSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            ContactGroups clsContactGroups = new ContactGroups();
+            cboContactGroupName.DataTextField = "ContactGroupName";
+            cboContactGroupName.DataValueField = "ContactGroupID";
+            cboContactGroupName.DataSource = clsContactGroups.ListAsDataTable(ContactGroupCategory.CUSTOMER, txtContactGroupName.Text);
+            cboContactGroupName.DataBind();
+            clsContactGroups.CommitAndDispose();
+            if (string.IsNullOrEmpty(txtContactName.Text))
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactGroupName.Text, Constants.ZERO_STRING));
+            cboContactGroupName.SelectedIndex = 0;
+
+        }
 
         protected void imgContactNameSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {

@@ -473,216 +473,37 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
-        {
-            if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
 
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-
-        }
-
-        public MySqlDataReader List(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(Int64 DebitMemoID = 0, DebitMemoItemStatus DebitMemoItemStatus = DebitMemoItemStatus.All, string SortField = "DebitMemoItemID", SortOption SortOrder = SortOption.Desscending, Int32 limit = 0)
         {
             try
             {
-                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
-
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE 1=1 ";
+
+                if (DebitMemoID != 0)
+                {
+                    SQL += "AND DebitMemoID = @DebitMemoID ";
+                    cmd.Parameters.AddWithValue("DebitMemoID", DebitMemoID);
+                }
+
+                if (DebitMemoItemStatus != DebitMemoItemStatus.All)
+                {
+                    SQL += "AND ItemStatus = @ItemStatus ";
+                    cmd.Parameters.AddWithValue("@ItemStatus", DebitMemoItemStatus.ToString("d"));
+                }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "DebitMemoItemID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
                 cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-
-                throw base.ThrowException(ex);
-            }
-        }
-
-        //public MySqlDataReader List(long DebitMemoID, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
-
-        //        string SQL = SQLSelect() + "WHERE DebitMemoID = @DebitMemoID ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID",MySqlDbType.Int64);
-        //        prmDebitMemoID.Value = DebitMemoID;
-        //        cmd.Parameters.Add(prmDebitMemoID);
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-        //        return myReader;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-
-        public System.Data.DataTable ListAsDataTable(long DebitMemoID, string SortField = "DebitMemoItemID", SortOption SortOrder = SortOption.Desscending)
-        {
-            try
-            {
-                string SQL = SQLSelect() + "WHERE DebitMemoID = @DebitMemoID ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@DebitMemoID", DebitMemoID);
-
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-
-        public MySqlDataReader List(DebitMemoItemStatus DebitMemoItemstatus, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
-
-                string SQL = SQLSelect() + "WHERE ItemStatus = @ItemStatus " +
-                            "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoItemStatus = new MySqlParameter("@ItemStatus",MySqlDbType.Int16);
-                prmDebitMemoItemStatus.Value = DebitMemoItemstatus.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoItemStatus);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                
-                throw base.ThrowException(ex);
-            }
-        }
-
-        public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
-
-                string SQL = SQLSelect() + "WHERE (ProductCode LIKE @SearchKey or BarCode LIKE @SearchKey or Description LIKE @SearchKey " +
-                                        "or MatrixDescription LIKE @SearchKey or ProductGroup LIKE @SearchKey or ProductSubGroup LIKE @SearchKey " +
-                                        "or Remarks LIKE @SearchKey) " +
-                                "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-                prmSearchKey.Value = "%" + SearchKey + "%";
-                cmd.Parameters.Add(prmSearchKey);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-
-        public MySqlDataReader Search(DebitMemoItemStatus DebitMemoItemstatus, string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
-
-                string SQL = SQLSelect() + "WHERE (ProductCode LIKE @SearchKey or BarCode LIKE @SearchKey or Description LIKE @SearchKey " +
-                                    "or MatrixDescription LIKE @SearchKey or ProductGroup LIKE @SearchKey or ProductSubGroup LIKE @SearchKey " +
-                                    "or Remarks LIKE @SearchKey) " +
-                            "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmDebitMemoItemStatus = new MySqlParameter("@ItemStatus",MySqlDbType.Int16);
-                prmDebitMemoItemStatus.Value = DebitMemoItemstatus.ToString("d");
-                cmd.Parameters.Add(prmDebitMemoItemStatus);
-
-                MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-                prmSearchKey.Value = "%" + SearchKey + "%";
-                cmd.Parameters.Add(prmSearchKey);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return myReader;
             }
             catch (Exception ex)
             {

@@ -132,11 +132,11 @@ namespace AceSoft.RetailPlus.Client.UI
         private Data.SysConfigDetails mclsSysConfigDetails;
         private Label labelAmountDue;
         private Label lblAmountDue;
-        private Label label14;
-        private Label label13;
+        private Label labelF4;
+        private Label labelF3;
         private Label label12;
-        private Label label11;
-        private Label label10;
+        private Label lblF4;
+        private Label lblF3;
         private Label label6;
         private Label lblAddNewCustomer;
         private Label labelF5;
@@ -189,7 +189,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -212,9 +212,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void InitializeComponent()
 		{
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvItems = new System.Windows.Forms.DataGridView();
@@ -228,11 +228,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceSelected = new System.Windows.Forms.Label();
             this.labelAmountDue = new System.Windows.Forms.Label();
             this.lblAmountDue = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
+            this.labelF4 = new System.Windows.Forms.Label();
+            this.labelF3 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.lblF4 = new System.Windows.Forms.Label();
+            this.lblF3 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
             this.labelF5 = new System.Windows.Forms.Label();
@@ -289,14 +289,14 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.CausesValidation = false;
             this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvItems.ColumnHeadersHeight = 24;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
@@ -304,19 +304,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.Location = new System.Drawing.Point(8, 24);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvItems.RowHeadersVisible = false;
             this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvItems.Size = new System.Drawing.Size(994, 361);
             this.dgvItems.TabIndex = 56;
@@ -448,27 +448,27 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAmountDue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblAmountDue.Visible = false;
             // 
-            // label14
+            // labelF4
             // 
-            this.label14.AutoSize = true;
-            this.label14.BackColor = System.Drawing.Color.Transparent;
-            this.label14.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label14.Location = new System.Drawing.Point(874, 41);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(98, 13);
-            this.label14.TabIndex = 111;
-            this.label14.Text = " to show payments";
+            this.labelF4.AutoSize = true;
+            this.labelF4.BackColor = System.Drawing.Color.Transparent;
+            this.labelF4.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.labelF4.Location = new System.Drawing.Point(874, 41);
+            this.labelF4.Name = "labelF4";
+            this.labelF4.Size = new System.Drawing.Size(98, 13);
+            this.labelF4.TabIndex = 111;
+            this.labelF4.Text = " to show payments";
             // 
-            // label13
+            // labelF3
             // 
-            this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label13.Location = new System.Drawing.Point(874, 25);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(100, 13);
-            this.label13.TabIndex = 110;
-            this.label13.Text = " to show purchases";
+            this.labelF3.AutoSize = true;
+            this.labelF3.BackColor = System.Drawing.Color.Transparent;
+            this.labelF3.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.labelF3.Location = new System.Drawing.Point(874, 25);
+            this.labelF3.Name = "labelF3";
+            this.labelF3.Size = new System.Drawing.Size(100, 13);
+            this.labelF3.TabIndex = 110;
+            this.labelF3.Text = " to show purchases";
             // 
             // label12
             // 
@@ -481,25 +481,25 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label12.TabIndex = 109;
             this.label12.Text = "Press";
             // 
-            // label11
+            // lblF4
             // 
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.ForeColor = System.Drawing.Color.Red;
-            this.label11.Location = new System.Drawing.Point(835, 41);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(27, 13);
-            this.label11.TabIndex = 108;
-            this.label11.Text = "[F4]";
+            this.lblF4.BackColor = System.Drawing.Color.Transparent;
+            this.lblF4.ForeColor = System.Drawing.Color.Red;
+            this.lblF4.Location = new System.Drawing.Point(835, 41);
+            this.lblF4.Name = "lblF4";
+            this.lblF4.Size = new System.Drawing.Size(27, 13);
+            this.lblF4.TabIndex = 108;
+            this.lblF4.Text = "[F4]";
             // 
-            // label10
+            // lblF3
             // 
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(835, 25);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(27, 13);
-            this.label10.TabIndex = 107;
-            this.label10.Text = "[F3]";
+            this.lblF3.BackColor = System.Drawing.Color.Transparent;
+            this.lblF3.ForeColor = System.Drawing.Color.Red;
+            this.lblF3.Location = new System.Drawing.Point(835, 25);
+            this.lblF3.Name = "lblF3";
+            this.lblF3.Size = new System.Drawing.Size(27, 13);
+            this.lblF3.TabIndex = 107;
+            this.lblF3.Text = "[F3]";
             // 
             // label6
             // 
@@ -686,11 +686,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Controls.Add(this.lblF11);
             this.Controls.Add(this.labelF5);
             this.Controls.Add(this.lblF5);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.label13);
+            this.Controls.Add(this.labelF4);
+            this.Controls.Add(this.labelF3);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
+            this.Controls.Add(this.lblF4);
+            this.Controls.Add(this.lblF3);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.labelAmountDue);

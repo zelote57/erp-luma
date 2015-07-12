@@ -64,10 +64,12 @@ namespace AceSoft.RetailPlus.Reports
             cboGroup.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT,Constants.ZERO_STRING));
             cboGroup.SelectedIndex = 0;
 
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
+
             ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsContact.Connection, clsContact.Transaction);
             cboSubGroup.DataTextField = "ProductSubGroupName";
             cboSubGroup.DataValueField = "ProductSubGroupID";
-            cboSubGroup.DataSource = clsProductSubGroup.ListAsDataTable();
+            cboSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns);
             cboSubGroup.DataBind();
             cboSubGroup.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.ZERO_STRING));
             cboSubGroup.SelectedIndex = 0;

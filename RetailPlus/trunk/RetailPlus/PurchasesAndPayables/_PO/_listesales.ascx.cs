@@ -76,13 +76,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		protected void imgAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);			
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("1", Session.SessionID);					
 			Response.Redirect("Default.aspx" + stParam);
 		}
 		protected void cmdAdd_Click(object sender, System.EventArgs e)
 		{
 			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);			
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("1", Session.SessionID);			
 			Response.Redirect("Default.aspx" + stParam);
 		}
 		
@@ -280,7 +280,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.PurchaseOrders); 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.PurchaseOrderseSales); 
 			imgAdd.Visible = clsDetails.Write; 
 			cmdAdd.Visible = clsDetails.Write; 
 			imgDelete.Visible = clsDetails.Write; 

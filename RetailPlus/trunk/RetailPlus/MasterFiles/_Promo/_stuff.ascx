@@ -15,12 +15,12 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Promo" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Promo" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
 								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
+					<td width="99%" class="ms-toolbar" id="align04" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -301,24 +301,14 @@
 					<td colspan="3" height="1" align="right">
 						<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 							<tr>
-								<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
+								<td width="99%" class="ms-toolbar" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 								</td>
 								<td class="ms-toolbar">
 									<table cellspacing="0" cellpadding="1" border="0">
 										<tr>
-											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
+											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 											</td>
-											<td nowrap="nowrap"><asp:linkbutton id="cmdSave" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
-										</tr>
-									</table>
-								</td>
-								<td class="ms-separator">|</td>
-								<td class="ms-toolbar">
-									<table cellspacing="0" cellpadding="1" border="0">
-										<tr>
-											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
-											</td>
-											<td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+											<td nowrap="nowrap"><asp:linkbutton id="cmdSave" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save and Additem</asp:linkbutton></td>
 										</tr>
 									</table>
 								</td>
@@ -327,7 +317,7 @@
 								<td class="ms-toolbar">
 									<table cellspacing="0" cellpadding="1" border="0">
 										<tr>
-											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Item" accessKey="N" tabIndex="3" height="16" width="16" border="0" alt="Remove Selected Item" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
+											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Item" accessKey="N" tabIndex="3" height="16" width="16" border="0" alt="Remove Selected Item" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgDelete_Click"></asp:imagebutton></td>
 											<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdDelete_Click">Remove Selected Item</asp:linkbutton></td>
 										</tr>
 									</table>
@@ -346,11 +336,12 @@
 				</tr>
 				<tr>
 					<td colspan="3" height="1">
-						<asp:datalist id="lstStuff" runat="server" Width="100%" ShowFooter="False" CellPadding="0">
+						<asp:datalist id="lstStuff" runat="server" Width="100%" ShowFooter="False" CellPadding="0"  OnItemDataBound="lstStuff_ItemDataBound" OnItemCommand="lstStuff_ItemCommand" >
 							<HeaderTemplate>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0">
 									<colgroup>
 										<col width="10">
+                                        <col width="10">
 										<col width="15%">
 										<col width="10%">
 										<col width="15%">
@@ -362,28 +353,30 @@
 										<col width="1">
 									</colgroup>
 									<tr>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											&nbsp;&nbsp;&nbsp;&nbsp;</TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											<asp:hyperlink id="Hyperlink11" runat="server">Contact</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											<asp:hyperlink id="Hyperlink4" runat="server">Group</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											<asp:hyperlink id="Hyperlink5" runat="server">Sub Group</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											<asp:hyperlink id="Hyperlink6" runat="server">Product</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											<asp:hyperlink id="Hyperlink7" runat="server">Variation</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th class="ms-vh2" style="padding-bottom: 4px">
+											&nbsp;&nbsp;&nbsp;&nbsp;</th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink11" runat="server">Contact</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink4" runat="server">Group</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink5" runat="server">Sub Group</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink6" runat="server">Product</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink7" runat="server">Variation</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<asp:hyperlink id="Hyperlink8" runat="server">Quantity</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-											<asp:hyperlink id="Hyperlink9" runat="server">Promo Value</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink8" runat="server">Quantity</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+											<asp:hyperlink id="Hyperlink9" runat="server">Promo Value</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<asp:hyperlink id="Hyperlink10" runat="server">In Percent</asp:hyperlink></TH>
-										<TH class="ms-vh2" style="padding-bottom: 4px">
-										</TH>
+											<asp:hyperlink id="Hyperlink10" runat="server">In Percent</asp:hyperlink></th>
+										<th class="ms-vh2" style="padding-bottom: 4px">
+										</th>
 									</tr>
 								</table>
 							</HeaderTemplate>
@@ -391,6 +384,7 @@
 								<table width="100%" cellpadding="0" cellspacing="0" border="0">
 									<colgroup>
 										<col width="10">
+                                        <col width="10">
 										<col width="15%">
 										<col width="10%">
 										<col width="15%">
@@ -405,6 +399,9 @@
 										<td class="ms-vb-user">
 											<input type="checkbox" id="chkList" runat="server" name="chkList" />
 										</td>
+                                        <td class="ms-vb-user">
+                                            <asp:imagebutton id="imgItemDelete" commandname="imgItemDelete" ToolTip="Remove Selected Item" accessKey="N" tabIndex="3" height="16" width="16" border="0" alt="Remove Selected Item" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton>
+                                        </td>
 										<td class="ms-vb-user">
 											<asp:Label ID="lblContactName" Runat="server"></asp:Label>
 										</td>

@@ -44,6 +44,10 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.Windows.Forms.DataGridTextBoxColumn PromoApplied;
 		private System.Windows.Forms.DataGridTextBoxColumn PurchasePrice;
 		private System.Windows.Forms.DataGridTextBoxColumn PurchaseAmount;
+        private System.Windows.Forms.DataGridTextBoxColumn SupplierID;
+        private System.Windows.Forms.DataGridTextBoxColumn SupplierCode;
+        private System.Windows.Forms.DataGridTextBoxColumn SupplierName;
+        private System.Windows.Forms.DataGridTextBoxColumn ItemRemarks;
 
 		private System.Windows.Forms.DataGridTableStyle dgStyle;
 		private System.Windows.Forms.TextBox txtSearch;
@@ -80,6 +84,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
         public Data.TerminalDetails TerminalDetails { get; set; }
 
+        public Data.SysConfigDetails SysConfigDetails { get; set; }
+
         public string TransactionTerminalNo { get; set; }
 
 		public TransactionReturnItemSelectWnd()
@@ -99,7 +105,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/TransactionItemSelect.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -162,6 +168,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PromoApplied = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PurchasePrice = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PurchaseAmount = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierName = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ItemRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
@@ -258,7 +268,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PromoType,
             this.PromoApplied,
             this.PurchasePrice,
-            this.PurchaseAmount});
+            this.PurchaseAmount,
+            this.SupplierID,
+            this.SupplierCode,
+            this.SupplierName,
+            this.ItemRemarks});
             this.dgStyle.HeaderBackColor = System.Drawing.Color.DarkOrange;
             this.dgStyle.HeaderFont = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgStyle.HeaderForeColor = System.Drawing.Color.White;
@@ -523,7 +537,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PromoValue.MappingName = "PromoValue";
             this.PromoValue.NullText = "0";
             this.PromoValue.ReadOnly = true;
-            this.PromoValue.Width = 75;
+            this.PromoValue.Width = 0;
             // 
             // PromoInPercent
             // 
@@ -532,7 +546,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PromoInPercent.MappingName = "PromoInPercent";
             this.PromoInPercent.NullText = "0";
             this.PromoInPercent.ReadOnly = true;
-            this.PromoInPercent.Width = 75;
+            this.PromoInPercent.Width = 0;
             // 
             // PromoType
             // 
@@ -541,7 +555,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PromoType.MappingName = "PromoType";
             this.PromoType.NullText = "0";
             this.PromoType.ReadOnly = true;
-            this.PromoType.Width = 75;
+            this.PromoType.Width = 0;
             // 
             // PromoApplied
             // 
@@ -569,6 +583,40 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PurchaseAmount.NullText = "0";
             this.PurchaseAmount.ReadOnly = true;
             this.PurchaseAmount.Width = 0;
+            // 
+            // SupplierID
+            // 
+            this.SupplierID.Format = "";
+            this.SupplierID.FormatInfo = null;
+            this.SupplierID.MappingName = "SupplierID";
+            this.SupplierID.NullText = "0";
+            this.SupplierID.ReadOnly = true;
+            this.SupplierID.Width = 0;
+            // 
+            // SupplierCode
+            // 
+            this.SupplierCode.Format = "";
+            this.SupplierCode.FormatInfo = null;
+            this.SupplierCode.MappingName = "SupplierCode";
+            this.SupplierCode.ReadOnly = true;
+            this.SupplierCode.Width = 0;
+            // 
+            // SupplierName
+            // 
+            this.SupplierName.Format = "";
+            this.SupplierName.FormatInfo = null;
+            this.SupplierName.MappingName = "SupplierName";
+            this.SupplierName.ReadOnly = true;
+            this.SupplierName.Width = 0;
+            // 
+            // ItemRemarks
+            // 
+            this.ItemRemarks.Format = "";
+            this.ItemRemarks.FormatInfo = null;
+            this.ItemRemarks.HeaderText = "Remarks";
+            this.ItemRemarks.MappingName = "ItemRemarks";
+            this.ItemRemarks.ReadOnly = true;
+            this.ItemRemarks.Width = 0;
             // 
             // imgIcon
             // 
@@ -761,6 +809,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 mDetails.PromoApplied = Convert.ToDecimal(dgItems[iRow, 30]);
                 mDetails.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 31]);
                 mDetails.PurchaseAmount = Convert.ToDecimal(dgItems[iRow, 32]);
+                mDetails.SupplierID = Convert.ToInt64(dgItems[iRow, 33]);
+                mDetails.SupplierCode = dgItems[iRow, 34].ToString();
+                mDetails.SupplierName = dgItems[iRow, 35].ToString();
+                mDetails.ItemRemarks = dgItems[iRow, 36].ToString();
+                mDetails.ReturnTransactionItemsID = Convert.ToInt64(dgItems[iRow, 0]);
             }
             catch (Exception ex)
             {
@@ -774,9 +827,25 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void LoadOptions()
         {
-            dgStyle.GridColumnStyles["ProductCode"].Width = 180;
-            dgStyle.GridColumnStyles["BarCode"].Width = 180;
-            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
+            switch (SysConfigDetails.ItemSelectWndColumnType)
+            {
+                case ItemSelectWndColumnType.PcDesc:
+                case ItemSelectWndColumnType.PcDescMtrx:
+                case ItemSelectWndColumnType.SgDesc:
+                case ItemSelectWndColumnType.SgDescMtrx:
+                case ItemSelectWndColumnType.SgPcDesc:
+                    dgStyle.GridColumnStyles["ProductCode"].Width = 180;
+                    dgStyle.GridColumnStyles["BarCode"].Width = 0;
+                    dgStyle.GridColumnStyles["ProductDesc"].Width = (this.Width - 190) / 2;
+                    dgStyle.GridColumnStyles["ItemRemarks"].Width = (this.Width - 190) / 2;
+                    break;
+                default:
+                    dgStyle.GridColumnStyles["ProductCode"].Width = 180;
+                    dgStyle.GridColumnStyles["BarCode"].Width = 180;
+                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
+                    dgStyle.GridColumnStyles["ItemRemarks"].Width = 0;
+                    break;
+            }
         }
 
         private void LoadItemData()
@@ -819,6 +888,10 @@ namespace AceSoft.RetailPlus.Client.UI
                 dt.Columns.Add("PromoApplied");
                 dt.Columns.Add("PurchasePrice");
                 dt.Columns.Add("PurchaseAmount");
+                dt.Columns.Add("SupplierID");
+                dt.Columns.Add("SupplierCode");
+                dt.Columns.Add("SupplierName");
+                dt.Columns.Add("ItemRemarks");
 
                 Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
                 Data.SalesTransactionDetails det = clsSalesTransactions.Details(mstTransactionNo, TransactionTerminalNo, TerminalDetails.BranchID);
@@ -830,8 +903,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 foreach (Data.SalesTransactionItemDetails item in TransactionItems)
                 {
-                    if (item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Valid ||
-                        item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Demo)
+                    if ((item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Valid ||
+                         item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Demo) && item.RefReturnTransactionItemsID == 0)
                     {
                         System.Data.DataRow dr = dt.NewRow();
 
@@ -872,10 +945,13 @@ namespace AceSoft.RetailPlus.Client.UI
                         dr["PromoApplied"] = item.PromoApplied;
                         dr["PurchasePrice"] = item.PurchasePrice;
                         dr["PurchaseAmount"] = item.PurchaseAmount;
+                        dr["SupplierID"] = item.SupplierID;
+                        dr["SupplierCode"] = item.SupplierCode;
+                        dr["SupplierName"] = item.SupplierName;
+                        dr["ItemRemarks"] = item.ItemRemarks;
 
                         dt.Rows.Add(dr);
                     }
-
                 }
                 this.dgStyle.MappingName = dt.TableName;
                 dgItems.DataSource = dt;

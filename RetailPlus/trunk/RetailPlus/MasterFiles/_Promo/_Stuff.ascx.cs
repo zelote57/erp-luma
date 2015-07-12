@@ -26,11 +26,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.imgCancel.Click += new System.Web.UI.ImageClickEventHandler(this.imgCancel_Click);
-			this.imgSave.Click += new System.Web.UI.ImageClickEventHandler(this.imgSave_Click);
-			this.imgSaveBack.Click += new System.Web.UI.ImageClickEventHandler(this.imgSaveBack_Click);
-			this.imgDelete.Click += new System.Web.UI.ImageClickEventHandler(this.imgDelete_Click);
-			this.lstStuff.ItemDataBound += new System.Web.UI.WebControls.DataListItemEventHandler(this.lstStuff_ItemDataBound);
 
 		}
 		#endregion
@@ -58,6 +53,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
             cboContact.DataSource = clsContact.CustomersDataTable(txtContactCode.Text).DefaultView;
 			cboContact.DataBind();
             cboContact.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboContact.Items.Insert(1, new ListItem(Constants.PLUSCARDMEMBERS, Constants.PLUSCARDMEMBERSID_STRING));
+            cboContact.Items.Insert(2, new ListItem(Constants.ICCARDMEMBERS, Constants.ICCARDMEMBERSID_STRING));
+            cboContact.Items.Insert(3, new ListItem(Constants.GCCARDMEMBERS, Constants.GCCARDMEMBERSID_STRING));
 			cboContact.SelectedIndex = 0;
 
             ProductGroup clsProductGroup = new ProductGroup(clsContact.Connection, clsContact.Transaction);
@@ -129,35 +127,17 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 			LoadList();
 		}
 
-		private void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			SaveRecord();			
-            //string stID = lblPromoID.Text;
-            //string stParam = "?task=" + Common.Encrypt("stuff",Session.SessionID) + "&id=" + Common.Encrypt(stID,Session.SessionID);	
-            //Response.Redirect("Default.aspx" + stParam);
 		}
 
 		protected void cmdSave_Click(object sender, System.EventArgs e)
 		{
 			SaveRecord();
-            //string stID = lblPromoID.Text;
-            //string stParam = "?task=" + Common.Encrypt("stuff",Session.SessionID) + "&id=" + Common.Encrypt(stID,Session.SessionID);	
-            //Response.Redirect("Default.aspx" + stParam);
 		}
 
-		private void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
-		}
-
-		protected void cmdSaveBack_Click(object sender, System.EventArgs e)
-		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
-		}
-
-		private void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			Response.Redirect(lblReferrer.Text);
 		}
@@ -167,7 +147,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 			Response.Redirect(lblReferrer.Text);
 		}
 
-		private void lstStuff_ItemDataBound(object sender, DataListItemEventArgs e)
+        protected void lstStuff_ItemDataBound(object sender, DataListItemEventArgs e)
 		{
 			if(e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
 			{
@@ -177,54 +157,37 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 				chkList.Value = dr["PromoItemsID"].ToString();
 
 				Label lblContactName = (Label) e.Item.FindControl("lblContactName");
-				if (dr["ContactName"].ToString()==string.Empty)
-				{
-					lblContactName.Text = "All Contacts";
-				}
-				else
-				{
-					lblContactName.Text = dr["ContactName"].ToString();
-				}
+
+                switch (dr["ContactID"].ToString())
+                {
+                    case Constants.ZERO_STRING:
+                        lblContactName.Text = "All Contacts";
+                        break;
+                    case Constants.PLUSCARDMEMBERSID_STRING:
+                        lblContactName.Text = "All PlusCard Members";
+                        break;
+                    case Constants.ICCARDMEMBERSID_STRING:
+                        lblContactName.Text = "All ICCard Members";
+                        break;
+                    case Constants.GCCARDMEMBERSID_STRING:
+                        lblContactName.Text = "All GCCard Members";
+                        break;
+                    default:
+                        lblContactName.Text = dr["ContactName"].ToString();
+                        break;
+                }
 
 				Label lblProductGroup = (Label) e.Item.FindControl("lblProductGroup");
-				if (dr["ProductGroupName"].ToString()==string.Empty)
-				{
-					lblProductGroup.Text = "All Groups";
-				}
-				else
-				{
-					lblProductGroup.Text = dr["ProductGroupName"].ToString();
-				}
+				if (dr["ProductGroupName"].ToString()==string.Empty) lblProductGroup.Text = "All Groups"; else lblProductGroup.Text = dr["ProductGroupName"].ToString();
 
 				Label lblProductSubGroup = (Label) e.Item.FindControl("lblProductSubGroup");
-				if (dr["ProductSubGroupName"].ToString()==string.Empty)
-				{
-					lblProductSubGroup.Text = "All SubGroups";
-				}
-				else
-				{
-					lblProductSubGroup.Text = dr["ProductSubGroupName"].ToString();
-				}
+				if (dr["ProductSubGroupName"].ToString()==string.Empty) lblProductSubGroup.Text = "All SubGroups"; else lblProductSubGroup.Text = dr["ProductSubGroupName"].ToString();
 
 				Label lblProduct = (Label) e.Item.FindControl("lblProduct");
-				if (dr["ProductDesc"].ToString()==string.Empty)
-				{
-					lblProduct.Text = "All Products";
-				}
-				else
-				{
-					lblProduct.Text = dr["ProductDesc"].ToString();
-				}
+				if (dr["ProductDesc"].ToString()==string.Empty) lblProduct.Text = "All Products"; else lblProduct.Text = dr["ProductDesc"].ToString();
 
 				Label lblVariation = (Label) e.Item.FindControl("lblVariation");
-				if (dr["Description"].ToString()==string.Empty)
-				{
-					lblVariation.Text = "All Variations";
-				}
-				else
-				{
-					lblVariation.Text = dr["Description"].ToString();
-				}
+				if (dr["Description"].ToString()==string.Empty) lblVariation.Text = "All Variations"; else lblVariation.Text = dr["Description"].ToString();
 
 				Label lblQuantity = (Label) e.Item.FindControl("lblQuantity");
 				lblQuantity.Text = Convert.ToDecimal(dr["Quantity"].ToString()).ToString("#,##0.#");
@@ -242,6 +205,24 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 //				anchorDown.HRef = "javascript:ToggleDiv('" +  divExpCollAsst.ClientID + "')";
 			}
 		}
+
+        protected void lstStuff_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
+        {
+            HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
+
+            switch (e.CommandName)
+            {
+                case "imgItemDelete":
+                    {
+                        PromoItems clsPromoItems = new PromoItems();
+                        clsPromoItems.Delete(chkList.Value);
+                        clsPromoItems.CommitAndDispose();
+                        LoadList();
+                    }
+                    break;
+
+            }
+        }
 
 		protected void cboProductGroup_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -325,7 +306,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
             cboContact.DataSource = clsContact.CustomersDataTable(txtContactCode.Text).DefaultView;
             cboContact.DataBind();
             cboContact.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
-            if (cboContact.Items.Count > 1) cboContact.SelectedIndex = 1; else cboContact.SelectedIndex = 0;
+            cboContact.Items.Insert(1, new ListItem(Constants.PLUSCARDMEMBERS, Constants.PLUSCARDMEMBERSID_STRING));
+            cboContact.Items.Insert(2, new ListItem(Constants.ICCARDMEMBERS, Constants.ICCARDMEMBERSID_STRING));
+            cboContact.Items.Insert(3, new ListItem(Constants.GCCARDMEMBERS, Constants.GCCARDMEMBERSID_STRING));
+
+            if (cboContact.Items.Count > 4) cboContact.SelectedIndex = 4; else cboContact.SelectedIndex = 0;
             clsContact.CommitAndDispose();
         }
 
@@ -334,7 +319,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
             cboProductSubGroup_SelectedIndexChanged(null, System.EventArgs.Empty);
         }
 
-		private void imgDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			if (Delete())
 				LoadList();

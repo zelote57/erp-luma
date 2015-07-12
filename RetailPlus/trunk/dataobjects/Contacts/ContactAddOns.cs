@@ -41,6 +41,9 @@ namespace AceSoft.RetailPlus.Data
         public string FaxNo;
         public string EmailAddress;
 
+        public Sex Sex;
+        public string AttendingPhysician;
+
         public DateTime CreatedOn;
         public DateTime LastModified;
 	}
@@ -138,7 +141,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "CALL procSaveContactAddOn(@ContactDetailID, @ContactID, @Salutation, @FirstName, @MiddleName, @LastName," +
                                 "@SpouseName, @BirthDate, @SpouseBirthDate, @AnniversaryDate, @Address1, @Address2," +
                                 "@City, @State, @ZipCode, @CountryID, @BusinessphoneNo, @HomephoneNo, @MobileNo," +
-                                "@FaxNo, @EmailAddress, @CreatedOn, @LastModified);";
+                                "@FaxNo, @EmailAddress, @Sex, @AttendingPhysician, @CreatedOn, @LastModified);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -165,6 +168,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("MobileNo", Details.MobileNo);
                 cmd.Parameters.AddWithValue("FaxNo", Details.FaxNo);
                 cmd.Parameters.AddWithValue("EmailAddress", Details.EmailAddress);
+                cmd.Parameters.AddWithValue("Sex", Details.Sex);
+                cmd.Parameters.AddWithValue("AttendingPhysician", Details.AttendingPhysician);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
@@ -251,6 +256,8 @@ namespace AceSoft.RetailPlus.Data
                     Details.MobileNo = "" + dr["MobileNo"].ToString();
                     Details.FaxNo = "" + dr["FaxNo"].ToString();
                     Details.EmailAddress = "" + dr["EmailAddress"].ToString();
+                    Details.Sex = (Sex) Enum.Parse(typeof(Sex), dr["Sex"].ToString());
+                    Details.AttendingPhysician = "" + dr["AttendingPhysician"].ToString();
                 }
             }
             catch (Exception ex) { throw base.ThrowException(ex); }
@@ -291,19 +298,26 @@ namespace AceSoft.RetailPlus.Data
 
         public DataTable ListAsDataTable(long ContactID = 0,string Name = "")
         {
-            string SQL = "CALL procContactAddOnSelect(@ContactID, @Name)";
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+                string SQL = "CALL procContactAddOnSelect(@ContactID, @Name)";
 
-            cmd.Parameters.AddWithValue("@ContactID", ContactID);
-            cmd.Parameters.AddWithValue("@Name", Name);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@Name", Name);
 
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-            return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
         #endregion

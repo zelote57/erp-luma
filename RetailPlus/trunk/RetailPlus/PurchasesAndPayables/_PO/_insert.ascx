@@ -1,5 +1,6 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._PO.__Insert" Codebehind="_Insert.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/DocumentScripts.js"></script>
+<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">0</asp:label>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>

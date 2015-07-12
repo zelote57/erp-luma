@@ -313,8 +313,25 @@ namespace AceSoft.RetailPlus
 
         InvThreshold = 184,
 
-        WarehouseToBranchTransferIssueGRN = 185
+        WarehouseToBranchTransferIssueGRN = 185,
 
+        // 05Jun2015 : for viewing of Payable eSales
+        PurchaseOrderseSales = 186,
+        PurchaseReturnseSales = 187,
+        PurchaseDebitMemoeSales = 188,
+        ManagePurchaseOrderseSales = 189,
+        ManagePurchaseReturnsSales = 190,
+        ManagePurchaseDebitMemoeSales = 191,
+        PurchaseAnalysiseSales = 192,
+
+        eInventoryReport = 193,
+        ResumeClosedTransaction = 194,
+        TransactionItemAttachmentDelete = 195,
+        TransactionItemAttachmentViewDeleted = 196,
+        ProductsInDemoReport = 197,
+        ProductUnitMatrix = 198,
+        FE_VerifyCredit = 199,
+        PromosBySupplier = 200
     }
 
     /// <summary>

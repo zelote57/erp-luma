@@ -80,6 +80,17 @@ namespace AceSoft.RetailPlus.Reports
                 cboContactName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactName.Text, Constants.ZERO_STRING));
             cboContactName.SelectedIndex = 0;
 
+            ContactGroups clsContactGroups = new ContactGroups(clsCustomer.Connection, clsCustomer.Transaction);
+            cboContactGroupName.DataTextField = "ContactGroupName";
+            cboContactGroupName.DataValueField = "ContactGroupID";
+            cboContactGroupName.DataSource = clsContactGroups.ListAsDataTable(ContactGroupCategory.CUSTOMER, txtContactGroupName.Text);
+            cboContactGroupName.DataBind();
+            if (string.IsNullOrEmpty(txtContactName.Text))
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactGroupName.Text, Constants.ZERO_STRING));
+            cboContactGroupName.SelectedIndex = 0;
+
             cboAgent.Items.Clear();
             Contacts clsContact = new Contacts(clsCustomer.Connection, clsCustomer.Transaction);
             cboAgent.DataTextField = "ContactName";
@@ -220,6 +231,7 @@ namespace AceSoft.RetailPlus.Reports
 		{
             string strProductGroup = cboProductGroup.SelectedItem.Text == Constants.ALL ? string.Empty : cboProductGroup.SelectedItem.Text;
             string TransactionNo = txtTransactionNo.Text;
+            string CustomerGroupName = cboContactGroupName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboContactGroupName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboContactGroupName.SelectedItem.Text;
             string CustomerName = cboContactName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboContactName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE","").Trim() : cboContactName.SelectedItem.Text;
             string AgentName = cboAgent.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboAgent.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboAgent.SelectedItem.Text;
             string CashierName = cboCashierName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboCashierName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboCashierName.SelectedItem.Text;
@@ -278,6 +290,7 @@ namespace AceSoft.RetailPlus.Reports
             SalesTransactionDetails clsSearchKey = new SalesTransactionDetails();
             clsSearchKey = new SalesTransactionDetails();
             clsSearchKey.TransactionNo = TransactionNo;
+            clsSearchKey.CustomerGroupName = CustomerGroupName;
             clsSearchKey.CustomerName = CustomerName;
             clsSearchKey.CashierName = CashierName;
             clsSearchKey.TerminalNo = TerminalNo;
@@ -514,6 +527,22 @@ namespace AceSoft.RetailPlus.Reports
         //    if (cboTerminalNo.Items.Count > 1 && txtTerminalNo.Text.Trim() != string.Empty) cboTerminalNo.SelectedIndex = 1; else cboTerminalNo.SelectedIndex = 0;
         //    clsTerminal.CommitAndDispose();
         //}
+
+        protected void imgContactGroupNameSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            ContactGroups clsContactGroups = new ContactGroups();
+            cboContactGroupName.DataTextField = "ContactGroupName";
+            cboContactGroupName.DataValueField = "ContactGroupID";
+            cboContactGroupName.DataSource = clsContactGroups.ListAsDataTable(ContactGroupCategory.CUSTOMER, txtContactGroupName.Text);
+            cboContactGroupName.DataBind();
+            clsContactGroups.CommitAndDispose();
+            if (string.IsNullOrEmpty(txtContactName.Text))
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboContactGroupName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactGroupName.Text, Constants.ZERO_STRING));
+            cboContactGroupName.SelectedIndex = 0;
+
+        }
 
         protected void imgContactNameSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {

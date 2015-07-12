@@ -1,7 +1,8 @@
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.Inventory._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-<%@ Register Src="../Reports/_ProductBranchInventoryReport.ascx" TagName="ctrlProductBranchInventoryReport" TagPrefix="CTRL" %>
-<%@ Register Src="../Reports/_inventoryanalyst.ascx" TagName="ctrlInventoryAnalyst" TagPrefix="CTRL" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlProductBranchInventoryReport" Src="../Reports/_ProductBranchInventoryReport.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlInventoryAnalyst" Src="../Reports/_inventoryanalyst.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlProducteInventoryReport" Src="../Reports/_inventory/_producteinventoryreport.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlProductInventoryReport" Src="../Reports/_inventory/_productinventoryreport.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlClosingInventoryReport" Src="../Reports/_closinginventory.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="PageLevelError" Src="../_PageLevelError.ascx" %>
@@ -123,6 +124,7 @@
 									<CTRL:ctrlCloseInventoryDetailed id="ctrlCloseInventoryDetailed" runat="server" Visible="False"></CTRL:ctrlCloseInventoryDetailed>
 									<CTRL:ctrlInvAdjustment id="ctrlInvAdjustment" runat="server" Visible="False"></CTRL:ctrlInvAdjustment>
                                     <CTRL:ctrlInvThreshold id="ctrlInvThreshold" runat="server" Visible="False"></CTRL:ctrlInvThreshold>
+                                    <CTRL:ctrlProducteInventoryReport ID="ctrlProducteInventoryReport" runat="server" Visible="false" />
                                     <CTRL:ctrlProductInventoryReport ID="ctrlProductInventoryReport" runat="server" Visible="false" />
                                     <CTRL:ctrlClosingInventoryReport ID="ctrlClosingInventoryReport" runat="server" Visible="false" />
                                     <CTRL:ctrlInventoryAnalyst ID="ctrlInventoryAnalyst" runat="server" Visible="false" />

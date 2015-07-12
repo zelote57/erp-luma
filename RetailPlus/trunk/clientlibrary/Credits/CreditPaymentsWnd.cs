@@ -66,7 +66,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -394,15 +394,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			lblHeader.Text = mclsCustomerDetails.ContactName;
 
-            Security.AccessRights clsAccessRights = new Security.AccessRights();
-            Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
-
-            clsDetails = clsAccessRights.Details(CashierID, (Int16)AccessTypes.CreditPaymentReversal);
-            mboCreditPaymentReversal = clsDetails.Write;
-
-            clsAccessRights.CommitAndDispose();
-
-
+            ManageSecurity();
 			LoadOptions();
 			LoadData();
 		}
@@ -467,6 +459,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		#region Private Modifiers
 
+        private void ManageSecurity()
+        {
+            Security.AccessRights clsAccessRights = new Security.AccessRights();
+            Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
+
+            clsDetails = clsAccessRights.Details(CashierID, (Int16)AccessTypes.CreditPaymentReversal);
+            mboCreditPaymentReversal = clsDetails.Write;
+
+            clsAccessRights.CommitAndDispose();
+        }
+
 		private void LoadOptions()
 		{
             txtTrxStartDate.Text = DateTime.Now.AddDays(-60).ToString("yyyy-MM-dd");
@@ -478,17 +481,17 @@ namespace AceSoft.RetailPlus.Client.UI
 			try
 			{
                 DateTime dteRetValue = DateTime.MinValue;
-                Data.CreditPaymentCashDetails clsCreditPaymentCashDetails = new Data.CreditPaymentCashDetails();
-                clsCreditPaymentCashDetails.BranchDetails = new Data.BranchDetails();
-                clsCreditPaymentCashDetails.TerminalNo = "";
-                clsCreditPaymentCashDetails.PaymentDateFrom = DateTime.TryParse(txtTrxStartDate.Text + " 00:00:00", out dteRetValue) ? dteRetValue : DateTime.Now.AddDays(-60);
-                clsCreditPaymentCashDetails.PaymentDateTo = DateTime.TryParse(txtTrxEndDate.Text + " 23:59:59", out dteRetValue) ? dteRetValue : DateTime.Now;
-                clsCreditPaymentCashDetails.CreditType = CreditType.Both;
-                clsCreditPaymentCashDetails.CreditCardTypeID = 0;
-                clsCreditPaymentCashDetails.ContactID = mclsCustomerDetails.ContactID;
+                Data.CreditPaymentCashDetails clsSearchKeys = new Data.CreditPaymentCashDetails();
+                clsSearchKeys.BranchDetails = new Data.BranchDetails();
+                clsSearchKeys.TerminalNo = "";
+                clsSearchKeys.PaymentDateFrom = DateTime.TryParse(txtTrxStartDate.Text + " 00:00:00", out dteRetValue) ? dteRetValue : DateTime.Now.AddDays(-60);
+                clsSearchKeys.PaymentDateTo = DateTime.TryParse(txtTrxEndDate.Text + " 23:59:59", out dteRetValue) ? dteRetValue : DateTime.Now;
+                clsSearchKeys.CreditType = CreditType.Both;
+                clsSearchKeys.CreditCardTypeID = 0;
+                clsSearchKeys.ContactID = mclsCustomerDetails.ContactID;
 
                 Data.Contacts clsContacts = new Data.Contacts();
-                System.Data.DataTable dt = clsContacts.CreditPaymentCashAsDataTable(clsCreditPaymentCashDetails, "trx.CreatedOn");
+                System.Data.DataTable dt = clsContacts.CreditPaymentCashAsDataTable(clsSearchKeys, "trx.CreatedOn");
 				clsContacts.CommitAndDispose();
 
                 System.Data.DataView dv = dt.DefaultView;
@@ -539,7 +542,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 lblTotal.Text = decTotalPayable.ToString("#,##0.#0");
 
-                grpBox1.Text = "Payments from: " + clsCreditPaymentCashDetails.PaymentDateFrom.ToString("MMM dd, yyyy") + " to " + clsCreditPaymentCashDetails.PaymentDateTo.ToString("MMM dd, yyyy");
+                grpBox1.Text = "Payments from: " + clsSearchKeys.PaymentDateFrom.ToString("MMM dd, yyyy") + " to " + clsSearchKeys.PaymentDateTo.ToString("MMM dd, yyyy");
 
                 txtTrxStartDate.SelectAll();
                 txtTrxStartDate.Select();

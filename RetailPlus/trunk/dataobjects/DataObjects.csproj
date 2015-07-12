@@ -148,6 +148,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CashierReportHistories.cs" />
+    <Compile Include="Promo\PromoBySupplierItems.cs" />
+    <Compile Include="Promo\PromoBySupplier.cs" />
+    <Compile Include="SalesTransactionItemAttachments.cs" />
     <Compile Include="MergeTable.cs" />
     <Compile Include="Payments\DebitPayments.cs" />
     <Compile Include="SplitPayment.cs" />
@@ -306,10 +309,10 @@
     <Compile Include="Products\ProductVariationsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Promo.cs">
+    <Compile Include="Promo\Promo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PromoItems.cs">
+    <Compile Include="Promo\PromoItems.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PromoType.cs">

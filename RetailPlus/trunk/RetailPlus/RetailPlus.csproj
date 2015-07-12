@@ -629,6 +629,41 @@
     <Compile Include="MasterFiles\_Product\_changeosprinter.ascx.designer.cs">
       <DependentUpon>_changeosprinter.ascx</DependentUpon>
     </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_Stuff.ascx.cs">
+      <DependentUpon>_stuff.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_Stuff.ascx.designer.cs">
+      <DependentUpon>_stuff.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_PromoBySupplier\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
     <Compile Include="PurchasesAndPayables\_DebitMemo\_listesales.ascx.cs">
       <DependentUpon>_listesales.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -762,6 +797,12 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportChequePaymentList.cs">
+      <DependentUpon>_DatedReportChequePaymentList.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerGroupSummarized.cs">
       <DependentUpon>_DatedReportSalesTransactionPerCustomerPerGroupSummarized.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -779,6 +820,13 @@
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_inventory\_producteinventoryreport.ascx.cs">
+      <DependentUpon>_producteinventoryreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_producteinventoryreport.ascx.designer.cs">
+      <DependentUpon>_producteinventoryreport.ascx</DependentUpon>
     </Compile>
     <Compile Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithEffective.cs">
       <DependentUpon>_DatedReportSummarizedPerDayBIRWithEffective.rpt</DependentUpon>
@@ -913,6 +961,12 @@
     </Compile>
     <Compile Include="Reports\_managementreport\_managementreport.ascx.designer.cs">
       <DependentUpon>_managementreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_products\_ProductsInDemoReport.cs">
+      <DependentUpon>_ProductsInDemoReport.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\_rewards\_rewardssummarystatistics.cs">
       <DependentUpon>_rewardssummarystatistics.rpt</DependentUpon>
@@ -3831,6 +3885,11 @@
     <Content Include="MasterFiles\_Contact\_pricelevel.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
     <Content Include="MasterFiles\_Product\_changeosprinter.ascx" />
+    <Content Include="MasterFiles\_PromoBySupplier\default.aspx" />
+    <Content Include="MasterFiles\_PromoBySupplier\_insert.ascx" />
+    <Content Include="MasterFiles\_PromoBySupplier\_list.ascx" />
+    <Content Include="MasterFiles\_PromoBySupplier\_stuff.ascx" />
+    <Content Include="MasterFiles\_PromoBySupplier\_update.ascx" />
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="vwd.webinfo" />
@@ -3846,6 +3905,7 @@
     <Content Include="PurchasesAndPayables\_Returns\_elist.ascx" />
     <Content Include="PurchasesAndPayables\_Returns\_listesales.ascx" />
     <Content Include="Reports\_analyticsreport\_analyticsreport.ascx" />
+    <Content Include="Reports\_inventory\_producteinventoryreport.ascx" />
     <Content Include="Reports\_esalesreport\_esalesreport.ascx" />
     <Content Include="Reports\_managementreport\_managementreport.ascx" />
     <Content Include="Rewards\_reports.ascx" />
@@ -4407,6 +4467,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ccisummarystatistics.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportChequePaymentList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportChequePaymentList.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerGroupSummarized.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesTransactionPerCustomerPerGroupSummarized.cs</LastGenOutput>
@@ -4498,6 +4562,10 @@
     <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportMonthly.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ProductInventoryReportMonthly.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_products\_ProductsInDemoReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductsInDemoReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_products\_ProductsReportPricesForWeighingScale.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

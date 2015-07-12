@@ -374,3 +374,17 @@ INDEX `IX_tblgla_order_tender`(`order_hdr_id`),
 INDEX `IX1_tblgla_order_tender`(`customer_name`)
 );
 
+ALTER TABLE tblgla_f_dtl_chk_headers DROP CreatedOn;
+
+ALTER TABLE tblgla_f_dtl_chk_headers ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+ALTER TABLE tblgla_f_dtl_chk_headers DROP LastModified;
+
+ALTER TABLE tblgla_f_dtl_chk_headers ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+DROP TRIGGER IF EXISTS trgtblgla_f_dtl_chk_headersCreatedOn;
+
+CREATE TRIGGER trgtblgla_f_dtl_chk_headersCreatedOn BEFORE INSERT ON tblgla_f_dtl_chk_headers FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+
+UPDATE tblgla_f_dtl_chk_headers SET LastModified = NOW();
+

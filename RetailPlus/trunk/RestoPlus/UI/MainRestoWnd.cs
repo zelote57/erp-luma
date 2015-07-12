@@ -79,6 +79,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private DataGridTextBoxColumn Commision;
         private DataGridTextBoxColumn RewardPoints;
         private DataGridTextBoxColumn ItemRemarks;
+        private DataGridTextBoxColumn ReturnTransactionItemsID;
 		private DataGridTextBoxColumn PercentageCommision;
 		private DataGridTextBoxColumn OrderSlipPrinted;
         private DataGridTextBoxColumn OrderSlipPrinter1;
@@ -258,6 +259,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Commision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.RewardPoints = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ItemRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ReturnTransactionItemsID = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PercentageCommision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.OrderSlipPrinted = new System.Windows.Forms.DataGridTextBoxColumn();
             this.OrderSlipPrinter1 = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -1300,6 +1302,15 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PaxNo.ReadOnly = true;
             this.PaxNo.Width = 0;
             // 
+            // ReturnTransactionItemsID
+            // 
+            this.ReturnTransactionItemsID.Format = "";
+            this.ReturnTransactionItemsID.FormatInfo = null;
+            this.ReturnTransactionItemsID.MappingName = "ReturnTransactionItemsID";
+            this.ReturnTransactionItemsID.NullText = "";
+            this.ReturnTransactionItemsID.ReadOnly = true;
+            this.ReturnTransactionItemsID.Width = 0;       
+            // 
             // TransactionItemsID
             // 
             this.TransactionItemsID.Format = "";
@@ -1895,7 +1906,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				this.Focus();
 
 				InsertAuditLog(AccessTypes.LockTerminal, "Lock Terminal #: " + mclsTerminalDetails.TerminalNo);
-				clsEvent.AddEventLn("Done!");
+				clsEvent.AddEventLn("Done!", true);
 			}
 			catch (Exception ex)
 			{ clsEvent.AddErrorEventLn(ex); }
@@ -1931,7 +1942,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsSalesTransactionDetails.CashierName = details.Name;
 
                 InsertAuditLog(AccessTypes.UnlockTerminal, "Unlock terminal #: " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-                clsEvent.AddEventLn("Done!");
+                clsEvent.AddEventLn("Done!", true);
             }
             catch (Exception ex)
             {
@@ -2063,7 +2074,18 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				else if (!mboLocked)
 				{
+                    // 15Jun2015 : Do not allow to do anything in Closed Transaction
+                    if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Closed ||
+                        mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.ClosedOutOfStock ||
+                        mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.ClosedWalkIn)
+                    {
+                        e.SuppressKeyPress = true;
+                        if (e.KeyCode != Keys.F7 && e.KeyCode != Keys.Add && e.KeyCode != Keys.Up && e.KeyCode != Keys.Down && e.KeyCode != Keys.Oemplus)
+                        { return; }
+                    }
+
 					if (txtBarCode.Text != string.Empty && e.KeyCode != Keys.Enter) return;
+
 					if (Control.ModifierKeys == Keys.Control)
 					{
 						switch (e.KeyCode)
@@ -2186,6 +2208,10 @@ namespace AceSoft.RetailPlus.Client.UI
 					{
 						switch (e.KeyCode)
 						{
+                            case Keys.Oemplus:
+                                AddItemAttachment();
+                                break;
+
 							case Keys.F2:
 								ChangePrice();
 								break;
@@ -2253,6 +2279,10 @@ namespace AceSoft.RetailPlus.Client.UI
 							case Keys.F2:
 								ChangeAmount();
 								break;
+
+                            case Keys.F4:
+                                e.SuppressKeyPress = true;
+                                return;
 
 							case Keys.F5:
 								ApplyTransCharge(); //ChargeTypes.Percentage
@@ -2328,25 +2358,43 @@ namespace AceSoft.RetailPlus.Client.UI
                                     Data.ContactDetails clsContactDetails;
                                     DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
 
-                                    if (!mclsTerminalDetails.ShowCustomerSelection)
+                                    switch (mclsSysConfigDetails.ContactAddWndType)
                                     {
-                                        ContactAddDetWnd clsContactAddWnd = new ContactAddDetWnd();
-                                        clsContactAddWnd.Caption = "Quickly add new customer.";
-                                        clsContactAddWnd.ShowDialog(this);
-                                        addresult = clsContactAddWnd.Result;
-                                        clsContactDetails = clsContactAddWnd.ContactDetails;
-                                        clsContactAddWnd.Close();
-                                        clsContactAddWnd.Dispose();
-                                    }
-                                    else
-                                    {
-                                        ContactAddWnd clsContactAddWnd = new ContactAddWnd();
-                                        clsContactAddWnd.Caption = "Quickly add new customer.";
-                                        clsContactAddWnd.ShowDialog(this);
-                                        addresult = clsContactAddWnd.Result;
-                                        clsContactDetails = clsContactAddWnd.ContactDetails;
-                                        clsContactAddWnd.Close();
-                                        clsContactAddWnd.Dispose();
+                                        case ContactAddWndType.ContactAddWnd:
+                                        case ContactAddWndType.ContactAddNoLTOWnd:
+                                            ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                                            clsContactAddWnd.Caption = "Quickly add new customer.";
+                                            clsContactAddWnd.ContactDetails = new Data.ContactDetails();
+                                            clsContactAddWnd.TerminalDetails = mclsTerminalDetails;
+                                            clsContactAddWnd.SysConfigDetails = mclsSysConfigDetails;
+                                            clsContactAddWnd.ShowDialog(this);
+                                            addresult = clsContactAddWnd.Result;
+                                            clsContactDetails = clsContactAddWnd.ContactDetails;
+                                            clsContactAddWnd.Close();
+                                            clsContactAddWnd.Dispose();
+                                            break;
+                                        case ContactAddWndType.ContactAddHCareWnd:
+                                            ContactAddHCareWnd clsContactAddHCareWnd = new ContactAddHCareWnd();
+                                            clsContactAddHCareWnd.Caption = "Quickly add new customer.";
+                                            clsContactAddHCareWnd.ContactDetails = new Data.ContactDetails();
+                                            clsContactAddHCareWnd.TerminalDetails = mclsTerminalDetails;
+                                            clsContactAddHCareWnd.ShowDialog(this);
+                                            addresult = clsContactAddHCareWnd.Result;
+                                            clsContactDetails = clsContactAddHCareWnd.ContactDetails;
+                                            clsContactAddHCareWnd.Close();
+                                            clsContactAddHCareWnd.Dispose();
+                                            break;
+                                        default:
+                                            ContactAddDetWnd clsContactAddDetWnd = new ContactAddDetWnd();
+                                            clsContactAddDetWnd.Caption = "Quickly add new customer.";
+                                            clsContactAddDetWnd.ContactDetails = new Data.ContactDetails();
+                                            clsContactAddDetWnd.TerminalDetails = mclsTerminalDetails;
+                                            clsContactAddDetWnd.ShowDialog(this);
+                                            addresult = clsContactAddDetWnd.Result;
+                                            clsContactDetails = clsContactAddDetWnd.ContactDetails;
+                                            clsContactAddDetWnd.Close();
+                                            clsContactAddDetWnd.Dispose();
+                                            break;
                                     }
 
                                     if (addresult == DialogResult.OK) LoadContact(Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
@@ -2366,7 +2414,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                     if (clsDetails.Read)
                                     {
-                                        ReprintZRead(true);
+                                        ReprintZRead();
                                     }
                                     miReprintZReadCounter = 0;
                                 }
@@ -2379,6 +2427,11 @@ namespace AceSoft.RetailPlus.Client.UI
 					{
 						switch (e.KeyData)
 						{
+                            case Keys.Add:
+                            case Keys.Oemplus:
+                                AddItemAttachment();
+                                break;
+
 							case Keys.Up:
 								MoveItemUp();
 								break;
@@ -2440,13 +2493,15 @@ namespace AceSoft.RetailPlus.Client.UI
 								break;
 
 							case Keys.Enter:
-								if (txtBarCode.Text.Trim() != "" && txtBarCode.Text.Trim() != null)
+                                if (!string.IsNullOrEmpty(txtBarCode.Text.Trim()))
 									if (txtBarCode.Text.Contains(Constants.SWIPE_REWARD_CARD))
 									{ 
 										LoadContact(Data.ContactGroupCategory.CUSTOMER, new Data.ContactDetails()); }
                                     else
                                     {
-                                        if (txtBarCode.Text.StartsWith("-") && txtBarCode.Text.Contains("*"))
+                                        //if (txtBarCode.Text.StartsWith("-") && txtBarCode.Text.Contains("*"))
+                                        //    MessageBox.Show("Sorry you cannot enter a negative quantity when selling an item.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                                        if (txtBarCode.Text.Contains("*") && txtBarCode.Text.Split('*')[0].Contains("-"))
                                             MessageBox.Show("Sorry you cannot enter a negative quantity when selling an item.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                                         else
                                             ReadBarCode();
@@ -2458,7 +2513,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								break;
 
 							case Keys.Back:
-								if (txtBarCode.Text.Trim() == "")
+                                if (string.IsNullOrEmpty(txtBarCode.Text.Trim()))
 									VoidItem();
 								break;
 
@@ -2686,7 +2741,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint = new StringBuilder();
                 msbEJournalToPrint = new StringBuilder();
 
-				clsEvent.AddEventLn("Done!");
+				clsEvent.AddEventLn("Done!", true);
 
 			}
 			catch (Exception ex)
@@ -2743,7 +2798,7 @@ namespace AceSoft.RetailPlus.Client.UI
             ItemDataTable.Columns.Add("RewardPoints");
             ItemDataTable.Columns.Add("ItemRemarks");
             ItemDataTable.Columns.Add("PaxNo");
-            
+            ItemDataTable.Columns.Add("ReturnTransactionItemsID");
 
             this.dgStyle.MappingName = ItemDataTable.TableName;
             dgItems.DataSource = ItemDataTable;
@@ -2802,11 +2857,16 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void Exit()
 		{
-			if (mboIsInTransaction)
-			{
-				MessageBox.Show("Cannot exit the system current transaction is active. Please SUSPEND or VOID the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-				return;
-			}
+            if (mboIsInTransaction)
+            {
+                if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Closed ||
+                   mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.ClosedOutOfStock ||
+                   mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.ClosedWalkIn)
+                    MessageBox.Show("Cannot exit the system current transaction is active. Please SUSPEND the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                else
+                    MessageBox.Show("Cannot exit the system current transaction is active. Please SUSPEND or VOID the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
 			if (MessageBox.Show("Are you sure you want to exit?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 			{
 				if (this.LoggedOutCashier(false) == DialogResult.OK)
@@ -3382,7 +3442,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 if (result == DialogResult.OK)
                 {
                     TransactionReturnItemSelectWnd ItemWnd = new TransactionReturnItemSelectWnd();
-
+                    ItemWnd.SysConfigDetails = mclsSysConfigDetails;
                     ItemWnd.TransactionNo = strTransactionNo;
                     ItemWnd.TerminalDetails = mclsTerminalDetails;
                     ItemWnd.TransactionTerminalNo = strTerminalNo;
@@ -3415,14 +3475,15 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.TransactionItemsID = AddItemToDB(clsItemDetails);
                         dr["TransactionItemsID"] = clsItemDetails.TransactionItemsID.ToString();
 
+                        // Sep 14, 2013: Removed if return. Return should have no effect in Reserved and Commit
                         // Added May 7, 2011 to Cater Reserved and Commit functionality    
-                        ReservedAndCommitItem(clsItemDetails, clsItemDetails.TransactionItemStatus);
+                        // ReservedAndCommitItem(clsItemDetails, clsItemDetails.TransactionItemStatus);
 
                         ItemDataTable.Rows.Add(dr);
 
                         dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;
                         dgItems.Select(dgItems.CurrentRowIndex);
-                        
+                        SetItemDetails();
                         ComputeSubTotal(); setTotalDetails();
 
                         clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
@@ -3440,7 +3501,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             PrintItemDelegate PrintItemDel = new PrintItemDelegate(PrintItem);
                             string strProductCode = clsItemDetails.ProductCode;
-                            if (clsItemDetails.MatrixDescription != string.Empty && clsItemDetails.MatrixDescription != null) strProductCode += "-" + clsItemDetails.MatrixDescription;
+                            if (!string.IsNullOrEmpty(clsItemDetails.MatrixDescription)) strProductCode += "-" + clsItemDetails.MatrixDescription;
                             PrintItemDel.BeginInvoke(clsItemDetails.ItemNo, strProductCode + " - RET ", clsItemDetails.ProductUnitCode, clsItemDetails.Quantity, clsItemDetails.Price, clsItemDetails.Discount, clsItemDetails.PromoApplied, clsItemDetails.Amount, clsItemDetails.VAT, clsItemDetails.EVAT, clsItemDetails.DiscountCode, clsItemDetails.ItemDiscountType, null, null);
                         }
 
@@ -3518,7 +3579,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                 SetItemDetails();
 
-                                clsEvent.AddEventLn("Done!");
+                                clsEvent.AddEventLn("Done!", true);
 
                                 ComputeSubTotal(); setTotalDetails();
 
@@ -3901,7 +3962,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             // put back to SuspendedOpen so that it won't be open somewhere else
                             Data.SalesTransactions clsSalesTransactions1 = new Data.SalesTransactions(mConnection, mTransaction);
                             mConnection = clsSalesTransactions1.Connection; mTransaction = clsSalesTransactions1.Transaction;
-                            clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                            clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo, true);
                             clsSalesTransactions1.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
 
                             clsContacts.CommitAndDispose();
@@ -3925,7 +3986,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 // put back to SuspendedOpen so that it won't be open somewhere else
                                 Data.SalesTransactions clsSalesTransactions1 = new Data.SalesTransactions(mConnection, mTransaction);
                                 mConnection = clsSalesTransactions1.Connection; mTransaction = clsSalesTransactions1.Transaction;
-                                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo, true);
                                 clsSalesTransactions1.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
 
                                 clsContacts.CommitAndDispose();
@@ -4311,6 +4372,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                         clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                        clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                         clsContactWnd.TerminalDetails = mclsTerminalDetails;
                         clsContactWnd.ContactGroupCategory = Data.ContactGroupCategory.CUSTOMER;
                         clsContactWnd.ShowDialog(this);
@@ -4323,27 +4385,43 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (loginresult == System.Windows.Forms.DialogResult.OK)
                     {
                         DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
-                        if (!mclsTerminalDetails.ShowCustomerSelection)
+                        switch (mclsSysConfigDetails.ContactAddWndType)
                         {
-                            ContactAddDetWnd clsContactAddWnd = new ContactAddDetWnd();
-                            clsContactAddWnd.Caption = "Update Customer [" + mclsContactDetails.ContactName + "]";
-                            clsContactAddWnd.ContactDetails = clsContactDetails;
-                            clsContactAddWnd.ShowDialog(this);
-                            addresult = clsContactAddWnd.Result;
-                            clsContactDetails = clsContactAddWnd.ContactDetails;
-                            clsContactAddWnd.Close();
-                            clsContactAddWnd.Dispose();
-                        }
-                        else
-                        {
-                            ContactAddWnd clsContactAddWnd = new ContactAddWnd();
-                            clsContactAddWnd.Caption = "Update Customer [" + mclsContactDetails.ContactName + "]";
-                            clsContactAddWnd.ContactDetails = clsContactDetails;
-                            clsContactAddWnd.ShowDialog(this);
-                            addresult = clsContactAddWnd.Result;
-                            clsContactDetails = clsContactAddWnd.ContactDetails;
-                            clsContactAddWnd.Close();
-                            clsContactAddWnd.Dispose();
+                            case ContactAddWndType.ContactAddWnd:
+                            case ContactAddWndType.ContactAddNoLTOWnd:
+                                ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                                clsContactAddWnd.Caption = "Update Customer [" + mclsContactDetails.ContactName + "]";
+                                clsContactAddWnd.ContactDetails = clsContactDetails;
+                                clsContactAddWnd.TerminalDetails = mclsTerminalDetails;
+                                clsContactAddWnd.SysConfigDetails = mclsSysConfigDetails;
+                                clsContactAddWnd.ShowDialog(this);
+                                addresult = clsContactAddWnd.Result;
+                                clsContactDetails = clsContactAddWnd.ContactDetails;
+                                clsContactAddWnd.Close();
+                                clsContactAddWnd.Dispose();
+                                break;
+                            case ContactAddWndType.ContactAddHCareWnd:
+                                ContactAddHCareWnd clsContactAddHCareWnd = new ContactAddHCareWnd();
+                                clsContactAddHCareWnd.Caption = "Update Customer [" + mclsContactDetails.ContactName + "]";
+                                clsContactAddHCareWnd.ContactDetails = clsContactDetails;
+                                clsContactAddHCareWnd.TerminalDetails = mclsTerminalDetails;
+                                clsContactAddHCareWnd.ShowDialog(this);
+                                addresult = clsContactAddHCareWnd.Result;
+                                clsContactDetails = clsContactAddHCareWnd.ContactDetails;
+                                clsContactAddHCareWnd.Close();
+                                clsContactAddHCareWnd.Dispose();
+                                break;
+                            default:
+                                ContactAddDetWnd clsContactAddDetWnd = new ContactAddDetWnd();
+                                clsContactAddDetWnd.Caption = "Update Customer [" + mclsContactDetails.ContactName + "]";
+                                clsContactAddDetWnd.ContactDetails = clsContactDetails;
+                                clsContactAddDetWnd.TerminalDetails = mclsTerminalDetails;
+                                clsContactAddDetWnd.ShowDialog(this);
+                                addresult = clsContactAddDetWnd.Result;
+                                clsContactDetails = clsContactAddDetWnd.ContactDetails;
+                                clsContactAddDetWnd.Close();
+                                clsContactAddDetWnd.Dispose();
+                                break;
                         }
                         if (addresult == DialogResult.OK)
                         {
@@ -4442,7 +4520,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 PrintReportFooterSection(true, TransactionStatus.Suspended, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
 
                             clsSalesTransactions.CommitAndDispose();
-                            clsEvent.AddEventLn("Done!");
+                            clsEvent.AddEventLn("Done!", true);
 
                             if (mclsTerminalDetails.WithRestaurantFeatures)
                             {
@@ -4482,7 +4560,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             PrintReportFooterSection(true, TransactionStatus.Suspended, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
 
                         clsSalesTransactions.CommitAndDispose();
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
 
                         if (mclsTerminalDetails.WithRestaurantFeatures)
                         {
@@ -4664,7 +4742,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
-                            clsEvent.AddEvent("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                            clsEvent.AddEvent("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo, true);
                             clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
                             clsSalesTransactions.CommitAndDispose();
                         }
@@ -5061,6 +5139,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsEvent.AddEvent("[" + lblCashier.Text + "] Depositing amount.");
 
                     DepositWnd frmDepositWnd = new DepositWnd();
+                    frmDepositWnd.SysConfigDetails = mclsSysConfigDetails;
                     frmDepositWnd.TerminalDetails = mclsTerminalDetails;
                     frmDepositWnd.CashierID = mclsSalesTransactionDetails.CashierID;
                     frmDepositWnd.ShowDialog(this);
@@ -5232,7 +5311,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.F9:
-                    ReprintZRead(false);
+                    ReprintZRead();
                     break;
 
                 case Keys.F10:
@@ -5399,7 +5478,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             //SetItemDetails();
 
-                            clsEvent.AddEventLn("Done!");
+                            clsEvent.AddEventLn("Done!", true);
 
                             ComputeSubTotal(); setTotalDetails();
 
@@ -5594,7 +5673,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         clsTerminalReport.CommitAndDispose();
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
 
                         MessageBox.Show("Z-Read has been initialized for [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo + "...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -5683,7 +5762,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 dteMAXDateLastInitialized = clsTerminalReportHistory.MINDateLastInitialized(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, DateTime.Now);
                             }
 
-                            clsEvent.AddEventLn("Done!");
+                            clsEvent.AddEventLn("Done!", true);
 
                             MessageBox.Show("Z-Read has been initialized for [Branch]:" + mclsTerminalDetails.BranchDetails.BranchCode + " [TerminalNo]" + mclsTerminalDetails.TerminalNo + "...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -5894,6 +5973,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
                         clsItemDetails.RewardPoints = clsProductDetails.RewardPoints;
                         clsItemDetails.ItemRemarks = "";
+                        clsItemDetails.ReturnTransactionItemsID = 0;
 
                         clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
                         clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
@@ -5929,6 +6009,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.MatrixPackageID = clsProductPackageDetails.MatrixID;
                         clsItemDetails.VariationsMatrixID = clsProductDetails.MatrixID;
                         clsItemDetails.MatrixDescription = clsProductDetails.MatrixDescription;
+                        clsItemDetails.SupplierID = clsProductDetails.SupplierID;
+                        clsItemDetails.SupplierCode = clsProductDetails.SupplierCode;
+                        clsItemDetails.SupplierName = clsProductDetails.SupplierName;
 
                         clsItemDetails = ComputeItemTotal(clsItemDetails); // set the grossales, vat, discounts, etc.(Details);
 
@@ -6837,7 +6920,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         InsertAuditLog(AccessTypes.LogoutFE, "User logout." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
 
                         this.Lock();
 
@@ -6881,7 +6964,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
                     clsContacts.UpdateLastCheckInDate(details.ContactID, dteCheckIn);
                     clsContacts.CommitAndDispose();
-                    clsEvent.AddEventLn("Done!");
+                    clsEvent.AddEventLn("Done!", true);
 
                     MessageBox.Show(details.ContactName + " has been successfully checkin @ " + dteCheckIn.ToString("yyyy-MM-dd hh:mm"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -7212,7 +7295,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         clsSalesTransactions.UpdateOrderType(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.OrderType);
                         InsertAuditLog(AccessTypes.ChargeType, "Change order type to " + mclsSalesTransactionDetails.OrderType.ToString("G") + ". Tran. #".PadRight(15) + ":" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
 
                         if (clsOrderType != OrderTypes.DineIn && mclsSalesTransactionDetails.CustomerID == Constants.C_RETAILPLUS_CUSTOMERID)
                         {
@@ -7308,7 +7391,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
 
                     InsertAuditLog(AccessTypes.ChargeType, "Change zerorated type to " + mclsSalesTransactionDetails.isZeroRated.ToString() + ". Tran. #".PadRight(15) + ":" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-                    clsEvent.AddEventLn("Done!");
+                    clsEvent.AddEventLn("Done!", true);
                     clsSalesTransactions.CommitAndDispose();
                 }
                 catch (Exception ex)
@@ -7335,7 +7418,20 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             if (!SuspendTransactionAndContinue()) return;
 
-            DialogResult loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.EnterCreditPayment);
+            DialogResult loginresult = DialogResult.Cancel;
+
+            // 08Jul2015 : Remove the access for CreditVerification if it's normal
+            switch (mclsSysConfigDetails.CreditPaymentType)
+            {
+                case CreditPaymentType.Houseware:
+                    GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.EnterCreditPayment);
+                    break;
+                case CreditPaymentType.Normal:
+                case CreditPaymentType.MPC:
+                default:
+                    GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.FE_VerifyCredit);
+                    break;
+            }
 
             if (loginresult == DialogResult.OK)
             {
@@ -7674,6 +7770,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.ShowDialog(this);
@@ -7731,7 +7828,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         MessageBox.Show("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " was issued to " + clsContactDetails.ContactName + "." +
                                         Environment.NewLine + "Please collect the payment then close the transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " was issued to " + clsContactDetails.ContactName + ".", true);
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -7777,6 +7874,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.ShowDialog(this);
@@ -7833,7 +7931,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         MessageBox.Show("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " has been renewed with new expiry date " + clsContactDetails.RewardDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " has been renewed with new expiry date " + clsContactDetails.RewardDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", true);
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -7878,6 +7976,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.ShowDialog(this);
@@ -7938,7 +8037,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         MessageBox.Show("Reward Card No: " + strOldRewardCardNo + " has been replaced with new card #: " + clsContactDetails.RewardDetails.RewardCardNo + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Reward Card No: " + strOldRewardCardNo + " has been replaced with new card #: " + clsContactDetails.RewardDetails.RewardCardNo + ".", true);
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -7983,6 +8082,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.ShowDialog(this);
@@ -8030,7 +8130,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         MessageBox.Show("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " has been reactivated / changed expiry date / changed card no...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " has been reactivated / changed expiry date / changed card no...", true);
                         this.LoadOptions();
                     }
@@ -8060,6 +8160,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.ShowDialog(this);
@@ -8105,7 +8206,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         MessageBox.Show("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " has been declared as LOST.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Reward Card No: " + clsContactDetails.RewardDetails.RewardCardNo + " has been declared as LOST.", true);
                         this.LoadOptions();
                     }
@@ -8150,6 +8251,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
 
                     if (clsCardTypeDetails.WithGuarantor)
@@ -8233,7 +8335,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " was issued to " + clsContactDetails.ContactName + "." +
                                         Environment.NewLine + "Please collect the payment then close the transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " was issued to " + clsContactDetails.ContactName + ".", true);
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -8279,6 +8381,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.Header = "Please select customer for credit card renewal.";
@@ -8340,7 +8443,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been renewed with new expiry date " + clsContactDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been renewed with new expiry date " + clsContactDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", true);
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -8385,6 +8488,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.Header = "Please select customer for credit card replacement.";
@@ -8449,7 +8553,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         MessageBox.Show("Credit Card No: " + strOldCreditCardNo + " has been replaced with new card #: " + clsContactDetails.CreditDetails.CreditCardNo + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Credit Card No: " + strOldCreditCardNo + " has been replaced with new card #: " + clsContactDetails.CreditDetails.CreditCardNo + ".", true);
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -8494,6 +8598,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.Header = "Please select customer for credit card re-activation.";
@@ -8546,7 +8651,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been reactivated / changed credit limit / changed card no...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been reactivated / changed credit limit / changed card no...", true);
                         this.LoadOptions();
                     }
@@ -8576,6 +8681,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     DialogResult result; Data.ContactDetails clsContactDetails;
                     ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts) == System.Windows.Forms.DialogResult.OK;
+                    clsContactWnd.SysConfigDetails = mclsSysConfigDetails;
                     clsContactWnd.TerminalDetails = mclsTerminalDetails;
                     clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
                     clsContactWnd.Header = "Please select customer for credit card suspension.";
@@ -8626,7 +8732,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been SUSPENDED.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        clsEvent.AddEventLn("Done!");
+                        clsEvent.AddEventLn("Done!", true);
                         clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been SUSPENDED.", true);
                         this.LoadOptions();
                     }
@@ -8837,6 +8943,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 Details.RewardPoints = Convert.ToDecimal(dgItems[iRow, 44].ToString());
                 Details.ItemRemarks = dgItems[iRow, 45].ToString();
                 Details.PaxNo = Convert.ToInt32(dgItems[iRow, 46].ToString());
+                Details.ReturnTransactionItemsID = Convert.ToInt64(dgItems[iRow, 47].ToString());
 
                 return Details;
             }
@@ -8913,6 +9020,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["RewardPoints"] = Details.RewardPoints;
                 dr["ItemRemarks"] = Details.ItemRemarks;
                 dr["PaxNo"] = Details.PaxNo;
+                dr["ReturnTransactionItemsID"] = Details.ReturnTransactionItemsID; //48
 
                 // 21May2015 : do an override for 3 digits wighted
                 if (mclsSysConfigDetails.WeightMeasurement.IndexOf(Details.ProductUnitCode.ToUpper()) > -1)
@@ -9022,6 +9130,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 throw ex;
             }
         }
+
         private void AddItem(Data.SalesTransactionItemDetails Details)
         {
             try
@@ -9082,6 +9191,37 @@ namespace AceSoft.RetailPlus.Client.UI
                 throw ex;
             }
         }
+
+        private void AddItemAttachment()
+        {
+            try
+            {
+                if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Closed ||
+                    mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.ClosedOutOfStock ||
+                    mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.ClosedWalkIn)
+                    {
+                        if (ItemDataTable.Rows.Count > 0)
+                        {
+                            Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
+
+                            ItemAttachmentWnd clsItemAttachmentWnd = new ItemAttachmentWnd();
+                            clsItemAttachmentWnd.TerminalDetails = mclsTerminalDetails;
+                            clsItemAttachmentWnd.SysConfigDetails = mclsSysConfigDetails;
+                            clsItemAttachmentWnd.SalesTransactionItemDetails = Details;
+                            clsItemAttachmentWnd.CashierID = mclsSalesTransactionDetails.CashierID;
+                            clsItemAttachmentWnd.CashierName = mclsSalesTransactionDetails.CashierName;
+                            clsItemAttachmentWnd.ShowDialog(this);
+                            DialogResult result = clsItemAttachmentWnd.Result;
+                            //mclsCustomerDetails = clsItemAttachmentWnd.CustomerDetails;
+                            clsItemAttachmentWnd.Close();
+                            clsItemAttachmentWnd.Dispose();
+                        }
+                        txtBarCode.Text = "";
+                    }
+            }
+            catch (Exception ex) { }
+        }
+
         private void PackTransaction()
         {
             if (!mboIsInTransaction)
@@ -9882,7 +10022,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 // Jan 31, 2015 : Lemu
                 // put back to SuspendedOpen so that it won't be open somewhere else
-                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                clsEvent.AddEventLn("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo, true);
                 clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
 
                 mboIsInTransaction = true;
@@ -10131,7 +10271,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     // put back to SuspendedOpen so that it won't be open somewhere else
                     if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Suspended)
                     {
-                        clsEvent.AddEvent("Putting transaction SuspendedOpen: " + stTransactionNo);
+                        clsEvent.AddEvent("Putting transaction SuspendedOpen: " + stTransactionNo, true);
                         clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
                     }
                 }
@@ -10935,7 +11075,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				clsProductSubGroupColumns.SequenceNo = true;
 
 				ProductSubGroup clsProductSubGroup = new ProductSubGroup(mConnection, mTransaction);
-                System.Data.DataTable dtProductSubGroup = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, new ProductSubGroupDetails(), intSequenceNoStart, SequenceSortOrder, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_SUB_GROUP : Constants.C_RESTOPLUS_MAX_SUB_GROUP + 1, "SequenceNo", SequenceSortOrder);
+                System.Data.DataTable dtProductSubGroup = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, new ProductSubGroupDetails(), intSequenceNoStart, SequenceSortOrder, "SequenceNo", SequenceSortOrder, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_SUB_GROUP : Constants.C_RESTOPLUS_MAX_SUB_GROUP + 1);
 				clsProductSubGroup.CommitAndDispose();
 
                 // re-order the products by sequence no

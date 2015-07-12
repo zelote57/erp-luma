@@ -29,6 +29,19 @@ namespace AceSoft.RetailPlus.Data
 
         public DateTime CreatedOn;
         public DateTime LastModified;
+
+        // 09Jul2015 : Added For Searches
+        public DateTime ValidityDateFrom;
+        public DateTime ValidityDateTo;
+        public string CustomerGroupName;
+        public string CustomerName;
+        public string CashierName;
+        public DateTime TransactionDateFrom;
+        public DateTime TransactionDateTo;
+        public TransactionStatus TransactionStatus;
+        public PaymentTypes PaymentType;
+        public string AgentName;
+
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -131,10 +144,24 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
-        private string SQLSelect()
+        private string SQLSelect(SQLSelectType SQLSelectType = SQLSelectType.SQLForList)
         {
-            string stSQL = "SELECT BranchID, TerminalNo,SyncID, ChequePaymentID, TransactionID, ChequeNo, Amount, ValidityDate, Remarks, TransactionNo, CreatedOn, LastModified " +
-                            "FROM tblChequePayment ";
+            string stSQL = "";
+
+            switch (SQLSelectType)
+            {
+                case SQLSelectType.SQLForReport:
+                    stSQL = "SELECT chq.BranchID, brnch.BranchCode, chq.TerminalNo, chq.SyncID, chq.ChequePaymentID, chq.TransactionID, chq.ChequeNo, chq.Amount, chq.ValidityDate, chq.Remarks, chq.TransactionNo, chq.CreatedOn, chq.LastModified, trx.CustomerID, trx.CustomerName, trx.CashierName, trx.AgentName " +
+                             "FROM tblChequePayment chq " +
+                             "  INNER JOIN tblBranch brnch ON chq.BranchID = brnch.BranchID " +
+                             "  INNER JOIN tblTransactions trx ON trx.BranchID = chq.BranchID AND trx.TerminalNo = chq.TerminalNo AND chq.TransactionID = trx.TransactionID ";
+                    break;
+                case SQLSelectType.SQLForList:
+                default:
+                    stSQL = "SELECT chq.BranchID, chq.TerminalNo, chq.SyncID, chq.ChequePaymentID, chq.TransactionID, chq.ChequeNo, chq.Amount, chq.ValidityDate, chq.Remarks, chq.TransactionNo, chq.CreatedOn, chq.LastModified " +
+                             "FROM tblChequePayment chq ";
+                    break;
+            }
 
             return stSQL;
         }
@@ -211,6 +238,152 @@ namespace AceSoft.RetailPlus.Data
 		
 		#region Streams
 
+        public System.Data.DataTable List(ChequePaymentDetails SearchKeys = new ChequePaymentDetails(), string SortField = "ChequePaymentID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE 1=1 ";
+
+                #region Search
+                if (SearchKeys.BranchDetails.BranchID != 0)
+                {
+                    SQL += "AND BranchID = @BranchID ";
+                    cmd.Parameters.AddWithValue("@BranchID", SearchKeys.BranchDetails.BranchID);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.TerminalNo))
+                {
+                    SQL += "AND TerminalNo = @TerminalNo ";
+                    cmd.Parameters.AddWithValue("@TerminalNo", SearchKeys.TerminalNo);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.TransactionNo))
+                {
+                    SQL += "AND TransactionNo = @TransactionNo ";
+                    cmd.Parameters.AddWithValue("@TransactionNo", SearchKeys.TransactionNo);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.ChequeNo))
+                {
+                    SQL += "AND ChequeNo = @ChequeNo ";
+                    cmd.Parameters.AddWithValue("@ChequeNo", SearchKeys.ChequeNo);
+                }
+                if (SearchKeys.ValidityDateFrom != DateTime.MinValue)
+                {
+                    SQL += "AND ValidityDate >= @ValidityDateFrom ";
+                    cmd.Parameters.AddWithValue("@ValidityDateFrom", SearchKeys.ValidityDateFrom);
+                }
+                if (SearchKeys.ValidityDateTo != DateTime.MinValue)
+                {
+                    SQL += "AND ValidityDate <= @ValidityDateTo ";
+                    cmd.Parameters.AddWithValue("@ValidityDateTo", SearchKeys.ValidityDateTo);
+                }
+                #endregion
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ChequePaymentID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable ListAsReport(ChequePaymentDetails SearchKeys = new ChequePaymentDetails(), string SortField = "ChequePaymentID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect(SQLSelectType.SQLForReport) + "WHERE 1=1 ";
+
+                #region Search
+                if (SearchKeys.BranchDetails.BranchID != 0)
+                {
+                    SQL += "AND chq.BranchID = @BranchID ";
+                    cmd.Parameters.AddWithValue("@BranchID", SearchKeys.BranchDetails.BranchID);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.TerminalNo))
+                {
+                    SQL += "AND chq.TerminalNo = @TerminalNo ";
+                    cmd.Parameters.AddWithValue("@TerminalNo", SearchKeys.TerminalNo);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.TransactionNo))
+                {
+                    SQL += "AND chq.TransactionNo = @TransactionNo ";
+                    cmd.Parameters.AddWithValue("@TransactionNo", SearchKeys.TransactionNo);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.CustomerName))
+                {
+                    SQL += "AND trx.CustomerName = @CustomerName ";
+                    cmd.Parameters.AddWithValue("@CustomerName", SearchKeys.CustomerName);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.CustomerGroupName))
+                {
+                    SQL += "AND trx.CustomerGroupName = @CustomerGroupName ";
+                    cmd.Parameters.AddWithValue("@CustomerGroupName", SearchKeys.CustomerGroupName);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.AgentName))
+                {
+                    SQL += "AND trx.AgentName = @AgentName ";
+                    cmd.Parameters.AddWithValue("@AgentName", SearchKeys.AgentName);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.AgentName))
+                {
+                    SQL += "AND trx.AgentName = @AgentName ";
+                    cmd.Parameters.AddWithValue("@AgentName", SearchKeys.AgentName);
+                }
+                if (!string.IsNullOrEmpty(SearchKeys.ChequeNo))
+                {
+                    SQL += "AND chq.ChequeNo = @ChequeNo ";
+                    cmd.Parameters.AddWithValue("@ChequeNo", SearchKeys.ChequeNo);
+                }
+                if (SearchKeys.ValidityDateFrom != DateTime.MinValue)
+                {
+                    SQL += "AND chq.ValidityDate >= @ValidityDateFrom ";
+                    cmd.Parameters.AddWithValue("@ValidityDateFrom", SearchKeys.ValidityDateFrom);
+                }
+                if (SearchKeys.ValidityDateTo != DateTime.MinValue)
+                {
+                    SQL += "AND chq.ValidityDate <= @ValidityDateTo ";
+                    cmd.Parameters.AddWithValue("@ValidityDateTo", SearchKeys.ValidityDateTo);
+                }
+                if (SearchKeys.ValidityDateFrom != DateTime.MinValue)
+                {
+                    SQL += "AND trx.TransactionDate >= @TransactionDateFrom ";
+                    cmd.Parameters.AddWithValue("@TransactionDateFrom", SearchKeys.TransactionDateFrom);
+                }
+                if (SearchKeys.ValidityDateTo != DateTime.MinValue)
+                {
+                    SQL += "AND trx.TransactionDate <= @TransactionDateTo ";
+                    cmd.Parameters.AddWithValue("@TransactionDateTo", SearchKeys.TransactionDateTo);
+                }
+
+                #endregion
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ChequePaymentID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 	}

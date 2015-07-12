@@ -12,7 +12,7 @@ function GetTotalRate()
 			var stNewName = stName.substring(iLen-7,iLen);								
 			if (stNewName=="txtBasicFreight")
 			{
-				total = total + document.forms[0].elements.value; 			
+				total = total + document.forms[0].elements.value.replace(/\,/g, ''); 			
 			}
 
 		}

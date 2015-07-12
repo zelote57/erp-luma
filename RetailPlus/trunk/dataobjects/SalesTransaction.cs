@@ -612,6 +612,8 @@ namespace AceSoft.RetailPlus.Data
 
                 SalesTransactionDetails Details = SalesTransactions.SetDetails(dt);
 
+                Details.CustomerDetails = new Contacts(base.Connection, base.Transaction).Details(Details.CustomerID);
+
                 Details.PaymentDetails = new Payment(base.Connection, base.Transaction).Details(BranchID, TerminalNo, Details.TransactionID);
 
                 return Details;
@@ -1291,6 +1293,18 @@ namespace AceSoft.RetailPlus.Data
 
                 //return dt;
 
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable ListClosedDataTable(Int32 BranchID, DateTime? TransactionDateFrom = null, DateTime? TransactionDateTo = null, string SortField = "TransactionDate", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                return ListAsDataTable(BranchID, TransactionDateFrom: TransactionDateFrom, TransactionDateTo: TransactionDateTo, TransactionStatus: TransactionStatus.Closed, SortField: SortField, SortOption: SortOrder, limit: limit);
             }
             catch (Exception ex)
             {

@@ -82,7 +82,7 @@ namespace AceSoft.RetailPlus.Inventory
 		}
         protected void cboProductCode_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (cboProductCode.SelectedItem.Text == "No product")
+            if (cboProductCode.SelectedItem.Text == "No product" || cboProductCode.SelectedItem.Text == "No Product; Enter product to search.")
             {
                 lblVariationMatrix.Visible = false;
                 lnkVariationMatrixAdd.Visible = false;

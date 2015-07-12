@@ -310,24 +310,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo {
         protected global::System.Web.UI.WebControls.LinkButton cmdSave;
         
         /// <summary>
-        /// imgSaveBack control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveBack;
-        
-        /// <summary>
-        /// cmdSaveBack control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveBack;
-        
-        /// <summary>
         /// lblSeparator1 control.
         /// </summary>
         /// <remarks>

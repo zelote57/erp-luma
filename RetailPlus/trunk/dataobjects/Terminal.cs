@@ -113,6 +113,10 @@ namespace AceSoft.RetailPlus.Data
         public Int32 ORSeriesBranchID;
         public string ORSeriesTerminalNo;
 
+        // 04Jul2015 : Remove from config, placed in DB instead
+        public bool MultiInstanceEnabled;
+        public string MaskProductSearch;
+
         public DateTime CreatedOn;
         public DateTime LastModified;
 	}
@@ -705,7 +709,9 @@ namespace AceSoft.RetailPlus.Data
                             "TakeOutChargeCode, " +
                             "DeliveryChargeCode, " +
                             "ORSeriesBranchID, " +
-                            "ORSeriesTerminalNo " +
+                            "ORSeriesTerminalNo, " +
+                            "MultiInstanceEnabled, " +
+                            "MaskProductSearch " +
 						"FROM tblTerminal ";
 
 			return SQL;
@@ -962,6 +968,10 @@ namespace AceSoft.RetailPlus.Data
                 Details.DeliveryChargeCode = dr["DeliveryChargeCode"].ToString();
                 Details.ORSeriesBranchID = Int32.Parse(dr["ORSeriesBranchID"].ToString());
                 Details.ORSeriesTerminalNo = dr["ORSeriesTerminalNo"].ToString();
+
+                // Added Jul 4, 2015
+                Details.MultiInstanceEnabled = bool.Parse(dr["MultiInstanceEnabled"].ToString());
+                Details.MaskProductSearch = dr["MaskProductSearch"].ToString().Replace('*', '%');
             }
 
             Branch clsBranch = new Branch(base.Connection, base.Transaction);

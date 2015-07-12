@@ -17,9 +17,9 @@
 							<div id="Menu_0_0">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="../_layouts/images/trans.gif" alt="" /></td>
+										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt="" /></td>
+										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									<tr id="divlnkProducts" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
@@ -97,9 +97,9 @@
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
 									<tr>
-										<td class="Ms-pvnavbotl1" background="../_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavbotl1" background="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
 										<td class="Ms-pvnavbotc1"></td>
-										<td class="Ms-pvnavbotr1" background="../_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavbotr1" background="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
 									</tr>
 									<tr id="divlnkContacts" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
@@ -129,9 +129,9 @@
 							<div id="Div1">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="../_layouts/images/trans.gif" alt="" /></td>
+										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt="" /></td>
+										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									
 									<tr id="divlnkTransaction" runat="server">
@@ -212,7 +212,7 @@
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
 								</table>
-								<img height="1" alt="" src="../_layouts/images/trans.gif" width="126" />
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126" />
 							</div>
 						</td>
 					</tr>
@@ -224,9 +224,9 @@
 							<div id="Menu_0_1">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="../_layouts/images/trans.gif" alt="" /></td>
+										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt="" /></td>
+										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									<tr id="divlnkAgentsSales" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
@@ -265,12 +265,12 @@
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
 								</table>
-								<img height="1" alt="" src="../_layouts/images/trans.gif" width="126" />
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126" />
 							</div>
 						</td>
 					</tr>
 				</table>
-				<img src="../_layouts/images/trans.gif" height="1" width="126" alt="">
+				<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="">
 			</div>
 		</td>
 	</tr>

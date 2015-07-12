@@ -96,7 +96,7 @@
                                     <tr>
                                         <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtProductSubGroupCode" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20"></asp:textbox>
+                                            <asp:textbox id="txtProductSubGroupCode" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="40"></asp:textbox>
                                             <asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product sub group code' must not be left blank." Display="Dynamic" ControlToValidate="txtProductSubGroupCode" ForeColor=" "></asp:requiredfieldvalidator>
                                         </td>
                                         <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>

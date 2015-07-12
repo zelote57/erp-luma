@@ -183,58 +183,51 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 
 		}
 		private void LoadList()
-		{	
-			ProductUnitsMatrix clsProductUnitsMatrix = new ProductUnitsMatrix();
-			DataClass clsDataClass = new DataClass();
+		{
+            try
+            {
+                string SortField = "a.MatrixID";
+                if (Request.QueryString["sortfield"] != null)
+                { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
 
-			string SortField = "a.MatrixID";
-			if (Request.QueryString["sortfield"]!=null)
-			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
-			
-			SortOption sortoption = SortOption.Ascending;
-			if (Request.QueryString["sortoption"]!=null)
-			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
+                SortOption sortoption = SortOption.Ascending;
+                if (Request.QueryString["sortoption"] != null)
+                { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductUnitsMatrix.List(Convert.ToInt64(lblProductID.Text), SortField, sortoption)).DefaultView;
-			}
-			else
-			{	
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductUnitsMatrix.Search(lblProductID.Text, SortField, sortoption)).DefaultView;
-			}
+                ProductUnitsMatrix clsProductUnitsMatrix = new ProductUnitsMatrix();
+                PageData.DataSource = clsProductUnitsMatrix.ListAsDataTable(Convert.ToInt64(lblProductID.Text), SortField, sortoption).DefaultView;
+                clsProductUnitsMatrix.CommitAndDispose();
 
-			clsProductUnitsMatrix.CommitAndDispose();
+                int iPageSize = Convert.ToInt16(Session["PageSize"]);
 
-			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
-			
-			PageData.AllowPaging = true;
-			PageData.PageSize = iPageSize;
-			try
-			{
-				PageData.CurrentPageIndex = Convert.ToInt16(cboCurrentPage.SelectedItem.Value) - 1;				
-				lstItem.DataSource = PageData;
-				lstItem.DataBind();
-			}
-			catch
-			{
-				PageData.CurrentPageIndex = 1;
-				lstItem.DataSource = PageData;
-				lstItem.DataBind();
-			}			
-			
-			cboCurrentPage.Items.Clear();
-			for (int i=0; i < PageData.PageCount;i++)
-			{
-				int iValue = i + 1;
-				cboCurrentPage.Items.Add(new ListItem(iValue.ToString(),iValue.ToString()));
-				if (PageData.CurrentPageIndex == i)
-				{	cboCurrentPage.Items[i].Selected = true;}
-				else
-				{	cboCurrentPage.Items[i].Selected = false;}
-			}
-			lblDataCount.Text = " of " + " " + PageData.PageCount;
+                PageData.AllowPaging = true;
+                PageData.PageSize = iPageSize;
+                try
+                {
+                    PageData.CurrentPageIndex = Convert.ToInt16(cboCurrentPage.SelectedItem.Value) - 1;
+                    lstItem.DataSource = PageData;
+                    lstItem.DataBind();
+                }
+                catch
+                {
+                    PageData.CurrentPageIndex = 1;
+                    lstItem.DataSource = PageData;
+                    lstItem.DataBind();
+                }
+
+                cboCurrentPage.Items.Clear();
+                for (int i = 0; i < PageData.PageCount; i++)
+                {
+                    int iValue = i + 1;
+                    cboCurrentPage.Items.Add(new ListItem(iValue.ToString(), iValue.ToString()));
+                    if (PageData.CurrentPageIndex == i)
+                    { cboCurrentPage.Items[i].Selected = true; }
+                    else
+                    { cboCurrentPage.Items[i].Selected = false; }
+                }
+                lblDataCount.Text = " of " + " " + PageData.PageCount;
+            }
+            catch  { }
 		}
 		private bool Delete()
 		{

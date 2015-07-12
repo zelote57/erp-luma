@@ -86,7 +86,13 @@ namespace AceSoft.RetailPlus.Data
 
         public string ORHeader;
 
-        
+        public decimal InventoryTrustFund;
+
+        public ContactAddWndType ContactAddWndType;
+
+        public ItemSelectWndColumnType ItemSelectWndColumnType;
+
+        public ItemSelectWndColumnSearchType ItemSelectWndColumnSearchType;
     }
     public class SysConfig : POSConnection
     {
@@ -399,6 +405,50 @@ namespace AceSoft.RetailPlus.Data
             return strRetValue;
         }
 
+        public decimal get_INVENTORYTRUSTFUND()
+        {
+            decimal decRetValue = decimal.Parse("50");
+            try
+            {
+                decRetValue = decimal.Parse(get_Sysconfig(Constants.SYS_CONFIG_INVENTORY_TRUSTFUND));
+            }
+            catch { }
+            return decRetValue;
+        }
+
+        public ContactAddWndType get_CONTACT_ADDWND_TYPE()
+        {
+            ContactAddWndType clsContactAddWndType = ContactAddWndType.ContactAddDetWnd;
+            try
+            {
+                clsContactAddWndType = (ContactAddWndType) Enum.Parse(typeof(ContactAddWndType), get_Sysconfig(Constants.SYS_CONFIG_CONTACTADDWND_TYPE));
+            }
+            catch { }
+            return clsContactAddWndType;
+        }
+
+        public ItemSelectWndColumnType get_ITEMSELECTWND_COLUMN_TYPE()
+        {
+            ItemSelectWndColumnType clsItemSelectWndColumnType = ItemSelectWndColumnType.BcDesc;
+            try
+            {
+                clsItemSelectWndColumnType = (ItemSelectWndColumnType)Enum.Parse(typeof(ItemSelectWndColumnType), get_Sysconfig(Constants.SYS_CONFIG_ITEMSELECTWND_COLUMNTYPE));
+            }
+            catch { }
+            return clsItemSelectWndColumnType;
+        }
+
+        public ItemSelectWndColumnSearchType get_ITEMSELECTWND_COLUMN_SEARCH_TYPE()
+        {
+            ItemSelectWndColumnSearchType clsItemSelectWndColumnType = ItemSelectWndColumnSearchType.BcDesc;
+            try
+            {
+                clsItemSelectWndColumnType = (ItemSelectWndColumnSearchType)Enum.Parse(typeof(ItemSelectWndColumnSearchType), get_Sysconfig(Constants.SYS_CONFIG_ITEMSELECTWND_COLUMNTYPE));
+            }
+            catch { }
+            return clsItemSelectWndColumnType;
+        }
+
         public string get_BECompanyCode()
         {
             return get_Sysconfig(Constants.SYS_CONFIG_BE_COMPANY_CODE);
@@ -487,6 +537,10 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.ChequePaymentAcceptableNoOfDays = get_ChequePaymentAcceptableNoOfDays();
             clsSysConfigDetails.EnablePriceLevel = get_EnablePriceLevel();
             clsSysConfigDetails.ORHeader = get_ORHeader();
+            clsSysConfigDetails.InventoryTrustFund = get_INVENTORYTRUSTFUND();
+            clsSysConfigDetails.ContactAddWndType = get_CONTACT_ADDWND_TYPE();
+            clsSysConfigDetails.ItemSelectWndColumnType = get_ITEMSELECTWND_COLUMN_TYPE();
+            clsSysConfigDetails.ItemSelectWndColumnSearchType = get_ITEMSELECTWND_COLUMN_SEARCH_TYPE();
 
             return clsSysConfigDetails;
         }

@@ -106,17 +106,16 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		protected void cboProductGroup_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupID = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() {
+                ColumnsNameID = true };
 
-            ProductSubGroupColumns clsSearchColumns = new ProductSubGroupColumns();
-            clsSearchColumns.ProductGroupID = true;
+            ProductSubGroupDetails clsSearchKey = new ProductSubGroupDetails() {
+                ProductGroupID = Int64.Parse(cboProductGroup.SelectedItem.Value) };
 
             ProductSubGroup clsProductSubGroup = new ProductSubGroup();
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
             cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchColumns, cboProductGroup.SelectedItem.Value, 0, System.Data.SqlClient.SortOrder.Ascending, 0, string.Empty, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKey, SortField: "ProductSubGroupName").DefaultView;
             cboProductSubGroup.DataBind();
             cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
             clsProductSubGroup.CommitAndDispose();
@@ -152,20 +151,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(SortField:"ProductGroupName").DefaultView;
 			cboProductGroup.DataBind();
 			cboProductGroup.SelectedIndex = cboProductGroup.Items.Count - 1;
-
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupID = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-
-            ProductSubGroupColumns clsSearchColumns = new ProductSubGroupColumns();
-
-            ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsProductGroup.Connection, clsProductGroup.Transaction);
-            cboProductSubGroup.DataTextField = "ProductSubGroupName";
-            cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchColumns, cboProductGroup.SelectedItem.Value, 0, System.Data.SqlClient.SortOrder.Ascending, 0, "ProductSubGroupName", System.Data.SqlClient.SortOrder.Ascending).DefaultView;
-            cboProductSubGroup.DataBind();
-            cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
-            clsProductSubGroup.CommitAndDispose();
 
             Data.Unit clsUnit = new Data.Unit(clsProductGroup.Connection, clsProductGroup.Transaction);
 			cboProductUnit.DataTextField = "UnitName";
@@ -262,6 +247,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             txtSequenceNo.Text = clsDetails.SequenceNo.ToString("###0");
 
             cboProductUnit.Enabled = dtUnits.Rows.Count >= 1 ? false : true;
+
+            cboProductGroup_SelectedIndexChanged(null, null);
 		}
         private bool VerifyRecord()
         {

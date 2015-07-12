@@ -153,6 +153,12 @@ INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, 
 INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
 ('OUT OF STOCK', 'OUT OF STOCK', 1, 0, 'RBS', 'RBS', '', '', NOW());
 
+INSERT INTO tblTerminalReport (BeginningTransactionNo, EndingTransactionNo, ZReadCount, XReadCount, BranchID, TerminalID, TerminalNo, DateLastInitialized)
+		VALUES		('00000000000001', '00000000000001', 1, 1, 1, 1, '01', DATE_SUB(DATE(NOW()), INTERVAL 1 DAY));
 
+
+INSERT INTO tblTerminalReportHistory (`BeginningTransactionNo`, `EndingTransactionNo`, `ZReadCount`, `XReadCount`, `TerminalID`, `TerminalNo`, `DateLastInitialized`)
+		VALUES		('00000000000001', '00000000000001', 0, 0, 1, '01', DATE_SUB(DATE(NOW()), INTERVAL 2 DAY));
+		
 /*!40000 ALTER TABLE `tblProducts` ENABLE KEYS */;
 SET FOREIGN_KEY_CHECKS = 1;

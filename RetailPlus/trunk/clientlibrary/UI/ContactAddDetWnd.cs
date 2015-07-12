@@ -99,7 +99,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -768,20 +768,20 @@ namespace AceSoft.RetailPlus.Client.UI
                     txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
                 }
             }
-            else
+            else if (mContactDetails.ContactID == 0)
             {
                 Data.ERPConfig clsERPConfig = new Data.ERPConfig();
                 BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
                 txtContactCode.Text = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
                 clsERPConfig.CommitAndDispose();
-            }
 
-            if (mstCaption == "Please enter customer name for deposit.")
-            { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
-            else if (mstCaption == "Quickly add new customer")
-            { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
-            else if (mContactDetails.ContactID == 0) // means not edit
-            { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+                if (mstCaption == "Please enter customer name for deposit.")
+                { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
+                else if (mstCaption == "Quickly add new customer")
+                { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
+                else if (mContactDetails.ContactID == 0) // means not edit
+                { txtRemarks.Text = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+            }
         }
 
         private bool SaveRecord()
@@ -850,6 +850,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else
                 {
+                    clsDetails.PositionID = mContactDetails.PositionID;
+                    clsDetails.DepartmentID = mContactDetails.DepartmentID;
                     clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
                     clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
                     clsContact.Update(clsDetails);

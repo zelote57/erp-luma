@@ -112,24 +112,6 @@ namespace AceSoft.RetailPlus.MasterFiles {
         protected global::System.Web.UI.WebControls.HyperLink lnkProductSubGroup;
         
         /// <summary>
-        /// divlnkPromo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkPromo;
-        
-        /// <summary>
-        /// lnkPromo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkPromo;
-        
-        /// <summary>
         /// divlnkVariation control.
         /// </summary>
         /// <remarks>
@@ -344,6 +326,42 @@ namespace AceSoft.RetailPlus.MasterFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkChargeType;
+        
+        /// <summary>
+        /// divlnkPromo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkPromo;
+        
+        /// <summary>
+        /// lnkPromo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkPromo;
+        
+        /// <summary>
+        /// divlnkPromoBySupplier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow divlnkPromoBySupplier;
+        
+        /// <summary>
+        /// lnkPromoBySupplier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkPromoBySupplier;
         
         /// <summary>
         /// divlblActionBar control.

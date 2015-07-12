@@ -92,8 +92,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
 		private void LoadOptions()
 		{
-			DataClass clsDataClass = new DataClass();
-
 			lblProductID.Text = Common.Decrypt((string)Request.QueryString["prodid"],Session.SessionID);
 			lblMatrixID.Text = Common.Decrypt(Request.QueryString["id"],Session.SessionID);
 
@@ -104,7 +102,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			ProductUnitsMatrix clsUnit = new ProductUnitsMatrix(clsProductVariation.Connection, clsProductVariation.Transaction);
 			cboUnit.DataTextField = "BottomUnitName";
 			cboUnit.DataValueField = "BottomUnitID";
-			cboUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List(Convert.ToInt64(lblProductID.Text),"MatrixID",SortOption.Ascending)).DefaultView;
+			cboUnit.DataSource = clsUnit.ListAsDataTable(Convert.ToInt64(lblProductID.Text)).DefaultView;
 			cboUnit.DataBind();
 
 			Products clsProduct = new Products(clsProductVariation.Connection, clsProductVariation.Transaction);

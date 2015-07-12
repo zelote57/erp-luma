@@ -44,6 +44,7 @@ namespace AceSoft.RetailPlus.Inventory
                 lnkImport.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Branch/Default.aspx?task=" + Common.Encrypt("importinv", Session.SessionID);
 
                 lnkInventory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("inventoryrep", Session.SessionID);
+                lnkeInventory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("einventoryrep", Session.SessionID);
                 lnkBranchInventory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("inventoryperbranchrep", Session.SessionID);
                 //lnkExpiredInventory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("expiredinventoryrep", Session.SessionID);
                 //lnkReorder.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("itemsforreorderrep",Session.SessionID);
@@ -131,7 +132,7 @@ namespace AceSoft.RetailPlus.Inventory
             if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InventoryAnalyst);
-            lnkInventoryAnalyst.Visible = false;
+            lnkInventoryAnalyst.Visible = clsDetails.Write;
             if (!clsDetails.Write) divlnkInventoryAnalyst.Style.Add("display", "none");
             // show label for reporting
             if (clsDetails.Read && !boShowActionBar) boShowInventory = true;
@@ -172,12 +173,18 @@ namespace AceSoft.RetailPlus.Inventory
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InventoryReport); 
 			lnkInventory.Visible = clsDetails.Read;
-            if (!clsDetails.Write) divlnkInventory.Style.Add("display", "none");
+            if (!clsDetails.Read) divlnkInventory.Style.Add("display", "none");
 
             lnkBranchInventory.Visible = clsDetails.Read;
-            if (!clsDetails.Write) divlnkBranchInventory.Style.Add("display", "none");
+            if (!clsDetails.Read) divlnkBranchInventory.Style.Add("display", "none");
             // show label for reporting
-            if (clsDetails.Write && !boShowReports) boShowReports = true;
+            if (clsDetails.Read && !boShowReports) boShowReports = true;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.eInventoryReport); 
+            lnkeInventory.Visible = clsDetails.Read;
+            if (!clsDetails.Read) divlnkeInventory.Style.Add("display", "none");
+            // show label for reporting
+            if (clsDetails.Read && !boShowReports) boShowReports = true;
 
             //lnkExpiredInventory.Visible = clsDetails.Read; 
 

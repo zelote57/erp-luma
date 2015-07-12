@@ -99,7 +99,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 
 		private void LoadOptions()
 		{
-			DataClass clsDataClass = new DataClass();
             Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
 			lblMatrixID.Text = iID.ToString();
 
@@ -110,7 +109,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 			
 			cboBottomUnit.DataTextField = "UnitName";
 			cboBottomUnit.DataValueField = "UnitID";
-			cboBottomUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnitMatrix.AvailableUnitsForProduct(prodID,"UnitName",SortOption.Ascending)).DefaultView;
+			cboBottomUnit.DataSource = clsUnitMatrix.AvailableUnitsForProduct(prodID).DefaultView;
 			cboBottomUnit.DataBind();
 			cboBottomUnit.SelectedIndex = cboBottomUnit.Items.Count - 1;
 

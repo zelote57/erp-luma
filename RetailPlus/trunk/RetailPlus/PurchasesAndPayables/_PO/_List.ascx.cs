@@ -76,13 +76,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		protected void imgAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);			
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("0", Session.SessionID);					
 			Response.Redirect("Default.aspx" + stParam);
 		}
 		protected void cmdAdd_Click(object sender, System.EventArgs e)
 		{
 			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);			
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("0", Session.SessionID);				
 			Response.Redirect("Default.aspx" + stParam);
 		}
 		
@@ -363,9 +363,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
             catch { }
 
+            eSalesFilter clseSalesFilter = new eSalesFilter();
+            clseSalesFilter.FilterIncludeIneSales = true;
+            clseSalesFilter.IncludeIneSales = false;
+
             string SearchKey = txtSearch.Text;
             POStatus status = (POStatus)Enum.Parse(typeof(POStatus), cboStatus.SelectedItem.Value);
-            PageData.DataSource = clsPO.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
+            PageData.DataSource = clsPO.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption, 0, clseSalesFilter).DefaultView; 
 
 			clsPO.CommitAndDispose();
 

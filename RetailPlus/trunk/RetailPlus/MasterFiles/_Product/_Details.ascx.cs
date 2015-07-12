@@ -102,17 +102,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         }
 		protected void cboProductGroup_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupCode = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
+            ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails() { ProductGroupID = Int64.Parse(cboProductGroup.SelectedItem.Value) };
 
-            ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
-            clsSearchKeys.ProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
 
             ProductSubGroup clsSubGroup = new ProductSubGroup();
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
             cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
+            cboProductSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, SortField: "ProductSubGroupName", SortOrder: System.Data.SqlClient.SortOrder.Ascending);
             cboProductSubGroup.DataBind();
             cboProductSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
             cboProductSubGroup.SelectedIndex = 0;

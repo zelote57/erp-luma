@@ -5,10 +5,10 @@
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1"></td>
 	</tr>
 	<tr>
-		<td><img src="../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
+		<td><img src="/RetailPlus/_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -16,7 +16,7 @@
 						<table cellpadding="1" cellspacing="0" border="0">
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap">
-									<asp:imagebutton id="imgView" accesskey="V" tabIndex="1" height="16" width="16" border="0" ToolTip="View Report" ImageUrl="../_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+									<asp:imagebutton id="imgView" accesskey="V" tabIndex="1" height="16" width="16" border="0" ToolTip="View Report" ImageUrl="/RetailPlus/_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 								</td>
 								<td class="ms-toolbar" nowrap="nowrap"width="100">
 									<asp:Label id="Label2" Runat="server">Report Options</asp:Label>
@@ -56,13 +56,13 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap" style="width: 19px"><asp:imagebutton id="imgBack" accesskey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
+								<td class="ms-toolbar" nowrap="nowrap" style="width: 19px"><asp:imagebutton id="imgBack" accesskey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="/RetailPlus/_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
 								<td nowrap="nowrap"><asp:linkbutton id="cmdBack" accesskey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
 					<td class="ms-toolbar" align="right" nowrap="nowrap"id="align032" width="99%" >
-						<img src="../_layouts/images/blank.gif" width="1" height="1" alt="">
+						<img src="/RetailPlus/_layouts/images/blank.gif" width="1" height="1" alt="">
 					</td>
 				</tr>
 			</table>
@@ -70,7 +70,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="10"></td>
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -92,7 +92,7 @@
 								<td>
 									<asp:DropDownList id="cboContactName" runat="server" CssClass="ms-short" Width="180px"></asp:DropDownList>
 								</td>
-								<td width="99%" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+								<td width="99%" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
 							<tr>
@@ -115,14 +115,14 @@
 								<td>
 									<asp:DropDownList id="cboGroup" runat="server" CssClass="ms-short" Width="180px"></asp:DropDownList>
 								</td>
-								<td width="99%" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+								<td width="99%" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
 						</table>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/empty.gif"></td>
+					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="/RetailPlus/_layouts/images/empty.gif"></td>
 				</tr>
 				<tr>
 					<td colspan="3" height="2" align="center">
@@ -131,10 +131,10 @@
 				</tr>
 			</table>
 		</td>
-		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="10"></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1"></td>
 	</tr>
 </table>
 </ContentTemplate>

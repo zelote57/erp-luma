@@ -107,7 +107,7 @@
 					</tr>
 				</table>
 			</div>
-			<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
+			<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180" />
 			<table id="ActionBar" class="ms-pvtb" width="100%" cellspacing="0" cellpadding="0">
 				<tbody>
 					<tr id="divlblActionBar" runat="server">
@@ -181,6 +181,14 @@
 							<asp:HyperLink id="lnkInventory" runat="server" ToolTip="Display Inventory List Report">
 								<li>
 									Inventory</li></asp:HyperLink>
+						</td>
+					</tr>
+                    <tr id="divlnkeInventory" runat="server">
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
+						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
+							<asp:HyperLink id="lnkeInventory" runat="server" ToolTip="Display Inventory List Report">
+								<li>
+									eInventory</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr id="divlnkBranchInventory" runat="server">

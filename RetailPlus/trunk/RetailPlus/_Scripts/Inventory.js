@@ -5,9 +5,9 @@ function ComputeAmountPost() {
 	var amount = 0;
 	var inpercent = true;
 	
-	quantity = document.getElementById("ctrlPost_txtQuantity").value;
-	price = document.getElementById("ctrlPost_txtPrice").value;
-	discount = document.getElementById("ctrlPost_txtDiscount").value;
+	quantity = document.getElementById("ctrlPost_txtQuantity").value.replace(/\,/g, '');
+	price = document.getElementById("ctrlPost_txtPrice").value.replace(/\,/g, '');
+	discount = document.getElementById("ctrlPost_txtDiscount").value.replace(/\,/g, '');
 	inpercent = document.getElementById("ctrlPost_chkInPercent").checked;
 
 	if (inpercent == true)
@@ -20,7 +20,7 @@ function ComputeAmountPost() {
 function ComputeQuantity(obj) {
     var ctrlCloseInventory_lstItem = "ctrlCloseInventory_lstItem_";
 	var txtActualQuantity = obj.id;
-	var decActualQuantity = obj.value;
+	var decActualQuantity = obj.value.replace(/\,/g, '');
 	
 	var txtPOSQuantity = ctrlCloseInventory_lstItem + txtActualQuantity.substr(27).replace("txtActualQuantity", "txtPOSQuantity");
 	var txtOver = ctrlCloseInventory_lstItem + txtActualQuantity.substr(27).replace("txtActualQuantity", "txtOver");
@@ -29,9 +29,9 @@ function ComputeQuantity(obj) {
 	var txtAmountOver = ctrlCloseInventory_lstItem + txtActualQuantity.substr(27).replace("txtActualQuantity", "txtAmountOver");
 	var txtPurchasePrice = ctrlCloseInventory_lstItem + txtActualQuantity.substr(27).replace("txtActualQuantity", "txtPurchasePrice");
 	
-	var decPOSQuantity = document.getElementById(txtPOSQuantity).value;
+	var decPOSQuantity = document.getElementById(txtPOSQuantity).value.replace(/\,/g, '');
 	var decDifference = decPOSQuantity - decActualQuantity;
-	var decPurchasePrice = document.getElementById(txtPurchasePrice).value;
+	var decPurchasePrice = document.getElementById(txtPurchasePrice).value.replace(/\,/g, '');
 	var decAmountShortOver = decPurchasePrice * decDifference;
 	
 	if (decDifference > 0)
@@ -57,7 +57,7 @@ function ComputeQuantity(obj) {
 function ComputeQuantityByVariation(obj) {
     var ctrlCloseInventory_lstItem = "ctrlCloseInventoryDetailed_lstItem_";
 	var txtActualQuantity = obj.id;
-	var decActualQuantity = obj.value;
+	var decActualQuantity = obj.value.replace(/\,/g, '');
 	
 	var txtPOSQuantity = ctrlCloseInventory_lstItem + txtActualQuantity.substr(35).replace("txtActualQuantity", "txtPOSQuantity");
 	var txtOver = ctrlCloseInventory_lstItem + txtActualQuantity.substr(35).replace("txtActualQuantity", "txtOver");
@@ -66,9 +66,9 @@ function ComputeQuantityByVariation(obj) {
 	var txtAmountOver = ctrlCloseInventory_lstItem + txtActualQuantity.substr(35).replace("txtActualQuantity", "txtAmountOver");
 	var txtPurchasePrice = ctrlCloseInventory_lstItem + txtActualQuantity.substr(35).replace("txtActualQuantity", "txtPurchasePrice");
 	
-	var decPOSQuantity = document.getElementById(txtPOSQuantity).value;
+	var decPOSQuantity = document.getElementById(txtPOSQuantity).value.replace(/\,/g, '');
 	var decDifference = decPOSQuantity - decActualQuantity;
-	var decPurchasePrice = document.getElementById(txtPurchasePrice).value;
+	var decPurchasePrice = document.getElementById(txtPurchasePrice).value.replace(/\,/g, '');
 	var decAmountShortOver = decPurchasePrice * decDifference;
 	
 	if (decDifference > 0) {   

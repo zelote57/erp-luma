@@ -201,21 +201,82 @@ UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHE
 TRUNCATE TABLE sysCreditConfig;
 INSERT INTO sysCreditConfig (ConfigName, ConfigValue, Remarks) VALUES ('IndividualCardTypeCode',	'HP CREDIT CARD',			'Individual Credit Card Name for HP');
 
-DELETE FROM sysAccessRights WHERE TranTypeID = 169; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 169;
+DELETE FROM sysAccessRights WHERE TranTypeID = 169;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 169;
 DELETE FROM sysAccessTypes WHERE TypeID = 169;
 INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (169, 'Credit Payment Reversal', 1);
-INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 169, 1, 1);
-INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 169, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 13, Category = '07: Backend - Credits' WHERE TypeID = 169;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 169, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=80;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 169, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=80;
 
-DELETE FROM sysAccessRights WHERE TranTypeID = 170; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 170;
+DELETE FROM sysAccessRights WHERE TranTypeID = 170;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 170;
 DELETE FROM sysAccessTypes WHERE TypeID = 170;
 INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (170, 'Credit AmountDue Adjustment', 1);
-INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 170, 1, 1);
-INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 170, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 14, Category = '07: Backend - Credits' WHERE TypeID = 170;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 170, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=80;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 170, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=80;
 
 -- disable all credits access
 -- UPDATE sysAccessTypes SET enabled = 1 WHERE Category = '07: Backend - Credits';
 
 -- setup a RetailPlusBilling printername to automatically print all the invoices.
+
+
+ALTER TABLE tblCreditBillDetail DROP CreatedOn;
+ALTER TABLE tblCreditBillHeader DROP CreatedOn;
+ALTER TABLE tblCreditBills DROP CreatedOn;
+
+ALTER TABLE tblCreditBillDetail ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblCreditBillHeader ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblCreditBills ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+ALTER TABLE tblCreditBillDetail DROP LastModified;
+ALTER TABLE tblCreditBillHeader DROP LastModified;
+ALTER TABLE tblCreditBills DROP LastModified;
+
+ALTER TABLE tblCreditBillDetail ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblCreditBillHeader ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblCreditBills ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+DROP TRIGGER IF EXISTS trgtblCreditBillDetailCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCreditBillHeaderCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCreditBillsCreatedOn;
+
+CREATE TRIGGER trgtblCreditBillDetailCreatedOn BEFORE INSERT ON tblCreditBillDetail FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblCreditBillHeaderCreatedOn BEFORE INSERT ON tblCreditBillHeader FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblCreditBillsCreatedOn BEFORE INSERT ON tblCreditBills FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+
+UPDATE tblCreditBillDetail SET LastModified = NOW();
+UPDATE tblCreditBillHeader SET LastModified = NOW();
+UPDATE tblCreditBills SET LastModified = NOW();
+
+ALTER TABLE sysCreditConfig DROP CreatedOn;
+ALTER TABLE sysCreditConfig ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE sysCreditConfig DROP LastModified;
+ALTER TABLE sysCreditConfig ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+DROP TRIGGER IF EXISTS trgsysCreditConfigCreatedOn;
+CREATE TRIGGER trgsysCreditConfigCreatedOn BEFORE INSERT ON sysCreditConfig FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+UPDATE sysCreditConfig SET LastModified = NOW();
+
+/*********************************  v_4.0.1.40.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.41';
+
+-- 21Apr2015 : Fix bug when no items is punched and customer select is done first.
+
+ALTER TABLE tblCreditBillHeader MODIFY CreditLimit				  decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY RunningCreditAmt           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrMonthCreditAmt         decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrMonthAmountPaid        decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY TotalBillCharges           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrentDueAmount           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY MinimumAmountDue           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev1MoCurrentDueAmount    decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev1MoMinimumAmountDue    decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev1MoCurrMonthAmountPaid decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY Prev2MoCurrentDueAmount    decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY CurrentPurchaseAmt         decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY BeginningBalance           decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillHeader MODIFY EndingBalance              decimal(18,2) not null default 0;
+ALTER TABLE tblCreditBillDetail MODIFY Amount				      decimal(18,2) not null default 0;

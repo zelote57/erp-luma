@@ -61,9 +61,9 @@ CREATE TABLE sysAccessUsers (
 	`Password` VARCHAR(25) NOT NULL,
 	`DateCreated` DATETIME NOT NULL,
 	`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
-PRIMARY KEY (UID),
-INDEX `IX_sysAccessUser`(`UID`, `UserName`),
-UNIQUE `PK_sysAccessUser`(`UserName`)
+	PRIMARY KEY (UID),
+	INDEX `IX_sysAccessUser`(`UID`, `UserName`),
+	UNIQUE `PK_sysAccessUser`(`UserName`)
 );
 
 /*****************************
@@ -71,12 +71,12 @@ UNIQUE `PK_sysAccessUser`(`UserName`)
 *****************************/
 DROP TABLE IF EXISTS sysAccessGroups;
 CREATE TABLE sysAccessGroups (
-`GroupID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`GroupName` VARCHAR(20) NOT NULL,
-`Remarks` VARCHAR(200),
-PRIMARY KEY (GroupID),
-INDEX `IX_sysAccessGroups`(`GroupID`, `GroupName`),
-UNIQUE `PK_sysAccessGroups`(`GroupName`)
+	`GroupID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`GroupName` VARCHAR(20) NOT NULL,
+	`Remarks` VARCHAR(200),
+	PRIMARY KEY (GroupID),
+	INDEX `IX_sysAccessGroups`(`GroupID`, `GroupName`),
+	UNIQUE `PK_sysAccessGroups`(`GroupName`)
 );
 
 /*****************************
@@ -84,27 +84,25 @@ UNIQUE `PK_sysAccessGroups`(`GroupName`)
 *****************************/
 DROP TABLE IF EXISTS sysAccessUserDetails;
 CREATE TABLE sysAccessUserDetails (
-`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`Name` VARCHAR (160) NULL ,
-`Address1` VARCHAR (150) NULL ,
-`Address2` VARCHAR (150) NULL ,
-`City` VARCHAR (30) NULL ,
-`State` VARCHAR (30) NULL ,
-`Zip` VARCHAR (15) NULL ,
-`CountryID` TINYINT NOT NULL DEFAULT 0,
-`OfficePhone` VARCHAR (150) NOT NULL DEFAULT '---',
-`DirectPhone` VARCHAR (150) NOT NULL DEFAULT '---',
-`HomePhone` VARCHAR (150) NOT NULL DEFAULT '---',
-`FaxPhone` VARCHAR (150) NOT NULL DEFAULT '---',
-`MobilePhone` VARCHAR (150) NOT NULL DEFAULT '---',
-`EmailAddress` VARCHAR (150) NOT NULL DEFAULT '',
-`GroupID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessGroups(`GroupID`),
-INDEX `IX_sysAccessUserDetails`(`UID`, `Name`),
-UNIQUE `PK_sysAccessUserDetails`(`Name`),
-INDEX `IX1_sysAccessUserDetails`(`UID`),
-FOREIGN KEY (`UID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT,
-INDEX `IX2_sysAccessUserDetails`(`GroupID`),
-FOREIGN KEY (`GroupID`)REFERENCES sysAccessGroups(`GroupID`) ON DELETE RESTRICT
+	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`Name` VARCHAR (160) NULL,
+	`Address1` VARCHAR (150) NULL,
+	`Address2` VARCHAR (150) NULL,
+	`City` VARCHAR (30) NULL,
+	`State` VARCHAR (30) NULL,
+	`Zip` VARCHAR (15) NULL,
+	`CountryID` TINYINT NOT NULL DEFAULT 0,
+	`OfficePhone` VARCHAR (150) NOT NULL DEFAULT '---',
+	`DirectPhone` VARCHAR (150) NOT NULL DEFAULT '---',
+	`HomePhone` VARCHAR (150) NOT NULL DEFAULT '---',
+	`FaxPhone` VARCHAR (150) NOT NULL DEFAULT '---',
+	`MobilePhone` VARCHAR (150) NOT NULL DEFAULT '---',
+	`EmailAddress` VARCHAR (150) NOT NULL DEFAULT '',
+	`GroupID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	INDEX `IX_sysAccessUserDetails`(`UID`, `Name`),
+	UNIQUE `PK_sysAccessUserDetails`(`Name`),
+	INDEX `IX1_sysAccessUserDetails`(`UID`),
+	INDEX `IX2_sysAccessUserDetails`(`GroupID`)
 );
 
 /*****************************
@@ -112,12 +110,12 @@ FOREIGN KEY (`GroupID`)REFERENCES sysAccessGroups(`GroupID`) ON DELETE RESTRICT
 *****************************/
 DROP TABLE IF EXISTS sysAccessTypes;
 CREATE TABLE sysAccessTypes (
-`TypeID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`TypeName` VARCHAR(80) NOT NULL,
-`Remarks` VARCHAR(120),
-PRIMARY KEY (TypeID),
-INDEX `IX_sysAccessTypes`(`TypeID`, `TypeName`),
-UNIQUE `PK_sysAccessTypes`(`TypeName`)
+	`TypeID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`TypeName` VARCHAR(80) NOT NULL,
+	`Remarks` VARCHAR(120),
+	PRIMARY KEY (TypeID),
+	INDEX `IX_sysAccessTypes`(`TypeID`, `TypeName`),
+	UNIQUE `PK_sysAccessTypes`(`TypeName`)
 );
 
 /*****************************
@@ -125,16 +123,14 @@ UNIQUE `PK_sysAccessTypes`(`TypeName`)
 *****************************/
 DROP TABLE IF EXISTS sysAccessRights;
 CREATE TABLE sysAccessRights (
-`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`TranTypeID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessTypes(`TypeID`),
-`AllowRead` TINYINT(1) NOT NULL DEFAULT 0,
-`AllowWrite` TINYINT(1) NOT NULL DEFAULT 0,
-INDEX `IX_sysAccessTypes`(`UID`, `TranTypeID`),
-UNIQUE `PK_sysAccessTypes`(`UID`, `TranTypeID`),
-INDEX `IX1_sysAccessTypes`(`UID`),
-FOREIGN KEY (`UID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT,
-INDEX `IX2_sysAccessTypes`(`TranTypeID`),
-FOREIGN KEY (`TranTypeID`) REFERENCES sysAccessTypes(`TypeID`) ON DELETE RESTRICT
+	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`TranTypeID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`AllowRead` TINYINT(1) NOT NULL DEFAULT 0,
+	`AllowWrite` TINYINT(1) NOT NULL DEFAULT 0,
+	INDEX `IX_sysAccessTypes`(`UID`, `TranTypeID`),
+	UNIQUE `PK_sysAccessTypes`(`UID`, `TranTypeID`),
+	INDEX `IX1_sysAccessTypes`(`UID`),
+	INDEX `IX2_sysAccessTypes`(`TranTypeID`)
 );
 
 /*****************************
@@ -142,16 +138,14 @@ FOREIGN KEY (`TranTypeID`) REFERENCES sysAccessTypes(`TypeID`) ON DELETE RESTRIC
 *****************************/
 DROP TABLE IF EXISTS sysAccessGroupRights;
 CREATE TABLE sysAccessGroupRights (
-`GroupID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessGroups(`GroupID`),
-`TranTypeID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessTypes(`TypeID`),
-`AllowRead` TINYINT(1) NOT NULL DEFAULT 0,
-`AllowWrite` TINYINT(1) NOT NULL DEFAULT 0,
-INDEX `IX_sysAccessGroupRights`(`GroupID`, `TranTypeID`),
-UNIQUE `PK_ssysAccessGroupRights`(`GroupID`, `TranTypeID`),
-INDEX `IX1_sysAccessGroupRights`(`GroupID`),
-FOREIGN KEY (`GroupID`) REFERENCES sysAccessGroups(`GroupID`) ON DELETE RESTRICT,
-INDEX `IX2_sysAccessGroupRights`(`TranTypeID`),
-FOREIGN KEY (`TranTypeID`) REFERENCES sysAccessTypes(`TypeID`) ON DELETE RESTRICT
+	`GroupID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`TranTypeID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`AllowRead` TINYINT(1) NOT NULL DEFAULT 0,
+	`AllowWrite` TINYINT(1) NOT NULL DEFAULT 0,
+	INDEX `IX_sysAccessGroupRights`(`GroupID`, `TranTypeID`),
+	UNIQUE `PK_ssysAccessGroupRights`(`GroupID`, `TranTypeID`),
+	INDEX `IX1_sysAccessGroupRights`(`GroupID`),
+	INDEX `IX2_sysAccessGroupRights`(`TranTypeID`)
 );
 
 /*****************************
@@ -159,12 +153,12 @@ FOREIGN KEY (`TranTypeID`) REFERENCES sysAccessTypes(`TypeID`) ON DELETE RESTRIC
 *****************************/
 DROP TABLE IF EXISTS sysAuditTrail;
 CREATE TABLE sysAuditTrail (
-`ActivityDate` DATETIME NOT NULL,
-`User` VARCHAR(80) NOT NULL,
-`Activity` VARCHAR(120),
-`IPAddress` VARCHAR(15),
-`Remarks` VARCHAR (8000),
-INDEX `IX_sysAuditTrail`(`ActivityDate`, `User`)
+	`ActivityDate` DATETIME NOT NULL,
+	`User` VARCHAR(80) NOT NULL,
+	`Activity` VARCHAR(120),
+	`IPAddress` VARCHAR(15),
+	`Remarks` VARCHAR (8000),
+	INDEX `IX_sysAuditTrail`(`ActivityDate`, `User`)
 );
 
 /*****************************
@@ -172,21 +166,20 @@ INDEX `IX_sysAuditTrail`(`ActivityDate`, `User`)
 *****************************/
 DROP TABLE IF EXISTS tblCashierLogs;
 CREATE TABLE tblCashierLogs (
-`CashierLogsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`LoginDate` DATETIME NOT NULL,
-`TerminalNo` VARCHAR(5),
-`IPAddress` VARCHAR(15),
-`LogoutDate` DATETIME,
-`Status` TINYINT(3),
-PRIMARY KEY (`CashierLogsID`),
-INDEX `IX_tblCashierLogs`(`CashierLogsID`),
-UNIQUE `PK_tblCashierLogs`(`CashierLogsID`),
-INDEX `IX1_tblCashierLogs`(`UID`),
-FOREIGN KEY (`UID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT,
-INDEX `IX2_tblCashierLogs`(`UID`, `LoginDate`),
-INDEX `IX3_tblCashierLogs`(`UID`, `LoginDate`, `TerminalNo`),
-INDEX `IX4_tblCashierLogs`(`UID`, `TerminalNo`)
+	`CashierLogsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`LoginDate` DATETIME NOT NULL,
+	`TerminalNo` VARCHAR(5),
+	`IPAddress` VARCHAR(15),
+	`LogoutDate` DATETIME,
+	`Status` TINYINT(3),
+	PRIMARY KEY (`CashierLogsID`),
+	INDEX `IX_tblCashierLogs`(`CashierLogsID`),
+	UNIQUE `PK_tblCashierLogs`(`CashierLogsID`),
+	INDEX `IX1_tblCashierLogs`(`UID`),
+	INDEX `IX2_tblCashierLogs`(`UID`, `LoginDate`),
+	INDEX `IX3_tblCashierLogs`(`UID`, `LoginDate`, `TerminalNo`),
+	INDEX `IX4_tblCashierLogs`(`UID`, `TerminalNo`)
 );
 
 /*****************************
@@ -194,13 +187,13 @@ INDEX `IX4_tblCashierLogs`(`UID`, `TerminalNo`)
 *****************************/
 DROP TABLE IF EXISTS tblContactGroup;
 CREATE TABLE tblContactGroup (
-`ContactGroupID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ContactGroupCode` VARCHAR(3) NOT NULL,
-`ContactGroupName` VARCHAR(30) NOT NULL,
-`ContactGroupCategory` TINYINT(1) NOT NULL DEFAULT 3,
-PRIMARY KEY (`ContactGroupID`),
-INDEX `IX_tblContactGroup`(`ContactGroupID`, `ContactGroupCode`, `ContactGroupName`),
-UNIQUE `PK_tblContactGroup`(`ContactGroupCode`)
+	`ContactGroupID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ContactGroupCode` VARCHAR(3) NOT NULL,
+	`ContactGroupName` VARCHAR(30) NOT NULL,
+	`ContactGroupCategory` TINYINT(1) NOT NULL DEFAULT 3,
+	PRIMARY KEY (`ContactGroupID`),
+	INDEX `IX_tblContactGroup`(`ContactGroupID`, `ContactGroupCode`, `ContactGroupName`),
+	UNIQUE `PK_tblContactGroup`(`ContactGroupCode`)
 );
 
 INSERT INTO tblContactGroup (ContactGroupCode, ContactGroupName, ContactGroupCategory) VALUES ('CUS', 'Default Customer Group', 1);
@@ -211,28 +204,27 @@ INSERT INTO tblContactGroup (ContactGroupCode, ContactGroupName, ContactGroupCat
 *****************************/
 DROP TABLE IF EXISTS tblContacts;
 CREATE TABLE tblContacts (
-`ContactID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ContactCode` VARCHAR(25) NOT NULL,
-`ContactName` VARCHAR(75) NOT NULL,
-`ContactGroupID` INT(10) UNSIGNED DEFAULT 0 REFERENCES tblContactGroup(`ContactGroupID`),
-`ModeOfTerms` INT(10) NOT NULL DEFAULT 0,
-`Terms` INT(10) NOT NULL DEFAULT 0,
-`Address` VARCHAR(150) NOT NULL DEFAULT '',
-`BusinessName` VARCHAR(75) NOT NULL DEFAULT '',
-`TelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
-`Remarks` VARCHAR(150) NOT NULL DEFAULT '',
-`Debit` decimal(18,3) NOT NULL DEFAULT 0,
-`Credit` decimal(18,3) NOT NULL DEFAULT 0,
-`CreditLimit` decimal(18,3) NOT NULL DEFAULT 0,
-`IsCreditAllowed` TINYINT(1) NOT NULL DEFAULT 0,
-`DateCreated` DATETIME NOT NULL,
-`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
-PRIMARY KEY (ContactID),
-INDEX `IX_tblContacts`(`ContactID`, `ContactCode`, `ContactName`),
-UNIQUE `PK_tblContacts`(`ContactCode`),
-INDEX `IX1_tblContacts`(`ContactGroupID`),
-FOREIGN KEY (`ContactGroupID`) REFERENCES tblContactGroup(`ContactGroupID`) ON DELETE RESTRICT
-);
+	`ContactID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ContactCode` VARCHAR(25) NOT NULL,
+	`ContactName` VARCHAR(75) NOT NULL,
+	`ContactGroupID` INT(10) UNSIGNED DEFAULT 0,
+	`ModeOfTerms` INT(10) NOT NULL DEFAULT 0,
+	`Terms` INT(10) NOT NULL DEFAULT 0,
+	`Address` VARCHAR(150) NOT NULL DEFAULT '',
+	`BusinessName` VARCHAR(75) NOT NULL DEFAULT '',
+	`TelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`Remarks` VARCHAR(150) NOT NULL DEFAULT '',
+	`Debit` decimal(18,3) NOT NULL DEFAULT 0,
+	`Credit` decimal(18,3) NOT NULL DEFAULT 0,
+	`CreditLimit` decimal(18,3) NOT NULL DEFAULT 0,
+	`IsCreditAllowed` TINYINT(1) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL,
+	`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
+	PRIMARY KEY (ContactID),
+	INDEX `IX_tblContacts`(`ContactID`, `ContactCode`, `ContactName`),
+	UNIQUE `PK_tblContacts`(`ContactCode`),
+	INDEX `IX1_tblContacts`(`ContactGroupID`)
+) ;
 
 INSERT INTO tblContacts (ContactID, ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
 (1, 'RC', 'RetailPlus Customer ™', 1, 0, 'RBS', 'RBS', '', '', NOW());
@@ -246,12 +238,12 @@ INSERT INTO tblContacts (ContactID, ContactCode, ContactName, ContactGroupID, Mo
 *****************************/
 DROP TABLE IF EXISTS tblUnit;
 CREATE TABLE tblUnit (
-`UnitID` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-`UnitCode` VARCHAR(3) NOT NULL,
-`UnitName` VARCHAR(30) NOT NULL,
-PRIMARY KEY (UnitID),
-INDEX `IX_tblUnit`(`UnitID`, `UnitCode`, `UnitName`),
-UNIQUE `PK_tblUnit`(`UnitCode`)
+	`UnitID` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`UnitCode` VARCHAR(3) NOT NULL,
+	`UnitName` VARCHAR(30) NOT NULL,
+	PRIMARY KEY (UnitID),
+	INDEX `IX_tblUnit`(`UnitID`, `UnitCode`, `UnitName`),
+	UNIQUE `PK_tblUnit`(`UnitCode`)
 );
 
 /*****************************
@@ -259,12 +251,12 @@ UNIQUE `PK_tblUnit`(`UnitCode`)
 *****************************/
 DROP TABLE IF EXISTS tblVariations;
 CREATE TABLE tblVariations (
-`VariationID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`VariationCode` VARCHAR(3) NOT NULL,
-`VariationType` VARCHAR(20) NOT NULL,
-PRIMARY KEY (VariationID),
-INDEX `IX_tblVariations`(`VariationID`, `VariationCode`, `VariationType`),
-UNIQUE `PK_tblVariations`(`VariationCode`)
+	`VariationID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`VariationCode` VARCHAR(3) NOT NULL,
+	`VariationType` VARCHAR(20) NOT NULL,
+	PRIMARY KEY (VariationID),
+	INDEX `IX_tblVariations`(`VariationID`, `VariationCode`, `VariationType`),
+	UNIQUE `PK_tblVariations`(`VariationCode`)
 );
 
 /*****************************
@@ -272,19 +264,19 @@ UNIQUE `PK_tblVariations`(`VariationCode`)
 *****************************/
 DROP TABLE IF EXISTS tblChargeType;
 CREATE TABLE tblChargeType (
-`ChargeTypeID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ChargeTypeCode` VARCHAR(3) NOT NULL,
-`ChargeType` VARCHAR(20) NOT NULL,
-`ChargeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InPercent` TINYINT(1) NOT NULL DEFAULT 0,
-PRIMARY KEY (ChargeTypeID),
-INDEX `IX_tblChargeType`(`ChargeTypeID`, `ChargeTypeCode`, `ChargeType`),
-UNIQUE `PK_tblChargeType`(`ChargeTypeCode`),
-INDEX `IX1_tblChargeType`(`ChargeTypeID`),
-INDEX `IX2_tblChargeType`(`ChargeTypeCode`),
-INDEX `IX3_tblChargeType`(`ChargeType`),
-INDEX `IX4_tblChargeType`(`ChargeTypeCode`, `ChargeType`),
-INDEX `IX5_tblChargeType`(`InPercent`)
+	`ChargeTypeID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ChargeTypeCode` VARCHAR(3) NOT NULL,
+	`ChargeType` VARCHAR(20) NOT NULL,
+	`ChargeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InPercent` TINYINT(1) NOT NULL DEFAULT 0,
+	PRIMARY KEY (ChargeTypeID),
+	INDEX `IX_tblChargeType`(`ChargeTypeID`, `ChargeTypeCode`, `ChargeType`),
+	UNIQUE `PK_tblChargeType`(`ChargeTypeCode`),
+	INDEX `IX1_tblChargeType`(`ChargeTypeID`),
+	INDEX `IX2_tblChargeType`(`ChargeTypeCode`),
+	INDEX `IX3_tblChargeType`(`ChargeType`),
+	INDEX `IX4_tblChargeType`(`ChargeTypeCode`, `ChargeType`),
+	INDEX `IX5_tblChargeType`(`InPercent`)
 );
 
 /*****************************
@@ -292,21 +284,20 @@ INDEX `IX5_tblChargeType`(`InPercent`)
 *****************************/
 DROP TABLE IF EXISTS tblProductGroup;
 CREATE TABLE tblProductGroup (
-`ProductGroupID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductGroupCode` VARCHAR(20) NOT NULL,
-`ProductGroupName` VARCHAR(50) NOT NULL,
-`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-PRIMARY KEY (ProductGroupID),
-INDEX `IX_tblProductGroup`(`ProductGroupID`, `ProductGroupCode`, `ProductGroupName`),
-UNIQUE `PK_tblProductGroup`(`ProductGroupCode`),
-INDEX `IX1_tblProductGroup`(`BaseUnitID`),
-FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT 
+	`ProductGroupID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductGroupCode` VARCHAR(20) NOT NULL,
+	`ProductGroupName` VARCHAR(50) NOT NULL,
+	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	PRIMARY KEY (ProductGroupID),
+	INDEX `IX_tblProductGroup`(`ProductGroupID`, `ProductGroupCode`, `ProductGroupName`),
+	UNIQUE `PK_tblProductGroup`(`ProductGroupCode`),
+	INDEX `IX1_tblProductGroup`(`BaseUnitID`)
 );
 
 /*****************************
@@ -314,14 +305,12 @@ FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
 *****************************/
 DROP TABLE IF EXISTS tblProductGroupVariations;
 CREATE TABLE tblProductGroupVariations (
-	`GroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroup(`ProductGroupID`),
-	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblVariations(`VariationID`),
+	`GroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
 	INDEX `IX_tblProductGroupVariations`(`GroupID`, `VariationID`),
 	UNIQUE `PK_tblProductGroupVariations`(`GroupID`, `VariationID`),
 	INDEX `IX1_tblProductGroupVariations`(`VariationID`),
-	FOREIGN KEY (`VariationID`) REFERENCES tblVariations(`VariationID`) ON DELETE RESTRICT,
-	INDEX `IX2_tblProductGroupVariations`(`GroupID`),
-	FOREIGN KEY (`GroupID`) REFERENCES tblProductGroup(`ProductGroupID`) ON DELETE RESTRICT
+	INDEX `IX2_tblProductGroupVariations`(`GroupID`)
 );
 
 
@@ -331,9 +320,9 @@ CREATE TABLE tblProductGroupVariations (
 DROP TABLE IF EXISTS tblProductGroupBaseVariationsMatrix;
 CREATE TABLE tblProductGroupBaseVariationsMatrix (
 	`MatrixID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`GroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroup(`ProductGroupID`),
+	`GroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`Description` VARCHAR(255) NOT NULL,
-	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
+	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
 	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
@@ -343,9 +332,7 @@ CREATE TABLE tblProductGroupBaseVariationsMatrix (
 	INDEX `IX_tblProductGroupBaseVariationsMatrix`(`MatrixID`,`GroupID`),
 	UNIQUE `PK_tblProductGroupBaseVariationsMatrix`(`GroupID`,`Description`),
 	INDEX `IX1_tblProductGroupBaseVariationsMatrix`(`GroupID`),
-	FOREIGN KEY (`GroupID`) REFERENCES tblProductGroup(`ProductGroupID`) ON DELETE RESTRICT,
-	INDEX `IX2_tblProductGroupBaseVariationsMatrix`(`UnitID`),
-	FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
+	INDEX `IX2_tblProductGroupBaseVariationsMatrix`(`UnitID`)
 );
 
 
@@ -354,15 +341,13 @@ CREATE TABLE tblProductGroupBaseVariationsMatrix (
 *****************************/
 DROP TABLE IF EXISTS tblProductGroupVariationsMatrix;
 CREATE TABLE tblProductGroupVariationsMatrix (
-`MatrixID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroupBaseVariationsMatrix(`MatrixID`),
-`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroupVariations(`VariationID`),
-`Description` VARCHAR(150) NOT NULL,
-INDEX `IX_tblProductGroupVariationsMatrix`(`MatrixID`,`VariationID`),
-UNIQUE `PK_tblProductGroupVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
-INDEX `IX1_tblProductGroupVariationsMatrix`(`VariationID`),
-FOREIGN KEY (`VariationID`) REFERENCES tblProductGroupVariations(`VariationID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductGroupVariationsMatrix`(`MatrixID`),
-FOREIGN KEY (`MatrixID`) REFERENCES tblProductGroupBaseVariationsMatrix(`MatrixID`) ON DELETE RESTRICT
+	`MatrixID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Description` VARCHAR(150) NOT NULL,
+	INDEX `IX_tblProductGroupVariationsMatrix`(`MatrixID`,`VariationID`),
+	UNIQUE `PK_tblProductGroupVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
+	INDEX `IX1_tblProductGroupVariationsMatrix`(`VariationID`),
+	INDEX `IX2_tblProductGroupVariationsMatrix`(`MatrixID`)
 );
 
 /*****************************
@@ -372,19 +357,16 @@ FOREIGN KEY (`MatrixID`) REFERENCES tblProductGroupBaseVariationsMatrix(`MatrixI
 DROP TABLE IF EXISTS tblProductGroupUnitMatrix;
 CREATE TABLE tblProductGroupUnitMatrix (
 	`MatrixID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`GroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroup(`ProductGroupID`),
-	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
+	`GroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
 	`BaseUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
-	`BottomUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
+	`BottomUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
 	`BottomUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
 	INDEX `IX_tblProductGroupUnitMatrix`(`MatrixID`, `GroupID`, `BaseUnitID`, `BottomUnitID`),
 	UNIQUE `PX_tblProductGroupUnitMatrix`(`GroupID`, `BaseUnitID`, `BottomUnitID`),
 	INDEX `IX1_tblProductGroupUnitMatrix`(`BaseUnitID`),
-	FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
 	INDEX `IX2_tblProductGroupUnitMatrix`(`BottomUnitID`),
-	FOREIGN KEY (`BottomUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-	INDEX `IX3_tblProductGroupUnitMatrix`(`GroupID`),
-	FOREIGN KEY (`GroupID`) REFERENCES tblProductGroup(`ProductGroupID`) ON DELETE RESTRICT
+	INDEX `IX3_tblProductGroupUnitMatrix`(`GroupID`)
 );
 
 /*****************************
@@ -392,19 +374,17 @@ CREATE TABLE tblProductGroupUnitMatrix (
 *****************************/
 DROP TABLE IF EXISTS tblProductGroupCharges;
 CREATE TABLE tblProductGroupCharges (
-`ChargeID`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`GroupID`		BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroup(`ProductGroupID`),
-`ChargeTypeID`	INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblChargeType(`ChargeTypeID`),
-`ChargeAmount`	DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InPercent`		TINYINT(1) NOT NULL DEFAULT 0,
-INDEX `IX_tblProductGroupCharges`(`ChargeID`),
-UNIQUE `PK_tblProductGroupCharges`(`ChargeID`),
-INDEX `IX1_tblProductGroupCharges`(`GroupID`, `ChargeTypeID`),
-UNIQUE `PK1_tblProductGroupCharges`(`GroupID`, `ChargeTypeID`),
-INDEX `IX2_tblProductGroupCharges`(`ChargeTypeID`),
-FOREIGN KEY (`ChargeTypeID`) REFERENCES tblChargeType(`ChargeTypeID`) ON DELETE RESTRICT,
-INDEX `IX3_tblProductGroupCharges`(`GroupID`),
-FOREIGN KEY (`GroupID`) REFERENCES tblProductGroup(`ProductGroupID`) ON DELETE RESTRICT
+	`ChargeID`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`GroupID`		BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ChargeTypeID`	INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`ChargeAmount`	DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InPercent`		TINYINT(1) NOT NULL DEFAULT 0,
+	INDEX `IX_tblProductGroupCharges`(`ChargeID`),
+	UNIQUE `PK_tblProductGroupCharges`(`ChargeID`),
+	INDEX `IX1_tblProductGroupCharges`(`GroupID`, `ChargeTypeID`),
+	UNIQUE `PK1_tblProductGroupCharges`(`GroupID`, `ChargeTypeID`),
+	INDEX `IX2_tblProductGroupCharges`(`ChargeTypeID`),
+	INDEX `IX3_tblProductGroupCharges`(`GroupID`)
 );
 
 /*****************************
@@ -412,22 +392,21 @@ FOREIGN KEY (`GroupID`) REFERENCES tblProductGroup(`ProductGroupID`) ON DELETE R
 *****************************/
 DROP TABLE IF EXISTS tblProductSubGroup;
 CREATE TABLE tblProductSubGroup (
-`ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductGroupID` INT(10) UNSIGNED NOT NULL,
-`ProductSubGroupCode` VARCHAR(20) NOT NULL,
-`ProductSubGroupName` VARCHAR(50) NOT NULL,
-`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`) ,
-`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-PRIMARY KEY (ProductSubGroupID),
-INDEX `IX_tblProductSubGroup`(`ProductSubGroupID`, `ProductSubGroupCode`, `ProductSubGroupName`),
-UNIQUE `PK_tblProductSubGroup`(`ProductGroupID`, `ProductSubGroupCode`),
-INDEX `IX1_tblProductSubGroup`(`BaseUnitID`),
-FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT 
+	`ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductGroupID` INT(10) UNSIGNED NOT NULL,
+	`ProductSubGroupCode` VARCHAR(20) NOT NULL,
+	`ProductSubGroupName` VARCHAR(50) NOT NULL,
+	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	PRIMARY KEY (ProductSubGroupID),
+	INDEX `IX_tblProductSubGroup`(`ProductSubGroupID`, `ProductSubGroupCode`, `ProductSubGroupName`),
+	UNIQUE `PK_tblProductSubGroup`(`ProductGroupID`, `ProductSubGroupCode`),
+	INDEX `IX1_tblProductSubGroup`(`BaseUnitID`)
 );
 
 /*****************************
@@ -435,14 +414,12 @@ FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
 *****************************/
 DROP TABLE IF EXISTS tblProductSubGroupVariations;
 CREATE TABLE tblProductSubGroupVariations (
-`SubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroup(`ProductSubGroupID`),
-`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblVariations(`VariationID`),
-INDEX `IX_tblProductSubGroupVariations`(`SubGroupID`, `VariationID`),
-UNIQUE `PK_tblProductSubGroupVariations`(`SubGroupID`, `VariationID`),
-INDEX `IX1_tblProductSubGroupVariations`(`VariationID`),
-FOREIGN KEY (`VariationID`) REFERENCES tblVariations(`VariationID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductSubGroupVariations`(`SubGroupID`),
-FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON DELETE RESTRICT
+	`SubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	INDEX `IX_tblProductSubGroupVariations`(`SubGroupID`, `VariationID`),
+	UNIQUE `PK_tblProductSubGroupVariations`(`SubGroupID`, `VariationID`),
+	INDEX `IX1_tblProductSubGroupVariations`(`VariationID`),
+	INDEX `IX2_tblProductSubGroupVariations`(`SubGroupID`)
 );
 
 /*****************************
@@ -451,21 +428,19 @@ FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON
 DROP TABLE IF EXISTS tblProductSubGroupBaseVariationsMatrix;
 CREATE TABLE tblProductSubGroupBaseVariationsMatrix (
 	`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`SubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroup(`ProductSubGroupID`),
+	`SubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`Description` VARCHAR(255) NOT NULL,
-	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
+	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
 	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
 	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblProductSubGroupBaseVariationsMatrix`(`MatrixID`,`SubGroupID`),
-UNIQUE `PK_tblProductSubGroupBaseVariationsMatrix`(`SubGroupID`,`Description`),
-INDEX `IX1_tblProductSubGroupBaseVariationsMatrix`(`SubGroupID`),
-FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductSubGroupBaseVariationsMatrix`(`UnitID`),
-FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
+	INDEX `IX_tblProductSubGroupBaseVariationsMatrix`(`MatrixID`,`SubGroupID`),
+	UNIQUE `PK_tblProductSubGroupBaseVariationsMatrix`(`SubGroupID`,`Description`),
+	INDEX `IX1_tblProductSubGroupBaseVariationsMatrix`(`SubGroupID`),
+	INDEX `IX2_tblProductSubGroupBaseVariationsMatrix`(`UnitID`)
 );
 
 /*****************************
@@ -473,15 +448,13 @@ FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
 *****************************/
 DROP TABLE IF EXISTS tblProductSubGroupVariationsMatrix;
 CREATE TABLE tblProductSubGroupVariationsMatrix (
-`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroupBaseVariationsMatrix(`MatrixID`),
-`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductGroupVariations(`VariationID`),
-`Description` VARCHAR(150) NOT NULL,
-INDEX `IX_tblProductSubGroupVariationsMatrix`(`MatrixID`,`VariationID`),
-UNIQUE `PK_tblProductSubGroupVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
-INDEX `IX1_tblProductSubGroupVariationsMatrix`(`VariationID`),
-FOREIGN KEY (`VariationID`) REFERENCES tblProductGroupVariations(`VariationID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductSubGroupVariationsMatrix`(`MatrixID`),
-FOREIGN KEY (`MatrixID`) REFERENCES tblProductSubGroupBaseVariationsMatrix(`MatrixID`) ON DELETE RESTRICT
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Description` VARCHAR(150) NOT NULL,
+	INDEX `IX_tblProductSubGroupVariationsMatrix`(`MatrixID`,`VariationID`),
+	UNIQUE `PK_tblProductSubGroupVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
+	INDEX `IX1_tblProductSubGroupVariationsMatrix`(`VariationID`),
+	INDEX `IX2_tblProductSubGroupVariationsMatrix`(`MatrixID`)
 );
 
 /*****************************
@@ -489,20 +462,17 @@ FOREIGN KEY (`MatrixID`) REFERENCES tblProductSubGroupBaseVariationsMatrix(`Matr
 *****************************/
 DROP TABLE IF EXISTS tblProductSubGroupUnitMatrix;
 CREATE TABLE tblProductSubGroupUnitMatrix (
-`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`SubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroup(`ProductSubGroupID`),
-`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`BaseUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
-`BottomUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`BottomUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
-INDEX `IX_tblProductSubGroupUnitMatrix`(`MatrixID`, `SubGroupID`, `BaseUnitID`, `BottomUnitID`),
-UNIQUE `PX_tblProductUnitMatrix`(`SubGroupID`, `BaseUnitID`, `BottomUnitID`),
-INDEX `IX1_tblProductSubGroupUnitMatrix`(`BaseUnitID`),
-FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductSubGroupUnitMatrix`(`BottomUnitID`),
-FOREIGN KEY (`BottomUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-INDEX `IX3_tblProductSubGroupUnitMatrix`(`SubGroupID`),
-FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON DELETE RESTRICT
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`SubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`BaseUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
+	`BottomUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`BottomUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
+	INDEX `IX_tblProductSubGroupUnitMatrix`(`MatrixID`, `SubGroupID`, `BaseUnitID`, `BottomUnitID`),
+	UNIQUE `PX_tblProductUnitMatrix`(`SubGroupID`, `BaseUnitID`, `BottomUnitID`),
+	INDEX `IX1_tblProductSubGroupUnitMatrix`(`BaseUnitID`),
+	INDEX `IX2_tblProductSubGroupUnitMatrix`(`BottomUnitID`),
+	INDEX `IX3_tblProductSubGroupUnitMatrix`(`SubGroupID`)
 );
 
 /*****************************
@@ -510,19 +480,17 @@ FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON
 *****************************/
 DROP TABLE IF EXISTS tblProductSubGroupCharges;
 CREATE TABLE tblProductSubGroupCharges (
-`ChargeID`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`SubGroupID`	BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroup(`ProductSubGroupID`),
-`ChargeTypeID`	INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblChargeType(`ChargeTypeID`),
-`ChargeAmount`	DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InPercent`		TINYINT(1) NOT NULL DEFAULT 0,
-INDEX `IX_tblProductSubGroupCharges`(`ChargeID`),
-UNIQUE `PK_tblProductSubGroupCharges`(`ChargeID`),
-INDEX `IX1_tblProductSubGroupCharges`(`SubGroupID`, `ChargeTypeID`),
-UNIQUE `PK1_tblProductSubGroupCharges`(`SubGroupID`, `ChargeTypeID`),
-INDEX `IX2_tblProductSubGroupCharges`(`ChargeTypeID`),
-FOREIGN KEY (`ChargeTypeID`) REFERENCES tblChargeType(`ChargeTypeID`) ON DELETE RESTRICT,
-INDEX `IX3_tblProductSubGroupCharges`(`SubGroupID`),
-FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON DELETE RESTRICT
+	`ChargeID`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`SubGroupID`	BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ChargeTypeID`	INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`ChargeAmount`	DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InPercent`		TINYINT(1) NOT NULL DEFAULT 0,
+	INDEX `IX_tblProductSubGroupCharges`(`ChargeID`),
+	UNIQUE `PK_tblProductSubGroupCharges`(`ChargeID`),
+	INDEX `IX1_tblProductSubGroupCharges`(`SubGroupID`, `ChargeTypeID`),
+	UNIQUE `PK1_tblProductSubGroupCharges`(`SubGroupID`, `ChargeTypeID`),
+	INDEX `IX2_tblProductSubGroupCharges`(`ChargeTypeID`),
+	INDEX `IX3_tblProductSubGroupCharges`(`SubGroupID`)
 );
 
 /*****************************
@@ -530,35 +498,32 @@ FOREIGN KEY (`SubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`) ON
 *****************************/
 DROP TABLE IF EXISTS tblProducts;
 CREATE TABLE tblProducts (
-`ProductID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductCode` VARCHAR(30) NOT NULL,
-`BarCode` VARCHAR(30) NOT NULL,
-`ProductDesc` VARCHAR(50) NOT NULL,
-`ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroup(`ProductSubGroupID`),
-`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`DateCreated` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
-`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`MinThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`MaxThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
-PRIMARY KEY (ProductID),
-INDEX `IX_tblProducts`(`ProductID`, `ProductCode`),
-UNIQUE `PK_tblProducts`(`ProductCode`),
-INDEX `IX1_tblProducts`(`BarCode`),
-UNIQUE `PK1_tblProducts`(`BarCode`),
-INDEX `IX2_tblProducts`(`ProductSubGroupID`),
-FOREIGN KEY (`ProductSubGroupID`) REFERENCES tblProductSubGroup(`ProductSubGroupID`),
-INDEX `IX3_tblProducts`(`BaseUnitID`),
-FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-INDEX `IX4_tblProducts`(`SupplierID`),
-FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductCode` VARCHAR(30) NOT NULL,
+	`BarCode` VARCHAR(30) NOT NULL,
+	`ProductDesc` VARCHAR(50) NOT NULL,
+	`ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`MinThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`MaxThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2,
+	PRIMARY KEY (ProductID),
+	INDEX `IX_tblProducts`(`ProductID`, `ProductCode`),
+	UNIQUE `PK_tblProducts`(`ProductCode`),
+	INDEX `IX1_tblProducts`(`BarCode`),
+	UNIQUE `PK1_tblProducts`(`BarCode`),
+	INDEX `IX2_tblProducts`(`ProductSubGroupID`),
+	INDEX `IX3_tblProducts`(`BaseUnitID`),
+	INDEX `IX4_tblProducts`(`SupplierID`)
 );
 
 /*****************************
@@ -566,12 +531,11 @@ FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRIC
 *****************************/
 DROP TABLE IF EXISTS tblProductVariations;
 CREATE TABLE tblProductVariations (
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblVariations(`VariationID`),
-INDEX `IX_tblProductVariations`(`ProductID`, `VariationID`),
-UNIQUE `PK_tblProductVariations`(`ProductID`, `VariationID`),
-INDEX `IX1_tblProductVariations`(`VariationID`),
-FOREIGN KEY (`VariationID`) REFERENCES tblVariations(`VariationID`) ON DELETE RESTRICT
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	INDEX `IX_tblProductVariations`(`ProductID`, `VariationID`),
+	UNIQUE `PK_tblProductVariations`(`ProductID`, `VariationID`),
+	INDEX `IX1_tblProductVariations`(`VariationID`)
 );
 
 /*****************************
@@ -579,28 +543,25 @@ FOREIGN KEY (`VariationID`) REFERENCES tblVariations(`VariationID`) ON DELETE RE
 *****************************/
 DROP TABLE IF EXISTS tblProductBaseVariationsMatrix;
 CREATE TABLE tblProductBaseVariationsMatrix (
-`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`Description` VARCHAR(255) NOT NULL,
-`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`MinThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`MaxThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
-INDEX `IX_tblProductBaseVariationsMatrix`(`MatrixID`,`ProductID`),
-UNIQUE `PK_tblProductBaseVariationsMatrix`(`ProductID`,`Description`),
-INDEX `IX1_tblProductBaseVariationsMatrix`(`ProductID`),
-FOREIGN KEY (`ProductID`) REFERENCES tblProducts(`ProductID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductBaseVariationsMatrix`(`UnitID`),
-FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-INDEX `IX3_tblProductBaseVariationsMatrix`(`SupplierID`),
-FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`Description` VARCHAR(255) NOT NULL,
+	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
+	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`MinThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`MaxThreshold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2,
+	INDEX `IX_tblProductBaseVariationsMatrix`(`MatrixID`,`ProductID`),
+	UNIQUE `PK_tblProductBaseVariationsMatrix`(`ProductID`,`Description`),
+	INDEX `IX1_tblProductBaseVariationsMatrix`(`ProductID`),
+	INDEX `IX2_tblProductBaseVariationsMatrix`(`UnitID`),
+	INDEX `IX3_tblProductBaseVariationsMatrix`(`SupplierID`)
 );
 
 /*****************************
@@ -608,15 +569,13 @@ FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRIC
 *****************************/
 DROP TABLE IF EXISTS tblProductVariationsMatrix;
 CREATE TABLE tblProductVariationsMatrix (
-	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductBaseVariationsMatrix(`MatrixID`),
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
 	`Description` VARCHAR(150) NOT NULL,
 	INDEX `IX_tblProductVariationsMatrix`(`MatrixID`,`VariationID`),
 	UNIQUE `PK_tblProductVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
 	INDEX `IX1_tblProductVariationsMatrix`(`MatrixID`),
-	FOREIGN KEY (`MatrixID`) REFERENCES tblProductBaseVariationsMatrix(`MatrixID`) ON DELETE RESTRICT,
-	INDEX `IX2_tblProductVariationsMatrix`(`VariationID`),
-	FOREIGN KEY (`VariationID`) REFERENCES tblProductVariations(`VariationID`) ON DELETE RESTRICT
+	INDEX `IX2_tblProductVariationsMatrix`(`VariationID`)
 );
 
 /*****************************
@@ -624,20 +583,17 @@ CREATE TABLE tblProductVariationsMatrix (
 *****************************/
 DROP TABLE IF EXISTS tblProductUnitMatrix;
 CREATE TABLE tblProductUnitMatrix (
-`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`BaseUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
-`BottomUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`BottomUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
-INDEX `IX_tblProductUnitMatrix`(`MatrixID`, `ProductID`, `BaseUnitID`, `BottomUnitID`),
-UNIQUE `PX_tblProductUnitMatrix`(`ProductID`, `BaseUnitID`, `BottomUnitID`),
-INDEX `IX1_tblProductUnitMatrix`(`ProductID`),
-FOREIGN KEY (`ProductID`) REFERENCES tblProducts(`ProductID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductUnitMatrix`(`BaseUnitID`),
-FOREIGN KEY (`BaseUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-INDEX `IX3_tblProductUnitMatrix`(`BottomUnitID`),
-FOREIGN KEY (`BottomUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`BaseUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
+	`BottomUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`BottomUnitValue` DECIMAL(18,3) NOT NULL DEFAULT 1,
+	INDEX `IX_tblProductUnitMatrix`(`MatrixID`, `ProductID`, `BaseUnitID`, `BottomUnitID`),
+	UNIQUE `PX_tblProductUnitMatrix`(`ProductID`, `BaseUnitID`, `BottomUnitID`),
+	INDEX `IX1_tblProductUnitMatrix`(`ProductID`),
+	INDEX `IX2_tblProductUnitMatrix`(`BaseUnitID`),
+	INDEX `IX3_tblProductUnitMatrix`(`BottomUnitID`)
 );
 
 /*****************************
@@ -646,8 +602,8 @@ FOREIGN KEY (`BottomUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
 DROP TABLE IF EXISTS tblProductPackage;
 CREATE TABLE tblProductPackage (
 	`PackageID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
 	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -657,9 +613,7 @@ CREATE TABLE tblProductPackage (
 	INDEX `IX_tblProductPackage`(`PackageID`,`ProductID`),
 	UNIQUE `PK_tblProductPackage`(`ProductID`,`UnitID`,`Quantity`),
 	INDEX `IX1_tblProductPackage`(`ProductID`),
-	FOREIGN KEY (`ProductID`) REFERENCES tblProducts(`ProductID`) ON DELETE RESTRICT,
-	INDEX `IX2_tblProductPackage`(`UnitID`),
-	FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
+	INDEX `IX2_tblProductPackage`(`UnitID`)
 );
 
 /*****************************
@@ -667,20 +621,19 @@ CREATE TABLE tblProductPackage (
 *****************************/
 DROP TABLE IF EXISTS tblMatrixPackage;
 CREATE TABLE tblMatrixPackage (
-`PackageID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductBaseVariationsMatrix(`MatrixID`),
-`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblMatrixPackage`(`PackageID`,`MatrixID`),
-UNIQUE `PK_tblMatrixPackage`(`MatrixID`,`UnitID`,`Quantity`),
-INDEX `IX1_tblMatrixPackage`(`MatrixID`),
-INDEX `IX2_tblMatrixPackage`(`UnitID`),
-FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
+	`PackageID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
+	`Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblMatrixPackage`(`PackageID`,`MatrixID`),
+	UNIQUE `PK_tblMatrixPackage`(`MatrixID`,`UnitID`,`Quantity`),
+	INDEX `IX1_tblMatrixPackage`(`MatrixID`),
+	INDEX `IX2_tblMatrixPackage`(`UnitID`)
 );
 
 /*****************************
@@ -688,14 +641,14 @@ FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
 *****************************/
 DROP TABLE IF EXISTS tblDiscount;
 CREATE TABLE tblDiscount (
-`DiscountID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`DiscountCode` VARCHAR(3) NOT NULL,
-`DiscountType` VARCHAR(30) NOT NULL,
-`DiscountPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InPercent` TINYINT(1) NOT NULL DEFAULT 0,
-PRIMARY KEY (DiscountID),
-INDEX `IX_tblDiscount`(`DiscountID`, `DiscountCode`, `DiscountType`),
-UNIQUE `PK_tblDiscount`(`DiscountCode`)
+	`DiscountID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DiscountCode` VARCHAR(3) NOT NULL,
+	`DiscountType` VARCHAR(30) NOT NULL,
+	`DiscountPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InPercent` TINYINT(1) NOT NULL DEFAULT 0,
+	PRIMARY KEY (DiscountID),
+	INDEX `IX_tblDiscount`(`DiscountID`, `DiscountCode`, `DiscountType`),
+	UNIQUE `PK_tblDiscount`(`DiscountCode`)
 );
 
 INSERT INTO tblDiscount(`DiscountCode`, `DiscountType`, `DiscountPrice`, `InPercent`)
@@ -706,22 +659,22 @@ INSERT INTO tblDiscount(`DiscountCode`, `DiscountType`, `DiscountPrice`, `InPerc
 *****************************/
 DROP TABLE IF EXISTS tblReceiptFormat;
 CREATE TABLE tblReceiptFormat (
-`ReportHeaderSpacer` INT(10) NOT NULL DEFAULT 0,
-`ReportHeader1` VARCHAR(70) NOT NULL,
-`ReportHeader2` VARCHAR(70) NOT NULL,
-`ReportHeader3` VARCHAR(70) NOT NULL,
-`ReportHeader4` VARCHAR(70) NOT NULL,
-`PageHeader1` VARCHAR(70) NOT NULL,
-`PageHeader2` VARCHAR(70) NOT NULL,
-`PageHeader3` VARCHAR(70) NOT NULL,
-`PageFooter1` VARCHAR(70) NOT NULL,
-`PageFooter2` VARCHAR(70) NOT NULL,
-`PageFooter3` VARCHAR(70) NOT NULL,
-`ReportFooter1` VARCHAR(70) NOT NULL,
-`ReportFooter2` VARCHAR(70) NOT NULL,
-`ReportFooter3` VARCHAR(70) NOT NULL,
-`ReportFooterSpacer` INT(10) NOT NULL DEFAULT 1,
-INDEX `IX_tblReceiptFormat`(`ReportHeader1`, `ReportHeader2`, `ReportHeader3`, `ReportHeader4`)
+	`ReportHeaderSpacer` INT(10) NOT NULL DEFAULT 0,
+	`ReportHeader1` VARCHAR(70) NOT NULL,
+	`ReportHeader2` VARCHAR(70) NOT NULL,
+	`ReportHeader3` VARCHAR(70) NOT NULL,
+	`ReportHeader4` VARCHAR(70) NOT NULL,
+	`PageHeader1` VARCHAR(70) NOT NULL,
+	`PageHeader2` VARCHAR(70) NOT NULL,
+	`PageHeader3` VARCHAR(70) NOT NULL,
+	`PageFooter1` VARCHAR(70) NOT NULL,
+	`PageFooter2` VARCHAR(70) NOT NULL,
+	`PageFooter3` VARCHAR(70) NOT NULL,
+	`ReportFooter1` VARCHAR(70) NOT NULL,
+	`ReportFooter2` VARCHAR(70) NOT NULL,
+	`ReportFooter3` VARCHAR(70) NOT NULL,
+	`ReportFooterSpacer` INT(10) NOT NULL DEFAULT 1,
+	INDEX `IX_tblReceiptFormat`(`ReportHeader1`, `ReportHeader2`, `ReportHeader3`, `ReportHeader4`)
 );
 
 /*****************************
@@ -740,14 +693,14 @@ INSERT INTO tblReceiptFormat VALUES (0, '6937 Rosal Street Guadalupe Viejo', 'Ma
 *****************************/
 DROP TABLE IF EXISTS tblStockType;
 CREATE TABLE tblStockType (
-`StockTypeID` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-`StockTypeCode` VARCHAR(30) NOT NULL,
-`Description` VARCHAR(150) NOT NULL,
-`StockDirection` TINYINT(1) NOT NULL DEFAULT 1,
-INDEX `IX_tblStockType`(`StockTypeID`, `Description`),
-UNIQUE `PX_tblStockType`(`StockTypeCode`),
-INDEX `IX1_tblStockType`(`StockTypeCode`),
-INDEX `IX2_tblStockType`(`Description`)
+	`StockTypeID` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`StockTypeCode` VARCHAR(30) NOT NULL,
+	`Description` VARCHAR(150) NOT NULL,
+	`StockDirection` TINYINT(1) NOT NULL DEFAULT 1,
+	INDEX `IX_tblStockType`(`StockTypeID`, `Description`),
+	UNIQUE `PX_tblStockType`(`StockTypeCode`),
+	INDEX `IX1_tblStockType`(`StockTypeCode`),
+	INDEX `IX2_tblStockType`(`Description`)
 );
 
 INSERT INTO tblStockType(`StockTypeCode`, `Description`, `StockDirection`)VALUES('Stock In', 'Stock In', 0);
@@ -760,18 +713,17 @@ INSERT INTO tblStockType(`StockTypeCode`, `Description`, `StockDirection`)VALUES
 *****************************/
 DROP TABLE IF EXISTS tblStock;
 CREATE TABLE tblStock (
-`StockID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`TransactionNo` VARCHAR(30) NOT NULL,
-`StockTypeID` TINYINT UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblStockType(`StockTypeID`),
-`StockDate` DATETIME NOT NULL,
-`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
-`Remarks` VARCHAR(150) NOT NULL,
-INDEX `IX_tblStock`(`StockID`),
-INDEX `IX1_tblStock`(`TransactionNo`),
-UNIQUE `PX_tblStock`(`TransactionNo`),
-INDEX `IX2_tblStock`(`StockDate`),
-INDEX `IX3_tblStock`(`SupplierID`),
-FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT
+	`StockID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`TransactionNo` VARCHAR(30) NOT NULL,
+	`StockTypeID` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+	`StockDate` DATETIME NOT NULL,
+	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2,
+	`Remarks` VARCHAR(150) NOT NULL,
+	INDEX `IX_tblStock`(`StockID`),
+	INDEX `IX1_tblStock`(`TransactionNo`),
+	UNIQUE `PX_tblStock`(`TransactionNo`),
+	INDEX `IX2_tblStock`(`StockDate`),
+	INDEX `IX3_tblStock`(`SupplierID`)
 );
 
 
@@ -780,26 +732,23 @@ FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRIC
 *****************************/
 DROP TABLE IF EXISTS tblStockItems;
 CREATE TABLE tblStockItems (
-`StockItemID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`StockID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`VariationMatrixID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
-`ProductUnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
-`StockTypeID` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-`StockDate` DATETIME NOT NULL,
-`Quantity` DECIMAL(18,3) UNSIGNED NOT NULL DEFAULT 0,
-`Remarks` VARCHAR(150) NOT NULL,
-INDEX `IX_tblStockItems`(`StockItemID`),
-FOREIGN KEY (`StockID`) REFERENCES tblStock(`StockID`) ON DELETE RESTRICT,
-INDEX `IX1_tblStockItems`(`StockID`, `ProductID`, `ProductUnitID`, `VariationMatrixID`),
-UNIQUE `PX_tblStockItems`(`StockItemID`),
-INDEX `IX2_tblStockItems`(`ProductID`),
-FOREIGN KEY (`ProductID`) REFERENCES tblProducts(`ProductID`) ON DELETE RESTRICT,
-INDEX `IX3_tblStockItems`(`VariationMatrixID`),
-INDEX `IX4_tblStockItems`(`ProductID`, `VariationMatrixID`),
-INDEX `IX5_tblStockItems`(`ProductUnitID`),
-FOREIGN KEY (`ProductUnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-INDEX `IX6_tblStockItems`(`StockID`)
+	`StockItemID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`StockID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationMatrixID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductUnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
+	`StockTypeID` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+	`StockDate` DATETIME NOT NULL,
+	`Quantity` DECIMAL(18,3) UNSIGNED NOT NULL DEFAULT 0,
+	`Remarks` VARCHAR(150) NOT NULL,
+	INDEX `IX_tblStockItems`(`StockItemID`),
+	INDEX `IX1_tblStockItems`(`StockID`, `ProductID`, `ProductUnitID`, `VariationMatrixID`),
+	UNIQUE `PX_tblStockItems`(`StockItemID`),
+	INDEX `IX2_tblStockItems`(`ProductID`),
+	INDEX `IX3_tblStockItems`(`VariationMatrixID`),
+	INDEX `IX4_tblStockItems`(`ProductID`, `VariationMatrixID`),
+	INDEX `IX5_tblStockItems`(`ProductUnitID`),
+	INDEX `IX6_tblStockItems`(`StockID`)
 );
 
 /*****************************
@@ -807,12 +756,12 @@ INDEX `IX6_tblStockItems`(`StockID`)
 *****************************/
 DROP TABLE IF EXISTS tblPromoType;
 CREATE TABLE tblPromoType (
-`PromoTypeID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`PromoTypeCode` VARCHAR(60) NOT NULL,
-`PromoTypeName` VARCHAR(75) NOT NULL,
-PRIMARY KEY (`PromoTypeID`),
-INDEX `IX_tblPromoType`(`PromoTypeID`, `PromoTypeCode`, `PromoTypeName`),
-UNIQUE `PK_tblPromoType`(`PromoTypeCode`)
+	`PromoTypeID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`PromoTypeCode` VARCHAR(60) NOT NULL,
+	`PromoTypeName` VARCHAR(75) NOT NULL,
+	PRIMARY KEY (`PromoTypeID`),
+	INDEX `IX_tblPromoType`(`PromoTypeID`, `PromoTypeCode`, `PromoTypeName`),
+	UNIQUE `PK_tblPromoType`(`PromoTypeCode`)
 );
 
 INSERT INTO tblPromoType VALUES(1, 'Value-Off after quantity reached.', 'Value-Off after quantity reached.');
@@ -824,18 +773,17 @@ INSERT INTO tblPromoType VALUES(2, 'Percent-Off after quantity reached.', 'Perce
 *****************************/
 DROP TABLE IF EXISTS tblPromo;
 CREATE TABLE tblPromo (
-`PromoID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`PromoCode` VARCHAR(60) NOT NULL,
-`PromoName` VARCHAR(75) NOT NULL,
-`StartDate` DATETIME NOT NULL,
-`EndDate` DATETIME NOT NULL,
-`PromoTypeID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblPromoType(`PromoTypeID`),
-`Status` TINYINT(1) NOT NULL DEFAULT 0,
-PRIMARY KEY (`PromoID`),
-INDEX `IX_tblPromo`(`PromoID`, `PromoCode`, `PromoName`, `PromoTypeID`),
-UNIQUE `PK_tblPromo`(`PromoCode`),
-INDEX `IX_tblPromo1`(`PromoTypeID`),
-FOREIGN KEY (`PromoTypeID`) REFERENCES tblPromoType(`PromoTypeID`) ON DELETE RESTRICT 
+	`PromoID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`PromoCode` VARCHAR(60) NOT NULL,
+	`PromoName` VARCHAR(75) NOT NULL,
+	`StartDate` DATETIME NOT NULL,
+	`EndDate` DATETIME NOT NULL,
+	`PromoTypeID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Status` TINYINT(1) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`PromoID`),
+	INDEX `IX_tblPromo`(`PromoID`, `PromoCode`, `PromoName`, `PromoTypeID`),
+	UNIQUE `PK_tblPromo`(`PromoCode`),
+	INDEX `IX_tblPromo1`(`PromoTypeID`)
 );
 
 /*****************************
@@ -843,27 +791,26 @@ FOREIGN KEY (`PromoTypeID`) REFERENCES tblPromoType(`PromoTypeID`) ON DELETE RES
 *****************************/
 DROP TABLE IF EXISTS tblPromoItems;
 CREATE TABLE tblPromoItems (
-`PromoItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`PromoID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblPromo(`PromoID`),
-`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`ProductGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`VariationMatrixID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PromoValue` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InPercent` TINYINT(1) NOT NULL DEFAULT 0,
-PRIMARY KEY (`PromoItemsID`),
-INDEX `IX_tblPromoItems`(`PromoID`),
-UNIQUE `PK_tblPromoItems`(`PromoItemsID`),
-UNIQUE `PK_tblPromoItems1`(`PromoID`, `ContactID`, `ProductGroupID`, `ProductSubGroupID`, `ProductID`, `VariationMatrixID`),
-INDEX `IX_tblPromoItems1`(`VariationMatrixID`),
-FOREIGN KEY (`PromoID`) REFERENCES tblPromo(`PromoID`) ON DELETE RESTRICT ,
-INDEX `IX_tblPromoItems2`(`ProductGroupID`),
-INDEX `IX_tblPromoItems3`(`ProductSubGroupID`),
-INDEX `IX_tblPromoItems4`(`ProductID`),
-INDEX `IX_tblPromoItems5`(`VariationMatrixID`),
-INDEX `IX_tblPromoItems6`(`ContactID`)
+	`PromoItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`PromoID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationMatrixID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PromoValue` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InPercent` TINYINT(1) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`PromoItemsID`),
+	INDEX `IX_tblPromoItems`(`PromoID`),
+	UNIQUE `PK_tblPromoItems`(`PromoItemsID`),
+	UNIQUE `PK_tblPromoItems1`(`PromoID`, `ContactID`, `ProductGroupID`, `ProductSubGroupID`, `ProductID`, `VariationMatrixID`),
+	INDEX `IX_tblPromoItems1`(`VariationMatrixID`),
+	INDEX `IX_tblPromoItems2`(`ProductGroupID`),
+	INDEX `IX_tblPromoItems3`(`ProductSubGroupID`),
+	INDEX `IX_tblPromoItems4`(`ProductID`),
+	INDEX `IX_tblPromoItems5`(`VariationMatrixID`),
+	INDEX `IX_tblPromoItems6`(`ContactID`)
 );
 
 /*****************************
@@ -871,75 +818,73 @@ INDEX `IX_tblPromoItems6`(`ContactID`)
 *****************************/
 DROP TABLE IF EXISTS tblTerminal;
 CREATE TABLE tblTerminal (
-`TerminalID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`TerminalNo` VARCHAR(10) NOT NULL,
-`TerminalCode` VARCHAR(20) NOT NULL,
-`TerminalName` VARCHAR(50) NOT NULL,
-`Status` TINYINT(1) NOT NULL DEFAULT 0,
-`DateCreated` DATETIME NOT NULL,
-`IsPrinterAutoCutter` TINYINT(1) NOT NULL DEFAULT 0,
-`MaxReceiptWidth` INT(10) NOT NULL DEFAULT 40,
-`TransactionNoLength` INT(2) NOT NULL DEFAULT 15,
-`AutoPrint` TINYINT(1) NOT NULL DEFAULT 0,
-`PrinterName` VARCHAR(20) NOT NULL DEFAULT 'RetailPlus',
-`TurretName` VARCHAR(20) NOT NULL DEFAULT 'RetailPlusTurret',
-`CashDrawerName` VARCHAR(20) NOT NULL DEFAULT 'RetailPlusDrawer',
-`MachineSerialNo` VARCHAR(20) NOT NULL,
-`AccreditationNo` VARCHAR(20) NOT NULL,
-`ItemVoidConfirmation` TINYINT (1) NOT NULL DEFAULT 1,
-`EnableEVAT` TINYINT(1) NOT NULL DEFAULT 0,
-`FORM_Behavior` VARCHAR(20) NOT NULL DEFAULT 'NON_MODAL',
-`MarqueeMessage` VARCHAR(255) NOT NULL DEFAULT ' Your suggestive selling message and/or description.',
-`TrustFund` DECIMAL(5,2) NOT NULL DEFAULT 0.00,
-PRIMARY KEY (TerminalID),
-INDEX `IX_tblTerminal`(`TerminalID`),
-UNIQUE `PK_tblTerminal`(`TerminalNo`, `MachineSerialNo`),
-INDEX `IX1_tblTerminal`(`TerminalNo`, `TerminalCode`),
-INDEX `IX2_tblTerminal`(`TerminalCode`, `TerminalName`),
-INDEX `IX3_tblTerminal`(`TerminalID`, `TerminalCode`, `TerminalName`)
+	`TerminalID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`TerminalNo` VARCHAR(10) NOT NULL,
+	`TerminalCode` VARCHAR(20) NOT NULL,
+	`TerminalName` VARCHAR(50) NOT NULL,
+	`Status` TINYINT(1) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL,
+	`IsPrinterAutoCutter` TINYINT(1) NOT NULL DEFAULT 0,
+	`MaxReceiptWidth` INT(10) NOT NULL DEFAULT 40,
+	`TransactionNoLength` INT(2) NOT NULL DEFAULT 15,
+	`AutoPrint` TINYINT(1) NOT NULL DEFAULT 0,
+	`PrinterName` VARCHAR(20) NOT NULL DEFAULT 'RetailPlus',
+	`TurretName` VARCHAR(20) NOT NULL DEFAULT 'RetailPlusTurret',
+	`CashDrawerName` VARCHAR(20) NOT NULL DEFAULT 'RetailPlusDrawer',
+	`MachineSerialNo` VARCHAR(20) NOT NULL,
+	`AccreditationNo` VARCHAR(20) NOT NULL,
+	`ItemVoidConfirmation` TINYINT (1) NOT NULL DEFAULT 1,
+	`EnableEVAT` TINYINT(1) NOT NULL DEFAULT 0,
+	`FORM_Behavior` VARCHAR(20) NOT NULL DEFAULT 'NON_MODAL',
+	`MarqueeMessage` VARCHAR(255) NOT NULL DEFAULT ' Your suggestive selling message and/or description.',
+	`TrustFund` DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+	PRIMARY KEY (TerminalID),
+	INDEX `IX_tblTerminal`(`TerminalID`),
+	UNIQUE `PK_tblTerminal`(`TerminalNo`, `MachineSerialNo`),
+	INDEX `IX1_tblTerminal`(`TerminalNo`, `TerminalCode`),
+	INDEX `IX2_tblTerminal`(`TerminalCode`, `TerminalName`),
+	INDEX `IX3_tblTerminal`(`TerminalID`, `TerminalCode`, `TerminalName`)
 );
 
-INSERT INTO tblTerminal (BranchID, `TerminalNo`, `TerminalCode`, `TerminalName`, DateCreated, MachineSerialNo, AccreditationNo )
-		VALUES		(99999, '01', 'Terminal No. 01', 'Terminal No. 01', NOW(), '000000', '0000-000-00000-000');
+INSERT INTO tblTerminal (`TerminalNo`, `TerminalCode`, `TerminalName`, DateCreated, MachineSerialNo, AccreditationNo )
+		VALUES		('01', 'Terminal No. 01', 'Terminal No. 01', NOW(), '000000', '0000-000-00000-000');
 
 /*****************************
 **	tblWithHold
 *****************************/
 DROP TABLE IF EXISTS tblWithHold;
 CREATE TABLE tblWithHold (
-`WithholdID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PaymentType` INT(10) NOT NULL DEFAULT 0,
-`DateCreated` DATETIME NOT NULL,
-`TerminalNo` VARCHAR(30) NOT NULL,
-`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-PRIMARY KEY (`WithholdID`),
-INDEX `IX_tblWithHold`(`WithholdID`),
-INDEX `IX1_tblWithHold`(`DateCreated`),
-INDEX `IX2_tblWithHold`(`TerminalNo`),
-INDEX `IX3_tblWithHold`(`DateCreated`, `TerminalNo`),
-INDEX `IX4_tblWithHold`(`CashierID`),
-FOREIGN KEY (`CashierID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
+	`WithholdID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PaymentType` INT(10) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL,
+	`TerminalNo` VARCHAR(30) NOT NULL,
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (`WithholdID`),
+	INDEX `IX_tblWithHold`(`WithholdID`),
+	INDEX `IX1_tblWithHold`(`DateCreated`),
+	INDEX `IX2_tblWithHold`(`TerminalNo`),
+	INDEX `IX3_tblWithHold`(`DateCreated`, `TerminalNo`),
+	INDEX `IX4_tblWithHold`(`CashierID`)
 );
 
 /*****************************
 **	tblDisburse
 *****************************/
-DROP TABLE IF EXISTS ;
+DROP TABLE IF EXISTS tblDisburse;
 CREATE TABLE tblDisburse (
-`DisburseID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PaymentType` INT(10) NOT NULL DEFAULT 0,
-`DateCreated` DATETIME NOT NULL,
-`TerminalNo` VARCHAR(30) NOT NULL,
-`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-PRIMARY KEY (`DisburseID`),
-INDEX `IX_tblDisburse`(`DisburseID`),
-INDEX `IX1_tblDisburse`(`DateCreated`),
-INDEX `IX2_tblDisburse`(`TerminalNo`),
-INDEX `IX3_tblDisburse`(`DateCreated`, `TerminalNo`),
-INDEX `IX4_tblDisburse`(`CashierID`),
-FOREIGN KEY (`CashierID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
+	`DisburseID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PaymentType` INT(10) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL,
+	`TerminalNo` VARCHAR(30) NOT NULL,
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (`DisburseID`),
+	INDEX `IX_tblDisburse`(`DisburseID`),
+	INDEX `IX1_tblDisburse`(`DateCreated`),
+	INDEX `IX2_tblDisburse`(`TerminalNo`),
+	INDEX `IX3_tblDisburse`(`DateCreated`, `TerminalNo`),
+	INDEX `IX4_tblDisburse`(`CashierID`)
 );
 
 /*****************************
@@ -947,20 +892,19 @@ FOREIGN KEY (`CashierID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
 *****************************/
 DROP TABLE IF EXISTS tblPaidOut;
 CREATE TABLE tblPaidOut (
-`PaidOutID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PaymentType` INT(10) NOT NULL DEFAULT 0,
-`Remarks` VARCHAR(150) NOT NULL,
-`DateCreated` DATETIME NOT NULL,
-`TerminalNo` VARCHAR(30) NOT NULL,
-`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-PRIMARY KEY (`PaidOutID`),
-INDEX `IX_tblPaidOut`(`PaidOutID`),
-INDEX `IX1_tblPaidOut`(`DateCreated`),
-INDEX `IX2_tblPaidOut`(`TerminalNo`),
-INDEX `IX3_tblPaidOut`(`DateCreated`, `TerminalNo`),
-INDEX `IX4_tblPaidOut`(`CashierID`),
-FOREIGN KEY (`CashierID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
+	`PaidOutID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PaymentType` INT(10) NOT NULL DEFAULT 0,
+	`Remarks` VARCHAR(150) NOT NULL,
+	`DateCreated` DATETIME NOT NULL,
+	`TerminalNo` VARCHAR(30) NOT NULL,
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (`PaidOutID`),
+	INDEX `IX_tblPaidOut`(`PaidOutID`),
+	INDEX `IX1_tblPaidOut`(`DateCreated`),
+	INDEX `IX2_tblPaidOut`(`TerminalNo`),
+	INDEX `IX3_tblPaidOut`(`DateCreated`, `TerminalNo`),
+	INDEX `IX4_tblPaidOut`(`CashierID`)
 );
 
 /*****************************
@@ -1035,15 +979,14 @@ INDEX `IX6_tblCreditCardPayment`(`Remarks`)
 *****************************/
 DROP TABLE IF EXISTS tblCreditPayment;
 CREATE TABLE tblCreditPayment (
-`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
-`Remarks` VARCHAR(255) NOT NULL,
-`AmountPaid`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblCreditPayment`(`TransactionID`),
-INDEX `IX1_tblCreditPayment`(`ContactID`),
-FOREIGN KEY (`ContactID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT,
-INDEX `IX2_tblCreditPayment`(`Remarks`)
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`Remarks` VARCHAR(255) NOT NULL,
+	`AmountPaid`  DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblCreditPayment`(`TransactionID`),
+	INDEX `IX1_tblCreditPayment`(`ContactID`),
+	INDEX `IX2_tblCreditPayment`(`Remarks`)
 );
 
 /*****************************
@@ -1066,19 +1009,18 @@ CREATE TABLE tblDenomination (
 *****************************/
 DROP TABLE IF EXISTS tblCashCount;
 CREATE TABLE tblCashCount (
-`CashCountID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`CashierName` VARCHAR(100) NOT NULL,
-`TerminalNo` VARCHAR(30) NOT NULL,
-`DateCreated` DATETIME NOT NULL,
-`DenominationID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblDenomination(`DenominationID`),
-`DenominationCount` INT(10) NOT NULL DEFAULT 0,
-`DenominationAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-PRIMARY KEY (`CashCountID`),
-INDEX `IX_tblCashCount`(`CashCountID`),
-UNIQUE `PK_tblCashCount`(`CashCountID`),
-INDEX `IX1_tblCashCount`(`DenominationID`),
-FOREIGN KEY (`DenominationID`) REFERENCES tblDenomination(`DenominationID`) ON DELETE RESTRICT
+	`CashCountID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`CashierName` VARCHAR(100) NOT NULL,
+	`TerminalNo` VARCHAR(30) NOT NULL,
+	`DateCreated` DATETIME NOT NULL,
+	`DenominationID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`DenominationCount` INT(10) NOT NULL DEFAULT 0,
+	`DenominationAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`CashCountID`),
+	INDEX `IX_tblCashCount`(`CashCountID`),
+	UNIQUE `PK_tblCashCount`(`CashCountID`),
+	INDEX `IX1_tblCashCount`(`DenominationID`)
 );
 
 /*****************************
@@ -1099,9 +1041,9 @@ DROP TABLE IF EXISTS tblTransactions01;
 CREATE TABLE tblTransactions01 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1143,9 +1085,9 @@ DROP TABLE IF EXISTS tblTransactions02;
 CREATE TABLE tblTransactions02 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1187,9 +1129,9 @@ DROP TABLE IF EXISTS tblTransactions03;
 CREATE TABLE tblTransactions03 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1231,9 +1173,9 @@ DROP TABLE IF EXISTS tblTransactions04;
 CREATE TABLE tblTransactions04 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1275,9 +1217,9 @@ DROP TABLE IF EXISTS tblTransactions05;
 CREATE TABLE tblTransactions05 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1320,9 +1262,9 @@ DROP TABLE IF EXISTS tblTransactions06;
 CREATE TABLE tblTransactions06 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1364,9 +1306,9 @@ DROP TABLE IF EXISTS tblTransactions07;
 CREATE TABLE tblTransactions07 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1408,9 +1350,9 @@ DROP TABLE IF EXISTS tblTransactions08;
 CREATE TABLE tblTransactions08 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1452,9 +1394,9 @@ DROP TABLE IF EXISTS tblTransactions09;
 CREATE TABLE tblTransactions09 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1496,9 +1438,9 @@ DROP TABLE IF EXISTS tblTransactions10;
 CREATE TABLE tblTransactions10 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1540,9 +1482,9 @@ DROP TABLE IF EXISTS tblTransactions11;
 CREATE TABLE tblTransactions11 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1584,9 +1526,9 @@ DROP TABLE IF EXISTS tblTransactions12;
 CREATE TABLE tblTransactions12 (
 	`TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`TransactionNo` VARCHAR(30) NOT NULL,
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CustomerName` VARCHAR(100) NOT NULL,
-	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CashierName` VARCHAR(100) NOT NULL,
 	`TerminalNo` VARCHAR(30) NOT NULL,
 	`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
@@ -1627,8 +1569,8 @@ CREATE TABLE tblTransactions12 (
 DROP TABLE IF EXISTS tblTransactionItems01;
 CREATE TABLE tblTransactionItems01 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions01(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1679,8 +1621,8 @@ CREATE TABLE tblTransactionItems01 (
 DROP TABLE IF EXISTS tblTransactionItems02;
 CREATE TABLE tblTransactionItems02 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions02(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1731,8 +1673,8 @@ CREATE TABLE tblTransactionItems02 (
 DROP TABLE IF EXISTS tblTransactionItems03;
 CREATE TABLE tblTransactionItems03 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions03(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1783,8 +1725,8 @@ CREATE TABLE tblTransactionItems03 (
 DROP TABLE IF EXISTS tblTransactionItems04;
 CREATE TABLE tblTransactionItems04 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions04(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1835,8 +1777,8 @@ CREATE TABLE tblTransactionItems04 (
 DROP TABLE IF EXISTS tblTransactionItems05;
 CREATE TABLE tblTransactionItems05 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions05(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1887,8 +1829,8 @@ CREATE TABLE tblTransactionItems05 (
 DROP TABLE IF EXISTS tblTransactionItems06;
 CREATE TABLE tblTransactionItems06 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions06(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1939,8 +1881,8 @@ CREATE TABLE tblTransactionItems06 (
 DROP TABLE IF EXISTS tblTransactionItems07;
 CREATE TABLE tblTransactionItems07 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions07(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -1991,8 +1933,8 @@ CREATE TABLE tblTransactionItems07 (
 DROP TABLE IF EXISTS tblTransactionItems08;
 CREATE TABLE tblTransactionItems08 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions08(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -2043,8 +1985,8 @@ CREATE TABLE tblTransactionItems08 (
 DROP TABLE IF EXISTS tblTransactionItems09;
 CREATE TABLE tblTransactionItems09 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions09(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -2095,8 +2037,8 @@ CREATE TABLE tblTransactionItems09 (
 DROP TABLE IF EXISTS tblTransactionItems10;
 CREATE TABLE tblTransactionItems10 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions10(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -2147,8 +2089,8 @@ CREATE TABLE tblTransactionItems10 (
 DROP TABLE IF EXISTS tblTransactionItems11;
 CREATE TABLE tblTransactionItems11 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions11(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -2199,8 +2141,8 @@ CREATE TABLE tblTransactionItems11 (
 DROP TABLE IF EXISTS tblTransactionItems12;
 CREATE TABLE tblTransactionItems12 (
 	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTransactions12(`TransactionID`),
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`BarCode` VARCHAR(30) NOT NULL,
 	`Description` VARCHAR(100) NOT NULL,
@@ -2250,7 +2192,7 @@ CREATE TABLE tblTransactionItems12 (
 *****************************/
 DROP TABLE IF EXISTS tblTerminalReport;
 CREATE TABLE tblTerminalReport (
-	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
+	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`TerminalNo` VARCHAR(10) NOT NULL,
 	`BeginningTransactionNo` VARCHAR(30) NOT NULL,
 	`EndingTransactionNo` VARCHAR(30) NOT NULL,
@@ -2311,83 +2253,77 @@ CREATE TABLE tblTerminalReport (
 	INDEX `IX2_tblTerminalReport`(`XReadCount`)
 );
 
-INSERT INTO tblTerminalReport (BeginningTransactionNo, EndingTransactionNo, ZReadCount, XReadCount, BranchID, TerminalID, TerminalNo, DateLastInitialized)
-		VALUES		('00000000000001', '00000000000001', 1, 1, 1, 1, '01', DATE_SUB(DATE(NOW()), INTERVAL 1 DAY));
-
 /*****************************
 **	tblTerminalReportHistory
 *****************************/
 DROP TABLE IF EXISTS tblTerminalReportHistory;
 CREATE TABLE tblTerminalReportHistory (
-`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
-`TerminalNo` VARCHAR(10) NOT NULL,
-`BeginningTransactionNo` VARCHAR(30) NOT NULL,
-`EndingTransactionNo` VARCHAR(30) NOT NULL,
-`ZReadCount` INT(10) NOT NULL DEFAULT 0,
-`XReadCount` INT(10) NOT NULL DEFAULT 0,
-`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DailySales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`GroupSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`OldGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NewGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashInDrawer` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequePaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`BeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VoidSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`RefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`SubtotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NoOfCashTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfChequeTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditCardTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCombinationPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfClosedTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfRefundTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfVoidTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfTotalTransactions` INT(10) NOT NULL DEFAULT 0,
-`DateLastInitialized` DATETIME NOT NULL,
-INDEX `IX_tblTerminalReport`(`TerminalNo`),
-INDEX `IX1_tblTerminalReport`(`ZReadCount`),
-INDEX `IX2_tblTerminalReport`(`XReadCount`)
+	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`TerminalNo` VARCHAR(10) NOT NULL,
+	`BeginningTransactionNo` VARCHAR(30) NOT NULL,
+	`EndingTransactionNo` VARCHAR(30) NOT NULL,
+	`ZReadCount` INT(10) NOT NULL DEFAULT 0,
+	`XReadCount` INT(10) NOT NULL DEFAULT 0,
+	`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DailySales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`GroupSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`OldGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NewGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashInDrawer` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequePaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`BeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VoidSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`RefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SubtotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NoOfCashTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfChequeTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditCardTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCombinationPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfClosedTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfRefundTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfVoidTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfTotalTransactions` INT(10) NOT NULL DEFAULT 0,
+	`DateLastInitialized` DATETIME NOT NULL,
+	INDEX `IX_tblTerminalReport`(`TerminalNo`),
+	INDEX `IX1_tblTerminalReport`(`ZReadCount`),
+	INDEX `IX2_tblTerminalReport`(`XReadCount`)
 );
 
-INSERT INTO tblTerminalReportHistory (`BeginningTransactionNo`, `EndingTransactionNo`, `ZReadCount`, `XReadCount`, `TerminalID`, `TerminalNo`, `DateLastInitialized`)
-		VALUES		('00000000000000', '00000000000000', 0, 0, 1, '01', DATE_SUB(DATE(NOW()), INTERVAL 2 DAY));
-		
 /*****************************
 **	tblCashierReport
 *****************************/
 DROP TABLE IF EXISTS tblCashierReport;
 CREATE TABLE tblCashierReport (
-	`CashierID` BIGINT(20) NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
+	`CashierID` BIGINT(20) NOT NULL DEFAULT 0,
+	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`TerminalNo` VARCHAR(10) NOT NULL,
 	`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -2445,8 +2381,8 @@ CREATE TABLE tblCashierReport (
 *****************************/
 DROP TABLE IF EXISTS tblCashierReportHistory;
 CREATE TABLE tblCashierReportHistory (
-`CashierID` BIGINT(20) NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
+`CashierID` BIGINT(20) NOT NULL DEFAULT 0,
+`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `TerminalNo` VARCHAR(10) NOT NULL,
 `GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -2497,10 +2433,7 @@ INDEX `IX2_tblCashierReport`(`TerminalNo`),
 INDEX `IX3_tblCashierReport`(`TerminalID`)
 );
 
-INSERT INTO tblCashierReport (`CashierID`, `TerminalID`, `TerminalNo`, `LastLoginDate`)
-		VALUES		(1, 1, '01', "1900-01-01 00:00");
-
-truncate table tblDenomination;
+TRUNCATE TABLE tblDenomination;
 INSERT INTO tblDenomination (DenominationCode, `DenominationValue`, ImagePath) VALUES ('One Thousand Pesos', 1000.00, '');
 INSERT INTO tblDenomination (DenominationCode, `DenominationValue`, ImagePath) VALUES ('Five Hundred Pesos', 500.00, '');
 INSERT INTO tblDenomination (DenominationCode, `DenominationValue`, ImagePath) VALUES ('Two Hundred Pesos', 200.00, '');
@@ -3126,17 +3059,17 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 *****************************/
 DROP TABLE IF EXISTS tblBranch;
 CREATE TABLE tblBranch (
-`BranchID` INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-`BranchCode` VARCHAR(30) NOT NULL,
-`BranchName` VARCHAR(50) NOT NULL,
-`DBIP` VARCHAR(20),
-`DBPort` VARCHAR(4),
-`Address` VARCHAR(120),
-`Remarks` VARCHAR(120),
-PRIMARY KEY (BranchID),
-INDEX `IX_tblBranch`(`BranchID`),
-INDEX `IX_tblBranch1`(`BranchID`, `BranchCode`),
-UNIQUE `PK_tblBranch`(`BranchCode`)
+	`BranchID` INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`BranchCode` VARCHAR(30) NOT NULL,
+	`BranchName` VARCHAR(50) NOT NULL,
+	`DBIP` VARCHAR(20),
+	`DBPort` VARCHAR(4),
+	`Address` VARCHAR(120),
+	`Remarks` VARCHAR(120),
+	PRIMARY KEY (BranchID),
+	INDEX `IX_tblBranch`(`BranchID`),
+	INDEX `IX_tblBranch1`(`BranchID`, `BranchCode`),
+	UNIQUE `PK_tblBranch`(`BranchCode`)
 );
 
 INSERT INTO tblBranch(BranchID, BranchCode, BranchName, DBIP, DBPort, Address, Remarks)VALUES(0, 'Main','Main Branch','localhost','3306','Main branch','Main branch wherein all stocks comes in');
@@ -3151,21 +3084,19 @@ UPDATE tblTerminal SET AccreditationNo = '0000-000-00000-000', MachineSerialNo =
 *****************************/
 DROP TABLE IF EXISTS tblDeposit;
 CREATE TABLE tblDeposit (
-`DepositID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PaymentType` INT(10) NOT NULL DEFAULT 0,
-`DateCreated` DATETIME NOT NULL,
-`TerminalNo` VARCHAR(30) NOT NULL,
-`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
-PRIMARY KEY (`DepositID`),
-INDEX `IX_tblDeposit`(`DepositID`),
-INDEX `IX1_tblDeposit`(`DateCreated`),
-INDEX `IX2_tblDeposit`(`TerminalNo`),
-INDEX `IX3_tblDeposit`(`DateCreated`, `TerminalNo`),
-INDEX `IX4_tblDeposit`(`CashierID`),
-FOREIGN KEY (`CashierID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT,
-FOREIGN KEY (`ContactID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT
+	`DepositID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PaymentType` INT(10) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL,
+	`TerminalNo` VARCHAR(30) NOT NULL,
+	`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (`DepositID`),
+	INDEX `IX_tblDeposit`(`DepositID`),
+	INDEX `IX1_tblDeposit`(`DateCreated`),
+	INDEX `IX2_tblDeposit`(`TerminalNo`),
+	INDEX `IX3_tblDeposit`(`DateCreated`, `TerminalNo`),
+	INDEX `IX4_tblDeposit`(`CashierID`)
 );
 
 
@@ -3201,15 +3132,14 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 *****************************/
 DROP TABLE IF EXISTS tblDebitPayment;
 CREATE TABLE tblDebitPayment (
-`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
-`Remarks` VARCHAR(255) NOT NULL,
-`AmountPaid`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblDebitPayment`(`TransactionID`),
-INDEX `IX1_tblDebitPayment`(`ContactID`),
-FOREIGN KEY (`ContactID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT,
-INDEX `IX2_tblDebitPayment`(`Remarks`)
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ContactID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`Remarks` VARCHAR(255) NOT NULL,
+	`AmountPaid`  DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblDebitPayment`(`TransactionID`),
+	INDEX `IX1_tblDebitPayment`(`ContactID`),
+	INDEX `IX2_tblDebitPayment`(`Remarks`)
 );
 
 ALTER TABLE tblTransactions01 ADD `DebitPayment` DECIMAL(18,3) NOT NULL DEFAULT 0;
@@ -3296,18 +3226,16 @@ alter table tblTerminal add `LocalTax` INT (2) NOT NULL DEFAULT 0;
 *****************************/
 DROP TABLE IF EXISTS tblProductComposition;
 CREATE TABLE tblProductComposition (
-`CompositionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`MainProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`VariationMatrixID` INT(20) UNSIGNED NOT NULL DEFAULT 0,
-`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblProductComposition`(`CompositionID`,`ProductID`),
-UNIQUE `PK_tblProductComposition`(`MainProductID`, `ProductID`,`UnitID`,`Quantity`),
-INDEX `IX1_tblProductComposition`(`MainProductID`),
-FOREIGN KEY (`ProductID`) REFERENCES tblProducts(`ProductID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductComposition`(`UnitID`),
-FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
+	`CompositionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`MainProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`VariationMatrixID` INT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblProductComposition`(`CompositionID`,`ProductID`),
+	UNIQUE `PK_tblProductComposition`(`MainProductID`, `ProductID`,`UnitID`,`Quantity`),
+	INDEX `IX1_tblProductComposition`(`MainProductID`),
+	INDEX `IX2_tblProductComposition`(`UnitID`)
 );
 
 /*!40000 ALTER TABLE `sysAccessTypes` DISABLE KEYS */;
@@ -3381,8 +3309,8 @@ ALTER TABLE tblTransactions12 ADD `WaiterName` VARCHAR(100) NOT NULL;
 *****************************/
 DROP TABLE IF EXISTS tblReceipt;
 CREATE TABLE tblReceipt (
-	`Module` VARCHAR(20) NOT NULL,
-	`Text` VARCHAR(20),
+	`Module` VARCHAR(40) NOT NULL,
+	`Text` VARCHAR(40),
 	`Value` VARCHAR(40),
 	`Orientation` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	INDEX `IX_tblReceipt`(`Text`),
@@ -3458,40 +3386,37 @@ INSERT INTO tblReceipt VALUES ('ReportFooterSpacer', '','4',1);
 DROP TABLE IF EXISTS tblInvAdjustmentItems;
 DROP TABLE IF EXISTS tblInvAdjustment;
 CREATE TABLE tblInvAdjustment (
-`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`InvAdjustmentNo` VARCHAR(30) NOT NULL,
-`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
-`SupplierCode` VARCHAR(25) NOT NULL,
-`SupplierContact` VARCHAR(75) NOT NULL,
-`SupplierAddress` VARCHAR(150) NOT NULL DEFAULT '',
-`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
-`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
-`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
-`TransferredByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`InvAdjustmentSubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-`InvAdjustmentRemarks` VARCHAR(150),
-`SupplierDRNo` VARCHAR(30) NOT NULL,
-`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`PaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblPayment(`PaymentID`),
-`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`CancelledRemarks` VARCHAR(150),
-`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-PRIMARY KEY (InvAdjustmentID),
-INDEX `IX_tblInvAdjustment`(`InvAdjustmentID`),
-UNIQUE `PK_tblInvAdjustment`(`InvAdjustmentNo`),
-INDEX `IX1_tblInvAdjustment`(`SupplierID`),
-FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT,
-INDEX `IX2_tblInvAdjustment`(`BranchID`),
-FOREIGN KEY (`BranchID`) REFERENCES tblBranch(`BranchID`) ON DELETE RESTRICT,
-INDEX `IX3_tblInvAdjustment`(`TransferredByID`),
-FOREIGN KEY (`TransferredByID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
+	`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`InvAdjustmentNo` VARCHAR(30) NOT NULL,
+	`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2,
+	`SupplierCode` VARCHAR(25) NOT NULL,
+	`SupplierContact` VARCHAR(75) NOT NULL,
+	`SupplierAddress` VARCHAR(150) NOT NULL DEFAULT '',
+	`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
+	`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2,
+	`TransferredByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`InvAdjustmentSubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`InvAdjustmentRemarks` VARCHAR(150),
+	`SupplierDRNo` VARCHAR(30) NOT NULL,
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`PaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledRemarks` VARCHAR(150),
+	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (InvAdjustmentID),
+	INDEX `IX_tblInvAdjustment`(`InvAdjustmentID`),
+	UNIQUE `PK_tblInvAdjustment`(`InvAdjustmentNo`),
+	INDEX `IX1_tblInvAdjustment`(`SupplierID`),
+	INDEX `IX2_tblInvAdjustment`(`BranchID`),
+	INDEX `IX3_tblInvAdjustment`(`TransferredByID`)
 );
 
 /*****************************
@@ -3500,8 +3425,8 @@ FOREIGN KEY (`TransferredByID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTR
 DROP TABLE IF EXISTS tblInvAdjustmentItems;
 CREATE TABLE tblInvAdjustmentItems (
 `InvAdjustmentItemID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblInvAdjustment(`InvAdjustmentID`),
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `ProductCode` VARCHAR(30) NOT NULL,
 `BarCode` VARCHAR(30) NOT NULL,
 `Description` VARCHAR(100) NOT NULL,
@@ -3541,40 +3466,37 @@ INDEX `IX4_tblInvAdjustmentItems`(`ProductUnitID`)
 DROP TABLE IF EXISTS tblInvAdjustmentItems;
 DROP TABLE IF EXISTS tblInvAdjustment;
 CREATE TABLE tblInvAdjustment (
-`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`InvAdjustmentNo` VARCHAR(30) NOT NULL,
-`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
-`SupplierCode` VARCHAR(25) NOT NULL,
-`SupplierContact` VARCHAR(75) NOT NULL,
-`SupplierAddress` VARCHAR(150) NOT NULL DEFAULT '',
-`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
-`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
-`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
-`TransferredByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`InvAdjustmentSubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InvAdjustmentStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-`InvAdjustmentRemarks` VARCHAR(150),
-`SupplierDRNo` VARCHAR(30) NOT NULL,
-`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`PaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblPayment(`PaymentID`),
-`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-`CancelledRemarks` VARCHAR(150),
-`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-PRIMARY KEY (InvAdjustmentID),
-INDEX `IX_tblInvAdjustment`(`InvAdjustmentID`),
-UNIQUE `PK_tblInvAdjustment`(`InvAdjustmentNo`),
-INDEX `IX1_tblInvAdjustment`(`SupplierID`),
-FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT,
-INDEX `IX2_tblInvAdjustment`(`BranchID`),
-FOREIGN KEY (`BranchID`) REFERENCES tblBranch(`BranchID`) ON DELETE RESTRICT,
-INDEX `IX3_tblInvAdjustment`(`TransferredByID`),
-FOREIGN KEY (`TransferredByID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
+	`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`InvAdjustmentNo` VARCHAR(30) NOT NULL,
+	`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2,
+	`SupplierCode` VARCHAR(25) NOT NULL,
+	`SupplierContact` VARCHAR(75) NOT NULL,
+	`SupplierAddress` VARCHAR(150) NOT NULL DEFAULT '',
+	`SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
+	`SupplierTerms` INT(10) NOT NULL DEFAULT 0,
+	`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2,
+	`TransferredByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`InvAdjustmentSubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InvAdjustmentStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`InvAdjustmentRemarks` VARCHAR(150),
+	`SupplierDRNo` VARCHAR(30) NOT NULL,
+	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`PaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`CancelledRemarks` VARCHAR(150),
+	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (InvAdjustmentID),
+	INDEX `IX_tblInvAdjustment`(`InvAdjustmentID`),
+	UNIQUE `PK_tblInvAdjustment`(`InvAdjustmentNo`),
+	INDEX `IX1_tblInvAdjustment`(`SupplierID`),
+	INDEX `IX2_tblInvAdjustment`(`BranchID`),
+	INDEX `IX3_tblInvAdjustment`(`TransferredByID`)
 );
 
 /*****************************
@@ -3582,39 +3504,39 @@ FOREIGN KEY (`TransferredByID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTR
 *****************************/
 DROP TABLE IF EXISTS tblInvAdjustmentItems;
 CREATE TABLE tblInvAdjustmentItems (
-`InvAdjustmentItemID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblInvAdjustment(`InvAdjustmentID`),
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`ProductCode` VARCHAR(30) NOT NULL,
-`BarCode` VARCHAR(30) NOT NULL,
-`Description` VARCHAR(100) NOT NULL,
-`ProductUnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
-`ProductUnitCode` VARCHAR(30) NOT NULL,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`UnitCost` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`InPercent` TINYINT(1) NOT NULL DEFAULT 1,
-`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VariationMatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`MatrixDescription` VARCHAR(150) NULL,
-`ProductGroup` VARCHAR(20) NULL,
-`ProductSubGroup` VARCHAR(20) NULL,
-`InvAdjustmentItemStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
-`IsVatable` TINYINT(1) NOT NULL DEFAULT 1,
-`Remarks` VARCHAR(150),
-PRIMARY KEY (`InvAdjustmentItemID`),
-INDEX `IX_tblInvAdjustmentItems`(`InvAdjustmentItemID`),
-INDEX `IX0_tblInvAdjustmentItems`(`InvAdjustmentID`, `ProductID`),
-INDEX `IX1_tblInvAdjustmentItems`(`InvAdjustmentID`, `ProductID`,`VariationMatrixID`),
-INDEX `IX2_tblInvAdjustmentItems`(`ProductCode`),
-INDEX `IX3_tblInvAdjustmentItems`(`InvAdjustmentID`),
-INDEX `IX4_tblInvAdjustmentItems`(`ProductUnitID`)
+	`InvAdjustmentItemID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductCode` VARCHAR(30) NOT NULL,
+	`BarCode` VARCHAR(30) NOT NULL,
+	`Description` VARCHAR(100) NOT NULL,
+	`ProductUnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductUnitCode` VARCHAR(30) NOT NULL,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`UnitCost` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`InPercent` TINYINT(1) NOT NULL DEFAULT 1,
+	`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVatableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VariationMatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`MatrixDescription` VARCHAR(150) NULL,
+	`ProductGroup` VARCHAR(20) NULL,
+	`ProductSubGroup` VARCHAR(20) NULL,
+	`InvAdjustmentItemStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`IsVatable` TINYINT(1) NOT NULL DEFAULT 1,
+	`Remarks` VARCHAR(150),
+	PRIMARY KEY (`InvAdjustmentItemID`),
+	INDEX `IX_tblInvAdjustmentItems`(`InvAdjustmentItemID`),
+	INDEX `IX0_tblInvAdjustmentItems`(`InvAdjustmentID`, `ProductID`),
+	INDEX `IX1_tblInvAdjustmentItems`(`InvAdjustmentID`, `ProductID`,`VariationMatrixID`),
+	INDEX `IX2_tblInvAdjustmentItems`(`ProductCode`),
+	INDEX `IX3_tblInvAdjustmentItems`(`InvAdjustmentID`),
+	INDEX `IX4_tblInvAdjustmentItems`(`ProductUnitID`)
 ); 
 
 /*****************************
@@ -3625,7 +3547,7 @@ DROP TABLE IF EXISTS tblPLUReport;
 CREATE TABLE tblPLUReport (
 `PLUReportID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 `TerminalNo` VARCHAR(10) NOT NULL,
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `ProductCode` VARCHAR(30) NOT NULL,
 `Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -3643,7 +3565,7 @@ DROP TABLE IF EXISTS tblPLUReport;
 CREATE TABLE tblPLUReport (
 `PLUReportID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 `TerminalNo` VARCHAR(10) NOT NULL,
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
+`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `ProductCode` VARCHAR(30) NOT NULL,
 `Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -3657,16 +3579,16 @@ INDEX `IX1_tblPLUReport`(`TerminalNo`)
 *****************************/
 DROP TABLE IF EXISTS tblRemoteBranchInventory;
 CREATE TABLE tblRemoteBranchInventory (
-`BranchInventoryID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-`ProductCode` VARCHAR(30) NOT NULL,
-`VariationMatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-`MatrixDescription` VARCHAR(150) NULL,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblBranch(`BranchID`),
-PRIMARY KEY (BranchInventoryID),
-INDEX `IX_tblRemoteBranchInventory`(`ProductCode`, `BranchID`),
-INDEX `IX1_tblRemoteBranchInventory`(`BranchID`)
+	`BranchInventoryID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductCode` VARCHAR(30) NOT NULL,
+	`VariationMatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`MatrixDescription` VARCHAR(150) NULL,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (BranchInventoryID),
+	INDEX `IX_tblRemoteBranchInventory`(`ProductCode`, `BranchID`),
+	INDEX `IX1_tblRemoteBranchInventory`(`BranchID`)
 ); 
 
 /*****************************
@@ -4055,7 +3977,7 @@ UPDATE tblTerminal SET DBVersion = 'v_2.0.0.4';
 DROP TABLE IF EXISTS tblProductPackagePriceHistory;
 CREATE TABLE tblProductPackagePriceHistory (
 	`HistoryID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`PackageID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ChangeDate` DATETIME NOT NULL,
 	`PurchasePriceBefore` DECIMAL(18,3),
@@ -4080,7 +4002,7 @@ INDEX `IX2_tblProductPackagePriceHistory`(`ChangeDate`)
 DROP TABLE IF EXISTS tblMatrixPackagePriceHistory;
 CREATE TABLE tblMatrixPackagePriceHistory (
 	`HistoryID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`UID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`PackageID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`ChangeDate` DATETIME NOT NULL,
 	`PurchasePriceBefore` DECIMAL(18,3),
@@ -4424,16 +4346,16 @@ ALTER TABLE tblTransactionItems12 ADD `Commision` DECIMAL(18,3) NOT NULL DEFAULT
 
 DROP TABLE IF EXISTS tblAgentsCommision;
 CREATE TABLE tblAgentsCommision (
-`SessionID` VARCHAR(30) NOT NULL,
-`TransactionNo` VARCHAR(30) NOT NULL,
-`TransactionDate` DATETIME NOT NULL,
-`Description` VARCHAR(100) NOT NULL,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`PercentageCommision` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`Commision` DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblAgentsCommision`(`SessionID`),
-INDEX `IX_tblAgentsCommision1`(`Description`)
+	`SessionID` VARCHAR(30) NOT NULL,
+	`TransactionNo` VARCHAR(30) NOT NULL,
+	`TransactionDate` DATETIME NOT NULL,
+	`Description` VARCHAR(100) NOT NULL,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`PercentageCommision` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Commision` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblAgentsCommision`(`SessionID`),
+	INDEX `IX_tblAgentsCommision1`(`Description`)
 );
 
 /*********************************
@@ -4611,35 +4533,31 @@ UPDATE sysAccessTypes SET SequenceNo = 4, Category = '11: Backend - Sales Report
 *****************************/
 DROP TABLE IF EXISTS tblPositions;
 CREATE TABLE tblPositions (
-`PositionID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`PositionCode` VARCHAR(30) NOT NULL,
-`PositionName` VARCHAR(30) NOT NULL,
-PRIMARY KEY (`PositionID`),
-INDEX `IX_tblPositions`(`PositionID`, `PositionCode`, `PositionName`),
-UNIQUE `PK_tblPositions`(`PositionCode`),
-INDEX `IX1_tblPositions`(`PositionID`),
-INDEX `IX2_tblPositions`(`PositionCode`),
-INDEX `IX3_tblPositions`(`PositionName`)
+	`PositionID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`PositionCode` VARCHAR(30) NOT NULL,
+	`PositionName` VARCHAR(30) NOT NULL,
+	PRIMARY KEY (`PositionID`),
+	INDEX `IX_tblPositions`(`PositionID`, `PositionCode`, `PositionName`),
+	UNIQUE `PK_tblPositions`(`PositionCode`),
+	INDEX `IX1_tblPositions`(`PositionID`),
+	INDEX `IX2_tblPositions`(`PositionCode`),
+	INDEX `IX3_tblPositions`(`PositionName`)
 );
-
-INSERT INTO tblPositions VALUES(1, 'System Default Position', 'System Default Position');
-
-
 
 /*****************************
 **	tblDepartments
 *****************************/
 DROP TABLE IF EXISTS tblDepartments;
 CREATE TABLE tblDepartments (
-`DepartmentID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-`DepartmentCode` VARCHAR(30) NOT NULL,
-`DepartmentName` VARCHAR(30) NOT NULL,
-PRIMARY KEY (`DepartmentID`),
-INDEX `IX_tblDepartments`(`DepartmentID`, `DepartmentCode`, `DepartmentName`),
-UNIQUE `PK_tblDepartments`(`DepartmentCode`),
-INDEX `IX1_tblDepartments`(`DepartmentID`),
-INDEX `IX2_tblDepartments`(`DepartmentCode`),
-INDEX `IX3_tblDepartments`(`DepartmentName`)
+	`DepartmentID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DepartmentCode` VARCHAR(30) NOT NULL,
+	`DepartmentName` VARCHAR(30) NOT NULL,
+	PRIMARY KEY (`DepartmentID`),
+	INDEX `IX_tblDepartments`(`DepartmentID`, `DepartmentCode`, `DepartmentName`),
+	UNIQUE `PK_tblDepartments`(`DepartmentCode`),
+	INDEX `IX1_tblDepartments`(`DepartmentID`),
+	INDEX `IX2_tblDepartments`(`DepartmentCode`),
+	INDEX `IX3_tblDepartments`(`DepartmentName`)
 );
 
 INSERT INTO tblDepartments VALUES(1, 'System Default Department', 'System Default Department');
@@ -4917,7 +4835,7 @@ UPDATE tblTerminal SET DBVersion = '3.0.3.5';
 
 DROP TABLE IF EXISTS tblContactRewards;
 CREATE TABLE tblContactRewards (
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`RewardCardNo` VARCHAR(15) DEFAULT '',
 	`RewardActive` TINYINT(1) NOT NULL DEFAULT 0,
 	`RewardPoints` DECIMAL (10,2) NOT NULL DEFAULT 0,
@@ -4944,7 +4862,7 @@ ALTER TABLE tblProducts ADD RewardPoints DECIMAL(18,3) DEFAULT 0;
 
 DROP TABLE IF EXISTS tblContactRewardsMovement;
 CREATE TABLE tblContactRewardsMovement (
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1,
 	`RewardDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`RewardPointsBefore` BIGINT NOT NULL DEFAULT 0,
 	`RewardPointsAdjustment` BIGINT NOT NULL DEFAULT 0,
@@ -4962,7 +4880,7 @@ INDEX `IX_tblContactRewardsMovement2`(`CustomerID`, `RewardDate`)
 
 DROP TABLE IF EXISTS tblRewardItems;
 CREATE TABLE tblRewardItems (
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1 REFERENCES tblProducts(`ProductID`),
+	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1,
 	`RewardPoints` DECIMAL (10,2) NOT NULL DEFAULT 0,
 INDEX `IX_tblRewardItems`(`ProductID`)
 );
@@ -5023,14 +4941,14 @@ ALTER TABLE tblProductMovement ADD `BranchIDTo` INT(4) NOT NULL DEFAULT 1;
 *****************************/
 DROP TABLE IF EXISTS tblBranchInventory;
 CREATE TABLE tblBranchInventory (
-`BranchID` INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductID` BIGINT NOT NULL DEFAULT 0,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblBranchInventory`(`BranchID`, `ProductID`),
-UNIQUE `PK_tblBranchInventory`(`BranchID`, `ProductID`)
+	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblBranchInventory`(`BranchID`, `ProductID`),
+	UNIQUE `PK_tblBranchInventory`(`BranchID`, `ProductID`)
 );
 
 /*****************************
@@ -5038,15 +4956,15 @@ UNIQUE `PK_tblBranchInventory`(`BranchID`, `ProductID`)
 *****************************/
 DROP TABLE IF EXISTS tblBranchInventoryMatrix;
 CREATE TABLE tblBranchInventoryMatrix (
-`BranchID` INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-`ProductID` BIGINT NOT NULL DEFAULT 0,
-`MatrixID` BIGINT NOT NULL DEFAULT 0,
-`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
-INDEX `IX_tblBranchInventoryMatrix`(`BranchID`, `ProductID`),
-UNIQUE `PK_tblBranchInventoryMatrix`(`BranchID`, `ProductID`, `MatrixID`)
+	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`MatrixID` BIGINT NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	INDEX `IX_tblBranchInventoryMatrix`(`BranchID`, `ProductID`),
+	UNIQUE `PK_tblBranchInventoryMatrix`(`BranchID`, `ProductID`, `MatrixID`)
 );
 
 ALTER TABLE tblTerminal ADD RoundDownRewardPoints TINYINT (1) NOT NULL DEFAULT 0;
@@ -5059,7 +4977,7 @@ ALTER TABLE tblContactRewards ADD `BirthDate` DATE NOT NULL DEFAULT '1900-01-01 
 
 DROP TABLE IF EXISTS tblContactRewardsMovement;
 CREATE TABLE tblContactRewardsMovement (
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1,
 	`RewardDate` DATE NOT NULL DEFAULT '1900-01-01',
 	`RewardPointsBefore` BIGINT NOT NULL DEFAULT 0,
 	`RewardPointsAdjustment` BIGINT NOT NULL DEFAULT 0,
@@ -5077,8 +4995,8 @@ INDEX `IX_tblContactRewardsMovement2`(`CustomerID`, `RewardDate`)
 
 DROP TABLE IF EXISTS tblContactCreditCardInfo;
 CREATE TABLE tblContactCreditCardInfo (
-	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
-	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CreditType` TINYINT(1) NOT NULL DEFAULT 0,
 	`CreditCardNo` VARCHAR(16) DEFAULT '',
 	`CreditAwardDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
@@ -5095,8 +5013,8 @@ UNIQUE `PK_tblContactCreditCardInfo2`(`CreditCardNo`)
 
 DROP TABLE IF EXISTS tblContactCreditCardMovement;
 -- CREATE TABLE tblContactCreditCardMovement (
---	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
---	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+--	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+--	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 --	`CreditType` TINYINT(1) NOT NULL DEFAULT 0,
 --	`CreditDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00',
 --	`CreditBefore` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -5380,9 +5298,9 @@ DROP TABLE IF EXISTS tblTransactions;
 CREATE TABLE tblTransactions (
 `TransactionID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 `TransactionNo` VARCHAR(30) NOT NULL,
-`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
+`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `CustomerName` VARCHAR(100) NOT NULL,
-`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+`CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
 `TransactionDate`	DATETIME NOT NULL,
@@ -6071,7 +5989,7 @@ ALTER TABLE tblProductMovement MODIFY `TransactionNo` varchar(30) NOT NULL;
 --
 DROP TABLE IF EXISTS tblContactCreditCardMovement;
 
-ALTER TABLE tblCreditPayment ADD `GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`);
+ALTER TABLE tblCreditPayment ADD `GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE tblCreditPayment ADD `CreditType` TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE tblCreditPayment ADD `CreditDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCreditPayment ADD `CreditBefore` DECIMAL(18,3) NOT NULL DEFAULT 0;
@@ -6219,7 +6137,7 @@ CREATE TABLE deleted_tblProductBaseVariationsMatrix(SELECT * FROM tblProductBase
 *****************************/
 DROP TABLE IF EXISTS tblProductInventory;
 CREATE TABLE tblProductInventory (
-	`BranchID` INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0,
 	`ProductID` BIGINT NOT NULL DEFAULT 0,
 	`MatrixID` BIGINT NOT NULL DEFAULT 0,
 	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -6227,8 +6145,8 @@ CREATE TABLE tblProductInventory (
 	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
-	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`),
-	UNIQUE `PK_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
+	INDEX `IX_tblProductInventory`(`ProductID`, `MatrixID`, `BranchID`),
+	UNIQUE `PK_tblProductInventory`(`ProductID`, `MatrixID`, `BranchID`)
 );
 
 
@@ -6491,57 +6409,57 @@ CREATE TABLE `tblTransactionsBackup` (
 
 DROP TABLE IF EXISTS tblTransactionItemsBackup;
 CREATE TABLE `tblTransactionItemsBackup` (
-  `TransactionItemsID` bigint(20) unsigned NOT NULL DEFAULT 0,
-  `TransactionID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `ProductID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `ProductCode` varchar(30) NOT NULL,
-  `BarCode` varchar(30) NOT NULL,
-  `Description` varchar(100) NOT NULL,
-  `ProductUnitID` int(3) unsigned NOT NULL DEFAULT '0',
-  `ProductUnitCode` varchar(5) DEFAULT NULL,
-  `Quantity` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `Price` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `SellingPrice` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `Discount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `ItemDiscount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `ItemDiscountType` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `Amount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `VAT` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `VatableAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `EVAT` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `EVatableAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `LocalTax` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `VariationsMatrixID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `MatrixDescription` varchar(150) DEFAULT NULL,
-  `ProductGroup` varchar(20) DEFAULT NULL,
-  `ProductSubGroup` varchar(50) DEFAULT NULL,
-  `TransactionItemStatus` int(1) NOT NULL DEFAULT '0',
-  `DiscountCode` varchar(5) DEFAULT NULL,
-  `DiscountRemarks` varchar(255) DEFAULT NULL,
-  `ProductPackageID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `MatrixPackageID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `PackageQuantity` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `PromoQuantity` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `PromoValue` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `PromoInPercent` tinyint(1) NOT NULL DEFAULT '0',
-  `PromoType` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `PromoApplied` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `PurchasePrice` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `PurchaseAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `IncludeInSubtotalDiscount` tinyint(1) NOT NULL DEFAULT '1',
-  `OrderSlipPrinter` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `orderslipprinted` tinyint(1) NOT NULL DEFAULT '0',
-  `PercentageCommision` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `Commision` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `PaxNo` int(4) NOT NULL DEFAULT '1',
-  `BackupDate` datetime,
-  PRIMARY KEY (`TransactionItemsID`),
-  KEY `IX_tblTransactionItemsBackup` (`TransactionItemsID`),
-  KEY `IX0_tblTransactionItemsBackup` (`TransactionID`,`ProductID`),
-  KEY `IX1_tblTransactionItemsBackup` (`TransactionID`,`ProductID`,`VariationsMatrixID`),
-  KEY `IX2_tblTransactionItemsBackup` (`ProductCode`),
-  KEY `IX3_tblTransactionItemsBackup` (`TransactionID`),
-  KEY `IX4_tblTransactionItemsBackup` (`ProductUnitID`)
+	`TransactionItemsID` bigint(20) unsigned NOT NULL DEFAULT 0,
+	`TransactionID` bigint(20) unsigned NOT NULL DEFAULT '0',
+	`ProductID` bigint(20) unsigned NOT NULL DEFAULT '0',
+	`ProductCode` varchar(30) NOT NULL,
+	`BarCode` varchar(30) NOT NULL,
+	`Description` varchar(100) NOT NULL,
+	`ProductUnitID` int(3) unsigned NOT NULL DEFAULT '0',
+	`ProductUnitCode` varchar(5) DEFAULT NULL,
+	`Quantity` decimal(12,3) NOT NULL DEFAULT '0.000',
+	`Price` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`SellingPrice` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`Discount` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`ItemDiscount` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`ItemDiscountType` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+	`Amount` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`VAT` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`VatableAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`EVAT` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`EVatableAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`LocalTax` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`VariationsMatrixID` bigint(20) unsigned NOT NULL DEFAULT '0',
+	`MatrixDescription` varchar(150) DEFAULT NULL,
+	`ProductGroup` varchar(20) DEFAULT NULL,
+	`ProductSubGroup` varchar(50) DEFAULT NULL,
+	`TransactionItemStatus` int(1) NOT NULL DEFAULT '0',
+	`DiscountCode` varchar(5) DEFAULT NULL,
+	`DiscountRemarks` varchar(255) DEFAULT NULL,
+	`ProductPackageID` bigint(20) unsigned NOT NULL DEFAULT '0',
+	`MatrixPackageID` bigint(20) unsigned NOT NULL DEFAULT '0',
+	`PackageQuantity` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`PromoQuantity` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`PromoValue` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`PromoInPercent` tinyint(1) NOT NULL DEFAULT '0',
+	`PromoType` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+	`PromoApplied` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`PurchasePrice` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`PurchaseAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`IncludeInSubtotalDiscount` tinyint(1) NOT NULL DEFAULT '1',
+	`OrderSlipPrinter` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+	`orderslipprinted` tinyint(1) NOT NULL DEFAULT '0',
+	`PercentageCommision` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`Commision` decimal(18,3) NOT NULL DEFAULT '0.00',
+	`PaxNo` int(4) NOT NULL DEFAULT '1',
+	`BackupDate` datetime,
+	PRIMARY KEY (`TransactionItemsID`),
+	KEY `IX_tblTransactionItemsBackup` (`TransactionItemsID`),
+	KEY `IX0_tblTransactionItemsBackup` (`TransactionID`,`ProductID`),
+	KEY `IX1_tblTransactionItemsBackup` (`TransactionID`,`ProductID`,`VariationsMatrixID`),
+	KEY `IX2_tblTransactionItemsBackup` (`ProductCode`),
+	KEY `IX3_tblTransactionItemsBackup` (`TransactionID`),
+	KEY `IX4_tblTransactionItemsBackup` (`ProductUnitID`)
 );
 
 /*********************************  v_4.0.0.5.sql END  *******************************************************/ 
@@ -6708,11 +6626,11 @@ CREATE TABLE tblContactAddOn (
 	`SpouseBirthDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`AnniversaryDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00',
 	
-	`Address1` VARCHAR (150) NULL ,
-	`Address2` VARCHAR (150) NULL ,
-	`City` VARCHAR (30) NULL ,
-	`State` VARCHAR (30) NULL ,
-	`ZipCode` VARCHAR (15) NULL ,
+	`Address1` VARCHAR (150) NULL,
+	`Address2` VARCHAR (150) NULL,
+	`City` VARCHAR (30) NULL,
+	`State` VARCHAR (30) NULL,
+	`ZipCode` VARCHAR (15) NULL,
 	`CountryID` TINYINT NOT NULL DEFAULT 0,
 
 	`BusinessphoneNo` VARCHAR(75) NOT NULL DEFAULT '',
@@ -6792,7 +6710,6 @@ UPDATE tblTerminalReportHistory SET ActualOldGrandTotal = OldGrandTotal WHERE Ac
 UPDATE tblTerminalReportHistory SET ActualNewGrandTotal = NewGrandTotal WHERE ActualNewGrandTotal = 0;
 
 
-
 -- Added to get the discount given
 ALTER TABLE tblTransactionItems ADD `TransactionDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'This is an applied discount computed evenly from transaction discount';
 ALTER TABLE tblSalesPerItem ADD `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0;
@@ -6848,8 +6765,9 @@ ALTER TABLE tblTerminalReportHistory ADD `TotalReprintedTransaction` DECIMAL(18,
 
 
 
---19Feb2014 Added for HP
-DELETE FROM sysAccessRights WHERE TranTypeID = 148; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 148;
+-- 19Feb2014 Added for HP
+DELETE FROM sysAccessRights WHERE TranTypeID = 148; 
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 148;
 DELETE FROM sysAccessTypes WHERE TypeID = 148;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (148, 'Summarized Daily Sales');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 148, 1, 1);
@@ -6939,17 +6857,9 @@ ALTER TABLE sysAccessUserDetails DROP CreatedOn;
 ALTER TABLE sysAccessUsers DROP CreatedOn;
 ALTER TABLE sysAuditTrail DROP CreatedOn;
 ALTER TABLE sysConfig DROP CreatedOn;
-ALTER TABLE sysCreditConfig DROP CreatedOn;
 ALTER TABLE sysTerminalKey DROP CreatedOn;
-ALTER TABLE tblAccountCategory DROP CreatedOn;
-ALTER TABLE tblAccountClassification DROP CreatedOn;
-ALTER TABLE tblAccountSummary DROP CreatedOn;
 ALTER TABLE tblAgentsCommision DROP CreatedOn;
-ALTER TABLE tblBank DROP CreatedOn;
-ALTER TABLE tblBankDeposit DROP CreatedOn;
 ALTER TABLE tblBranch DROP CreatedOn;
-ALTER TABLE tblBranchInventory DROP CreatedOn;
-ALTER TABLE tblBranchInventoryMatrix DROP CreatedOn;
 ALTER TABLE tblBranchTransfer DROP CreatedOn;
 ALTER TABLE tblBranchTransferItems DROP CreatedOn;
 ALTER TABLE tblCalDate DROP CreatedOn;
@@ -6960,7 +6870,6 @@ ALTER TABLE tblCashierReport DROP CreatedOn;
 ALTER TABLE tblCashierReportHistory DROP CreatedOn;
 ALTER TABLE tblCashPayment DROP CreatedOn;
 ALTER TABLE tblChargeType DROP CreatedOn;
-ALTER TABLE tblChartOfAccount DROP CreatedOn;
 ALTER TABLE tblChequePayment DROP CreatedOn;
 ALTER TABLE tblContactAddon DROP CreatedOn;
 ALTER TABLE tblContactCreditCardinfo DROP CreatedOn;
@@ -6971,9 +6880,6 @@ ALTER TABLE tblContacts DROP CreatedOn;
 ALTER TABLE tblContactsAudit DROP CreatedOn;
 ALTER TABLE tblCountingRef DROP CreatedOn;
 ALTER TABLE tblCountry DROP CreatedOn;
-ALTER TABLE tblCreditBillDetail DROP CreatedOn;
-ALTER TABLE tblCreditBillHeader DROP CreatedOn;
-ALTER TABLE tblCreditBills DROP CreatedOn;
 ALTER TABLE tblCreditCardPayment DROP CreatedOn;
 ALTER TABLE tblCreditPayment DROP CreatedOn;
 ALTER TABLE tblDebitPayment DROP CreatedOn;
@@ -6983,26 +6889,13 @@ ALTER TABLE tblDeposit DROP CreatedOn;
 ALTER TABLE tblDisburse DROP CreatedOn;
 ALTER TABLE tblDiscount DROP CreatedOn;
 ALTER TABLE tblDiscountHistory DROP CreatedOn;
-ALTER TABLE tblERPConfig DROP CreatedOn;
-ALTER TABLE tblGJournal DROP CreatedOn;
-ALTER TABLE tblGJournalCredit DROP CreatedOn;
-ALTER TABLE tblGJournalDebit DROP CreatedOn;
-ALTER TABLE tblgla_f_dtl_chk_headers DROP CreatedOn;
 ALTER TABLE tblInvAdjustment DROP CreatedOn;
 ALTER TABLE tblInvAdjustmentItems DROP CreatedOn;
 ALTER TABLE tblInventory DROP CreatedOn;
 ALTER TABLE tblMatrixPackagePriceHistory DROP CreatedOn;
 ALTER TABLE tblPaidOut DROP CreatedOn;
 ALTER TABLE tblParkingRates DROP CreatedOn;
-ALTER TABLE tblPayment DROP CreatedOn;
-ALTER TABLE tblPaymentCredit DROP CreatedOn;
-ALTER TABLE tblPaymentDebit DROP CreatedOn;
-ALTER TABLE tblPaymentPODetails DROP CreatedOn;
 ALTER TABLE tblPLUReport DROP CreatedOn;
-ALTER TABLE tblPO DROP CreatedOn;
-ALTER TABLE tblPODebitMemo DROP CreatedOn;
-ALTER TABLE tblPODebitMemoItems DROP CreatedOn;
-ALTER TABLE tblPOItems DROP CreatedOn;
 ALTER TABLE tblPositions DROP CreatedOn;
 ALTER TABLE tblProductBaseVariationsMatrix DROP CreatedOn;
 ALTER TABLE tblProductComposition DROP CreatedOn;
@@ -7041,10 +6934,6 @@ ALTER TABLE tblremotebranchInventory DROP CreatedOn;
 ALTER TABLE tblrewardItems DROP CreatedOn;
 ALTER TABLE tblSalesPerItem DROP CreatedOn;
 ALTER TABLE tblSalutations DROP CreatedOn;
-ALTER TABLE tblSO DROP CreatedOn;
-ALTER TABLE tblSOcreditmemo DROP CreatedOn;
-ALTER TABLE tblSOcreditmemoItems DROP CreatedOn;
-ALTER TABLE tblSOItems DROP CreatedOn;
 ALTER TABLE tblStock DROP CreatedOn;
 ALTER TABLE tblStockItems DROP CreatedOn;
 ALTER TABLE tblStocktype DROP CreatedOn;
@@ -7056,10 +6945,6 @@ ALTER TABLE tblTransactionItemsBackup DROP CreatedOn;
 ALTER TABLE tblTransactionNos DROP CreatedOn;
 ALTER TABLE tblTransactions DROP CreatedOn;
 ALTER TABLE tblTransactionsBackup DROP CreatedOn;
-ALTER TABLE tblTransferIn DROP CreatedOn;
-ALTER TABLE tblTransferInItems DROP CreatedOn;
-ALTER TABLE tblTransferout DROP CreatedOn;
-ALTER TABLE tblTransferoutItems DROP CreatedOn;
 ALTER TABLE tblUnit DROP CreatedOn;
 ALTER TABLE tblVariations DROP CreatedOn;
 ALTER TABLE tblWithhold DROP CreatedOn;
@@ -7072,17 +6957,9 @@ ALTER TABLE sysAccessUserDetails ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900
 ALTER TABLE sysAccessUsers ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE sysAuditTrail ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE sysConfig ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE sysCreditConfig ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE sysTerminalKey ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblAccountCategory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblAccountClassification ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblAccountSummary ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblAgentsCommision ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblBank ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblBankDeposit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblBranch ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblBranchInventory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblBranchInventoryMatrix ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblBranchTransfer ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblBranchTransferItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCalDate ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7093,7 +6970,6 @@ ALTER TABLE tblCashierReport ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-
 ALTER TABLE tblCashierReportHistory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCashPayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblChargeType ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblChartOfAccount ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblChequePayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblContactAddon ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblContactCreditCardinfo ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7104,9 +6980,6 @@ ALTER TABLE tblContacts ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12
 ALTER TABLE tblContactsAudit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCountingRef ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCountry ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblCreditBillDetail ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblCreditBillHeader ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblCreditBills ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCreditCardPayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCreditPayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblDebitPayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7116,26 +6989,13 @@ ALTER TABLE tblDeposit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:
 ALTER TABLE tblDisburse ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblDiscount ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblDiscountHistory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblERPConfig ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblGJournal ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblGJournalCredit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblGJournalDebit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblgla_f_dtl_chk_headers ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblInvAdjustment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblInvAdjustmentItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblInventory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblMatrixPackagePriceHistory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblPaidOut ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblParkingRates ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPayment ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPaymentCredit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPaymentDebit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPaymentPODetails ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblPLUReport ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPO ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPODebitMemo ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPODebitMemoItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblPOItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblPositions ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductBaseVariationsMatrix ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductComposition ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7174,10 +7034,6 @@ ALTER TABLE tblremotebranchInventory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '
 ALTER TABLE tblrewardItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblSalesPerItem ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblSalutations ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblSO ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblSOcreditmemo ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblSOcreditmemoItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblSOItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblStock ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblStockItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblStocktype ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7189,10 +7045,6 @@ ALTER TABLE tblTransactionItemsBackup ADD `CreatedOn` DATETIME NOT NULL DEFAULT 
 ALTER TABLE tblTransactionNos ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblTransactions ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblTransactionsBackup ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblTransferIn ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblTransferInItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblTransferout ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblTransferoutItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblUnit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblVariations ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblWithhold ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7205,17 +7057,9 @@ ALTER TABLE sysAccessUserDetails DROP LastModified;
 ALTER TABLE sysAccessUsers DROP LastModified;
 ALTER TABLE sysAuditTrail DROP LastModified;
 ALTER TABLE sysConfig DROP LastModified;
-ALTER TABLE sysCreditConfig DROP LastModified;
 ALTER TABLE sysTerminalKey DROP LastModified;
-ALTER TABLE tblAccountCategory DROP LastModified;
-ALTER TABLE tblAccountClassification DROP LastModified;
-ALTER TABLE tblAccountSummary DROP LastModified;
 ALTER TABLE tblAgentsCommision DROP LastModified;
-ALTER TABLE tblBank DROP LastModified;
-ALTER TABLE tblBankDeposit DROP LastModified;
 ALTER TABLE tblBranch DROP LastModified;
-ALTER TABLE tblBranchInventory DROP LastModified;
-ALTER TABLE tblBranchInventoryMatrix DROP LastModified;
 ALTER TABLE tblBranchTransfer DROP LastModified;
 ALTER TABLE tblBranchTransferItems DROP LastModified;
 ALTER TABLE tblCalDate DROP LastModified;
@@ -7226,7 +7070,6 @@ ALTER TABLE tblCashierReport DROP LastModified;
 ALTER TABLE tblCashierReportHistory DROP LastModified;
 ALTER TABLE tblCashPayment DROP LastModified;
 ALTER TABLE tblChargeType DROP LastModified;
-ALTER TABLE tblChartOfAccount DROP LastModified;
 ALTER TABLE tblChequePayment DROP LastModified;
 ALTER TABLE tblContactAddon DROP LastModified;
 ALTER TABLE tblContactCreditCardinfo DROP LastModified;
@@ -7237,9 +7080,6 @@ ALTER TABLE tblContacts DROP LastModified;
 ALTER TABLE tblContactsAudit DROP LastModified;
 ALTER TABLE tblCountingRef DROP LastModified;
 ALTER TABLE tblCountry DROP LastModified;
-ALTER TABLE tblCreditBillDetail DROP LastModified;
-ALTER TABLE tblCreditBillHeader DROP LastModified;
-ALTER TABLE tblCreditBills DROP LastModified;
 ALTER TABLE tblCreditCardPayment DROP LastModified;
 ALTER TABLE tblCreditPayment DROP LastModified;
 ALTER TABLE tblDebitPayment DROP LastModified;
@@ -7249,26 +7089,13 @@ ALTER TABLE tblDeposit DROP LastModified;
 ALTER TABLE tblDisburse DROP LastModified;
 ALTER TABLE tblDiscount DROP LastModified;
 ALTER TABLE tblDiscountHistory DROP LastModified;
-ALTER TABLE tblERPConfig DROP LastModified;
-ALTER TABLE tblGJournal DROP LastModified;
-ALTER TABLE tblGJournalCredit DROP LastModified;
-ALTER TABLE tblGJournalDebit DROP LastModified;
-ALTER TABLE tblgla_f_dtl_chk_headers DROP LastModified;
 ALTER TABLE tblInvAdjustment DROP LastModified;
 ALTER TABLE tblInvAdjustmentItems DROP LastModified;
 ALTER TABLE tblInventory DROP LastModified;
 ALTER TABLE tblMatrixPackagePriceHistory DROP LastModified;
 ALTER TABLE tblPaidOut DROP LastModified;
 ALTER TABLE tblParkingRates DROP LastModified;
-ALTER TABLE tblPayment DROP LastModified;
-ALTER TABLE tblPaymentCredit DROP LastModified;
-ALTER TABLE tblPaymentDebit DROP LastModified;
-ALTER TABLE tblPaymentPODetails DROP LastModified;
 ALTER TABLE tblPLUReport DROP LastModified;
-ALTER TABLE tblPO DROP LastModified;
-ALTER TABLE tblPODebitMemo DROP LastModified;
-ALTER TABLE tblPODebitMemoItems DROP LastModified;
-ALTER TABLE tblPOItems DROP LastModified;
 ALTER TABLE tblPositions DROP LastModified;
 ALTER TABLE tblProductBaseVariationsMatrix DROP LastModified;
 ALTER TABLE tblProductComposition DROP LastModified;
@@ -7307,10 +7134,6 @@ ALTER TABLE tblremotebranchInventory DROP LastModified;
 ALTER TABLE tblrewardItems DROP LastModified;
 ALTER TABLE tblSalesPerItem DROP LastModified;
 ALTER TABLE tblSalutations DROP LastModified;
-ALTER TABLE tblSO DROP LastModified;
-ALTER TABLE tblSOcreditmemo DROP LastModified;
-ALTER TABLE tblSOcreditmemoItems DROP LastModified;
-ALTER TABLE tblSOItems DROP LastModified;
 ALTER TABLE tblStock DROP LastModified;
 ALTER TABLE tblStockItems DROP LastModified;
 ALTER TABLE tblStocktype DROP LastModified;
@@ -7322,10 +7145,6 @@ ALTER TABLE tblTransactionItemsBackup DROP LastModified;
 ALTER TABLE tblTransactionNos DROP LastModified;
 ALTER TABLE tblTransactions DROP LastModified;
 ALTER TABLE tblTransactionsBackup DROP LastModified;
-ALTER TABLE tblTransferIn DROP LastModified;
-ALTER TABLE tblTransferInItems DROP LastModified;
-ALTER TABLE tblTransferout DROP LastModified;
-ALTER TABLE tblTransferoutItems DROP LastModified;
 ALTER TABLE tblUnit DROP LastModified;
 ALTER TABLE tblVariations DROP LastModified;
 ALTER TABLE tblWithhold DROP LastModified;
@@ -7338,17 +7157,9 @@ ALTER TABLE sysAccessUserDetails ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TI
 ALTER TABLE sysAccessUsers ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE sysAuditTrail ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE sysConfig ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE sysCreditConfig ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE sysTerminalKey ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblAccountCategory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblAccountClassification ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblAccountSummary ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblAgentsCommision ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblBank ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblBankDeposit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblBranch ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblBranchInventory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblBranchInventoryMatrix ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblBranchTransfer ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblBranchTransferItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblCalDate ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
@@ -7359,7 +7170,6 @@ ALTER TABLE tblCashierReport ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMEST
 ALTER TABLE tblCashierReportHistory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblCashPayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblChargeType ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblChartOfAccount ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblChequePayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblContactAddon ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblContactCreditCardinfo ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
@@ -7370,9 +7180,6 @@ ALTER TABLE tblContacts ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP O
 ALTER TABLE tblContactsAudit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblCountingRef ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblCountry ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblCreditBillDetail ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblCreditBillHeader ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblCreditBills ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblCreditCardPayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblCreditPayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblDebitPayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
@@ -7382,26 +7189,13 @@ ALTER TABLE tblDeposit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON
 ALTER TABLE tblDisburse ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblDiscount ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblDiscountHistory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblERPConfig ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblGJournal ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblGJournalCredit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblGJournalDebit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblgla_f_dtl_chk_headers ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblInvAdjustment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblInvAdjustmentItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblInventory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblMatrixPackagePriceHistory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblPaidOut ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblParkingRates ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPayment ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPaymentCredit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPaymentDebit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPaymentPODetails ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblPLUReport ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPO ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPODebitMemo ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPODebitMemoItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblPOItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblPositions ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductBaseVariationsMatrix ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductComposition ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
@@ -7440,10 +7234,6 @@ ALTER TABLE tblremotebranchInventory ADD `LastModified` TIMESTAMP DEFAULT CURREN
 ALTER TABLE tblrewardItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblSalesPerItem ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblSalutations ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblSO ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblSOcreditmemo ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblSOcreditmemoItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblSOItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblStock ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblStockItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblStocktype ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
@@ -7455,147 +7245,111 @@ ALTER TABLE tblTransactionItemsBackup ADD `LastModified` TIMESTAMP DEFAULT CURRE
 ALTER TABLE tblTransactionNos ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblTransactions ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblTransactionsBackup ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblTransferIn ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblTransferInItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblTransferout ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblTransferoutItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblUnit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblVariations ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblWithhold ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
 
-DROP TRIGGER trgsysAccessGroupRightsCreatedOn;
-DROP TRIGGER trgsysAccessGroupsCreatedOn;
-DROP TRIGGER trgsysAccessRightsCreatedOn;
-DROP TRIGGER trgsysAccessTypesCreatedOn;
-DROP TRIGGER trgsysAccessUserDetailsCreatedOn;
-DROP TRIGGER trgsysAccessUsersCreatedOn;
-DROP TRIGGER trgsysAuditTrailCreatedOn;
-DROP TRIGGER trgsysConfigCreatedOn;
-DROP TRIGGER trgsysCreditConfigCreatedOn;
-DROP TRIGGER trgsysTerminalKeyCreatedOn;
-DROP TRIGGER trgtblAccountCategoryCreatedOn;
-DROP TRIGGER trgtblAccountClassificationCreatedOn;
-DROP TRIGGER trgtblAccountSummaryCreatedOn;
-DROP TRIGGER trgtblAgentsCommisionCreatedOn;
-DROP TRIGGER trgtblBankCreatedOn;
-DROP TRIGGER trgtblBankDepositCreatedOn;
-DROP TRIGGER trgtblBranchCreatedOn;
-DROP TRIGGER trgtblBranchInventoryCreatedOn;
-DROP TRIGGER trgtblBranchInventoryMatrixCreatedOn;
-DROP TRIGGER trgtblBranchTransferCreatedOn;
-DROP TRIGGER trgtblBranchTransferItemsCreatedOn;
-DROP TRIGGER trgtblCalDateCreatedOn;
-DROP TRIGGER trgtblCardTypesCreatedOn;
-DROP TRIGGER trgtblCashCountCreatedOn;
-DROP TRIGGER trgtblCashierLogsCreatedOn;
-DROP TRIGGER trgtblCashierReportCreatedOn;
-DROP TRIGGER trgtblCashierReportHistoryCreatedOn;
-DROP TRIGGER trgtblCashPaymentCreatedOn;
-DROP TRIGGER trgtblChargeTypeCreatedOn;
-DROP TRIGGER trgtblChartOfAccountCreatedOn;
-DROP TRIGGER trgtblChequePaymentCreatedOn;
-DROP TRIGGER trgtblContactAddonCreatedOn;
-DROP TRIGGER trgtblContactCreditCardinfoCreatedOn;
-DROP TRIGGER trgtblContactGroupCreatedOn;
-DROP TRIGGER trgtblContactRewardsCreatedOn;
-DROP TRIGGER trgtblContactRewardsMovementCreatedOn;
-DROP TRIGGER trgtblContactsCreatedOn;
-DROP TRIGGER trgtblContactsAuditCreatedOn;
-DROP TRIGGER trgtblCountingRefCreatedOn;
-DROP TRIGGER trgtblCountryCreatedOn;
-DROP TRIGGER trgtblCreditBillDetailCreatedOn;
-DROP TRIGGER trgtblCreditBillHeaderCreatedOn;
-DROP TRIGGER trgtblCreditBillsCreatedOn;
-DROP TRIGGER trgtblCreditCardPaymentCreatedOn;
-DROP TRIGGER trgtblCreditPaymentCreatedOn;
-DROP TRIGGER trgtblDebitPaymentCreatedOn;
-DROP TRIGGER trgtblDenominationCreatedOn;
-DROP TRIGGER trgtblDepartmentsCreatedOn;
-DROP TRIGGER trgtblDepositCreatedOn;
-DROP TRIGGER trgtblDisburseCreatedOn;
-DROP TRIGGER trgtblDiscountCreatedOn;
-DROP TRIGGER trgtblDiscountHistoryCreatedOn;
-DROP TRIGGER trgtblERPConfigCreatedOn;
-DROP TRIGGER trgtblGJournalCreatedOn;
-DROP TRIGGER trgtblGJournalCreditCreatedOn;
-DROP TRIGGER trgtblGJournalDebitCreatedOn;
-DROP TRIGGER trgtblgla_f_dtl_chk_headersCreatedOn;
-DROP TRIGGER trgtblInvAdjustmentCreatedOn;
-DROP TRIGGER trgtblInvAdjustmentItemsCreatedOn;
-DROP TRIGGER trgtblInventoryCreatedOn;
-DROP TRIGGER trgtblMatrixPackagePriceHistoryCreatedOn;
-DROP TRIGGER trgtblPaidOutCreatedOn;
-DROP TRIGGER trgtblParkingRatesCreatedOn;
-DROP TRIGGER trgtblPaymentCreatedOn;
-DROP TRIGGER trgtblPaymentCreditCreatedOn;
-DROP TRIGGER trgtblPaymentDebitCreatedOn;
-DROP TRIGGER trgtblPaymentPODetailsCreatedOn;
-DROP TRIGGER trgtblPLUReportCreatedOn;
-DROP TRIGGER trgtblPOCreatedOn;
-DROP TRIGGER trgtblPODebitMemoCreatedOn;
-DROP TRIGGER trgtblPODebitMemoItemsCreatedOn;
-DROP TRIGGER trgtblPOItemsCreatedOn;
-DROP TRIGGER trgtblPositionsCreatedOn;
-DROP TRIGGER trgtblProductBaseVariationsMatrixCreatedOn;
-DROP TRIGGER trgtblProductCompositionCreatedOn;
-DROP TRIGGER trgtblProductGroupCreatedOn;
-DROP TRIGGER trgtblProductGroupBaseVariationsMatrixCreatedOn;
-DROP TRIGGER trgtblProductGroupChargesCreatedOn;
-DROP TRIGGER trgtblProductGroupUnitMatrixCreatedOn;
-DROP TRIGGER trgtblProductGroupVariationsCreatedOn;
-DROP TRIGGER trgtblProductGroupVariationsMatrixCreatedOn;
-DROP TRIGGER trgtblProductHistoryCreatedOn;
-DROP TRIGGER trgtblProductInventoryCreatedOn;
-DROP TRIGGER trgtblProductInventoryAuditCreatedOn;
-DROP TRIGGER trgtblProductInventoryDailyCreatedOn;
-DROP TRIGGER trgtblProductInventoryMonthlyCreatedOn;
-DROP TRIGGER trgtblProductMovementCreatedOn;
-DROP TRIGGER trgtblProductPackageCreatedOn;
-DROP TRIGGER trgtblProductPackagepriceHistoryCreatedOn;
-DROP TRIGGER trgtblProductpricesCreatedOn;
-DROP TRIGGER trgtblProductPurchasepriceHistoryCreatedOn;
-DROP TRIGGER trgtblProductsCreatedOn;
-DROP TRIGGER trgtblProductSubGroupCreatedOn;
-DROP TRIGGER trgtblProductSubGroupbaseVariationsMatrixCreatedOn;
-DROP TRIGGER trgtblProductSubGroupChargesCreatedOn;
-DROP TRIGGER trgtblProductSubGroupUnitMatrixCreatedOn;
-DROP TRIGGER trgtblProductSubGroupVariationsCreatedOn;
-DROP TRIGGER trgtblProductSubGroupVariationsMatrixCreatedOn;
-DROP TRIGGER trgtblProductUnitMatrixCreatedOn;
-DROP TRIGGER trgtblProductVariationsCreatedOn;
-DROP TRIGGER trgtblProductVariationsMatrixCreatedOn;
-DROP TRIGGER trgtblPromoCreatedOn;
-DROP TRIGGER trgtblPromoItemsCreatedOn;
-DROP TRIGGER trgtblPromotypeCreatedOn;
-DROP TRIGGER trgtblReceiptCreatedOn;
-DROP TRIGGER trgtblReceiptFormatCreatedOn;
-DROP TRIGGER trgtblremotebranchInventoryCreatedOn;
-DROP TRIGGER trgtblrewardItemsCreatedOn;
-DROP TRIGGER trgtblSalesPerItemCreatedOn;
-DROP TRIGGER trgtblSalutationsCreatedOn;
-DROP TRIGGER trgtblSOCreatedOn;
-DROP TRIGGER trgtblSOcreditmemoCreatedOn;
-DROP TRIGGER trgtblSOcreditmemoItemsCreatedOn;
-DROP TRIGGER trgtblSOItemsCreatedOn;
-DROP TRIGGER trgtblStockCreatedOn;
-DROP TRIGGER trgtblStockItemsCreatedOn;
-DROP TRIGGER trgtblStocktypeCreatedOn;
-DROP TRIGGER trgtblTerminalCreatedOn;
-DROP TRIGGER trgtblTerminalReportCreatedOn;
-DROP TRIGGER trgtblTerminalReportHistoryCreatedOn;
-DROP TRIGGER trgtblTransactionItemsCreatedOn;
-DROP TRIGGER trgtblTransactionItemsBackupCreatedOn;
-DROP TRIGGER trgtblTransactionNosCreatedOn;
-DROP TRIGGER trgtblTransactionsCreatedOn;
-DROP TRIGGER trgtblTransactionsBackupCreatedOn;
-DROP TRIGGER trgtblTransferInCreatedOn;
-DROP TRIGGER trgtblTransferInItemsCreatedOn;
-DROP TRIGGER trgtblTransferoutCreatedOn;
-DROP TRIGGER trgtblTransferoutItemsCreatedOn;
-DROP TRIGGER trgtblUnitCreatedOn;
-DROP TRIGGER trgtblVariationsCreatedOn;
-DROP TRIGGER trgtblWithholdCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAccessGroupRightsCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAccessGroupsCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAccessRightsCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAccessTypesCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAccessUserDetailsCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAccessUsersCreatedOn;
+DROP TRIGGER IF EXISTS trgsysAuditTrailCreatedOn;
+DROP TRIGGER IF EXISTS trgsysConfigCreatedOn;
+DROP TRIGGER IF EXISTS trgsysTerminalKeyCreatedOn;
+DROP TRIGGER IF EXISTS trgtblAgentsCommisionCreatedOn;
+DROP TRIGGER IF EXISTS trgtblBranchCreatedOn;
+DROP TRIGGER IF EXISTS trgtblBranchTransferCreatedOn;
+DROP TRIGGER IF EXISTS trgtblBranchTransferItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCalDateCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCardTypesCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCashCountCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCashierLogsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCashierReportCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCashierReportHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCashPaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblChargeTypeCreatedOn;
+DROP TRIGGER IF EXISTS trgtblChequePaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactAddonCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactCreditCardinfoCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactGroupCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactRewardsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactRewardsMovementCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblContactsAuditCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCountingRefCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCountryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCreditCardPaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCreditPaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDebitPaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDenominationCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDepartmentsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDepositCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDisburseCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDiscountCreatedOn;
+DROP TRIGGER IF EXISTS trgtblDiscountHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblInvAdjustmentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblInvAdjustmentItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblInventoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblMatrixPackagePriceHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPaidOutCreatedOn;
+DROP TRIGGER IF EXISTS trgtblParkingRatesCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPLUReportCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPositionsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductBaseVariationsMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductCompositionCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductGroupCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductGroupBaseVariationsMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductGroupChargesCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductGroupUnitMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductGroupVariationsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductGroupVariationsMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductInventoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductInventoryAuditCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductInventoryDailyCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductInventoryMonthlyCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductMovementCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductPackageCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductPackagepriceHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductpricesCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductPurchasepriceHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductSubGroupCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductSubGroupbaseVariationsMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductSubGroupChargesCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductSubGroupUnitMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductSubGroupVariationsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductSubGroupVariationsMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductUnitMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductVariationsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblProductVariationsMatrixCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPromoCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPromoItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPromotypeCreatedOn;
+DROP TRIGGER IF EXISTS trgtblReceiptCreatedOn;
+DROP TRIGGER IF EXISTS trgtblReceiptFormatCreatedOn;
+DROP TRIGGER IF EXISTS trgtblremotebranchInventoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblrewardItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblSalesPerItemCreatedOn;
+DROP TRIGGER IF EXISTS trgtblSalutationsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblStockCreatedOn;
+DROP TRIGGER IF EXISTS trgtblStockItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblStocktypeCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTerminalCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTerminalReportCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTerminalReportHistoryCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionItemsBackupCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionNosCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionsBackupCreatedOn;
+
+DROP TRIGGER IF EXISTS trgtblUnitCreatedOn;
+DROP TRIGGER IF EXISTS trgtblVariationsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblWithholdCreatedOn;
 
 CREATE TRIGGER trgsysAccessGroupRightsCreatedOn BEFORE INSERT ON sysAccessGroupRights FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgsysAccessGroupsCreatedOn BEFORE INSERT ON sysAccessGroups FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7605,17 +7359,9 @@ CREATE TRIGGER trgsysAccessUserDetailsCreatedOn BEFORE INSERT ON sysAccessUserDe
 CREATE TRIGGER trgsysAccessUsersCreatedOn BEFORE INSERT ON sysAccessUsers FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgsysAuditTrailCreatedOn BEFORE INSERT ON sysAuditTrail FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgsysConfigCreatedOn BEFORE INSERT ON sysConfig FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgsysCreditConfigCreatedOn BEFORE INSERT ON sysCreditConfig FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgsysTerminalKeyCreatedOn BEFORE INSERT ON sysTerminalKey FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblAccountCategoryCreatedOn BEFORE INSERT ON tblAccountCategory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblAccountClassificationCreatedOn BEFORE INSERT ON tblAccountClassification FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblAccountSummaryCreatedOn BEFORE INSERT ON tblAccountSummary FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblAgentsCommisionCreatedOn BEFORE INSERT ON tblAgentsCommision FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblBankCreatedOn BEFORE INSERT ON tblBank FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblBankDepositCreatedOn BEFORE INSERT ON tblBankDeposit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblBranchCreatedOn BEFORE INSERT ON tblBranch FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblBranchInventoryCreatedOn BEFORE INSERT ON tblBranchInventory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblBranchInventoryMatrixCreatedOn BEFORE INSERT ON tblBranchInventoryMatrix FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblBranchTransferCreatedOn BEFORE INSERT ON tblBranchTransfer FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblBranchTransferItemsCreatedOn BEFORE INSERT ON tblBranchTransferItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblCalDateCreatedOn BEFORE INSERT ON tblCalDate FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7626,7 +7372,6 @@ CREATE TRIGGER trgtblCashierReportCreatedOn BEFORE INSERT ON tblCashierReport FO
 CREATE TRIGGER trgtblCashierReportHistoryCreatedOn BEFORE INSERT ON tblCashierReportHistory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblCashPaymentCreatedOn BEFORE INSERT ON tblCashPayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblChargeTypeCreatedOn BEFORE INSERT ON tblChargeType FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblChartOfAccountCreatedOn BEFORE INSERT ON tblChartOfAccount FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblChequePaymentCreatedOn BEFORE INSERT ON tblChequePayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblContactAddonCreatedOn BEFORE INSERT ON tblContactAddon FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblContactCreditCardinfoCreatedOn BEFORE INSERT ON tblContactCreditCardinfo FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7637,9 +7382,6 @@ CREATE TRIGGER trgtblContactsCreatedOn BEFORE INSERT ON tblContacts FOR EACH ROW
 CREATE TRIGGER trgtblContactsAuditCreatedOn BEFORE INSERT ON tblContactsAudit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblCountingRefCreatedOn BEFORE INSERT ON tblCountingRef FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblCountryCreatedOn BEFORE INSERT ON tblCountry FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblCreditBillDetailCreatedOn BEFORE INSERT ON tblCreditBillDetail FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblCreditBillHeaderCreatedOn BEFORE INSERT ON tblCreditBillHeader FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblCreditBillsCreatedOn BEFORE INSERT ON tblCreditBills FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblCreditCardPaymentCreatedOn BEFORE INSERT ON tblCreditCardPayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblCreditPaymentCreatedOn BEFORE INSERT ON tblCreditPayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblDebitPaymentCreatedOn BEFORE INSERT ON tblDebitPayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7649,26 +7391,13 @@ CREATE TRIGGER trgtblDepositCreatedOn BEFORE INSERT ON tblDeposit FOR EACH ROW S
 CREATE TRIGGER trgtblDisburseCreatedOn BEFORE INSERT ON tblDisburse FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblDiscountCreatedOn BEFORE INSERT ON tblDiscount FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblDiscountHistoryCreatedOn BEFORE INSERT ON tblDiscountHistory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblERPConfigCreatedOn BEFORE INSERT ON tblERPConfig FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblGJournalCreatedOn BEFORE INSERT ON tblGJournal FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblGJournalCreditCreatedOn BEFORE INSERT ON tblGJournalCredit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblGJournalDebitCreatedOn BEFORE INSERT ON tblGJournalDebit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblgla_f_dtl_chk_headersCreatedOn BEFORE INSERT ON tblgla_f_dtl_chk_headers FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblInvAdjustmentCreatedOn BEFORE INSERT ON tblInvAdjustment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblInvAdjustmentItemsCreatedOn BEFORE INSERT ON tblInvAdjustmentItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblInventoryCreatedOn BEFORE INSERT ON tblInventory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblMatrixPackagePriceHistoryCreatedOn BEFORE INSERT ON tblMatrixPackagePriceHistory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblPaidOutCreatedOn BEFORE INSERT ON tblPaidOut FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblParkingRatesCreatedOn BEFORE INSERT ON tblParkingRates FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPaymentCreatedOn BEFORE INSERT ON tblPayment FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPaymentCreditCreatedOn BEFORE INSERT ON tblPaymentCredit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPaymentDebitCreatedOn BEFORE INSERT ON tblPaymentDebit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPaymentPODetailsCreatedOn BEFORE INSERT ON tblPaymentPODetails FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblPLUReportCreatedOn BEFORE INSERT ON tblPLUReport FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPOCreatedOn BEFORE INSERT ON tblPO FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPODebitMemoCreatedOn BEFORE INSERT ON tblPODebitMemo FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPODebitMemoItemsCreatedOn BEFORE INSERT ON tblPODebitMemoItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblPOItemsCreatedOn BEFORE INSERT ON tblPOItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblPositionsCreatedOn BEFORE INSERT ON tblPositions FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductBaseVariationsMatrixCreatedOn BEFORE INSERT ON tblProductBaseVariationsMatrix FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductCompositionCreatedOn BEFORE INSERT ON tblProductComposition FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7707,10 +7436,6 @@ CREATE TRIGGER trgtblremotebranchInventoryCreatedOn BEFORE INSERT ON tblremotebr
 CREATE TRIGGER trgtblrewardItemsCreatedOn BEFORE INSERT ON tblrewardItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblSalesPerItemCreatedOn BEFORE INSERT ON tblSalesPerItem FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblSalutationsCreatedOn BEFORE INSERT ON tblSalutations FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblSOCreatedOn BEFORE INSERT ON tblSO FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblSOcreditmemoCreatedOn BEFORE INSERT ON tblSOcreditmemo FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblSOcreditmemoItemsCreatedOn BEFORE INSERT ON tblSOcreditmemoItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblSOItemsCreatedOn BEFORE INSERT ON tblSOItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblStockCreatedOn BEFORE INSERT ON tblStock FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblStockItemsCreatedOn BEFORE INSERT ON tblStockItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblStocktypeCreatedOn BEFORE INSERT ON tblStocktype FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7722,10 +7447,6 @@ CREATE TRIGGER trgtblTransactionItemsBackupCreatedOn BEFORE INSERT ON tblTransac
 CREATE TRIGGER trgtblTransactionNosCreatedOn BEFORE INSERT ON tblTransactionNos FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblTransactionsCreatedOn BEFORE INSERT ON tblTransactions FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblTransactionsBackupCreatedOn BEFORE INSERT ON tblTransactionsBackup FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblTransferInCreatedOn BEFORE INSERT ON tblTransferIn FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblTransferInItemsCreatedOn BEFORE INSERT ON tblTransferInItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblTransferoutCreatedOn BEFORE INSERT ON tblTransferout FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblTransferoutItemsCreatedOn BEFORE INSERT ON tblTransferoutItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblUnitCreatedOn BEFORE INSERT ON tblUnit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblVariationsCreatedOn BEFORE INSERT ON tblVariations FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblWithholdCreatedOn BEFORE INSERT ON tblWithhold FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7738,17 +7459,9 @@ UPDATE sysAccessUserDetails SET LastModified = NOW();
 UPDATE sysAccessUsers SET LastModified = NOW();
 UPDATE sysAuditTrail SET LastModified = NOW();
 UPDATE sysConfig SET LastModified = NOW();
-UPDATE sysCreditConfig SET LastModified = NOW();
 UPDATE sysTerminalKey SET LastModified = NOW();
-UPDATE tblAccountCategory SET LastModified = NOW();
-UPDATE tblAccountClassification SET LastModified = NOW();
-UPDATE tblAccountSummary SET LastModified = NOW();
 UPDATE tblAgentsCommision SET LastModified = NOW();
-UPDATE tblBank SET LastModified = NOW();
-UPDATE tblBankDeposit SET LastModified = NOW();
 UPDATE tblBranch SET LastModified = NOW();
-UPDATE tblBranchInventory SET LastModified = NOW();
-UPDATE tblBranchInventoryMatrix SET LastModified = NOW();
 UPDATE tblBranchTransfer SET LastModified = NOW();
 UPDATE tblBranchTransferItems SET LastModified = NOW();
 UPDATE tblCalDate SET LastModified = NOW();
@@ -7759,7 +7472,6 @@ UPDATE tblCashierReport SET LastModified = NOW();
 UPDATE tblCashierReportHistory SET LastModified = NOW();
 UPDATE tblCashPayment SET LastModified = NOW();
 UPDATE tblChargeType SET LastModified = NOW();
-UPDATE tblChartOfAccount SET LastModified = NOW();
 UPDATE tblChequePayment SET LastModified = NOW();
 UPDATE tblContactAddon SET LastModified = NOW();
 UPDATE tblContactCreditCardinfo SET LastModified = NOW();
@@ -7770,9 +7482,6 @@ UPDATE tblContacts SET LastModified = NOW();
 UPDATE tblContactsAudit SET LastModified = NOW();
 UPDATE tblCountingRef SET LastModified = NOW();
 UPDATE tblCountry SET LastModified = NOW();
-UPDATE tblCreditBillDetail SET LastModified = NOW();
-UPDATE tblCreditBillHeader SET LastModified = NOW();
-UPDATE tblCreditBills SET LastModified = NOW();
 UPDATE tblCreditCardPayment SET LastModified = NOW();
 UPDATE tblCreditPayment SET LastModified = NOW();
 UPDATE tblDebitPayment SET LastModified = NOW();
@@ -7782,25 +7491,13 @@ UPDATE tblDeposit SET LastModified = NOW();
 UPDATE tblDisburse SET LastModified = NOW();
 UPDATE tblDiscount SET LastModified = NOW();
 UPDATE tblDiscountHistory SET LastModified = NOW();
-UPDATE tblERPConfig SET LastModified = NOW();
-UPDATE tblGJournal SET LastModified = NOW();
-UPDATE tblGJournalCredit SET LastModified = NOW();
-UPDATE tblGJournalDebit SET LastModified = NOW();
-UPDATE tblgla_f_dtl_chk_headers SET LastModified = NOW();
 UPDATE tblInvAdjustment SET LastModified = NOW();
 UPDATE tblInvAdjustmentItems SET LastModified = NOW();
 UPDATE tblInventory SET LastModified = NOW();
 UPDATE tblMatrixPackagePriceHistory SET LastModified = NOW();
 UPDATE tblPaidOut SET LastModified = NOW();
 UPDATE tblParkingRates SET LastModified = NOW();
-UPDATE tblPayment SET LastModified = NOW();
-UPDATE tblPaymentCredit SET LastModified = NOW();
-UPDATE tblPaymentDebit SET LastModified = NOW();
-UPDATE tblPaymentPODetails SET LastModified = NOW();
 UPDATE tblPLUReport SET LastModified = NOW();
-UPDATE tblPO SET LastModified = NOW();
-UPDATE tblPODebitMemo SET LastModified = NOW();
-UPDATE tblPODebitMemoItems SET LastModified = NOW();
 UPDATE tblPOItems SET LastModified = NOW();
 UPDATE tblPositions SET LastModified = NOW();
 UPDATE tblProductBaseVariationsMatrix SET LastModified = NOW();
@@ -7840,10 +7537,6 @@ UPDATE tblremotebranchInventory SET LastModified = NOW();
 UPDATE tblrewardItems SET LastModified = NOW();
 UPDATE tblSalesPerItem SET LastModified = NOW();
 UPDATE tblSalutations SET LastModified = NOW();
-UPDATE tblSO SET LastModified = NOW();
-UPDATE tblSOcreditmemo SET LastModified = NOW();
-UPDATE tblSOcreditmemoItems SET LastModified = NOW();
-UPDATE tblSOItems SET LastModified = NOW();
 UPDATE tblStock SET LastModified = NOW();
 UPDATE tblStockItems SET LastModified = NOW();
 UPDATE tblStocktype SET LastModified = NOW();
@@ -7855,10 +7548,6 @@ UPDATE tblTransactionItemsBackup SET LastModified = NOW();
 UPDATE tblTransactionNos SET LastModified = NOW();
 UPDATE tblTransactions SET LastModified = DateClosed;
 UPDATE tblTransactionsBackup SET LastModified = DateClosed;
-UPDATE tblTransferIn SET LastModified = NOW();
-UPDATE tblTransferInItems SET LastModified = NOW();
-UPDATE tblTransferout SET LastModified = NOW();
-UPDATE tblTransferoutItems SET LastModified = NOW();
 UPDATE tblUnit SET LastModified = NOW();
 UPDATE tblVariations SET LastModified = NOW();
 UPDATE tblWithhold SET LastModified = NOW();
@@ -7866,11 +7555,10 @@ UPDATE tblWithhold SET LastModified = NOW();
 ALTER TABLE SysAccessTypes MODIFY Enabled TINYINT(1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblCalDate ADD `CalDateID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
-ALTER TABLE tblERPConfig ADD `ERPConfigID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+
 ALTER TABLE tblTerminal MODIFY `IncludeCreditChargeAgreement` TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminal MODIFY `IncludeTermsAndConditions` TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE tblReceipt ADD `ReceiptID` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
-
 
 -- Added August 4, 2014
 --	0  means product can be sold and not lock for closing inventory
@@ -8572,7 +8260,7 @@ CREATE TABLE tblMergeTable (
 	INDEX `IX1_tblMergeTable`(`MainTableCode`)
 );
 
-ALTER TABLE tblTerminal MODIFY AccreditationNo VARCHAR(25) NOT NULL COMMENT 'Current BIR Length = 23';
+ALTER TABLE tblTerminal MODIFY AccreditationNo VARCHAR(50) NOT NULL COMMENT 'Current BIR Length = 23';
 
 ALTER TABLE tblCardTypes ADD `ExemptInTerminalCharge` TINYINT(1) NOT NULL DEFAULT 0;
 
@@ -8603,8 +8291,8 @@ DROP TRIGGER IF EXISTS trgr_tblContacts_Update;
 DROP TRIGGER IF EXISTS trgr_tblContacts_Insert;
 DROP TRIGGER IF EXISTS trgr_tblProducts_Update;
 
-DROP TRIGGER trgtblTransactionsCreatedOn;
-DROP TRIGGER trgtblTransactionItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransactionItemsCreatedOn;
 
 ALTER TABLE tblTransactions MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE tblTransactionItems MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
@@ -8655,7 +8343,7 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.21';
 DROP TRIGGER IF EXISTS trgtblCreditPaymentCashCreatedOn;
 ALTER TABLE tblCreditPaymentCash MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
-DROP TRIGGER trgtblCreditPaymentCreatedOn;
+DROP TRIGGER IF EXISTS trgtblCreditPaymentCreatedOn;
 ALTER TABLE tblCreditPayment MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
 -- put the AllowRewardPointsPayment to be use if reward points payment is allowed
@@ -9064,15 +8752,6 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('EnablePriceLe
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.38';
 
-ALTER TABLE tblPO ADD SupplierTINNo VARCHAR(20) DEFAULT '';
-ALTER TABLE tblPO ADD SupplierLTONo VARCHAR(20) DEFAULT '';
-
-UPDATE tblPO 
-INNER JOIN tblContacts
-SET
-	SupplierTINNo = tblContacts.TINNo,
-	SupplierLTONo = tblContacts.LTONo
-WHERE tblPO.SupplierID = tblContacts.ContactID;
 
 /****
 -- 23Mar2015 : HP, AppplyORNo
@@ -9132,21 +8811,7 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.41';
 
 -- 21Apr2015 : Fix bug when no items is punched and customer select is done first.
 
-ALTER TABLE tblCreditBillHeader MODIFY CreditLimit				  decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY RunningCreditAmt           decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY CurrMonthCreditAmt         decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY CurrMonthAmountPaid        decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY TotalBillCharges           decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY CurrentDueAmount           decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY MinimumAmountDue           decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY Prev1MoCurrentDueAmount    decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY Prev1MoMinimumAmountDue    decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY Prev1MoCurrMonthAmountPaid decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY Prev2MoCurrentDueAmount    decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY CurrentPurchaseAmt         decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY BeginningBalance           decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillHeader MODIFY EndingBalance              decimal(18,2) not null default 0;
-ALTER TABLE tblCreditBillDetail MODIFY Amount				      decimal(18,2) not null default 0;
+-- Look at credit.sql
 
 /*********************************  v_4.0.1.41.sql END  *******************************************************/ 
 
@@ -9246,7 +8911,10 @@ SET
 	CustomerGroupName = IFNULL(grp.ContactGroupName, 'Default Customer Group')
 WHERE IFNULL(trx.CustomerGroupName,'') = '';
 
-
+-- use this kapag mabagal
+-- RENAME TABLE tblProductInventoryAudit TO tblProductInventoryAudit_20150607;
+-- RENAME TABLE tblProductInventoryDaily TO tblProductInventoryDaily_20150607;
+-- RENAME TABLE tblProductInventoryMonthly TO tblProductInventoryMonthly_20150607;
 
 ALTER TABLE tblProductInventory ADD BranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
 ALTER TABLE tblProductInventoryAudit ADD BranchMinThreshold DECIMAL(18,3) NOT NULL DEFAULT '0.000';
@@ -9278,12 +8946,662 @@ UPDATE tblProducts SET RID = 14 WHERE RID <= 1;
 DELETE FROM sysAccessRights WHERE TranTypeID = 184;
 DELETE FROM sysAccessGroupRights WHERE TranTypeID = 184;
 DELETE FROM sysAccessTypes WHERE TypeID = 184;
-
 INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (184, 'Set Inventory Threshold', 1);
 UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Inventory' WHERE TypeID = 184;
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 184, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=114;
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 184, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=114;
 
+
+-- For determining the MinThreshold when computed using the RID
+-- 
+ALTER TABLE tblContacts ADD LeadTimeToDeliver INT(2) NOT NULL DEFAULT 7 COMMENT 'For determining the Lead Time To Deliver to be use in computing MinThreshold';
+
+
+
+/*********************************  v_4.0.1.42.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.43';
+
+-- do a user logging during override.
+
+
+DELETE FROM sysConfig WHERE ConfigName = 'InventoryTrustFund';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('InventoryTrustFund', 'BE', '50');
+
+
+/*********************************  v_4.0.1.43.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.44';
+
+ALTER TABLE tblContactAddOn ADD Sex VARCHAR(6) NOT NULL DEFAULT 'Male';
+ALTER TABLE tblContactAddOn ADD AttendingPhysician VARCHAR(150) DEFAULT '';
+
+
+-- 08Jun2015 Added for determining which window to show when adding a customer
+--	Default: ContactAddDetWnd
+--			ContactAddWnd		- normal information
+--			ContactAddNoLTOWnd	- normal information without LTO
+--			ContactAddDetWnd	- with additional information for ContactAddOn table (HP)
+--			ContactAddHCareWnd	- with additional information for HealthCare
+DELETE FROM sysConfig WHERE ConfigName = 'ContactAddWndType';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWndType', 'FE', 'ContactAddNoLTOWnd');
+
+-- 08Jun2015 Added for determining which columns to show in ItemSelectWnd
+--	Default: BcDesc
+--			BcPc				- Barcode, ProductCode									-- for Parking
+--			BcDesc				- Barcode, Description									-- Default, for HP
+--			BcPcDescMtrx		- Barcode, ProductCode, Description, MatrixDesc			-- For WholeSaler e.g. Marzan Bambang
+--			PcDescMtrx			- ProductCode, Description, MatrixDesc					-- For WholeSaler e.g. Marzan Bambang
+--			PcDesc				- ProductCode, Description								-- For Non-Drugstore
+--			SgDesc				- SubGroup, Description									-- For Drugstore, HealthCare, WholeSaler
+--			SgPcDesc			- SubGroup, ProductCode, Description					-- For Drugstore, HealthCare, WholeSaler
+--			SgDescMtrx			- SubGroup, Description, Matrix							-- For Drugstore, HealthCare, WholeSaler
+DELETE FROM sysConfig WHERE ConfigName = 'ItemSelectWndColumnType';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnType', 'FE', 'SgPcDesc');
+
+-- 08Jun2015 Added for determining which columns to filter in ItemSelectWnd
+--	Default: BcDesc
+--			BcPc				- Barcode, ProductCode									-- for Parking
+--			BcDesc				- Barcode, Description									-- Default, for HP
+--			PcDesc				- ProductCode, Description								-- For Non-Drugstore
+--			SgDesc				- SubGroup, Description									-- For Drugstore, HealthCare, WholeSaler
+--			SgPcDesc			- SubGroup, ProductCode, Description					-- For Drugstore, HealthCare, WholeSaler
+DELETE FROM sysConfig WHERE ConfigName = 'ItemSelectWndColumnSearchType';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnSearchType', 'FE', 'SgPcDesc');
+
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 194;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 194;
+DELETE FROM sysAccessTypes WHERE TypeID = 194;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (194, 'Resume Closed Transaction', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '14: Frontend - Cashiering' WHERE TypeID = 194;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 194, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=124;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 194, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=124;
+
+
+
+/*********************************  v_4.0.1.44.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.45';
+
+-- This is for attaching of results in a service
+
+
+/*****************************
+**	tblTransactionItemAttachments
+*****************************/
+DROP TABLE IF EXISTS tblTransactionItemAttachments;
+CREATE TABLE tblTransactionItemAttachments (
+	`TransactionItemAttachmentsID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`TransactionItemsID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+	`OrigFileName` VARCHAR(150) NOT NULL,
+	`FileName` VARCHAR(150) NOT NULL,
+	`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`UploadedByName` VARCHAR(100),
+	`DeletedByName` VARCHAR(100),
+	`LastUpdatedByName` VARCHAR(100),
+	`CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	`LastModified` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	PRIMARY KEY (TransactionItemAttachmentsID),
+	INDEX `IX_tblTransactionItemAttachments`(`TransactionItemAttachmentsID`),
+	INDEX `IX0_tblTransactionItemAttachments`(`TransactionItemsID`),
+	INDEX `IX1_tblTransactionItemAttachments`(`TransactionID`),
+	INDEX `IX2_tblTransactionItemAttachments`(`TransactionItemsID`, `TransactionID`)
+);
+
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 195;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 195;
+DELETE FROM sysAccessTypes WHERE TypeID = 195;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (195, 'Delete Transaction Item Attachment', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '14: Frontend - Cashiering' WHERE TypeID = 195;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 195, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=124;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 195, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=124;
+
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 196;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 196;
+DELETE FROM sysAccessTypes WHERE TypeID = 196;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (196, 'View Deleted Transaction Item Attachment', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '14: Frontend - Cashiering' WHERE TypeID = 196;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 196, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=124;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 196, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=124;
+
+
+
+/*********************************  v_4.0.1.45.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.46';
+
+-- critical update for reporting the new TF
+-- there should be an override even if a TF is already set
+
+-- Do a backup of the tblTerminalReportHistory before doing anything
+CREATE TABLE tblTerminalReportHistoryBackup AS SELECT * FROM tblTerminalReportHistory;
+
+/*****************************
+**	tblTerminalReportHistoryeSales
+*****************************/
+DROP TABLE IF EXISTS tblTerminalReportHistoryeSales;
+CREATE TABLE tblTerminalReportHistoryeSales (
+  `TerminalID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `TerminalNo` varchar(10) NOT NULL,
+  `BeginningTransactionNo` varchar(30) NOT NULL,
+  `EndingTransactionNo` varchar(30) NOT NULL,
+  `ZReadCount` int(10) NOT NULL DEFAULT '0',
+  `XReadCount` int(10) NOT NULL DEFAULT '0',
+  `GrossSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TotalDiscount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `DailySales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `QuantitySold` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `GroupSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `OldGrandTotal` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `NewGrandTotal` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `VATableAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `NonVATableAmount` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'Use for NonvAT',
+  `VAT` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `EVATableAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `NonEVATableAmount` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `EVAT` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `LocalTax` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChequeSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditCardSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditPayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashInDrawer` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TotalDisburse` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashDisburse` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChequeDisburse` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditCardDisburse` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TotalWithhold` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashWithhold` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChequeWithhold` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditCardWithhold` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TotalPaidOut` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashPaidOut` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChequePaidOut` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditCardPaidOut` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `BeginningBalance` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `VoidSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `RefundSales` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ItemsDiscount` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'SNRItemsDiscount + PWDItemsDiscount + OtherItemsDiscount',
+  `SubtotalDiscount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `NoOfCashTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfChequeTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfCreditCardTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfCreditTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfCombinationPaymentTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfCreditPaymentTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfClosedTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfRefundTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfVoidTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfTotalTransactions` int(10) NOT NULL DEFAULT '0',
+  `DateLastInitialized` datetime NOT NULL,
+  `TotalDeposit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashDeposit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChequeDeposit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditCardDeposit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `DebitPayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `NoOfDebitPaymentTransactions` int(10) NOT NULL DEFAULT '0',
+  `TotalCharge` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TrustFund` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `NoOfDiscountedTransactions` int(4) NOT NULL DEFAULT '0',
+  `NegativeAdjustments` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `NoOfNegativeAdjustmentTransactions` int(4) NOT NULL DEFAULT '0',
+  `PromotionalItems` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditSalesTax` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `BatchCounter` int(4) NOT NULL DEFAULT '1',
+  `MallFileName` varchar(30) DEFAULT NULL,
+  `IsMallFileUploadComplete` tinyint(1) NOT NULL DEFAULT '0',
+  `DebitDeposit` decimal(10,0) NOT NULL DEFAULT '0',
+  `RewardPointsPayment` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `RewardConvertedPayment` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `NoOfRewardPointsPayment` int(10) NOT NULL DEFAULT '0',
+  `InitializedBy` varchar(150) DEFAULT NULL,
+  `BranchID` int(4) NOT NULL DEFAULT '1',
+  `ActualOldGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `ActualNewGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `NoOfReprintedTransaction` int(10) NOT NULL DEFAULT '0',
+  `TotalReprintedTransaction` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditPaymentCash` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditPaymentCheque` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditPaymentCreditCard` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditPaymentDebit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreatedOn` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `LastModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `BeginningORNo` varchar(30) NOT NULL,
+  `EndingORNo` varchar(30) NOT NULL,
+  `VATExempt` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'Use for SNR',
+  `SNRDiscount` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `PWDDiscount` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `OtherDiscount` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `NetSales` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc',
+  `IsProcessed` tinyint(1) NOT NULL DEFAULT '0',
+  `ItemSold` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `RefundCash` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `RefundCheque` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `RefundCreditCard` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `RefundCredit` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `RefundDebit` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `SNRItemsDiscount` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'SNR Items Discount',
+  `PWDItemsDiscount` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'PWD Items Discount',
+  `OtherItemsDiscount` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'Other items discount (not SNR & not PWD)',
+  `ZeroRatedSales` decimal(18,3) NOT NULL DEFAULT '0.000' COMMENT 'Use for ZeroRated',
+  `IncludeIneSales` tinyint(1) NOT NULL DEFAULT '1',
+  `NoOfConsignmentTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfConsignmentRefundTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfWalkInTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfWalkInRefundTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfOutOfStockTransactions` int(10) NOT NULL DEFAULT '0',
+  `NoOfOutOfStockRefundTransactions` int(10) NOT NULL DEFAULT '0',
+  `ConsignmentSales` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `ConsignmentRefundSales` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `WalkInSales` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `WalkInRefundSales` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `OutOfStockSales` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `OutOfStockRefundSales` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `ORSeriesBranchID` int(4) NOT NULL DEFAULT '0',
+  `ORSeriesTerminalNo` varchar(10) NOT NULL DEFAULT '',
+  KEY `IX_tblTerminalReportHistoryeSales` (`TerminalNo`),
+  KEY `IX1_tblTerminalReportHistoryeSales` (`ZReadCount`),
+  KEY `IX2_tblTerminalReportHistoryeSales` (`XReadCount`),
+  KEY `IX_tblTerminalReportHistoryeSales_BeginningTransactionNo` (`BeginningTransactionNo`),
+  KEY `IX_tblTerminalReportHistoryeSales_EndingTransactionNo` (`EndingTransactionNo`)
+) ENGINE=InnoDB;
+
+-- Insert to eSales for Reporting
+INSERT INTO tblTerminalReportHistoryeSales (
+				TerminalID,
+				TerminalNo,
+				BeginningTransactionNo,
+				EndingTransactionNo,
+				ZReadCount,
+				XReadCount,
+				GrossSales,
+				TotalDiscount,
+				DailySales,
+				QuantitySold,
+				GroupSales,
+				OldGrandTotal,
+				NewGrandTotal,
+				VATableAmount,
+				NonVATableAmount,
+				VAT,
+				EVATableAmount,
+				NonEVATableAmount,
+				EVAT,
+				LocalTax,
+				CashSales,
+				ChequeSales,
+				CreditCardSales,
+				CreditSales,
+				CreditPayment,
+				CashInDrawer,
+				TotalDisburse,
+				CashDisburse,
+				ChequeDisburse,
+				CreditCardDisburse,
+				TotalWithhold,
+				CashWithhold,
+				ChequeWithhold,
+				CreditCardWithhold,
+				TotalPaidOut,
+				CashPaidOut,
+				ChequePaidOut,
+				CreditCardPaidOut,
+				BeginningBalance,
+				VoidSales,
+				RefundSales,
+				ItemsDiscount,
+				SubtotalDiscount,
+				NoOfCashTransactions,
+				NoOfChequeTransactions,
+				NoOfCreditCardTransactions,
+				NoOfCreditTransactions,
+				NoOfCombinationPaymentTransactions,
+				NoOfCreditPaymentTransactions,
+				NoOfClosedTransactions,
+				NoOfRefundTransactions,
+				NoOfVoidTransactions,
+				NoOfTotalTransactions,
+				DateLastInitialized,
+				TotalDeposit,
+				CashDeposit,
+				ChequeDeposit,
+				CreditCardDeposit,
+				DebitPayment,
+				NoOfDebitPaymentTransactions,
+				TotalCharge,
+				NoOfDiscountedTransactions,
+				NegativeAdjustments,
+				NoOfNegativeAdjustmentTransactions,
+				PromotionalItems,
+				CreditSalesTax,
+				BatchCounter,
+				DebitDeposit,
+				RewardPointsPayment,
+				RewardConvertedPayment,
+				NoOfRewardPointsPayment,
+				BranchID,
+				NoOfReprintedTransaction,
+				TotalReprintedTransaction,
+				CreditPaymentCash,
+				CreditPaymentCheque,
+				CreditPaymentCreditCard,
+				CreditPaymentDebit,
+				CreatedOn,
+				LastModified,
+				BeginningORNo,
+				EndingORNo,
+				VATExempt,
+				SNRDiscount,
+				PWDDiscount,
+				OtherDiscount,
+				NetSales,
+				IsProcessed,
+				ItemSold,
+				TrustFund,
+				RefundCash,
+				RefundCheque,
+				RefundCreditCard,
+				RefundCredit,
+				RefundDebit,
+				SNRItemsDiscount,
+				PWDItemsDiscount,
+				OtherItemsDiscount,
+				ZeroRatedSales,
+				IncludeIneSales,
+				NoOfConsignmentTransactions,
+				NoOfConsignmentRefundTransactions,
+				NoOfWalkInTransactions,
+				NoOfWalkInRefundTransactions,
+				NoOfOutOfStockTransactions,
+				NoOfOutOfStockRefundTransactions,
+				ConsignmentSales,
+				ConsignmentRefundSales,
+				WalkInSales,
+				WalkInRefundSales,
+				OutOfStockSales,
+				OutOfStockRefundSales,
+				ORSeriesBranchID,
+				ORSeriesTerminalNo) 
+			(SELECT 
+				TerminalID,
+				TerminalNo,
+				BeginningTransactionNo,
+				EndingTransactionNo,
+				ZReadCount,
+				XReadCount,
+				GrossSales * ((100-TrustFund) / 100),
+				TotalDiscount * ((100-TrustFund) / 100),
+				DailySales * ((100-TrustFund) / 100),
+				QuantitySold * ((100-TrustFund) / 100),
+				GroupSales * ((100-TrustFund) / 100),
+				OldGrandTotal,
+				NewGrandTotal,
+				VATableAmount * ((100-TrustFund) / 100),
+				NonVATableAmount * ((100-TrustFund) / 100),
+				VAT * ((100-TrustFund) / 100),
+				EVATableAmount * ((100-TrustFund) / 100),
+				NonEVATableAmount * ((100-TrustFund) / 100),
+				EVAT * ((100-TrustFund) / 100),
+				LocalTax * ((100-TrustFund) / 100),
+				CashSales * ((100-TrustFund) / 100),
+				ChequeSales * ((100-TrustFund) / 100),
+				CreditCardSales * ((100-TrustFund) / 100),
+				CreditSales * ((100-TrustFund) / 100),
+				CreditPayment * ((100-TrustFund) / 100),
+				BeginningBalance + ((CashInDrawer - BeginningBalance) * ((100-TrustFund) / 100)) AS  CashInDrawer,
+				TotalDisburse * ((100-TrustFund) / 100),
+				CashDisburse * ((100-TrustFund) / 100),
+				ChequeDisburse * ((100-TrustFund) / 100),
+				CreditCardDisburse * ((100-TrustFund) / 100),
+				TotalWithhold * ((100-TrustFund) / 100),
+				CashWithhold * ((100-TrustFund) / 100),
+				ChequeWithhold * ((100-TrustFund) / 100),
+				CreditCardWithhold * ((100-TrustFund) / 100),
+				TotalPaidOut * ((100-TrustFund) / 100),
+				CashPaidOut * ((100-TrustFund) / 100),
+				ChequePaidOut * ((100-TrustFund) / 100),
+				CreditCardPaidOut * ((100-TrustFund) / 100),
+				BeginningBalance,
+				VoidSales * ((100-TrustFund) / 100),
+				RefundSales * ((100-TrustFund) / 100),
+				ItemsDiscount * ((100-TrustFund) / 100),
+				SubtotalDiscount * ((100-TrustFund) / 100),
+				NoOfCashTransactions,
+				NoOfChequeTransactions,
+				NoOfCreditCardTransactions,
+				NoOfCreditTransactions,
+				NoOfCombinationPaymentTransactions,
+				NoOfCreditPaymentTransactions,
+				NoOfClosedTransactions,
+				NoOfRefundTransactions,
+				NoOfVoidTransactions,
+				NoOfTotalTransactions,
+				DateLastInitialized,
+				TotalDeposit * ((100-TrustFund) / 100),
+				CashDeposit * ((100-TrustFund) / 100),
+				ChequeDeposit * ((100-TrustFund) / 100),
+				CreditCardDeposit * ((100-TrustFund) / 100),
+				DebitPayment * ((100-TrustFund) / 100),
+				NoOfDebitPaymentTransactions,
+				TotalCharge * ((100-TrustFund) / 100),
+				NoOfDiscountedTransactions,
+				NegativeAdjustments * ((100-TrustFund) / 100),
+				NoOfNegativeAdjustmentTransactions,
+				PromotionalItems * ((100-TrustFund) / 100),
+				CreditSalesTax * ((100-TrustFund) / 100),
+				BatchCounter,
+				DebitDeposit * ((100-TrustFund) / 100),
+				RewardPointsPayment * ((100-TrustFund) / 100),
+				RewardConvertedPayment * ((100-TrustFund) / 100),
+				NoOfRewardPointsPayment,
+				BranchID,
+				NoOfReprintedTransaction,
+				TotalReprintedTransaction * ((100-TrustFund) / 100),
+				CreditPaymentCash * ((100-TrustFund) / 100),
+				CreditPaymentCheque * ((100-TrustFund) / 100),
+				CreditPaymentCreditCard * ((100-TrustFund) / 100),
+				CreditPaymentDebit * ((100-TrustFund) / 100),
+				CreatedOn,
+				LastModified,
+				BeginningORNo,
+				EndingORNo,
+				VATExempt * ((100-TrustFund) / 100),
+				SNRDiscount * ((100-TrustFund) / 100),
+				PWDDiscount * ((100-TrustFund) / 100),
+				OtherDiscount * ((100-TrustFund) / 100),
+				NetSales * ((100-TrustFund) / 100),
+				IsProcessed,
+				ItemSold * ((100-TrustFund) / 100),
+				TrustFund,
+				RefundCash * ((100-TrustFund) / 100),
+				RefundCheque * ((100-TrustFund) / 100),
+				RefundCreditCard * ((100-TrustFund) / 100),
+				RefundCredit * ((100-TrustFund) / 100),
+				RefundDebit * ((100-TrustFund) / 100),
+				SNRItemsDiscount * ((100-TrustFund) / 100),
+				PWDItemsDiscount * ((100-TrustFund) / 100),
+				OtherItemsDiscount * ((100-TrustFund) / 100),
+				ZeroRatedSales * ((100-TrustFund) / 100),
+				IncludeIneSales,
+				NoOfConsignmentTransactions,
+				NoOfConsignmentRefundTransactions,
+				NoOfWalkInTransactions,
+				NoOfWalkInRefundTransactions,
+				NoOfOutOfStockTransactions,
+				NoOfOutOfStockRefundTransactions,
+				ConsignmentSales * ((100-TrustFund) / 100),
+				ConsignmentRefundSales * ((100-TrustFund) / 100),
+				WalkInSales * ((100-TrustFund) / 100),
+				WalkInRefundSales * ((100-TrustFund) / 100),
+				OutOfStockSales * ((100-TrustFund) / 100),
+				OutOfStockRefundSales * ((100-TrustFund) / 100),
+				ORSeriesBranchID,
+				ORSeriesTerminalNo
+			FROM tblTerminalReportHistory);
+
+
+
+ALTER TABLE tblTerminalReport ADD  `eSalesOldGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblTerminalReport ADD  `eSalesNewGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
+UPDATE tblTerminalReport SET eSalesOldGrandTotal = OldGrandTotal;
+UPDATE tblTerminalReport SET eSalesNewGrandTotal = NewGrandTotal;
+-- UPDATE tblTerminalReport SET OldGrandTotal = eSalesOldGrandTotal, NewGrandTotal = eSalesNewGrandTotal;
+
+ALTER TABLE tblTerminalReportHistory ADD  `eSalesOldGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblTerminalReportHistory ADD  `eSalesNewGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
+UPDATE tblTerminalReportHistory SET eSalesOldGrandTotal = OldGrandTotal;
+UPDATE tblTerminalReportHistory SET eSalesNewGrandTotal = NewGrandTotal;
+UPDATE tblTerminalReportHistory SET OldGrandTotal = ActualOldGrandTotal, NewGrandTotal = ActualNewGrandTotal;
+
+ALTER TABLE tblTerminalReportHistoryeSales ADD `eSalesOldGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblTerminalReportHistoryeSales ADD `eSalesNewGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
+UPDATE tblTerminalReportHistoryeSales SET eSalesOldGrandTotal = OldGrandTotal;
+UPDATE tblTerminalReportHistoryeSales SET eSalesNewGrandTotal = NewGrandTotal;
+
+ALTER TABLE tblTerminalReport DROP `ActualOldGrandTotal`;
+ALTER TABLE tblTerminalReport DROP `ActualNewGrandTotal`;
+
+ALTER TABLE tblTerminalReportHistory DROP `ActualOldGrandTotal`;
+ALTER TABLE tblTerminalReportHistory DROP `ActualNewGrandTotal`;
+
+ALTER TABLE tblTerminalReportHistoryeSales DROP `ActualOldGrandTotal`;
+ALTER TABLE tblTerminalReportHistoryeSales DROP `ActualNewGrandTotal`;
+
+ALTER TABLE tblTerminalReportHistoryBackup ADD `BackupOn` datetime NOT NULL DEFAULT '0001-01-01 12:00:00';
+UPDATE tblTerminalReportHistoryBackup SET BackupOn = NOW();
+
+
+/*********************************  v_4.0.1.46.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.47';
+
+ALTER TABLE tblTransactionItems ADD ReturnTransactionItemsID BIGINT(20) NOT NULL DEFAULT 0 COMMENT 'This is the TransactionItemsID of the Item that is Return';
+ALTER TABLE tblTransactionItems ADD RefReturnTransactionItemsID BIGINT(20) NOT NULL DEFAULT 0 COMMENT 'This is the TransactionItemsID of the Item that is Returned this must be in ReturnStatus';
+
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 197;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 197;
+DELETE FROM sysAccessTypes WHERE TypeID = 197;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (197, 'Products In Demo Report', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '11: Backend - Inventory Reports' WHERE TypeID = 197;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 197, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=124;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 197, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=124;
+
+
+/*********************************  v_4.0.1.47.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.48';
+
+ALTER TABLE tblTerminal ADD `MultiInstanceEnabled` TINYINT(1) NOT NULL DEFAULT 1;
+ALTER TABLE tblTerminal ADD `MaskProductSearch` VARCHAR(1) DEFAULT '*';
+UPDATE tblTerminal SET MaskProductSearch = '*';
+
+ALTER TABLE tblTransactionItems ADD `SupplierID` BIGINT(20) NOT NULL DEFAULT 1;
+ALTER TABLE tblTransactionItems ADD `SupplierCode` VARCHAR(25) DEFAULT '';
+ALTER TABLE tblTransactionItems ADD `SupplierName` VARCHAR(75) DEFAULT '';
+
+UPDATE tblTransactionItems 
+INNER JOIN tblProducts ON tblTransactionItems.ProductID = tblProducts.ProductID
+INNER JOIN tblContacts ON tblContacts.ContactID = tblProducts.SupplierID
+SET tblTransactionItems.SupplierID = tblProducts.SupplierID,
+	tblTransactionItems.SupplierCode = tblContacts.ContactCode,
+	tblTransactionItems.SupplierName = tblContacts.ContactName
+WHERE tblTransactionItems.SupplierID <= 1;
+
+
+
+/*********************************  v_4.0.1.48.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.49';
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 198;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 198;
+DELETE FROM sysAccessTypes WHERE TypeID = 198;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (198, 'Products Unit Matrix Setup', 1);
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '05: Backend - MasterFiles - Products' WHERE TypeID = 198;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 198, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=124;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 198, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=124;
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 199;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 199;
+DELETE FROM sysAccessTypes WHERE TypeID = 199;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (199, 'Credit Verification', 1);
+UPDATE sysAccessTypes SET SequenceNo = 17, Category = '14: Frontend - Cashiering' WHERE TypeID = 199;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 199, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=80;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 199, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=80;
+
+ALTER TABLE tblProducts MODIFY ProductDesc VARCHAR(100) NOT NULL DEFAULT '';
+ALTER TABLE tblProductMovement MODIFY ProductDescription VARCHAR(100) NOT NULL DEFAULT '';
+
+/*********************************  v_4.0.1.49.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.50';
+
+ALTER TABLE tblTerminal MODIFY AccreditationNo VARCHAR(50) NOT NULL COMMENT 'Current BIR Length = 23';
+
+-- This will hold the promo by supplier which will print coupons
+DROP TABLE IF EXISTS tblPromoBySupplier;
+CREATE TABLE tblPromoBySupplier (
+	PromoBySupplierID BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	PromoBySupplierCode VARCHAR(60) NOT NULL,
+	PromoBySupplierName VARCHAR(75) NOT NULL,
+	StartDate DATETIME NOT NULL,
+	EndDate DATETIME NOT NULL,
+	PromoTypeID INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	Status TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	CreatedOn DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	LastModified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (PromoBySupplierID),
+	UNIQUE KEY PK_tblPromoBySupplier (PromoBySupplierCode),
+	KEY IX_tblPromoBySupplier (PromoBySupplierID,PromoBySupplierCode,PromoBySupplierName,PromoTypeID),
+	KEY IX_tblPromoBySupplier1 (PromoTypeID)
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS tblPromoBySupplieritems;
+CREATE TABLE tblPromoBySupplieritems (
+	PromoBySupplierItemsID BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	PromoBySupplierID BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	ContactID BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	ProductGroupID BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	ProductSubGroupID BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	ProductID BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	VariationMatrixID BIGINT(20) UNSIGNED DEFAULT NULL,
+	PromoBySupplierValue DECIMAL(18,2) NOT NULL DEFAULT '0.00',
+	CouponRemarks VARCHAR(3000) NOT NULL DEFAULT '',
+	CreatedOn DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+	LastModified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (PromoBySupplierItemsID),
+	UNIQUE KEY PK_tblPromoBySupplierItems (PromoBySupplierItemsID),
+	UNIQUE KEY PK_tblPromoBySupplierItems1 (PromoBySupplierID,ContactID,ProductGroupID,ProductSubGroupID,ProductID,VariationMatrixID),
+	KEY IX_tblPromoBySupplierItems (PromoBySupplierID),
+	KEY IX_tblPromoBySupplierItems1 (VariationMatrixID),
+	KEY IX_tblPromoBySupplierItems2 (ProductGroupID),
+	KEY IX_tblPromoBySupplierItems3 (ProductSubGroupID),
+	KEY IX_tblPromoBySupplierItems4 (ProductID),
+	KEY IX_tblPromoBySupplierItems5 (VariationMatrixID),
+	KEY IX_tblPromoBySupplierItems6 (ContactID)
+) ENGINE=InnoDB;
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 200;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 200;
+DELETE FROM sysAccessTypes WHERE TypeID = 200;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (200, 'Promo''s by Coupons', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '04: Backend - MasterFiles' WHERE TypeID = 200;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 200, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=17;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 200, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=17;
+
+UPDATE sysAccessTypes SET TypeName = 'Promo''s by Amount' WHERE TypeID = 17;
 
 -- Notes: Please read
 -- run the retailplus_proc.sql
@@ -9293,6 +9611,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID,
 -- ftp password: ftprbspwd
 -- directory: subgroupimages	for subgroupsimages
 -- directory: retailplusclient	for updated executable file
+-- directory: attachment		for attachments of Trx Items
 
 -- Add POSAuditUser see above
 

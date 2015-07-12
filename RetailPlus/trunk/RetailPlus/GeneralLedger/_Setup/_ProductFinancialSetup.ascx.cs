@@ -77,31 +77,29 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
 
         protected void cboProductGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-            long lProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
+            Int64 intProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
             ProductSubGroup clsProductSubGroup = new ProductSubGroup();
             clsProductSubGroup.GetConnection();
             ProductGroup clsProductGroup = new ProductGroup(clsProductSubGroup.Connection, clsProductSubGroup.Transaction);
             ProductGroupDetails clsDetails;
             //System.Data.DataTable dtProductSubGroup;
 
-            if (lProductGroupID == 0)
+            if (intProductGroupID == 0)
             {
                 clsDetails = clsProductGroup.Details(DataConstants.DEFAULT_PRODUCT_GROUP);
             }
             else
             {
-                clsDetails = clsProductGroup.Details(lProductGroupID);
+                clsDetails = clsProductGroup.Details(intProductGroupID);
             }
 
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-            ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
-            clsSearchKeys.ProductGroupID = lProductGroupID;
+            ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails() { ProductGroupID = intProductGroupID };
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
 
-            ProductSubGroup clsSubGroup = new ProductSubGroup(clsProductSubGroup.Connection, clsProductSubGroup.Transaction);
+            ProductSubGroup clsSubGroup = new ProductSubGroup(clsProductGroup.Connection, clsProductGroup.Transaction);
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
             cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+            cboProductSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, SortField: "ProductSubGroupName", SortOrder: System.Data.SqlClient.SortOrder.Ascending);
             cboProductSubGroup.DataBind();
             cboProductSubGroup.Items.Insert(0, new ListItem("Do not Apply to Product Sub Groups", "-1"));
             cboProductSubGroup.Items.Insert(1, new ListItem("Apply to all Product Sub Groups", "0"));
@@ -127,12 +125,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
             System.Data.DataTable dtList = clsDataClass.DataReaderToDataTable(clsChartOfAccount.List("ChartOfAccountName", SortOption.Ascending));
 
             ProductGroup clsProductGroup = new ProductGroup(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
-            System.Data.DataTable dtProductGroup = clsProductGroup.ListAsDataTable(SortField:"ProductGroupID");
+            System.Data.DataTable dtProductGroup = clsProductGroup.ListAsDataTable(SortField:"ProductGroupName");
 
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupName = true;
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
+            
             ProductSubGroup clsSubGroup = new ProductSubGroup(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
-            System.Data.DataTable dtProductSubGroup = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, new ProductSubGroupDetails(), 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupID, System.Data.SqlClient.SortOrder.Ascending);
+            System.Data.DataTable dtProductSubGroup = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, SortField: "ProductSubGroupName", SortOrder: System.Data.SqlClient.SortOrder.Ascending);
 
             Products clsProduct = new Products(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
             System.Data.DataTable dtProduct = clsProduct.ListAsDataTable("ProductID", SortOption.Ascending);

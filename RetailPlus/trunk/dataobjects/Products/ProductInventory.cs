@@ -31,48 +31,60 @@ namespace AceSoft.RetailPlus.Data
 
 
         public System.Data.DataTable ListAsDataTable(int BranchID = 0, long ProductID = 0, long MatrixID =0, string BarCode = "", string ProductCode = "", Int64 ProductGroupID = 0, Int64 ProductSubGroupID = 0, Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
-                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, Int32 isSummary = 1, string ExpirationDate = Constants.C_DATE_MIN_VALUE_STRING, Int32 ForReorder = 0, Int32 OverStock = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, Int32 isSummary = 1, string ExpirationDate = Constants.C_DATE_MIN_VALUE_STRING, Int32 ForReorder = 0, Int32 OverStock = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending, bool ShowOnlyWithInvalidUnitMatrix = false)
         {
-            DateTime dteExpiration = Constants.C_DATE_MIN_VALUE;
-
-            DateTime.TryParse(ExpirationDate, out dteExpiration);
-
-            string SQL = "CALL procProductInventorySelect(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @isSummary, @dteExpiration, @ForReorder, @OverStock, @SortField, @SortOrder)";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            cmd.Parameters.AddWithValue("@ProductID", ProductID);
-            cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
-            cmd.Parameters.AddWithValue("@BarCode", BarCode);
-            cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
-            cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
-            cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
-            cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-            cmd.Parameters.AddWithValue("@ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
-            cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
-            cmd.Parameters.AddWithValue("@lngLimit", Limit);
-            cmd.Parameters.AddWithValue("@isSummary", isSummary);
-            cmd.Parameters.AddWithValue("@dteExpiration", dteExpiration.ToString("yyyy-MM-dd"));
-            cmd.Parameters.AddWithValue("@ForReorder", ForReorder);
-            cmd.Parameters.AddWithValue("@OverStock", OverStock);
-            cmd.Parameters.AddWithValue("@SortField", SortField);
-            switch (SortOrder)
+            try
             {
-                case SortOption.Ascending:
-                    cmd.Parameters.AddWithValue("@SortOrder", "ASC");
-                    break;
-                case SortOption.Desscending:
-                    cmd.Parameters.AddWithValue("@SortOrder", "DESC");
-                    break;
+                DateTime dteExpiration = Constants.C_DATE_MIN_VALUE;
+
+                DateTime.TryParse(ExpirationDate, out dteExpiration);
+
+                string SQL = "CALL procProductInventorySelect(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @isSummary, @dteExpiration, @ForReorder, @OverStock, @SortField, @SortOrder)";
+
+                // do an override if Only those with invalid unit matrix
+                if (ShowOnlyWithInvalidUnitMatrix)
+                    SQL = "CALL procProductInventorySelectWithInvalidUnitMatrix(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @isSummary, @dteExpiration, @ForReorder, @OverStock, @SortField, @SortOrder)";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
+                cmd.Parameters.AddWithValue("@BarCode", BarCode);
+                cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+                cmd.Parameters.AddWithValue("@ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
+                cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
+                cmd.Parameters.AddWithValue("@lngLimit", Limit);
+                cmd.Parameters.AddWithValue("@isSummary", isSummary);
+                cmd.Parameters.AddWithValue("@dteExpiration", dteExpiration.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@ForReorder", ForReorder);
+                cmd.Parameters.AddWithValue("@OverStock", OverStock);
+                cmd.Parameters.AddWithValue("@SortField", SortField);
+                switch (SortOrder)
+                {
+                    case SortOption.Ascending:
+                        cmd.Parameters.AddWithValue("@SortOrder", "ASC");
+                        break;
+                    case SortOption.Desscending:
+                        cmd.Parameters.AddWithValue("@SortOrder", "DESC");
+                        break;
+                }
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
+            catch (Exception)
+            {
 
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+                throw;
+            }
         }
 
         public System.Data.DataTable ListAsDataTable(int Month, int Year, int BranchID = 0, long ProductID = 0, long MatrixID = 0, string BarCode = "", string ProductCode = "", Int64 ProductGroupID = 0, Int64 ProductSubGroupID = 0, Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
@@ -121,7 +133,7 @@ namespace AceSoft.RetailPlus.Data
             return dt;
         }
 
-        public System.Data.DataTable SummarizedInventory(SummarizedInventoryTypes InventoryType, Int32 BranchID = 0, Int64 SupplierID = 0, Int64 ProductGroupID = 0)
+        public System.Data.DataTable SummarizedInventory(SummarizedInventoryTypes InventoryType, Int32 BranchID = 0, Int64 SupplierID = 0, Int64 ProductGroupID = 0, bool WithTF = false)
         {
             try
             {
@@ -129,6 +141,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = "CALL procInventorySummary(@InventoryType, @BranchID, @SupplierID, @ProductGroupID)";
+
+                if (WithTF)
+                    SQL = "CALL proceInventorySummary(@InventoryType, @BranchID, @SupplierID, @ProductGroupID)";
 
                 cmd.Parameters.AddWithValue("@InventoryType", InventoryType.ToString("d"));
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);

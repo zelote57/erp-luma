@@ -52,15 +52,7 @@
 									</td>
 									<td class="Ms-pvnavmidr1"></td>
 								</tr>
-                                <tr id="divlnkPromo" runat="server">
-									<td class="Ms-pvnavmidl1"></td>
-									<td class="Ms-pvtbbutton">
-										<asp:HyperLink id="lnkPromo" runat="server" title="Display List of Promotinal Plans">
-												Products in Promo</asp:HyperLink>
-									</td>
-									<td class="Ms-pvnavmidr1"></td>
-								</tr>	
-								<tr id="divlnkVariation" runat="server">
+                                <tr id="divlnkVariation" runat="server">
 									<td class="Ms-pvnavmidl1"></td>
 									<td class="Ms-pvtbbutton">
 										<asp:HyperLink id="lnkVariation" runat="server" title="Display List of Variation" Width="134px">
@@ -77,7 +69,7 @@
 									<td class="Ms-pvnavmidr1"></td>
 								</tr>							
 							</table>
-							<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
+							<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180" />
 						</td>
 					</tr>
                     <tr id="divlblContactSetup" runat="server">
@@ -135,7 +127,7 @@
                                         </td>
                                     </tr>
 								</table>
-								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180" />
 							</div>
 						</td>
 					</tr>
@@ -180,8 +172,24 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
+                                    <tr id="divlnkPromo" runat="server">
+									    <td class="Ms-pvnavmidl1"></td>
+									    <td class="Ms-pvtbbutton">
+										    <asp:HyperLink id="lnkPromo" runat="server" title="Display List of Promotinal Plans">
+												    Promo by Amount</asp:HyperLink>
+									    </td>
+									    <td class="Ms-pvnavmidr1"></td>
+								    </tr>	
+                                    <tr id="divlnkPromoBySupplier" runat="server">
+									    <td class="Ms-pvnavmidl1"></td>
+									    <td class="Ms-pvtbbutton">
+										    <asp:HyperLink id="lnkPromoBySupplier" runat="server" title="Display List of Coupons">
+												    Promo by Coupons</asp:HyperLink>
+									    </td>
+									    <td class="Ms-pvnavmidr1"></td>
+								    </tr>	
 								</table>
-								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
+								<img height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180" />
 							</div>
 						</td>
 					</tr>
@@ -195,7 +203,7 @@
 					</tr>
 					<tr id="divlnkSynchronize" runat="server">
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
-						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
+						<td class="ms-pvtbbutton" style="width:170px;word-wrap:break-word">
 							<asp:HyperLink id="lnkSynchronize" runat="server" ToolTip="Synchronize Products of branches.">
 								<li>Sync Branch Product</li></asp:HyperLink>
 						</td>

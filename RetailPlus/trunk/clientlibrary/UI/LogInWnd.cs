@@ -39,6 +39,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        public AccessUserDetails AccessUserDetails { get; set; }
+
         private Int64 mintUserID;
         public Int64 UserID
         {
@@ -103,7 +105,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -489,6 +491,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             Int64 iUID = clsAccessUser.Login(strUserName, strPassword, mAccessType, out strName);
 
+            // 06Jun2015 : assign the details for override
+            AccessUserDetails = clsAccessUser.Details(iUID);
+
             AuditTrail clsAuditTrail = new AuditTrail(clsAccessUser.Connection, clsAccessUser.Transaction);
             AuditTrailDetails[] clsAuditTrailDetails = clsAuditTrail.DetailedList(DateTime.Today, DateTime.MinValue, strName, AccessTypes.None, "FE:", 1, "ActivityDate", SortOption.Desscending);
             clsAccessUser.CommitAndDispose();
@@ -542,6 +547,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
             txtUserName.PasswordChar = '\0';
             txtUserName.Font = new Font("Tahoma", 12, FontStyle.Bold);
+
+            
 
             return iUID;
         }

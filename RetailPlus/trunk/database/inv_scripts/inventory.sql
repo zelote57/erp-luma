@@ -48,7 +48,7 @@ CREATE TABLE tblPO (
 	`SupplierDRNo` VARCHAR(30) NOT NULL,
 	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`CancelledRemarks` VARCHAR(150),
+	`CancelledRemarks` VARCHAR(150) DEFAULT '',
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -164,7 +164,7 @@ CREATE TABLE tblPODebitMemo (
 	`SupplierDocNo` VARCHAR(30) NOT NULL,
 	`PostingDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`CancelledRemarks` VARCHAR(150),
+	`CancelledRemarks` VARCHAR(150) DEFAULT '',
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -384,7 +384,7 @@ CREATE TABLE tblTransferIn (
 	`SupplierDRNo` VARCHAR(30) NOT NULL,
 	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`CancelledRemarks` VARCHAR(150),
+	`CancelledRemarks` VARCHAR(150) DEFAULT '',
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -491,7 +491,7 @@ CREATE TABLE tblTransferOut (
 	`SupplierDRNo` VARCHAR(30) NOT NULL,
 	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`CancelledRemarks` VARCHAR(150),
+	`CancelledRemarks` VARCHAR(150) DEFAULT '',
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -564,7 +564,6 @@ ALTER TABLE tblProductGroup ADD ChartOfAccountIDInvAdjustment INT(4) UNSIGNED NO
 ALTER TABLE tblProductGroup ADD ChartOfAccountIDTaxInvAdjustment INT(4) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE tblProductSubGroup ADD ChartOfAccountIDInvAdjustment INT(4) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE tblProductSubGroup ADD ChartOfAccountIDTaxInvAdjustment INT(4) UNSIGNED NOT NULL DEFAULT 0;
-
 
 /*****************************
 **	tblInvAdjustment
@@ -709,7 +708,7 @@ CREATE TABLE tblBranchTransfer (
 	`ReceivedBy` VARCHAR(150) NOT NULL DEFAULT '',
 	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`CancelledRemarks` VARCHAR(150),
+	`CancelledRemarks` VARCHAR(150) DEFAULT '',
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -888,6 +887,74 @@ ALTER TABLE tblPODebitMemoItems MODIFY `EVatableAmount` DECIMAL(18,3) NOT NULL D
 ALTER TABLE tblPODebitMemoItems ADD `OriginalQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblPODebitMemoItems ADD `DebitMemoItemReceivedStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
+ALTER TABLE tblERPConfig DROP CreatedOn;
+ALTER TABLE tblPO DROP CreatedOn;
+ALTER TABLE tblPODebitMemo DROP CreatedOn;
+ALTER TABLE tblPODebitMemoItems DROP CreatedOn;
+ALTER TABLE tblPOItems DROP CreatedOn;
+ALTER TABLE tblTransferIn DROP CreatedOn;
+ALTER TABLE tblTransferInItems DROP CreatedOn;
+ALTER TABLE tblTransferout DROP CreatedOn;
+ALTER TABLE tblTransferoutItems DROP CreatedOn;
+
+ALTER TABLE tblERPConfig ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPO ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPODebitMemo ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPODebitMemoItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblPOItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransferIn ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransferInItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransferout ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransferoutItems ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+
+ALTER TABLE tblERPConfig DROP LastModified;
+ALTER TABLE tblPO DROP LastModified;
+ALTER TABLE tblPODebitMemo DROP LastModified;
+ALTER TABLE tblPODebitMemoItems DROP LastModified;
+ALTER TABLE tblPOItems DROP LastModified;
+ALTER TABLE tblTransferIn DROP LastModified;
+ALTER TABLE tblTransferInItems DROP LastModified;
+ALTER TABLE tblTransferout DROP LastModified;
+ALTER TABLE tblTransferoutItems DROP LastModified;
+
+ALTER TABLE tblERPConfig ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPO ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPODebitMemo ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPODebitMemoItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblPOItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblTransferIn ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblTransferInItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblTransferout ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+ALTER TABLE tblTransferoutItems ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+DROP TRIGGER IF EXISTS trgtblERPConfigCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPOCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPODebitMemoCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPODebitMemoItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblPOItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransferInCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransferInItemsCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransferoutCreatedOn;
+DROP TRIGGER IF EXISTS trgtblTransferoutItemsCreatedOn;
+
+CREATE TRIGGER trgtblERPConfigCreatedOn BEFORE INSERT ON tblERPConfig FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPOCreatedOn BEFORE INSERT ON tblPO FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPODebitMemoCreatedOn BEFORE INSERT ON tblPODebitMemo FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPODebitMemoItemsCreatedOn BEFORE INSERT ON tblPODebitMemoItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblPOItemsCreatedOn BEFORE INSERT ON tblPOItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblTransferInCreatedOn BEFORE INSERT ON tblTransferIn FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblTransferInItemsCreatedOn BEFORE INSERT ON tblTransferInItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblTransferoutCreatedOn BEFORE INSERT ON tblTransferout FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+CREATE TRIGGER trgtblTransferoutItemsCreatedOn BEFORE INSERT ON tblTransferoutItems FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
+
+UPDATE tblERPConfig SET LastModified = NOW();
+UPDATE tblPO SET LastModified = NOW();
+UPDATE tblPODebitMemo SET LastModified = NOW();
+UPDATE tblPODebitMemoItems SET LastModified = NOW();
+UPDATE tblTransferIn SET LastModified = NOW();
+UPDATE tblTransferInItems SET LastModified = NOW();
+UPDATE tblTransferout SET LastModified = NOW();
+UPDATE tblTransferoutItems SET LastModified = NOW();
 
 /*********************************  v_4.0.1.0.sql START  *******************************************************/ 
 -- 08Aug2013 Added for closing inventory by group
@@ -960,7 +1027,7 @@ CREATE TABLE tblWBranchTransfer (
 	`ReceivedBy` VARCHAR(150) NOT NULL DEFAULT '',
 	`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
-	`CancelledRemarks` VARCHAR(150),
+	`CancelledRemarks` VARCHAR(150) DEFAULT '',
 	`CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`UnpaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`PaidAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1026,14 +1093,101 @@ CREATE TABLE tblWBranchTransferItems (
 ALTER TABLE tblWBranchTransfer ADD `SubmittedBy` VARCHAR(150) NOT NULL DEFAULT '';
 ALTER TABLE tblWBranchTransfer ADD `SubmissionDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 
+ALTER TABLE tblPO ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
+ALTER TABLE tblPODebitMemo ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
 
-/*****************************
-**	Added on May 21, 2010 for Synchronizing Products
-**	Lemuel E. Aceron
-*****************************/
-INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (133, '');
+DELETE FROM sysAccessRights WHERE TranTypeID = 186;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 186;
+DELETE FROM sysAccessTypes WHERE TypeID = 186;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (186, 'Purchase Orders eSales', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 186;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 186, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 186, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
 
-UPDATE sysAccessTypes SET SequenceNo = 14, Category = '05: Backend - MasterFiles - Products' WHERE TypeID = 133;
-INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 133, 1, 1);
-INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 133, 1, 1);
+DELETE FROM sysAccessRights WHERE TranTypeID = 187;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 187;
+DELETE FROM sysAccessTypes WHERE TypeID = 187;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (187, 'Purchase Returns eSales', 1);
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 187;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 187, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 187, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
 
+DELETE FROM sysAccessRights WHERE TranTypeID = 188;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 188;
+DELETE FROM sysAccessTypes WHERE TypeID = 188;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (188, 'Purchase Debit Memo eSales', 1);
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 188;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 188, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 188, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 189;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 189;
+DELETE FROM sysAccessTypes WHERE TypeID = 189;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (189, 'Manage Purchase Order eSales', 1);
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 189;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 189, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 189, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 190;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 190;
+DELETE FROM sysAccessTypes WHERE TypeID = 190;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (190, 'Manage Purchase Returns eSales', 1);
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 190;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 190, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 190, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 191;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 191;
+DELETE FROM sysAccessTypes WHERE TypeID = 191;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (191, 'Manage Purchase Debit Memo eSales', 1);
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 191;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 191, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 191, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 192;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 192;
+DELETE FROM sysAccessTypes WHERE TypeID = 192;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (192, 'Purchase Analysis Report for eSales ', 0);
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '06: Backend - Purchase And Payables' WHERE TypeID = 192;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 192, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=94;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 192, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=94;
+
+ALTER TABLE tblPODebitMemo MODIFY CancelledRemarks VARCHAR(150) DEFAULT '';
+UPDATE tblPODebitMemo SET CancelledRemarks = '' WHERE IFNULL(CancelledRemarks, '') = '';
+
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 193;
+DELETE FROM sysAccessGroupRights WHERE TranTypeID = 193;
+DELETE FROM sysAccessTypes WHERE TypeID = 193;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (193, 'eInventory Report', 1);
+UPDATE sysAccessTypes SET SequenceNo = 12, Category = '11: Backend - Inventory Reports' WHERE TypeID = 193;
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 193, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=26;
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 193, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=26;
+
+
+ALTER TABLE tblPO ADD SupplierTINNo VARCHAR(20) DEFAULT '';
+ALTER TABLE tblPO ADD SupplierLTONo VARCHAR(20) DEFAULT '';
+
+UPDATE tblPO 
+INNER JOIN tblContacts
+SET
+	SupplierTINNo = tblContacts.TINNo,
+	SupplierLTONo = tblContacts.LTONo
+WHERE tblPO.SupplierID = tblContacts.ContactID;
+
+ALTER TABLE tblERPConfig ADD `ERPConfigID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+
+/*********************************  v_4.0.1.2.sql END  *******************************************************/ 
+
+UPDATE tblERPConfig SET DBVersion = 'v_4.0.1.3';
+
+ALTER TABLE tblPOItems MODIFY `ProductSubGroup` VARCHAR(50) NULL;
+ALTER TABLE tblPODebitMemoItems MODIFY `ProductSubGroup` VARCHAR(50) NULL;
+ALTER TABLE tblTransferInItems MODIFY `ProductSubGroup` VARCHAR(50) NULL;
+ALTER TABLE tblTransferOutItems MODIFY `ProductSubGroup` VARCHAR(50) NULL;
+ALTER TABLE tblBranchTransferItems MODIFY `ProductSubGroup` VARCHAR(50) NULL;
+ALTER TABLE tblWBranchTransferItems MODIFY `ProductSubGroup` VARCHAR(30) NULL;
+
+UPDATE sysAccessTypes SET SequenceNo = 3, Category = '03: Backend - Menu' WHERE TypeID = 93;

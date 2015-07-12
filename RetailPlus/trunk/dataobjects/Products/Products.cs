@@ -131,6 +131,10 @@ namespace AceSoft.RetailPlus.Data
 	/// </summary>
 	public struct ProductColumns
 	{
+        public bool ColumnsAll;
+        public bool ColumnsNameID;
+        public bool ColumnsCodeNameID;
+
 		public bool IncludeAllPackages;
 		public bool ProductID;
 		public bool ProductCode;
@@ -196,6 +200,8 @@ namespace AceSoft.RetailPlus.Data
 		public bool BranchID;
 		public bool RewardPoints;
 		public bool SequenceNo;
+
+        public bool OrderSlipPrinter;
 	}
 
 	public struct ProductColumnNames
@@ -283,6 +289,7 @@ namespace AceSoft.RetailPlus.Data
         public string SupplierNameFrom;
         public string SupplierNameTo;
     }
+
 	public enum PRODUCT_INVENTORY_MOVEMENT
 	{
 		ADD_PURCHASE,
@@ -2382,38 +2389,7 @@ namespace AceSoft.RetailPlus.Data
 
 			return stSQL;
 		}
-        //private string SQLSelectSimple()
-        //{
-        //    string stSQL = "SELECT " +
-        //                            "a.ProductID, " +
-        //                            "a.ProductCode, " +
-        //                            "a.BarCode1, " +
-        //                            "a.BarCode2, " +
-        //                            "a.BarCode3, " +
-        //                            "a.ProductDesc, " +
-        //                            "a.ProductSubGroupID, " +
-        //                            "a.BaseUnitID, " +
-        //                            "a.DateCreated, " +
-        //                            "a.Deleted, " +
-        //                            "a.Active, " +
-        //                            "a.Price, " +
 
-        //                            "a.WSPrice, " +
-        //                            "a.PurchasePrice, " +
-        //                            "a.PercentageCommision, " +
-        //                            "a.IncludeInSubtotalDiscount, " +
-        //                            "a.IsCreditChargeExcluded, " + 
-        //                            "a.VAT, " +
-        //                            "a.EVAT, " +
-        //                            "a.LocalTax, " +
-        //                            "a.Quantity, " +
-        //                            "a.SupplierID, " +
-        //                            "a.ActualQuantity, " +
-        //                            "a.RewardPoints " +
-        //                        "FROM tblProducts a " +
-        //                        "INNER JOIN tblProductPackage b ON a.ProductID = b.ProductID AND ";
-        //    return stSQL;
-        //}
 		private string SQLSelectSimple(int BranchID)
 		{
             string stSQL = "SELECT " +
@@ -2471,94 +2447,126 @@ namespace AceSoft.RetailPlus.Data
 			return stSQL;
 		}
 
-		private string SQLSelect(ProductColumns clsProductColumns)
-		{
-			string stSQL = "SELECT ";
+        private string SQLSelect(ProductColumns clsColumns)
+        {
+            clsColumns.ProductID = true;        // this must always be selected
 
-			if (clsProductColumns.ProductCode) stSQL += "tblProducts." + ProductColumnNames.ProductCode + ", ";
+            #region Default Columns to Select
 
-            if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.PackageID + ", ";
-            if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.BarCode1 + " AS BarCode, ";
-            if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.BarCode1 + ", ";
-            if (clsProductColumns.BarCode2) stSQL += "tblProductPackage." + ProductColumnNames.BarCode2 + ", ";
-            if (clsProductColumns.BarCode3) stSQL += "tblProductPackage." + ProductColumnNames.BarCode3 + ", ";
+            if (clsColumns.ColumnsAll)
+            {
+                object boxed = clsColumns;                  // needs to unboxed so that the value will be assigned, otherwise it won't work
+                System.Reflection.FieldInfo[] fi = clsColumns.GetType().GetFields();
+                foreach (System.Reflection.FieldInfo info1 in fi)
+                {
+                    info1.SetValue(boxed, true);
+                }
+                clsColumns = (ProductColumns)boxed;         // boxed so that the value will be assigned, otherwise it won't work
+            }
+            else if (clsColumns.ColumnsNameID)
+            {
+                clsColumns.ProductDesc = true;
+            }
+            else if (clsColumns.ColumnsCodeNameID)
+            {
+                clsColumns.ProductCode = true;
+                clsColumns.ProductDesc = true;
+            }
+            #endregion
 
-			if (clsProductColumns.ProductDesc) stSQL += "tblProducts." + ProductColumnNames.ProductDesc + ", ";
-            if (clsProductColumns.ProductDesc) stSQL += "tblProducts.OrderSlipPrinter1 ,tblProducts.OrderSlipPrinter2 ,tblProducts.OrderSlipPrinter3 ,tblProducts.OrderSlipPrinter4 ,tblProducts.OrderSlipPrinter5, ";
-			if (clsProductColumns.ProductSubGroupID) stSQL += "tblProducts." + ProductColumnNames.ProductSubGroupID + ", ";
-			if (clsProductColumns.ProductSubGroupCode) stSQL += "tblProductSubGroup." + ProductColumnNames.ProductSubGroupCode + ", ";
-			if (clsProductColumns.ProductSubGroupName) stSQL += "tblProductSubGroup." + ProductColumnNames.ProductSubGroupName + ", ";
-			if (clsProductColumns.ProductGroupID) stSQL += "tblProductSubGroup." + ProductColumnNames.ProductGroupID + ", ";
-			if (clsProductColumns.ProductGroupCode) stSQL += "tblProductGroup." + ProductColumnNames.ProductGroupCode + ", ";
-			if (clsProductColumns.ProductGroupName) stSQL += "tblProductGroup." + ProductColumnNames.ProductGroupName + ", ";
-			if (clsProductColumns.BaseUnitID) stSQL += "tblProducts." + ProductColumnNames.BaseUnitID + ", ";
-			if (clsProductColumns.BaseUnitCode) stSQL += "tblUnit." + ProductColumnNames.UnitCode + " 'BaseUnitCode', ";
-			if (clsProductColumns.BaseUnitName) stSQL += "tblUnit." + ProductColumnNames.UnitName + " 'BaseUnitName', ";
-            
-            if (clsProductColumns.UnitID) stSQL += "tblProductPackage." + ProductColumnNames.UnitID + ", ";
-            if (clsProductColumns.UnitCode) stSQL += "tblUnitPackage." + ProductColumnNames.UnitCode + ", ";
-            if (clsProductColumns.UnitName) stSQL += "tblUnitPackage." + ProductColumnNames.UnitName + ", ";
 
-			if (clsProductColumns.DateCreated) stSQL += "tblProducts." + ProductColumnNames.DateCreated + ", ";
-			if (clsProductColumns.Deleted) stSQL += "tblProducts." + ProductColumnNames.Deleted + ", ";
-			if (clsProductColumns.Active) stSQL += "tblProducts." + ProductColumnNames.Active+ ", ";
+            string stSQL = "SELECT ";
 
-            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price + ", ";
-            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price1 + ", ";
-            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price2 + ", ";
-            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price3 + ", ";
-            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price4 + ", ";
-            if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price5 + ", ";
-            if (clsProductColumns.WSPrice) stSQL += "tblProductPackage." + ProductColumnNames.WSPrice + ", ";
-            if (clsProductColumns.PurchasePrice) stSQL += "tblProductPackage." + ProductColumnNames.PurchasePrice + ", ";
+            if (clsColumns.BarCode) stSQL += "pkg." + ProductColumnNames.PackageID + ", ";
+            if (clsColumns.BarCode) stSQL += "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, ";
+            if (clsColumns.BarCode) stSQL += "pkg." + ProductColumnNames.BarCode1 + ", ";
+            if (clsColumns.BarCode) stSQL += "pkg." + ProductColumnNames.BarCode2 + ", ";
+            if (clsColumns.BarCode) stSQL += "pkg." + ProductColumnNames.BarCode3 + ", ";
 
-			if (clsProductColumns.PercentageCommision) stSQL += "tblProducts." + ProductColumnNames.PercentageCommision + ", ";
-			if (clsProductColumns.IncludeInSubtotalDiscount) stSQL += "tblProducts." + ProductColumnNames.IncludeInSubtotalDiscount + ", ";
-            if (clsProductColumns.IsCreditChargeExcluded) stSQL += "tblProducts." + ProductColumnNames.IsCreditChargeExcluded + ", ";
-			if (clsProductColumns.VAT) stSQL += "tblProductPackage." + ProductColumnNames.VAT + ", ";
-            if (clsProductColumns.EVAT) stSQL += "tblProductPackage." + ProductColumnNames.EVAT + ", ";
-            if (clsProductColumns.LocalTax) stSQL += "tblProductPackage." + ProductColumnNames.LocalTax + ", ";
-            if (clsProductColumns.Quantity) stSQL += "tblProductInventory." + ProductColumnNames.Quantity + " AS Quantity, ";
-            if (clsProductColumns.Quantity) stSQL += "fnProductQuantityConvert(tblProducts.ProductID, tblProductInventory." + ProductColumnNames.Quantity + ", tblProducts.BaseUnitID) AS ConvertedQuantity, ";
-			if (clsProductColumns.MinThreshold) stSQL += "tblProducts." + ProductColumnNames.MinThreshold + ", ";
-			if (clsProductColumns.MaxThreshold) stSQL += "tblProducts." + ProductColumnNames.MaxThreshold + ", ";
-			if (clsProductColumns.RID) stSQL += "tblProducts." + ProductColumnNames.RID + ", ";
-			if (clsProductColumns.SupplierID) stSQL += "tblProducts." + ProductColumnNames.SupplierID + ", ";
-			if (clsProductColumns.SupplierCode) stSQL += "tblContacts.ContactCode AS SupplierCode, ";
-			if (clsProductColumns.SupplierName) stSQL += "tblContacts.ContactName AS SupplierName, ";
-			if (clsProductColumns.ChartOfAccountIDPurchase) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDPurchase + ", ";
-			if (clsProductColumns.ChartOfAccountIDSold) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDSold + ", ";
-			if (clsProductColumns.ChartOfAccountIDInventory) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDInventory + ", ";
-			if (clsProductColumns.ChartOfAccountIDTaxPurchase) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDTaxPurchase + ", ";
-			if (clsProductColumns.ChartOfAccountIDTaxSold) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDTaxSold + ", ";
-			if (clsProductColumns.IsItemSold) stSQL += "tblProducts." + ProductColumnNames.IsItemSold + ", ";
-			if (clsProductColumns.WillPrintProductComposition) stSQL += "tblProducts." + ProductColumnNames.WillPrintProductComposition + ", ";
-			if (clsProductColumns.VariationCount) stSQL += "tblProducts." + ProductColumnNames.VariationCount + ", ";
-            if (clsProductColumns.QuantityIN) stSQL += "tblProductInventory." + ProductColumnNames.QuantityIN + " AS QuantityIN, ";
-            if (clsProductColumns.QuantityOUT) stSQL += "tblProductInventory." + ProductColumnNames.QuantityOUT + " AS QuantityOUT, ";
-            if (clsProductColumns.ActualQuantity) stSQL += "tblProductInventory." + ProductColumnNames.ActualQuantity + " AS ActualQuantity, ";
-            if (clsProductColumns.ActualQuantity) stSQL += "fnProductQuantityConvert(tblProducts.ProductID, tblProductInventory." + ProductColumnNames.ActualQuantity + ", tblProducts.BaseUnitID) AS ConvertedActualQuantity, ";
-            if (clsProductColumns.ReorderQty) stSQL += "tblProducts." + ProductColumnNames.MaxThreshold + " - tblProductInventory." + ProductColumnNames.Quantity + " AS ReorderQty, ";
-			if (clsProductColumns.RIDMinThreshold) stSQL += "tblProducts." + ProductColumnNames.RIDMinThreshold + ", ";
-			if (clsProductColumns.RIDMaxThreshold) stSQL += "tblProducts." + ProductColumnNames.RIDMaxThreshold + ", ";
-            if (clsProductColumns.RIDReorderQty) stSQL += "tblProducts.RIDMaxThreshold - tblProductInventory.Quantity AS RIDReorderQty, ";
-			if (clsProductColumns.BranchID) stSQL += "tblProductInventory." + ProductColumnNames.BranchID + ", ";
-			if (clsProductColumns.RewardPoints) stSQL += "tblProducts." + ProductColumnNames.RewardPoints + ", ";
-			if (clsProductColumns.SequenceNo) stSQL += "tblProducts." + ProductColumnNames.SequenceNo + ", ";
+            if (clsColumns.ProductCode) stSQL += "prd." + ProductColumnNames.ProductCode + ", ";
+            if (clsColumns.ProductDesc) stSQL += "prd." + ProductColumnNames.ProductDesc + ", ";
 
-			stSQL += "tblProducts.ProductID FROM tblProducts ";
-            stSQL += "INNER JOIN tblProductSubGroup ON tblProducts.ProductSubGroupID = tblProductSubGroup.ProductSubGroupID ";
-            stSQL += "INNER JOIN tblProductGroup ON tblProductSubGroup.ProductGroupID = tblProductGroup.ProductGroupID ";
-            stSQL += "INNER JOIN tblUnit ON tblProducts.BaseUnitID = tblUnit.UnitID ";
-            stSQL += "INNER JOIN tblProductPackage ON tblProducts.ProductID = tblProductPackage.ProductID ";
-            stSQL += "LEFT OUTER JOIN tblProductInventory ON tblProducts.ProductID = tblProductInventory.ProductID ";
-            
-            stSQL += "INNER JOIN tblUnit tblUnitPackage ON tblProductPackage.UnitID = tblUnitPackage.UnitID ";
-		    
-            stSQL += "INNER JOIN tblContacts ON tblProducts.SupplierID = tblContacts.ContactID ";
+            if (clsColumns.OrderSlipPrinter) stSQL += "prd.OrderSlipPrinter1 ,prd.OrderSlipPrinter2 ,prd.OrderSlipPrinter3 ,prd.OrderSlipPrinter4 ,prd.OrderSlipPrinter5, ";
 
-			return stSQL;
-		}
+            if (clsColumns.ProductSubGroupID) stSQL += "prd." + ProductColumnNames.ProductSubGroupID + ", ";
+            if (clsColumns.ProductSubGroupCode) stSQL += "sgrp." + ProductColumnNames.ProductSubGroupCode + ", ";
+            if (clsColumns.ProductSubGroupName) stSQL += "sgrp." + ProductColumnNames.ProductSubGroupName + ", ";
+
+            if (clsColumns.ProductGroupID) stSQL += "sgrp." + ProductColumnNames.ProductGroupID + ", ";
+            if (clsColumns.ProductGroupCode) stSQL += "grp." + ProductColumnNames.ProductGroupCode + ", ";
+            if (clsColumns.ProductGroupName) stSQL += "grp." + ProductColumnNames.ProductGroupName + ", ";
+
+            if (clsColumns.UnitID) stSQL += "prd." + ProductColumnNames.BaseUnitID + " 'BaseUnitID', ";
+            if (clsColumns.UnitCode) stSQL += "unt." + ProductColumnNames.UnitCode + " 'BaseUnitCode', ";
+            if (clsColumns.UnitName) stSQL += "unt." + ProductColumnNames.UnitName + " 'BaseUnitName', ";
+
+            if (clsColumns.UnitID) stSQL += "prd." + ProductColumnNames.UnitID + ", ";
+            if (clsColumns.UnitCode) stSQL += "unt." + ProductColumnNames.UnitCode + ", ";
+            if (clsColumns.UnitName) stSQL += "unt." + ProductColumnNames.UnitName + ", ";
+
+            if (clsColumns.DateCreated) stSQL += "prd." + ProductColumnNames.DateCreated + ", ";
+            if (clsColumns.Deleted) stSQL += "prd." + ProductColumnNames.Deleted + ", ";
+            if (clsColumns.Active) stSQL += "prd." + ProductColumnNames.Active + ", ";
+
+            if (clsColumns.SupplierID) stSQL += "prd." + ProductColumnNames.SupplierID + ", ";
+            if (clsColumns.SupplierCode) stSQL += "cntct.ContactCode AS SupplierCode, ";
+            if (clsColumns.SupplierName) stSQL += "cntct.ContactName AS SupplierName, ";
+
+            if (clsColumns.Price) stSQL += "pkg." + ProductColumnNames.Price + ", ";
+            if (clsColumns.Price) stSQL += "pkg." + ProductColumnNames.Price1 + ", ";
+            if (clsColumns.Price) stSQL += "pkg." + ProductColumnNames.Price2 + ", ";
+            if (clsColumns.Price) stSQL += "pkg." + ProductColumnNames.Price3 + ", ";
+            if (clsColumns.Price) stSQL += "pkg." + ProductColumnNames.Price4 + ", ";
+            if (clsColumns.Price) stSQL += "pkg." + ProductColumnNames.Price5 + ", ";
+            if (clsColumns.WSPrice) stSQL += "pkg." + ProductColumnNames.WSPrice + ", ";
+
+            if (clsColumns.PurchasePrice) stSQL += "pkg." + ProductColumnNames.PurchasePrice + ", ";
+
+            if (clsColumns.PercentageCommision) stSQL += "prd." + ProductColumnNames.PercentageCommision + ", ";
+            if (clsColumns.IncludeInSubtotalDiscount) stSQL += "prd." + ProductColumnNames.IncludeInSubtotalDiscount + ", ";
+            if (clsColumns.IsCreditChargeExcluded) stSQL += "prd." + ProductColumnNames.IsCreditChargeExcluded + ", ";
+            if (clsColumns.VAT) stSQL += "pkg." + ProductColumnNames.VAT + ", ";
+            if (clsColumns.EVAT) stSQL += "pkg." + ProductColumnNames.EVAT + ", ";
+            if (clsColumns.LocalTax) stSQL += "pkg." + ProductColumnNames.LocalTax + ", ";
+            if (clsColumns.Quantity) stSQL += "inv." + ProductColumnNames.Quantity + " AS Quantity, ";
+            if (clsColumns.Quantity) stSQL += "fnProductQuantityConvert(prd.ProductID, inv." + ProductColumnNames.Quantity + ", prd.BaseUnitID) AS ConvertedQuantity, ";
+            if (clsColumns.MinThreshold) stSQL += "prd." + ProductColumnNames.MinThreshold + ", ";
+            if (clsColumns.MaxThreshold) stSQL += "prd." + ProductColumnNames.MaxThreshold + ", ";
+            if (clsColumns.RID) stSQL += "prd." + ProductColumnNames.RID + ", ";
+
+            if (clsColumns.ChartOfAccountIDPurchase) stSQL += "prd." + ProductColumnNames.ChartOfAccountIDPurchase + ", ";
+            if (clsColumns.ChartOfAccountIDSold) stSQL += "prd." + ProductColumnNames.ChartOfAccountIDSold + ", ";
+            if (clsColumns.ChartOfAccountIDInventory) stSQL += "prd." + ProductColumnNames.ChartOfAccountIDInventory + ", ";
+            if (clsColumns.ChartOfAccountIDTaxPurchase) stSQL += "prd." + ProductColumnNames.ChartOfAccountIDTaxPurchase + ", ";
+            if (clsColumns.ChartOfAccountIDTaxSold) stSQL += "prd." + ProductColumnNames.ChartOfAccountIDTaxSold + ", ";
+            if (clsColumns.IsItemSold) stSQL += "prd." + ProductColumnNames.IsItemSold + ", ";
+            if (clsColumns.WillPrintProductComposition) stSQL += "prd." + ProductColumnNames.WillPrintProductComposition + ", ";
+            if (clsColumns.VariationCount) stSQL += "prd." + ProductColumnNames.VariationCount + ", ";
+            if (clsColumns.QuantityIN) stSQL += "inv." + ProductColumnNames.QuantityIN + " AS QuantityIN, ";
+            if (clsColumns.QuantityOUT) stSQL += "inv." + ProductColumnNames.QuantityOUT + " AS QuantityOUT, ";
+            if (clsColumns.ActualQuantity) stSQL += "inv." + ProductColumnNames.ActualQuantity + " AS ActualQuantity, ";
+            if (clsColumns.ActualQuantity) stSQL += "fnProductQuantityConvert(prd.ProductID, inv." + ProductColumnNames.ActualQuantity + ", prd.BaseUnitID) AS ConvertedActualQuantity, ";
+            if (clsColumns.ReorderQty) stSQL += "prd." + ProductColumnNames.MaxThreshold + " - inv." + ProductColumnNames.Quantity + " AS ReorderQty, ";
+            if (clsColumns.RIDMinThreshold) stSQL += "prd." + ProductColumnNames.RIDMinThreshold + ", ";
+            if (clsColumns.RIDMaxThreshold) stSQL += "prd." + ProductColumnNames.RIDMaxThreshold + ", ";
+            if (clsColumns.RIDReorderQty) stSQL += "prd.RIDMaxThreshold - inv.Quantity AS RIDReorderQty, ";
+            if (clsColumns.BranchID) stSQL += "inv." + ProductColumnNames.BranchID + ", ";
+            if (clsColumns.RewardPoints) stSQL += "prd." + ProductColumnNames.RewardPoints + ", ";
+            if (clsColumns.SequenceNo) stSQL += "prd." + ProductColumnNames.SequenceNo + ", ";
+
+            stSQL += "prd.ProductID ";
+            stSQL += "FROM tblProducts prd ";
+            stSQL += "INNER JOIN tblProductSubGroup sgrp ON prd.ProductSubGroupID = sgrp.ProductSubGroupID ";
+            stSQL += "INNER JOIN tblProductGroup grp ON sgrp.ProductGroupID = grp.ProductGroupID ";
+            stSQL += "INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID ";
+            stSQL += "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID ";
+            stSQL += "INNER JOIN tblProductPackage pkg ON prd.ProductID = pkg.ProductID ";
+            stSQL += "INNER JOIN tblUnit untpkg ON pkg.UnitID = untpkg.UnitID ";
+
+            stSQL += "LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID ";
+
+            return stSQL;
+        }
 
 		#region Details
 
@@ -3016,6 +3024,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = SQLSelect() + "WHERE a.Deleted = 0 AND a.Active = '0' ";
 				
 				if (SortField != string.Empty && SortField != null)
@@ -3028,14 +3039,10 @@ namespace AceSoft.RetailPlus.Data
 						SQL += "DESC ";
 				}
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
 				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
 				base.MySqlDataAdapterFill(cmd, dt);
 				
-
 				return dt;
 			}
 			catch (Exception ex)
@@ -4259,11 +4266,86 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        public System.Data.DataTable ListAsDataTableFE(int BranchID, string BarCode, ProductListFilterType clsProductListFilterType, Int32 limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, ProductDetails clsSearchKey, 
+            int BranchID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveOnly,
+            Int64 SequenceNoStart = 0, System.Data.SqlClient.SortOrder SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending,
+            Int64 SupplierID = 0, Int64 ProductGroupID = 0, string ProductGroupName = "", 
+            Int64 ProductSubGroupID = 0, string ProductSubGroupName = "",
+            bool CheckisQuantityGreaterThanZERO = false, bool isQuantityGreaterThanZERO = false, 
+            bool CheckItemisSold = false, bool ItemisSold = true, 
+            string SortField = "", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect(clsProductColumns) + "WHERE tblProducts.deleted=0 ";
+
+                if (SequenceNoStart != Constants.ZERO)
+                {
+                    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
+                        SQL += "AND tblProducts.SequenceNo < " + SequenceNoStart.ToString() + " ";
+                    else
+                        SQL += "AND tblProducts.SequenceNo > " + SequenceNoStart.ToString() + " ";
+                }
+
+                if (BranchID != Constants.ZERO) SQL += "AND tblProductInventory.BranchID = " + BranchID.ToString() + " ";
+                if (CheckItemisSold) SQL += "AND tblProducts.IsItemSold = 1 ";
+                if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND tblProducts.Active = 1 ";
+                if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND tblProducts.Active = 0 ";
+
+                if (SupplierID != Constants.ZERO)
+                    SQL += "AND (tblProducts.SupplierID = " + SupplierID + " OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = " + SupplierID + ")) ";
+
+                if (ProductSubGroupID != Constants.ZERO)
+                { SQL += "AND tblProducts.ProductSubGroupID = " + ProductSubGroupID + " "; }
+
+                if (ProductSubGroupName != string.Empty && ProductSubGroupName != null)
+                { SQL += "AND tblProductSubGroup.ProductSubGroupName = '" + ProductSubGroupName + "' "; }
+
+                if (ProductGroupID != Constants.ZERO)
+                { SQL += "AND tblProductSubGroup.ProductGroupID = " + ProductGroupID + " "; }
+
+                if (ProductGroupName != string.Empty && ProductGroupName != null)
+                { SQL += "AND tblProductGroup.ProductGroupName = '" + ProductGroupName + "' "; }
+
+                if (isQuantityGreaterThanZERO)
+                { SQL += "AND tblProductInventory.Quantity > 0 "; }
+
+                //if (GroupBy != string.Empty || GroupBy != null)
+                //    SQL += "GROUP BY " + GroupBy + " ";
+
+                if (SortField == string.Empty) SortField = "ProductCode";
+                SQL += "ORDER BY " + SortField + " ";
+
+                if (SortOrder == SortOption.Ascending)
+                    SQL += "ASC ";
+                else
+                    SQL += "DESC ";
+
+                if (limit != 0)
+                    SQL += "LIMIT " + limit + " ";
+
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable ListAsDataTableFE(int BranchID, string BarCode, ItemSelectWndColumnSearchType clsItemSelectWndColumnSearchType, ProductListFilterType clsProductListFilterType, Int32 limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = SQLSelectSimple(BranchID);
 
@@ -4274,6 +4356,7 @@ namespace AceSoft.RetailPlus.Data
                                     "prd.ProductCode, " +
                                     "prd.ProductDesc, " +
                                     "prd.ProductSubGroupID, " +
+                                    "prd.ProductSubGroupCode, " +
                                     "prd.BaseUnitID, " +
                                     "prd.DateCreated, " +
                                     "prd.PercentageCommision, " +
@@ -4302,16 +4385,37 @@ namespace AceSoft.RetailPlus.Data
                                     "SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity, " +
                                     "IFNULL(mtrx.Description,'') MatrixDescription ";
 
-                SQL += "        FROM (SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, prd.ProductSubGroupID, prd.BaseUnitID, prd.DateCreated, prd.PercentageCommision, prd.IncludeInSubtotalDiscount, prd.IsCreditChargeExcluded " +
+                SQL += "        FROM (SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, prd.ProductSubGroupID, sgrp.ProductSubGroupCode, prd.BaseUnitID, prd.DateCreated, prd.PercentageCommision, prd.IncludeInSubtotalDiscount, prd.IsCreditChargeExcluded " +
                        "                ,prd.SupplierID, prd.RewardPoints, prd.MinThreshold, prd.MaxThreshold " +
                        "                ,pkg.PackageID, pkg.MatrixID ,pkg.BarCode1, pkg.BarCode2, pkg.BarCode3, pkg.BarCode4, pkg.Price, pkg.Price1, pkg.Price2, pkg.Price3, pkg.Price4, pkg.Price5, pkg.WSPrice, pkg.PurchasePrice, pkg.VAT, pkg.EVAT, pkg.LocalTax " +
                        "              FROM tblProducts prd INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1 " +
+                       "                    INNER JOIN tblProductSubGroup sgrp ON prd.ProductSubGroupID = sgrp.ProductSubGroupID " +
                        "                    LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
                        "                    LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND inv.BranchID=" + BranchID.ToString() + " " +
                        "                    WHERE prd.Active = 1 AND prd.deleted = 0 AND IFNULL(mtrx.deleted, prd.deleted) = 0 ";
                 if (!string.IsNullOrEmpty(BarCode))
                 {
-                    SQL += "                      AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
+                    switch (clsItemSelectWndColumnSearchType)
+                    {
+                        case ItemSelectWndColumnSearchType.BcPc:
+                            SQL += "                      AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode) ";
+                            break;
+                        case ItemSelectWndColumnSearchType.BcDesc:
+                            SQL += "                      AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
+                            break;
+                        case ItemSelectWndColumnSearchType.PcDesc:
+                            SQL += "                      AND (prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
+                            break;
+                        case ItemSelectWndColumnSearchType.SgPcDesc:
+                            SQL += "                      AND (prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode OR sgrp.ProductSubGroupCode LIKE @BarCode) ";
+                            break;
+                        case ItemSelectWndColumnSearchType.SgDesc:
+                            SQL += "                      AND (prd.ProductDesc LIKE @BarCode OR sgrp.ProductSubGroupCode LIKE @BarCode) ";
+                            break;
+                        default:
+                            SQL += "                      AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode) ";
+                            break;
+                    }
                     
                     cmd.Parameters.AddWithValue("@BarCode", BarCode == "%" ? BarCode : BarCode + "%");
                 }
@@ -4340,6 +4444,7 @@ namespace AceSoft.RetailPlus.Data
                                 "prd.ProductCode, " +
                                 "prd.ProductDesc, " +
                                 "prd.ProductSubGroupID, " +
+                                "prd.ProductSubGroupCode, " +
                                 "prd.BaseUnitID, " +
                                 "prd.DateCreated, " +
                                 "prd.PercentageCommision, " +
@@ -4362,23 +4467,11 @@ namespace AceSoft.RetailPlus.Data
                                 "prd.LocalTax," +
                                 "IFNULL(mtrx.Description,'') ";
 
-                SQL += "ORDER BY ";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ProductCode") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-                if (!string.IsNullOrEmpty(SortField))
-                {
-                    SQL += SortField + " ";
-
-                    if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
-                        SQL += "ASC ";
-                    else
-                        SQL += "DESC ";
-                }
-
-                if (limit != 0) SQL += "LIMIT " + limit + " ";
-
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 

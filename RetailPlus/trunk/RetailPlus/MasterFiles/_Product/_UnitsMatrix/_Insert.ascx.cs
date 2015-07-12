@@ -98,7 +98,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 
 		private void LoadOptions()
 		{
-			DataClass clsDataClass = new DataClass();
 			Int64 prodid = Convert.ToInt64(Common.Decrypt(Request.QueryString["prodid"].ToString(),Session.SessionID));
 			lblProductID.Text = Convert.ToString(prodid);
 			
@@ -123,7 +122,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 
 			cboBottomUnit.DataTextField = "UnitName";
 			cboBottomUnit.DataValueField = "UnitID";
-			cboBottomUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnitMatrix.AvailableUnitsForProduct(prodid,"UnitName",SortOption.Ascending)).DefaultView;
+			cboBottomUnit.DataSource = clsUnitMatrix.AvailableUnitsForProduct(prodid).DefaultView;
 			cboBottomUnit.DataBind();
 			if (cboBottomUnit.Items.Contains( new ListItem(txtBaseUnit.Text, lblBaseUnitID.Text)))
 			{

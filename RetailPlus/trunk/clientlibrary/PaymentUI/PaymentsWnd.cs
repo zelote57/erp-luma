@@ -31,7 +31,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblDebit;
         private Label label1;
         private Label lblCharge;
-        private Label label2;
+        private Label lblVatableAmount;
         private Button cmdEnter;
         private Button cmdCancel;
         private Button cmdF4;
@@ -218,6 +218,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblVAT;
         private Label lblDiscountType;
         private Label lblRewardPointsPayment;
+        private Label label6;
+        private Label lblNonVatableAmount;
+        private GroupBox groupBox4;
     
         public decimal RewardConvertedPayment
         {
@@ -261,7 +264,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             catch { }
 
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -314,7 +317,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdF5 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblCharge = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblVatableAmount = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
             this.imgIcon = new System.Windows.Forms.PictureBox();
@@ -331,6 +334,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label4 = new System.Windows.Forms.Label();
             this.lblVAT = new System.Windows.Forms.Label();
             this.lblDiscountType = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblNonVatableAmount = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.grpDebit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
@@ -501,7 +507,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
-            this.label9.Location = new System.Drawing.Point(527, 170);
+            this.label9.Location = new System.Drawing.Point(527, 205);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(116, 24);
             this.label9.TabIndex = 69;
@@ -513,7 +519,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDiscount.BackColor = System.Drawing.Color.Transparent;
             this.lblDiscount.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
             this.lblDiscount.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblDiscount.Location = new System.Drawing.Point(684, 171);
+            this.lblDiscount.Location = new System.Drawing.Point(684, 206);
             this.lblDiscount.Name = "lblDiscount";
             this.lblDiscount.Size = new System.Drawing.Size(229, 23);
             this.lblDiscount.TabIndex = 70;
@@ -523,7 +529,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox2.Location = new System.Drawing.Point(527, 294);
+            this.groupBox2.Location = new System.Drawing.Point(527, 329);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(400, 10);
             this.groupBox2.TabIndex = 71;
@@ -534,7 +540,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceName.AutoSize = true;
             this.lblBalanceName.BackColor = System.Drawing.Color.Transparent;
             this.lblBalanceName.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalanceName.Location = new System.Drawing.Point(518, 312);
+            this.lblBalanceName.Location = new System.Drawing.Point(518, 347);
             this.lblBalanceName.Name = "lblBalanceName";
             this.lblBalanceName.Size = new System.Drawing.Size(183, 38);
             this.lblBalanceName.TabIndex = 72;
@@ -546,7 +552,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalance.BackColor = System.Drawing.Color.Transparent;
             this.lblBalance.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBalance.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblBalance.Location = new System.Drawing.Point(690, 314);
+            this.lblBalance.Location = new System.Drawing.Point(690, 349);
             this.lblBalance.Name = "lblBalance";
             this.lblBalance.Size = new System.Drawing.Size(229, 35);
             this.lblBalance.TabIndex = 73;
@@ -558,7 +564,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAmountPaidName.AutoSize = true;
             this.lblAmountPaidName.BackColor = System.Drawing.Color.Transparent;
             this.lblAmountPaidName.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
-            this.lblAmountPaidName.Location = new System.Drawing.Point(527, 269);
+            this.lblAmountPaidName.Location = new System.Drawing.Point(527, 304);
             this.lblAmountPaidName.Name = "lblAmountPaidName";
             this.lblAmountPaidName.Size = new System.Drawing.Size(125, 24);
             this.lblAmountPaidName.TabIndex = 76;
@@ -570,7 +576,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAmountPaid.BackColor = System.Drawing.Color.Transparent;
             this.lblAmountPaid.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
             this.lblAmountPaid.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblAmountPaid.Location = new System.Drawing.Point(684, 269);
+            this.lblAmountPaid.Location = new System.Drawing.Point(684, 304);
             this.lblAmountPaid.Name = "lblAmountPaid";
             this.lblAmountPaid.Size = new System.Drawing.Size(229, 25);
             this.lblAmountPaid.TabIndex = 77;
@@ -607,7 +613,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChangeName.AutoSize = true;
             this.lblChangeName.BackColor = System.Drawing.Color.Transparent;
             this.lblChangeName.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblChangeName.Location = new System.Drawing.Point(518, 355);
+            this.lblChangeName.Location = new System.Drawing.Point(518, 390);
             this.lblChangeName.Name = "lblChangeName";
             this.lblChangeName.Size = new System.Drawing.Size(167, 38);
             this.lblChangeName.TabIndex = 80;
@@ -619,7 +625,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChange.BackColor = System.Drawing.Color.Transparent;
             this.lblChange.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChange.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblChange.Location = new System.Drawing.Point(690, 355);
+            this.lblChange.Location = new System.Drawing.Point(690, 390);
             this.lblChange.Name = "lblChange";
             this.lblChange.Size = new System.Drawing.Size(229, 38);
             this.lblChange.TabIndex = 81;
@@ -673,7 +679,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(527, 203);
+            this.label1.Location = new System.Drawing.Point(527, 238);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(185, 24);
             this.label1.TabIndex = 85;
@@ -685,25 +691,24 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCharge.BackColor = System.Drawing.Color.Transparent;
             this.lblCharge.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
             this.lblCharge.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblCharge.Location = new System.Drawing.Point(684, 204);
+            this.lblCharge.Location = new System.Drawing.Point(684, 239);
             this.lblCharge.Name = "lblCharge";
             this.lblCharge.Size = new System.Drawing.Size(229, 23);
             this.lblCharge.TabIndex = 86;
             this.lblCharge.Text = "0.00";
             this.lblCharge.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label2
+            // lblVatableAmount
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label2.Location = new System.Drawing.Point(641, 70);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
-            this.label2.TabIndex = 87;
-            this.label2.Text = "(w/ VAT)";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblVatableAmount.BackColor = System.Drawing.Color.Transparent;
+            this.lblVatableAmount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVatableAmount.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.lblVatableAmount.Location = new System.Drawing.Point(577, 134);
+            this.lblVatableAmount.Name = "lblVatableAmount";
+            this.lblVatableAmount.Size = new System.Drawing.Size(168, 13);
+            this.lblVatableAmount.TabIndex = 87;
+            this.lblVatableAmount.Text = "(Vatable Amt: 0.00)";
+            this.lblVatableAmount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cmdCancel
             // 
@@ -806,7 +811,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label3.Location = new System.Drawing.Point(641, 137);
+            this.label3.Location = new System.Drawing.Point(641, 172);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(75, 13);
             this.label3.TabIndex = 98;
@@ -818,7 +823,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label11.AutoSize = true;
             this.label11.BackColor = System.Drawing.Color.Transparent;
             this.label11.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
-            this.label11.Location = new System.Drawing.Point(527, 137);
+            this.label11.Location = new System.Drawing.Point(527, 172);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(107, 24);
             this.label11.TabIndex = 97;
@@ -830,7 +835,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAmountNetOfVAT.BackColor = System.Drawing.Color.Transparent;
             this.lblAmountNetOfVAT.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
             this.lblAmountNetOfVAT.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblAmountNetOfVAT.Location = new System.Drawing.Point(684, 137);
+            this.lblAmountNetOfVAT.Location = new System.Drawing.Point(684, 172);
             this.lblAmountNetOfVAT.Name = "lblAmountNetOfVAT";
             this.lblAmountNetOfVAT.Size = new System.Drawing.Size(229, 25);
             this.lblAmountNetOfVAT.TabIndex = 96;
@@ -842,7 +847,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lbllSubtotalVATLabel.AutoSize = true;
             this.lbllSubtotalVATLabel.BackColor = System.Drawing.Color.Transparent;
             this.lbllSubtotalVATLabel.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
-            this.lbllSubtotalVATLabel.Location = new System.Drawing.Point(527, 99);
+            this.lbllSubtotalVATLabel.Location = new System.Drawing.Point(527, 134);
             this.lbllSubtotalVATLabel.Name = "lbllSubtotalVATLabel";
             this.lbllSubtotalVATLabel.Size = new System.Drawing.Size(42, 24);
             this.lbllSubtotalVATLabel.TabIndex = 100;
@@ -854,7 +859,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblSubtotalVAT.BackColor = System.Drawing.Color.Transparent;
             this.lblSubtotalVAT.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
             this.lblSubtotalVAT.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblSubtotalVAT.Location = new System.Drawing.Point(684, 99);
+            this.lblSubtotalVAT.Location = new System.Drawing.Point(684, 134);
             this.lblSubtotalVAT.Name = "lblSubtotalVAT";
             this.lblSubtotalVAT.Size = new System.Drawing.Size(229, 25);
             this.lblSubtotalVAT.TabIndex = 99;
@@ -864,7 +869,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox3.Location = new System.Drawing.Point(527, 123);
+            this.groupBox3.Location = new System.Drawing.Point(527, 158);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(400, 10);
             this.groupBox3.TabIndex = 72;
@@ -875,7 +880,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(527, 236);
+            this.label4.Location = new System.Drawing.Point(527, 271);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(67, 24);
             this.label4.TabIndex = 102;
@@ -887,7 +892,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblVAT.BackColor = System.Drawing.Color.Transparent;
             this.lblVAT.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
             this.lblVAT.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblVAT.Location = new System.Drawing.Point(684, 236);
+            this.lblVAT.Location = new System.Drawing.Point(684, 271);
             this.lblVAT.Name = "lblVAT";
             this.lblVAT.Size = new System.Drawing.Size(229, 25);
             this.lblVAT.TabIndex = 101;
@@ -900,12 +905,45 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDiscountType.BackColor = System.Drawing.Color.Transparent;
             this.lblDiscountType.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDiscountType.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblDiscountType.Location = new System.Drawing.Point(641, 170);
+            this.lblDiscountType.Location = new System.Drawing.Point(641, 205);
             this.lblDiscountType.Name = "lblDiscountType";
             this.lblDiscountType.Size = new System.Drawing.Size(97, 13);
             this.lblDiscountType.TabIndex = 103;
             this.lblDiscountType.Text = "(Discount Type)";
             this.lblDiscountType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(527, 103);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(104, 24);
+            this.label6.TabIndex = 105;
+            this.label6.Text = "(-) NON-VAT";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblNonVatableAmount
+            // 
+            this.lblNonVatableAmount.BackColor = System.Drawing.Color.Transparent;
+            this.lblNonVatableAmount.Font = new System.Drawing.Font("Arial Narrow", 15F, System.Drawing.FontStyle.Bold);
+            this.lblNonVatableAmount.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblNonVatableAmount.Location = new System.Drawing.Point(684, 103);
+            this.lblNonVatableAmount.Name = "lblNonVatableAmount";
+            this.lblNonVatableAmount.Size = new System.Drawing.Size(229, 25);
+            this.lblNonVatableAmount.TabIndex = 104;
+            this.lblNonVatableAmount.Text = "0.00";
+            this.lblNonVatableAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Location = new System.Drawing.Point(527, 94);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(400, 5);
+            this.groupBox4.TabIndex = 106;
+            this.groupBox4.TabStop = false;
             // 
             // PaymentsWnd
             // 
@@ -913,6 +951,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.lblVatableAmount);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lblNonVatableAmount);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.lblDiscountType);
             this.Controls.Add(this.label4);
@@ -925,7 +967,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Controls.Add(this.grpRewardCard);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblChangeName);
             this.Controls.Add(this.label8);
@@ -1078,10 +1119,26 @@ namespace AceSoft.RetailPlus.Client.UI
             }
 
             lblSubTotal.Text = mclsSalesTransactionDetails.SubTotal.ToString("#,##0.#0");
+            lblNonVatableAmount.Text = mclsSalesTransactionDetails.NonVATableAmount.ToString("#,##0.#0");
+            lblVatableAmount.Text = "(Vatable Amt: " + (mclsSalesTransactionDetails.VATableAmount + mclsSalesTransactionDetails.VATExempt).ToString("#,##0.#0") + ")";
+                
             if ((mclsSalesTransactionDetails.DiscountCode == TerminalDetails.SeniorCitizenDiscountCode) && mclsSalesTransactionDetails.DiscountableAmount !=0)
             {
+                decimal decSubtotalVAT = 0;
+
+                if (mclsSalesTransactionDetails.NonVATableAmount != 0)
+                {
+                    decSubtotalVAT = (mclsSalesTransactionDetails.NonVATableAmount * (TerminalDetails.VAT / 100));
+                    decSubtotalVAT = (((mclsSalesTransactionDetails.DiscountableAmount - mclsSalesTransactionDetails.NonVATableAmount) / (1 + (TerminalDetails.VAT / 100))) * (TerminalDetails.VAT / 100));
+                }
+                else
+                    decSubtotalVAT = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (TerminalDetails.VAT / 100))) * (TerminalDetails.VAT / 100));
+
+                lblSubtotalVAT.Text = decSubtotalVAT.ToString("#,##0.#0");
+
+                // 05Jun2015 : Uncomment this if you want to eclude nonvat
                 // recompute coz VAT is zero
-                lblSubtotalVAT.Text = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (TerminalDetails.VAT / 100))) * (TerminalDetails.VAT / 100)).ToString("#,##0.#0");
+                // lblSubtotalVAT.Text = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (TerminalDetails.VAT / 100))) * (TerminalDetails.VAT / 100)).ToString("#,##0.#0");
             }
             else
             {

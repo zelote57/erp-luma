@@ -34,12 +34,12 @@ namespace AceSoft.RetailPlus.Inventory
 
                     mlngItemNo = 0;
 
-                    ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsBranch.Connection, clsBranch.Transaction);
-                    cboProductSubGroup.DataTextField = "ProductSubGroupName";
-                    cboProductSubGroup.DataValueField = "ProductSubGroupID";
-                    cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(txtProductSubGroup.Text).DefaultView;
-                    cboProductSubGroup.DataBind();
-                    cboProductSubGroup.SelectedIndex = 0;
+                    ProductGroup clsProductGroup = new ProductGroup(clsBranch.Connection, clsBranch.Transaction);
+                    cboProductGroup.DataTextField = "ProductGroupName";
+                    cboProductGroup.DataValueField = "ProductGroupID";
+                    cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroup.Text, "ProductGroupName").DefaultView;
+                    cboProductGroup.DataBind();
+                    cboProductGroup.SelectedIndex = 0;
 
                     clsBranch.CommitAndDispose();
 
@@ -71,16 +71,16 @@ namespace AceSoft.RetailPlus.Inventory
 
         #region Web Control Methods
 
-        protected void imgProductSubGroupSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgProductGroupSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            ProductSubGroup clsProductSubGroup = new ProductSubGroup();
-            cboProductSubGroup.DataTextField = "ProductSubGroupName";
-            cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(txtProductSubGroup.Text).DefaultView;
-            cboProductSubGroup.DataBind();
-            cboProductSubGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
-            if (cboProductSubGroup.Items.Count > 1 && txtProductSubGroup.Text.Trim() != string.Empty) cboProductSubGroup.SelectedIndex = 1; else cboProductSubGroup.SelectedIndex = 0;
-            clsProductSubGroup.CommitAndDispose();
+            ProductGroup clsProductGroup = new ProductGroup();
+            cboProductGroup.DataTextField = "ProductGroupName";
+            cboProductGroup.DataValueField = "ProductGroupID";
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroup.Text, "ProductGroupName").DefaultView;
+            cboProductGroup.DataBind();
+            cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            if (cboProductGroup.Items.Count > 1 && txtProductGroup.Text.Trim() != string.Empty) cboProductGroup.SelectedIndex = 1; else cboProductGroup.SelectedIndex = 0;
+            clsProductGroup.CommitAndDispose();
         }
 
         protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -257,7 +257,7 @@ namespace AceSoft.RetailPlus.Inventory
             LoadList();
         }
 
-        protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
+        protected void cboProductGroup_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             LoadList();
         }
@@ -268,7 +268,7 @@ namespace AceSoft.RetailPlus.Inventory
 
         private void PrintClosingInventorySheet()
         {
-            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&type=" + Common.Encrypt("invcount", Session.SessionID) + "&prdgrpid=" + Common.Encrypt(cboProductSubGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID);
+            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&type=" + Common.Encrypt("invcount", Session.SessionID) + "&prdgrpid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID);
             string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam;
             string javaScript = "window.open('" + newWindowUrl + "');";
 
@@ -277,7 +277,7 @@ namespace AceSoft.RetailPlus.Inventory
 
         private void PrintClosingInventory(string strRefNo = "")
         {
-            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefNo, Session.SessionID) + "&prdsubgrpid=" + Common.Encrypt(cboProductSubGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID); ;
+            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefNo, Session.SessionID) + "&prdsubgrpid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID); ;
             string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam;
             string javaScript = "window.open('" + newWindowUrl + "');";
 
@@ -311,10 +311,10 @@ namespace AceSoft.RetailPlus.Inventory
             if (Request.QueryString["sortoption"] != null)
             { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-            Int64 lngProductSubGroupID = Convert.ToInt64(cboProductSubGroup.SelectedItem.Value);
+            Int64 intProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
 
             ProductInventories clsProductInventories = new ProductInventories();
-            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), ProductSubGroupID: lngProductSubGroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode ASC, MatrixDescription ASC, BarCode1", SortOrder: SortOption.Desscending);
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), ProductGroupID: intProductGroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode ASC, MatrixDescription ", SortOrder: SortOption.Desscending);
 
             clsProductInventories.CommitAndDispose();
 

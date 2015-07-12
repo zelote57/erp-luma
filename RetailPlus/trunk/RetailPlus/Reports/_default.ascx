@@ -68,7 +68,7 @@
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
-					    <asp:PlaceHolder id="holderProductGroup" runat="server" Visible=false>
+					    <asp:PlaceHolder id="holderProductGroup" runat="server" Visible="false">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
 								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
@@ -102,7 +102,7 @@
 							</tr>
 						</table>
 						</asp:PlaceHolder>
-                        <asp:PlaceHolder id="holderProductHistory" runat="server" Visible=false>
+                        <asp:PlaceHolder id="holderProductHistory" runat="server" Visible="false">
 						    <table id="tblProduct" cellspacing="0" cellpadding="0" border="0" class="ms-authoringcontrols" width="100%">
 							    <tr>
 								    <td style="padding-bottom:2px" nowrap="nowrap">
@@ -112,7 +112,7 @@
 								    <td nowrap="nowrap"><asp:dropdownlist id="cboProductCode" CssClass="ms-short" runat="server" OnSelectedIndexChanged="cboProductCode_SelectedIndexChanged"></asp:dropdownlist>
 								    </td>
 								    <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-								    <td nowrap="nowrap"><asp:TextBox id="TextBox1" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
+								    <td nowrap="nowrap"><asp:TextBox id="txtProductCodeSearch" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
 								    </td>
 								    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 								    <td nowrap="nowrap"><asp:ImageButton id="cmdProductCode" title="Search by product code" style="CURSOR: hand" accesskey="P" runat="server" ImageUrl="../_layouts/images/SPSSearch2.gif" alt="Search by product code" border="0" OnClick="cmdProductCode_Click"></asp:ImageButton>

@@ -74,6 +74,8 @@ namespace AceSoft.RetailPlus.Data
         // Aug 6, 2011 RequiredInventoryDays
         public long RID;
 
+        // 05Jun2015
+        public bool IncludeIneSales;
         
 	}
 
@@ -141,7 +143,8 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPFreight, " +
                                 "ChartOfAccountIDAPVDeposit, " +
                                 "ChartOfAccountIDAPContra, " +
-                                "ChartOfAccountIDAPLatePayment" +
+                                "ChartOfAccountIDAPLatePayment, " +
+                                "IncludeIneSales" +
 							") VALUES (" +
                                 "@PONo, " +
                                 "@PODate, " +
@@ -166,7 +169,8 @@ namespace AceSoft.RetailPlus.Data
                                 "@ChartOfAccountIDAPFreight, " +
                                 "@ChartOfAccountIDAPVDeposit, " +
                                 "@ChartOfAccountIDAPContra, " +
-                                "@ChartOfAccountIDAPLatePayment" +
+                                "@ChartOfAccountIDAPLatePayment, " +
+                                "@IncludeIneSales" +
 							");";
 				
                 cmd.Parameters.AddWithValue("@PONo", Details.PONo);
@@ -193,6 +197,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@ChartOfAccountIDAPVDeposit", clsAPLinkConfigDetails.ChartOfAccountIDAPVDeposit);
                 cmd.Parameters.AddWithValue("@ChartOfAccountIDAPContra", clsAPLinkConfigDetails.ChartOfAccountIDAPContra);
                 cmd.Parameters.AddWithValue("@ChartOfAccountIDAPLatePayment", clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment);
+                cmd.Parameters.AddWithValue("@IncludeIneSales", Details.IncludeIneSales);
 
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
@@ -275,6 +280,29 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public void UpdateIncludeIneSales(Int64 POID, bool IncludeIneSales)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblPO SET " +
+                                "IncludeIneSales          =   @IncludeIneSales " +
+                            "WHERE POID = @POID;";
+
+                cmd.Parameters.AddWithValue("@IncludeIneSales", IncludeIneSales);
+                cmd.Parameters.AddWithValue("@POID", POID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
         public void UpdateIsVatInclusive(long POID, bool IsVatInclusive)
         {
@@ -973,10 +1001,10 @@ namespace AceSoft.RetailPlus.Data
                                 "SupplierLTONo, " +
                                 "RequiredDeliveryDate, " +
                                 "RID, " +
-                                "a.BranchID, " +
+                                "po.BranchID, " +
                                 "BranchCode, " +
                                 "BranchName, " +
-                                "b.Address BranchAddress, " +
+                                "brnch.Address BranchAddress, " +
                                 "PurchaserID, " +
                                 "PurchaserName, " +
                                 "SubTotal, " +
@@ -1000,7 +1028,7 @@ namespace AceSoft.RetailPlus.Data
                                 "UnpaidAmount, " +
                                 "Status, " +
                                 "IsVatInclusive, " +
-                                "a.Remarks, " +
+                                "po.Remarks, " +
                                 "SupplierDRNo, " +
                                 "DeliveryDate, " +
                                 "CancelledDate, " +
@@ -1012,8 +1040,9 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPVDeposit, " +
                                 "ChartOfAccountIDAPContra, " +
                                 "ChartOfAccountIDAPLatePayment, " +
-                                "TotalItemDiscount " +
-                            "FROM tblPO a INNER JOIN tblBranch b ON a.BranchID = b.BranchID ";
+                                "TotalItemDiscount, " +
+                                "po.IncludeIneSales " +
+                            "FROM tblPO po INNER JOIN tblBranch brnch ON po.BranchID = brnch.BranchID ";
             return stSQL;
         }
 
@@ -1088,6 +1117,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.ChartOfAccountIDAPVDeposit = Int16.Parse(dr["ChartOfAccountIDAPVDeposit"].ToString());
                     Details.ChartOfAccountIDAPContra = Int16.Parse(dr["ChartOfAccountIDAPContra"].ToString());
                     Details.ChartOfAccountIDAPLatePayment = Int16.Parse(dr["ChartOfAccountIDAPLatePayment"].ToString());
+                    Details.IncludeIneSales = bool.Parse(dr["IncludeIneSales"].ToString());
 				}
 
 				return Details;
@@ -1126,7 +1156,7 @@ namespace AceSoft.RetailPlus.Data
 
         //    return dt;
         //}
-        public System.Data.DataTable ListAsDataTable(POStatus postatus = POStatus.All, DateTime? OrderStartDate = null, DateTime? OrderEndDate = null, DateTime? PostingStartDate = null, DateTime? PostingEndDate = null, string SortField = "POID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0, Int64 SupplierID = 0, Int64 POID = 0)
+        public System.Data.DataTable ListAsDataTable(POStatus postatus = POStatus.All, PODetails searchKey = new PODetails(), DateTime? OrderStartDate = null, DateTime? OrderEndDate = null, DateTime? PostingStartDate = null, DateTime? PostingEndDate = null, string SortField = "POID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0, Int64 SupplierID = 0, Int64 POID = 0, eSalesFilter clseSalesFilter = new eSalesFilter())
         {
             try
             {
@@ -1177,6 +1207,12 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
 
+                if (clseSalesFilter.FilterIncludeIneSales)
+                {
+                    SQL += "AND po.IncludeIneSales = @IncludeIneSales ";
+                    cmd.Parameters.AddWithValue("@IncludeIneSales", clseSalesFilter.IncludeIneSales);
+                }
+
                 SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "POID") + " ";
                 SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
                 SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
@@ -1193,146 +1229,27 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
-		{
-            if (SortField == string.Empty || SortField == null) SortField = "POID";
-
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-		}
-
-        //public MySqlDataReader List(long POID, string SortField, SortOption SortOrder)
+        //public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
         //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
+        //    if (SortField == string.Empty || SortField == null) SortField = "POID";
 
-        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
+        //    string SQL = SQLSelect() + "ORDER BY " + SortField;
 
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
+        //    if (SortOrder == SortOption.Ascending)
+        //        SQL += " ASC";
+        //    else
+        //        SQL += " DESC";
 
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
+        //    MySqlCommand cmd = new MySqlCommand();
+        //    cmd.CommandType = System.Data.CommandType.Text;
+        //    cmd.CommandText = SQL;
+
+        //    string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //    base.MySqlDataAdapterFill(cmd, dt);
+
+        //    return dt;
         //}
 
-        //public MySqlDataReader List(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
-
-        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-
-        //public MySqlDataReader List(POStatus postatus, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
-
-        //        string SQL = SQLSelect() + "WHERE Status = @Status ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-        //        prmStatus.Value = postatus.ToString("d");
-        //        cmd.Parameters.Add(prmStatus);
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-
-        //public MySqlDataReader List(POStatus postatus, long SupplierID, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
-
-        //        string SQL = SQLSelect() + "WHERE Status =@Status AND SupplierID = @SupplierID ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-        //        prmStatus.Value = postatus.ToString("d");
-        //        cmd.Parameters.Add(prmStatus);
-
-        //        MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
-        //        prmSupplierID.Value = SupplierID;
-        //        cmd.Parameters.Add(prmSupplierID);
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
         public MySqlDataReader ListForPayment(long SupplierID, string SortField, SortOption SortOrder)
         {
             try
@@ -1371,74 +1288,6 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
-
-        //        string SQL = SQLSelect() + "WHERE (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey) " +
-        //                        "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-        //        prmSearchKey.Value = "%" + SearchKey + "%";
-        //        cmd.Parameters.Add(prmSearchKey);
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}		
-        //public MySqlDataReader Search(POStatus postatus, string SearchKey, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        if (SortField == string.Empty || SortField == null) SortField = "POID";
-
-        //        string SQL = SQLSelect() + "WHERE Status = @Status AND (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-        //                                "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
-        //                    "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-        //        prmStatus.Value = postatus.ToString("d");
-        //        cmd.Parameters.Add(prmStatus);
-
-        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-        //        prmSearchKey.Value = "%" + SearchKey + "%";
-        //        cmd.Parameters.Add(prmSearchKey);
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
         public System.Data.DataTable SearchAsDataTable(POStatus postatus, string SearchKey, string SortField, SortOption SortOrder)
         {
             try
@@ -1446,7 +1295,7 @@ namespace AceSoft.RetailPlus.Data
                 if (SortField == string.Empty || SortField == null) SortField = "POID";
 
                 string SQL = SQLSelect() + "WHERE Status = @Status AND (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) " +
+                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or po.Remarks LIKE @SearchKey) " +
                             "ORDER BY " + SortField;
 
                 if (SortOrder == SortOption.Ascending)
@@ -1476,30 +1325,31 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        public System.Data.DataTable SearchAsDataTable(POStatus postatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
+        public System.Data.DataTable SearchAsDataTable(POStatus postatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder, Int32 limit=0, eSalesFilter clseSalesFilter = new eSalesFilter())
         {
             try
             {
-                if (SortField == string.Empty || SortField == null) SortField = "POID";
-
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = SQLSelect() + "WHERE Status = @Status AND (PONo LIKE @SearchKey or PODate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
-                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or a.Remarks LIKE @SearchKey) ";
+                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredDeliveryDate LIKE @SearchKey or po.Remarks LIKE @SearchKey) ";
 
                 if (OrderStartDate != DateTime.MinValue) SQL += "AND PODate >= @OrderStartDate ";
                 if (OrderEndDate != DateTime.MinValue) SQL += "AND PODate <= @OrderEndDate ";
                 if (PostingStartDate != DateTime.MinValue) SQL += "AND DeliveryDate >= @PostingStartDate ";
                 if (PostingEndDate != DateTime.MinValue) SQL += "AND DeliveryDate <= @PostingEndDate ";
 
-                SQL += "ORDER BY " + SortField;
+                
+                if (clseSalesFilter.FilterIncludeIneSales)
+                {
+                    SQL += "AND po.IncludeIneSales = @IncludeIneSales ";
+                    cmd.Parameters.AddWithValue("@IncludeIneSales", clseSalesFilter.IncludeIneSales);
+                }
 
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "POID") + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
                 cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
                 cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
@@ -1509,6 +1359,8 @@ namespace AceSoft.RetailPlus.Data
                 if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
+
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -1519,62 +1371,6 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }	
-
-        //public MySqlDataReader List(POStatus postatus, DateTime StartDate, DateTime EndDate)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY POID ASC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);			
-        //        prmStartDate.Value = StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-        //        cmd.Parameters.Add(prmStartDate);
-
-        //        MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);
-        //        prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-        //        cmd.Parameters.Add(prmEndDate);
-
-        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-        //        prmStatus.Value = postatus.ToString("d");
-        //        cmd.Parameters.Add(prmStatus);
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-        //        return myReader;			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-        //public MySqlDataReader List(POStatus postatus, long SupplierID, DateTime StartDate, DateTime EndDate)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE Status = @Status AND SupplierID = @SupplierID AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY POID ASC";
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        cmd.Parameters.AddWithValue("@Status", postatus.ToString("d"));
-        //        cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-        //        cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-        //        cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
-
-        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-        //        return myReader;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
 		
 		#endregion
 

@@ -134,13 +134,28 @@ namespace AceSoft
             return strRetValue;
         }
 
-        public static bool isTerminalMultiInstanceEnabled()
-        {
-            bool boMultiInstanceEnabled = true;
-            if (System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"] != null)
-                boMultiInstanceEnabled = bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"].ToString(), out boMultiInstanceEnabled) ? boMultiInstanceEnabled : true;
+        //public static bool isTerminalMultiInstanceEnabled()
+        //{
+        //    bool boMultiInstanceEnabled = true;
+        //    if (System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"] != null)
+        //        boMultiInstanceEnabled = bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"].ToString(), out boMultiInstanceEnabled) ? boMultiInstanceEnabled : true;
 
-            return boMultiInstanceEnabled;
+        //    return boMultiInstanceEnabled;
+        //}
+
+        public static void OpenFileToDOS(string FileName)
+        {
+            try
+            {
+                //System.Net.WebClient Client = new System.Net.WebClient();
+                //Client.DownloadFile(Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName), FileName);
+
+                System.Diagnostics.Process p = new System.Diagnostics.Process();
+                p.StartInfo.FileName = FileName;
+                p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+                p.Start();
+            }
+            catch (Exception ex) { throw ex; }
         }
 	}
 }

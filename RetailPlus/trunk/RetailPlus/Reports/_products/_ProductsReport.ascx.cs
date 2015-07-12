@@ -39,16 +39,34 @@ namespace AceSoft.RetailPlus.Reports
 
 		private void LoadOptions()
 		{
-            cboReportType.Items.Clear();
+            txtStartDate.Text = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
+            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
+            Int64 UID = Convert.ToInt64(Session["UID"]);
+            Security.AccessRights clsAccessRights = new Security.AccessRights();
+
+            cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
+
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
             cboReportType.Items.Add(new ListItem(ReportTypes.ProductList, ReportTypes.ProductList));
-            cboReportType.Items.Add(new ListItem(ReportTypes.ProductPriceList, ReportTypes.ProductPriceList));
+
+            if (clsAccessRights.Details(UID, (int)AccessTypes.PricesReport).Read)
+            { cboReportType.Items.Add(new ListItem(ReportTypes.ProductPriceList, ReportTypes.ProductPriceList)); }
+            
+            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+            cboReportType.Items.Add(new ListItem(ReportTypes.ProductListWithInvalidMatrix, ReportTypes.ProductListWithInvalidMatrix));
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
             cboReportType.Items.Add(new ListItem(ReportTypes.WeightedProductsForWeighingScale, ReportTypes.WeightedProductsForWeighingScale));
             cboReportType.Items.Add(new ListItem(ReportTypes.CountedProductsForWeighingScale, ReportTypes.CountedProductsForWeighingScale));
+            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+
+            if (clsAccessRights.Details(UID, (int)AccessTypes.ProductsInDemoReport).Read)
+                cboReportType.Items.Add(new ListItem(ReportTypes.ProductsInDemoReport, ReportTypes.ProductsInDemoReport));
+
+            clsAccessRights.CommitAndDispose();
             cboReportType.SelectedIndex = 0;
+            
 
             Branch clsBranch = new Branch();
             cboBranch.DataTextField = "BranchCode";
@@ -67,7 +85,7 @@ namespace AceSoft.RetailPlus.Reports
             cboContact.SelectedIndex = 0;
 
             ProductGroup clsProductGroup = new ProductGroup(clsBranch.Connection, clsBranch.Transaction);
-            cboProductGroup.DataTextField = "ProductGroupName";
+            cboProductGroup.DataTextField = "ProductGroupCode";
             cboProductGroup.DataValueField = "ProductGroupID";
             cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroupCode.Text, "ProductGroupName").DefaultView;
             cboProductGroup.DataBind();
@@ -85,19 +103,29 @@ namespace AceSoft.RetailPlus.Reports
 
             string strReportType = cboReportType.SelectedValue;
 
-            if (strReportType == ReportTypes.REPORT_SELECTION)
-                return null;
-            else if (strReportType == ReportTypes.REPORT_SELECTION_SEPARATOR)
-                return null;
-            else if (strReportType == ReportTypes.ProductList)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReport.rpt"));
-            else if (strReportType == ReportTypes.ProductPriceList)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReportPriceSummary.rpt"));
-            else if (strReportType == ReportTypes.WeightedProductsForWeighingScale)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReportPricesForWeighingScale.rpt"));
-            else if (strReportType == ReportTypes.CountedProductsForWeighingScale)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReportPricesForWeighingScale.rpt"));
-            else return null;
+            switch (cboReportType.SelectedValue)
+            {
+                case ReportTypes.ProductList:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReport.rpt"));
+                    break;
+                case ReportTypes.ProductPriceList:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReportPriceSummary.rpt"));
+                    break;
+                case ReportTypes.ProductListWithInvalidMatrix:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReport.rpt"));
+                    break;
+                case ReportTypes.WeightedProductsForWeighingScale:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReportPricesForWeighingScale.rpt"));
+                    break;
+                case ReportTypes.CountedProductsForWeighingScale:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsReportPricesForWeighingScale.rpt"));
+                    break;
+                case ReportTypes.ProductsInDemoReport:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_products/_ProductsInDemoReport.rpt"));
+                    break;
+                default :
+                    return null;
+            }
 
             return rpt;
         }
@@ -206,10 +234,7 @@ namespace AceSoft.RetailPlus.Reports
             {
                 case ReportTypes.ProductList:
                     #region Products List
-                    //dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
-                    dt = clsProductInventories.ListAsDataTable(int.Parse(cboBranch.SelectedItem.Value), SupplierID: long.Parse(cboContact.SelectedItem.Value), ProductGroupID: long.Parse(cboProductGroup.SelectedItem.Value), ProductSubGroupID: long.Parse(cboSubGroup.SelectedItem.Value), ProductCode: txtProductCode.Text);
-                    //ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-                    //System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
+                    dt = clsProductInventories.ListAsDataTable(Int32.Parse(cboBranch.SelectedItem.Value), SupplierID: long.Parse(cboContact.SelectedItem.Value), ProductGroupID: long.Parse(cboProductGroup.SelectedItem.Value), ProductSubGroupID: long.Parse(cboSubGroup.SelectedItem.Value), ProductCode: txtProductCode.Text);
                     clsProduct.CommitAndDispose();
 
                     foreach (System.Data.DataRow dr in dt.Rows)
@@ -241,6 +266,22 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                     #endregion
 
+                case ReportTypes.ProductListWithInvalidMatrix:
+                    #region Products List With Invalid Unit Matrix
+                    dt = clsProductInventories.ListAsDataTable(int.Parse(cboBranch.SelectedItem.Value), SupplierID: long.Parse(cboContact.SelectedItem.Value), ProductGroupID: long.Parse(cboProductGroup.SelectedItem.Value), ProductSubGroupID: long.Parse(cboSubGroup.SelectedItem.Value), ProductCode: txtProductCode.Text, ShowOnlyWithInvalidUnitMatrix: true);
+                    clsProduct.CommitAndDispose();
+
+                    foreach (System.Data.DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.Products.NewRow();
+
+                        foreach (DataColumn dc in rptds.Products.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.Products.Rows.Add(drNew);
+                    }
+                    break;
+                    #endregion
                 case ReportTypes.WeightedProductsForWeighingScale:
                 case ReportTypes.CountedProductsForWeighingScale:
                     #region Weighted and Counted Products For Weighing Scale
@@ -262,6 +303,25 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                     #endregion
 
+                case ReportTypes.ProductsInDemoReport:
+                    #region Products In Demo
+                    DateTime StartTransactionDate = DateTime.TryParse(txtStartDate.Text + " " + txtStartTime.Text, out StartTransactionDate) ? StartTransactionDate : DateTime.MinValue;
+                    DateTime EndTransactionDate = DateTime.TryParse(txtEndDate.Text + " " + txtEndTime.Text, out EndTransactionDate) ? EndTransactionDate : DateTime.MinValue;
+
+                    SalesTransactionItems clsSalesTransactionItemsDemo = new SalesTransactionItems();
+                    System.Data.DataTable dtDemo = clsSalesTransactionItemsDemo.ProductsInDemoReport(Int32.Parse(cboBranch.SelectedItem.Value), Int64.Parse(cboContact.SelectedItem.Value), cboProductGroup.SelectedItem.Text, cboSubGroup.SelectedItem.Text, txtProductCode.Text, "", StartTransactionDate, EndTransactionDate);
+                    clsSalesTransactionItemsDemo.CommitAndDispose();
+                    foreach (DataRow dr in dtDemo.Rows)
+                    {
+                        DataRow drNew = rptds.ProductsInDemo.NewRow();
+
+                        foreach (DataColumn dc in rptds.ProductsInDemo.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.ProductsInDemo.Rows.Add(drNew);
+                    }
+                    break;
+                    #endregion
                 default:
                     return;
 
@@ -305,6 +365,13 @@ namespace AceSoft.RetailPlus.Reports
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);
                     
+                    paramField = Report.DataDefinition.ParameterFields["ReportHeaderLabel"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = "Product's List Report";
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
                     break;
 
                 case ReportTypes.ProductPriceList:
@@ -323,6 +390,22 @@ namespace AceSoft.RetailPlus.Reports
                     paramField.ApplyCurrentValues(currentValues);
                     break;
 
+                case ReportTypes.ProductListWithInvalidMatrix:
+                    paramField = Report.DataDefinition.ParameterFields["BranchName"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = cboBranch.SelectedItem.Text;
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    paramField = Report.DataDefinition.ParameterFields["ReportHeaderLabel"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = "Product's List Report With Invalid Unit Matrix";
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    break;
                 case ReportTypes.WeightedProductsForWeighingScale:
                     paramField = Report.DataDefinition.ParameterFields["Mode"];
                     discreteParam = new ParameterDiscreteValue();
@@ -341,11 +424,27 @@ namespace AceSoft.RetailPlus.Reports
                     paramField.ApplyCurrentValues(currentValues);
                     break;
 
+                case ReportTypes.ProductsInDemoReport:
+                    DateTime StartTransactionDate = DateTime.TryParse(txtStartDate.Text + " " + txtStartTime.Text, out StartTransactionDate) ? StartTransactionDate : DateTime.MinValue;
+                    paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = StartTransactionDate.ToString("MMM dd, yyyy HH:mm");
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    DateTime EndTransactionDate = DateTime.TryParse(txtEndDate.Text + " " + txtEndTime.Text, out EndTransactionDate) ? EndTransactionDate : DateTime.MinValue;
+                    paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
+                    discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = EndTransactionDate.ToString("MMM dd, yyyy HH:mm");
+                    currentValues = new ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
+                    break;
                 default:
                     return;
-
             } 
-            
 		}
 
 		#endregion
@@ -397,15 +496,14 @@ namespace AceSoft.RetailPlus.Reports
             try
             {
                 ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-                clsProductSubGroupColumns.ProductSubGroupCode = true;
-                clsProductSubGroupColumns.ProductSubGroupName = true;
+                clsProductSubGroupColumns.ColumnsCodeNameID = true;
 
                 ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
                 clsSearchKeys.ProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
                 clsSearchKeys.ProductSubGroupCode = txtSubGroupCode.Text;
 
                 ProductSubGroup clsSubGroup = new ProductSubGroup();
-                cboSubGroup.DataTextField = "ProductSubGroupName";
+                cboSubGroup.DataTextField = "ProductSubGroupCode";
                 cboSubGroup.DataValueField = "ProductSubGroupID";
                 cboSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0);
                 cboSubGroup.DataBind();
@@ -462,11 +560,22 @@ namespace AceSoft.RetailPlus.Reports
         {
             string strReportType = cboReportType.SelectedValue;
 
-            if (strReportType == ReportTypes.CountedProductsForWeighingScale
-                || strReportType == ReportTypes.WeightedProductsForWeighingScale)
-                holderWeighted.Visible = true;
-            else
-                holderWeighted.Visible = false;
+            switch (strReportType)
+            {
+                case ReportTypes.CountedProductsForWeighingScale:
+                case ReportTypes.WeightedProductsForWeighingScale:
+                    holderWeighted.Visible = true;
+                    holderHistoryDate.Visible = false;
+                    break;
+                case ReportTypes.ProductsInDemoReport:
+                    holderWeighted.Visible = false;
+                    holderHistoryDate.Visible = true;
+                    break;
+                default:
+                    holderWeighted.Visible = false;
+                    holderHistoryDate.Visible = false;
+                    break;
+            }
         }
 
         #endregion

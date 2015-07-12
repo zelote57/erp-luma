@@ -81,6 +81,7 @@ namespace AceSoft.RetailPlus.Data
         /// </summary>
         public PriceLevel PriceLevel;
 
+
         public DateTime CreatedOn;
         public DateTime LastModified;
 

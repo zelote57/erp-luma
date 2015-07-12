@@ -130,13 +130,13 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator2;
         
         /// <summary>
-        /// holderProductCode control.
+        /// holderBranch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder holderProductCode;
+        protected global::System.Web.UI.WebControls.PlaceHolder holderBranch;
         
         /// <summary>
         /// cboBranch control.
@@ -146,6 +146,15 @@ namespace AceSoft.RetailPlus.Reports {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cboBranch;
+        
+        /// <summary>
+        /// holderProductCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder holderProductCode;
         
         /// <summary>
         /// cboProductCode control.

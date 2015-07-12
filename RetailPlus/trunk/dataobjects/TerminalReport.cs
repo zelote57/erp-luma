@@ -43,8 +43,8 @@ namespace AceSoft.RetailPlus.Data
 		public decimal GroupSales;
 		public decimal OldGrandTotal;
 		public decimal NewGrandTotal;
-        public decimal ActualOldGrandTotal;
-        public decimal ActualNewGrandTotal;
+        public decimal eSalesOldGrandTotal;
+        public decimal eSalesNewGrandTotal;
         public decimal VATExempt;
         public decimal NonVATableAmount;
         public decimal VATableAmount;
@@ -274,8 +274,8 @@ namespace AceSoft.RetailPlus.Data
 					            "GroupSales, " +
 					            "OldGrandTotal, " +
 					            "NewGrandTotal, " +
-                                "ActualOldGrandTotal, " +
-                                "ActualNewGrandTotal, " +
+                                "eSalesOldGrandTotal, " +
+                                "eSalesNewGrandTotal, " +
                                 "VATExempt, " +
 					            "NonVATableAmount, " +
                                 "VATableAmount, " +
@@ -455,8 +455,8 @@ namespace AceSoft.RetailPlus.Data
                     Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                     Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
                     Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
-                    Details.ActualOldGrandTotal = decimal.Parse(dr["ActualOldGrandTotal"].ToString());
-                    Details.ActualNewGrandTotal = decimal.Parse(dr["ActualNewGrandTotal"].ToString());
+                    Details.eSalesOldGrandTotal = decimal.Parse(dr["eSalesOldGrandTotal"].ToString());
+                    Details.eSalesNewGrandTotal = decimal.Parse(dr["eSalesNewGrandTotal"].ToString());
                     Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
                     Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
                     Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
@@ -518,7 +518,11 @@ namespace AceSoft.RetailPlus.Data
                     Details.NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString());
                     Details.NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
                     Details.DateLastInitialized = DateTime.Parse(dr["DateLastInitialized"].ToString());
-                    Details.DateLastInitializedToDisplay = DateTime.Parse(dr["DateLastInitializedToDisplay"].ToString());
+                    try
+                    {
+                        Details.DateLastInitializedToDisplay = DateTime.Parse(dr["DateLastInitializedToDisplay"].ToString());
+                    }
+                    catch { Details.DateLastInitializedToDisplay = Details.DateLastInitialized; }
                     Details.NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString());
                     Details.NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString());
                     Details.NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString());
@@ -594,8 +598,8 @@ namespace AceSoft.RetailPlus.Data
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                 Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
                 Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
-                Details.ActualOldGrandTotal = decimal.Parse(dr["ActualOldGrandTotal"].ToString());
-                Details.ActualNewGrandTotal = decimal.Parse(dr["ActualNewGrandTotal"].ToString());
+                Details.eSalesOldGrandTotal = decimal.Parse(dr["eSalesOldGrandTotal"].ToString());
+                Details.eSalesNewGrandTotal = decimal.Parse(dr["eSalesNewGrandTotal"].ToString());
                 Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
                 Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
                 Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());

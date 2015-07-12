@@ -249,10 +249,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 		}
 		private void LoadList()
 		{	
-			ProductSubGroup clsProductSubGroup = new ProductSubGroup();
-			DataClass clsDataClass = new DataClass();
-
-            string SortField = "SequenceNo ASC, ProductSubGroupCode";
+			string SortField = "SequenceNo ASC, ProductSubGroupCode";
             if (Request.QueryString["sortfield"] != null)
             { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
 
@@ -271,26 +268,15 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
             if (SearchKey == null) { SearchKey = string.Empty; }
             else if (SearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(SearchKey, Session.SessionID)); }
 
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductGroupID = true;
-            clsProductSubGroupColumns.ProductGroupCode = true;
-            clsProductSubGroupColumns.ProductSubGroupCode = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-            clsProductSubGroupColumns.BaseUnitID = true;
-            clsProductSubGroupColumns.BaseUnitName = true;
-            clsProductSubGroupColumns.Price = true;
-            clsProductSubGroupColumns.PurchasePrice = true;
-            clsProductSubGroupColumns.SequenceNo = true;
-            clsProductSubGroupColumns.VAT = true;
-            clsProductSubGroupColumns.EVAT = true;
-            clsProductSubGroupColumns.LocalTax = true;
-
-
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsAll = true };
+            
             ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
+            clsSearchKeys.ProductGroupDetails = new ProductGroupDetails() { ProductGroupCode = SearchKey, ProductGroupName = SearchKey };
+            clsSearchKeys.ProductSubGroupCode = SearchKey;
             clsSearchKeys.ProductSubGroupName = SearchKey;
 
-            ProductSubGroup clsSubGroup = new ProductSubGroup(clsProductSubGroup.Connection, clsProductSubGroup.Transaction);
-            System.Data.DataTable dt = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, SortField, (sortoption == SortOption.Ascending ? System.Data.SqlClient.SortOrder.Ascending : System.Data.SqlClient.SortOrder.Descending));
+            ProductSubGroup clsProductSubGroup = new ProductSubGroup();
+            System.Data.DataTable dt = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, SortField: SortField, SortOrder: (sortoption == SortOption.Ascending ? System.Data.SqlClient.SortOrder.Ascending : System.Data.SqlClient.SortOrder.Descending));
             clsProductSubGroup.CommitAndDispose();
 
             PageData.DataSource = dt.DefaultView;

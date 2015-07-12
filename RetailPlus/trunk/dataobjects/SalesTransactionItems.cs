@@ -76,6 +76,16 @@ namespace AceSoft.RetailPlus.Data
         public decimal VATExempt;
 
         public string ItemRemarks;
+
+        // 28Jun2015 : Added to handle the return item
+        public Int64 ReturnTransactionItemsID;
+        public Int64 RefReturnTransactionItemsID;
+
+        // 05Jul2015 : Added to handle supplier details
+        public Int64 SupplierID;
+        public string SupplierCode;
+        public string SupplierName;
+        
     }
 
     public struct SalesTransactionItemColumns
@@ -129,6 +139,10 @@ namespace AceSoft.RetailPlus.Data
         public bool ScannedAmt;
 
         public bool PaxNo;
+
+        public bool SupplierID;
+        public bool SupplierCode;
+        public bool SupplierName;
     }
 
     public struct SalesTransactionItemColumnNames
@@ -184,6 +198,9 @@ namespace AceSoft.RetailPlus.Data
         
         public const string PaxNo = "PaxNo";
 
+        public const string SupplierID = "SupplierID";
+        public const string SupplierCode = "SupplierCode";
+        public const string SupplierName = "SupplierName";
     }
 
     [StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -219,6 +236,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 string SQL = "INSERT INTO tblTransactionItems (" +
+                                "ReturnTransactionItemsID, " +
                                 "TransactionID, " +
                                 "ProductID, " +
                                 "ProductCode, " +
@@ -266,8 +284,10 @@ namespace AceSoft.RetailPlus.Data
                                 "OrderSlipPrinter5," +
                                 "OrderSlipPrinted," +
                                 "PercentageCommision," +
-                                "Commision, RewardPoints, ItemRemarks, PaxNo, CreatedOn" +
+                                "Commision, RewardPoints, ItemRemarks, PaxNo, " +
+                                "SupplierID, SupplierCode, SupplierName, CreatedOn" +
                             ")VALUES(" +
+                                "@ReturnTransactionItemsID, " +
                                 "@TransactionID, " +
                                 "@ProductID, " +
                                 "@ProductCode, " +
@@ -315,12 +335,14 @@ namespace AceSoft.RetailPlus.Data
                                 "@OrderSlipPrinter5," +
                                 "@OrderSlipPrinted," +
                                 "@PercentageCommision," +
-                                "@Commision, @RewardPoints, @ItemRemarks, @PaxNo, NOW());";
+                                "@Commision, @RewardPoints, @ItemRemarks, @PaxNo, " +
+                                "@SupplierID, @SupplierCode, @SupplierName, NOW());";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@ReturnTransactionItemsID", Details.ReturnTransactionItemsID);
                 cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
                 cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
                 cmd.Parameters.AddWithValue("@ProductCode", Details.ProductCode);
@@ -374,6 +396,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@RewardPoints", Details.RewardPoints);
                 cmd.Parameters.AddWithValue("@ItemRemarks", Details.ItemRemarks);
                 cmd.Parameters.AddWithValue("@PaxNo", Details.PaxNo);
+                cmd.Parameters.AddWithValue("@SupplierID", Details.SupplierID);
+                cmd.Parameters.AddWithValue("@SupplierCode", Details.SupplierCode);
+                cmd.Parameters.AddWithValue("@SupplierName", Details.SupplierName);
 
                 base.ExecuteNonQuery(cmd);
 
@@ -386,7 +411,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return iID;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -397,6 +421,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 string SQL = "UPDATE tblTransactionItems SET " +
+                                "ReturnTransactionItemsID   =   @ReturnTransactionItemsID, " +
                                 "TransactionID				=	@TransactionID, " +
                                 "ProductID					=	@ProductID, " +
                                 "ProductCode				=	@ProductCode, " +
@@ -452,6 +477,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@ReturnTransactionItemsID", Details.ReturnTransactionItemsID);
                 cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
                 cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
                 cmd.Parameters.AddWithValue("@ProductCode", Details.ProductCode);
@@ -508,7 +534,6 @@ namespace AceSoft.RetailPlus.Data
 
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -561,6 +586,28 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+        public void UpdateRefReturnTransactionItemsID(Int64 TransactionItemsID, Int64 ReturnTransactionItemsID)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblTransactionItems SET " +
+                                "RefReturnTransactionItemsID    =   @ReturnTransactionItemsID " +
+                            "WHERE TransactionItemsID		    =	@TransactionItemsID; ";
+
+                cmd.Parameters.AddWithValue("@ReturnTransactionItemsID", ReturnTransactionItemsID);
+                cmd.Parameters.AddWithValue("@TransactionItemsID", TransactionItemsID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
         #endregion
 
@@ -583,6 +630,8 @@ namespace AceSoft.RetailPlus.Data
 
                     itemDetails.ItemNo = itemno.ToString();
                     itemDetails.TransactionItemsID = Int64.Parse(dr["TransactionItemsID"].ToString());
+                    itemDetails.ReturnTransactionItemsID = Int64.Parse(dr["ReturnTransactionItemsID"].ToString());
+                    itemDetails.RefReturnTransactionItemsID = Int64.Parse(dr["RefReturnTransactionItemsID"].ToString());
                     itemDetails.TransactionID = Int64.Parse(dr["TransactionID"].ToString());
                     itemDetails.ProductID = Int64.Parse(dr["ProductID"].ToString());
                     itemDetails.ProductCode = "" + dr["ProductCode"].ToString();
@@ -632,6 +681,9 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.Commision = decimal.Parse(dr["Commision"].ToString());
                     itemDetails.RewardPoints = decimal.Parse(dr["RewardPoints"].ToString());
                     itemDetails.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
+                    itemDetails.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
+                    itemDetails.SupplierCode = "" + dr["SupplierCode"].ToString();
+                    itemDetails.SupplierName = "" + dr["SupplierName"].ToString();
                     itemDetails.ItemRemarks = "" + dr["ItemRemarks"].ToString();
 
                     if (itemDetails.TransactionItemStatus == TransactionItemStatus.Return)
@@ -990,7 +1042,12 @@ namespace AceSoft.RetailPlus.Data
                                 "Commision, " +
                                 "RewardPoints, " +
                                 "ItemRemarks, " +
-                                "PaxNo " +
+                                "PaxNo, " +
+                                "SupplierID, " +
+                                "SupplierCode, " +
+                                "SupplierName, " +
+                                "ReturnTransactionItemsID, " +
+                                "RefReturnTransactionItemsID " +
                             "FROM tblTransactionItems " +
                             "WHERE TransactionID = @TransactionID AND TransactionItemStatus <> @TransactionItemStatus ORDER BY " + SortField;
 
@@ -1070,7 +1127,12 @@ namespace AceSoft.RetailPlus.Data
                                 "Commision, " +
                                 "RewardPoints, " +
                                 "ItemRemarks, " +
-                                "PaxNo " +
+                                "PaxNo, " +
+                                "SupplierID, " +
+                                "SupplierCode, " +
+                                "SupplierName, " +
+                                "ReturnTransactionItemsID, " +
+                                "RefReturnTransactionItemsID " +
                             "FROM tblTransactionItems " +
                             "WHERE TransactionID IN (" + TransactionIDs + ") AND TransactionItemStatus <> @TransactionItemStatusTrash " +
                                 "AND TransactionItemStatus <> @TransactionItemStatusVoid ";
@@ -1397,6 +1459,88 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public System.Data.DataTable ProductsInDemoReport(Int32 BranchID = 0, Int64 SupplierID = 0, string GroupCode = "" , string SubGroupCode = "", string ProductCode = "", string CustomerName = "", DateTime? TransactionDateFrom = null, DateTime? TransactionDateTo = null, DateTime? ReturnDateFrom = null, DateTime? ReturnDateTo = null)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
+                string SQL = "SELECT items.ProductCode, items.Description, trx.DateClosed, trx.CustomerName, " +
+		                            "trxRet.DateClosed ReturnDate, trx.CashierName ReleasedBy, trxret.CashierName ReturnTo, items.ItemRemarks ReleaseRemarks, itemsret.ItemRemarks ReturnRemarks " +
+                             "FROM tblTransactionItems items " +
+                                "INNER JOIN tblTransactionItems itemsret ON items.RefReturnTransactionItemsID = itemsret.TransactionItemsID AND itemsret.TransactionItemStatus = 3 " +
+                                "INNER JOIN tblTransactions trx ON items.TransactionID = trx.TransactionID " +
+                                "INNER JOIN tblTransactions trxret ON itemsret.TransactionID = trxret.TransactionID " +
+                                "WHERE items.TransactionItemStatus = 7 "; // Demo
+
+                #region Search Queries
+
+                if (BranchID != 0)
+                {
+                    SQL += "AND trx.BranchID = @BranchID ";
+                    cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                }
+                if (SupplierID != 0)
+                {
+                    SQL += "AND items.SupplierID = @SupplierID ";
+                    cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+                }
+                if (!string.IsNullOrEmpty(GroupCode))
+                {
+                    SQL += "AND items.ProductGroup = @GroupCode ";
+                    cmd.Parameters.AddWithValue("@GroupCode", GroupCode);
+                }
+                if (!string.IsNullOrEmpty(SubGroupCode))
+                {
+                    SQL += "AND items.ProductSubGroup = @SubGroupCode ";
+                    cmd.Parameters.AddWithValue("@SubGroupCode", SubGroupCode);
+                }
+                if (!string.IsNullOrEmpty(ProductCode))
+                {
+                    SQL += "AND items.ProductCode = @ProductCode ";
+                    cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
+                }
+                if (!string.IsNullOrEmpty(CustomerName))
+                {
+                    SQL += "AND trx.CustomerName = @CustomerName ";
+                    cmd.Parameters.AddWithValue("@CustomerName", CustomerName);
+                }
+                if (TransactionDateFrom.GetValueOrDefault() != DateTime.MinValue)
+                {
+                    SQL += "AND trx.DateClosed >= @TransactionDateFrom ";
+                    cmd.Parameters.AddWithValue("@TransactionDateFrom", TransactionDateFrom.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : TransactionDateFrom);
+                }
+                if (TransactionDateTo.GetValueOrDefault() != DateTime.MinValue)
+                {
+                    SQL += "AND trx.DateClosed <= @TransactionDateTo ";
+                    cmd.Parameters.AddWithValue("@TransactionDateTo", TransactionDateTo.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : TransactionDateTo);
+                }
+
+                if (ReturnDateFrom.GetValueOrDefault() != DateTime.MinValue)
+                {
+                    SQL += "AND trxret.DateClosed >= @ReturnDateFrom ";
+                    cmd.Parameters.AddWithValue("@ReturnDateFrom", ReturnDateFrom.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : ReturnDateFrom);
+                }
+                if (ReturnDateTo.GetValueOrDefault() != DateTime.MinValue)
+                {
+                    SQL += "AND trxret.DateClosed <= @ReturnDateTo ";
+                    cmd.Parameters.AddWithValue("@ReturnDateTo", ReturnDateTo.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : ReturnDateTo);
+                }
+                #endregion
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         #endregion
 
         #region Public Modifiers
@@ -1487,6 +1631,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = "UPDATE tblTransactionItems SET " +
+                                "ReturnTransactionItemsID       =   0, " +
+                                "RefReturnTransactionItemsID    =   0, " +
                                 "Quantity						=	Quantity * -1, " +
                                 "Price							=	Price * -1, " +
                                 "Discount						=	Discount * -1, " +
@@ -1521,6 +1667,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = "UPDATE tblTransactionItems SET " +
+                                "ReturnTransactionItemsID       =   0, " +
+                                "RefReturnTransactionItemsID    =   0, " +
                                 "Quantity						=	Quantity * -1, " +
                                 "Price							=	Price * -1, " +
                                 "Discount						=	Discount * -1, " +

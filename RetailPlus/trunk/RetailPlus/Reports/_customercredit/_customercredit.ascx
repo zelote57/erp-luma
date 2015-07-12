@@ -5,10 +5,10 @@
 <ContentTemplate>
     <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	    <tr>
-		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
+		    <td colspan="3"><img height="10" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1"/></td>
 	    </tr>
 	    <tr>
-		    <td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
+		    <td><img src="/RetailPlus/_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		    <td>
 			    <table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				    <tr>
@@ -66,7 +66,7 @@
 						    </table>
 					    </td>
 					    <td class="ms-toolbar" align="right" nowrap="nowrap" id="align032" width="99%" >
-						    <img src="../../_layouts/images/blank.gif" width="1" height="1" alt="">
+						    <img src="/RetailPlus/_layouts/images/blank.gif" width="1" height="1" alt="">
 					    </td>
 				    </tr>
 			    </table>
@@ -74,7 +74,7 @@
 		    </td>
 	    </tr>
 	    <tr>
-		    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		    <td><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="10" /></td>
 		    <td>
 			    <table cellpadding="0" cellspacing="0" border="0" width="100%">
 				    <tr>
@@ -96,7 +96,7 @@
                                             ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgCustomerGroupSearch_Click"></asp:imagebutton>
 								    </td>
-								    <td width="99%" id="Td1" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+								    <td width="99%" id="Td1" nowrap="nowrap" align="right"><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1">
 								    </td>
 							    </tr>
                                 </asp:PlaceHolder>
@@ -115,7 +115,7 @@
                                             ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgContactNameSearch_Click"></asp:imagebutton>
 								    </td>
-								    <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+								    <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1">
 								    </td>
 							    </tr>
 						    </table>
@@ -131,10 +131,10 @@
 				    </tr>
 			    </table>
 		    </td>
-		    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		    <td><img height="1" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="10" /></td>
 	    </tr>
 	    <tr>
-		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
+		    <td colspan="3"><img height="10" alt="" src="/RetailPlus/_layouts/images/blank.gif" width="1"/></td>
 	    </tr>
     </table>
     </ContentTemplate>

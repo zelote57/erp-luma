@@ -38,6 +38,11 @@ namespace AceSoft.RetailPlus.Reports
             }
         }
 
+        private void ManageSecurity()
+        {
+
+        }
+
 		private void LoadOptions()
 		{
             Int64 UID = Convert.ToInt64(Session["UID"]);
@@ -52,6 +57,7 @@ namespace AceSoft.RetailPlus.Reports
             if (clsDetails.Read)
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
 
+            if (cboReportType.Items.Count == 2) cboReportType.Items.RemoveAt(cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.REPORT_SELECTION)));
 			cboReportType.SelectedIndex = 0;
 
             cboConsignment.Items.Clear();

@@ -192,18 +192,16 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         }
         private void LoadSubGroup()
         {
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupID = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-
             ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
             clsSearchKeys.ProductSubGroupCode = txtProductSubGroup.Text;
             clsSearchKeys.ProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
 
-            Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup();
+            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns() { ColumnsNameID = true };
+
+            ProductSubGroup clsProductSubGroup = new ProductSubGroup();
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
             cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, Data.ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
+            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, SortField: "ProductSubGroupName", SortOrder: System.Data.SqlClient.SortOrder.Ascending);
             cboProductSubGroup.DataBind();
             clsProductSubGroup.CommitAndDispose();
 

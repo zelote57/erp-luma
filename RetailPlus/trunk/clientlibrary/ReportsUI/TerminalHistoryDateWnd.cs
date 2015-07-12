@@ -64,7 +64,7 @@ namespace AceSoft.RetailPlus.Client.UI
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
-            if (Common.isTerminalMultiInstanceEnabled())
+            if (TerminalDetails.MultiInstanceEnabled)
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
             else
             { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
@@ -360,7 +360,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private void LoadOptions()
         {
             Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-            System.Data.DataTable dt = clsTerminalReportHistory.DatesLastInitialized(Constants.TerminalBranchID, TerminalDetails.TerminalNo, Convert.ToDateTime(txtDateFrom.Text), Convert.ToDateTime(txtDateTo.Text));
+            System.Data.DataTable dt = clsTerminalReportHistory.DatesLastInitialized(Constants.TerminalBranchID, TerminalDetails.TerminalNo, Convert.ToDateTime(txtDateFrom.Text), Convert.ToDateTime(txtDateTo.Text + " 23:59:59"));
             clsTerminalReportHistory.CommitAndDispose();
 
             cboDate.DataSource = null;

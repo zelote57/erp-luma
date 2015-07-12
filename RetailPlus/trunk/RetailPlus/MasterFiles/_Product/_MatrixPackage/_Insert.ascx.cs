@@ -95,15 +95,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._MatrixPackage
 
 		private void LoadOptions()
 		{
-			DataClass clsDataClass = new DataClass();
-
 			lblMatrixID.Text = Common.Decrypt((string)Request.QueryString["matrixid"],Session.SessionID);
 			lblProductID.Text = Common.Decrypt((string)Request.QueryString["prodid"],Session.SessionID);
 
 			ProductUnitsMatrix clsUnit = new ProductUnitsMatrix();
 			cboUnit.DataTextField = "BottomUnitName";
 			cboUnit.DataValueField = "BottomUnitID";
-			cboUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List(Convert.ToInt64(lblProductID.Text),"MatrixID",SortOption.Ascending)).DefaultView;
+			cboUnit.DataSource = clsUnit.ListAsDataTable(Convert.ToInt64(lblProductID.Text)).DefaultView;
 			cboUnit.DataBind();
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
 			clsUnit.CommitAndDispose();	

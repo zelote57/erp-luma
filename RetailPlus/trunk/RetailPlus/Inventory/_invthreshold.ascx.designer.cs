@@ -76,31 +76,31 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.UpdatePanel UpdatePanel3;
         
         /// <summary>
-        /// cboProductSubGroup control.
+        /// cboProductGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboProductSubGroup;
+        protected global::System.Web.UI.WebControls.DropDownList cboProductGroup;
         
         /// <summary>
-        /// txtProductSubGroup control.
+        /// txtProductGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProductSubGroup;
+        protected global::System.Web.UI.WebControls.TextBox txtProductGroup;
         
         /// <summary>
-        /// imgProductSubGroupSearch control.
+        /// imgProductGroupSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgProductSubGroupSearch;
+        protected global::System.Web.UI.WebControls.ImageButton imgProductGroupSearch;
         
         /// <summary>
         /// UpdatePanel1 control.

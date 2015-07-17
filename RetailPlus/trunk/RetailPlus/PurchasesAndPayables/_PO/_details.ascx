@@ -1,6 +1,7 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._PO.__Details" Codebehind="_Details.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
+<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">false</asp:label>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>

@@ -31,6 +31,7 @@ namespace AceSoft.RetailPlus.Data
 		public string PromoTypeCode;
 		public string PromoTypeName;
 
+        public PromoLevel PromoLevel;
         public DateTime CreatedOn;
         public DateTime LastModified;
 	}
@@ -95,11 +96,12 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procSavePromoBySupplier(@PromoBySupplierID, @PromoBySupplierCode, @PromoBySupplierName, @StartDate, @EndDate, @PromoTypeID, @Status, @CreatedOn, @LastModified);";
+                string SQL = "CALL procSavePromoBySupplier(@PromoBySupplierID, @PromoBySupplierCode, @PromoBySupplierName, @PromoLevel, @StartDate, @EndDate, @PromoTypeID, @Status, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("PromoBySupplierID", Details.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("PromoBySupplierCode", Details.PromoBySupplierCode);
                 cmd.Parameters.AddWithValue("PromoBySupplierName", Details.PromoBySupplierName);
+                cmd.Parameters.AddWithValue("PromoLevel", Details.PromoLevel.ToString("d"));
                 cmd.Parameters.AddWithValue("StartDate", Details.StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("EndDate", Details.EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("PromoTypeID", Details.PromoTypeID);
@@ -116,6 +118,38 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public PromoBySupplierDetails getPromoBySupplierID()
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT " +
+                                "PromoBySupplierID  " +
+                            "FROM tblPromoBySupplier " +
+                            "WHERE 1=1 " +
+                                "AND Status = 1 " +
+                                "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                                "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                PromoBySupplierDetails clsPromoBySupplierDetails = new PromoBySupplierDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    clsPromoBySupplierDetails = Details(Int64.Parse(dr["PromoBySupplierID"].ToString())); break;
+                }
+
+                return clsPromoBySupplierDetails;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 		
 		#endregion
 
@@ -162,6 +196,7 @@ namespace AceSoft.RetailPlus.Data
 								"PromoBySupplierID, " +
 								"PromoBySupplierCode, " +
 								"PromoBySupplierName, " +
+                                "PromoLevel, " +
 								"StartDate, " +
 								"EndDate, " +
 								"Status, " +
@@ -184,6 +219,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.PromoBySupplierID = Int64.Parse(dr["PromoBySupplierID"].ToString());
                     Details.PromoBySupplierCode = "" + dr["PromoBySupplierCode"].ToString();
                     Details.PromoBySupplierName = "" + dr["PromoBySupplierName"].ToString();
+                    Details.PromoLevel = (PromoLevel) Enum.Parse(typeof(PromoLevel), dr["PromoLevel"].ToString());
                     Details.StartDate = DateTime.Parse(dr["StartDate"].ToString());
                     Details.EndDate = DateTime.Parse(dr["EndDate"].ToString());
                     Details.PromoTypeID = Int32.Parse(dr["PromoTypeID"].ToString());
@@ -215,6 +251,7 @@ namespace AceSoft.RetailPlus.Data
                                     "PromoBySupplierID, " +
                                     "PromoBySupplierCode, " +
                                     "PromoBySupplierName, " +
+                                    "PromoLevel, " +
                                     "StartDate, " +
                                     "EndDate, " +
                                     "Status, " +

@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Reports
 
             cboBranch.DataTextField = "BranchCode";
             cboBranch.DataValueField = "BranchID";
-            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable(OnlyIncludeIneSales: true).DefaultView;
             cboBranch.DataBind();
             cboBranch.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboBranch.SelectedIndex = 0;

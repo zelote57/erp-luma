@@ -1,4 +1,5 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo.__Insert" Codebehind="_Insert.ascx.cs" %>
+<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">false</asp:label>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>

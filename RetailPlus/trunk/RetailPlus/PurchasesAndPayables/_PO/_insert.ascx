@@ -1,6 +1,6 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._PO.__Insert" Codebehind="_Insert.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/DocumentScripts.js"></script>
-<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">0</asp:label>
+<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">false</asp:label>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
@@ -194,7 +194,7 @@
                                         <td class="ms-formspacer">
                                             <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:dropdownlist id="cboBranch" CssClass="ms-short" runat="server" onselectedindexchanged="cboBranch_SelectedIndexChanged"></asp:dropdownlist><asp:requiredfieldvalidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="cboBranch" Display="Dynamic" ErrorMessage="'Branch' must not be left blank."></asp:requiredfieldvalidator>
+                                            <asp:dropdownlist id="cboBranch" CssClass="ms-short" runat="server" onselectedindexchanged="cboBranch_SelectedIndexChanged" CausesValidation="false"></asp:dropdownlist><asp:requiredfieldvalidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="cboBranch" Display="Dynamic" ErrorMessage="'Branch' must not be left blank."></asp:requiredfieldvalidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>

@@ -18,6 +18,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             if (!IsPostBack && Visible)
 			{
                 lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
+
+                bool boIsePurchaseOrder = Request.QueryString["isepurchaseorder"] == null ? false : bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+                lblIsePurchaseOrder.Text = boIsePurchaseOrder ? "true" : "false";
+
 				LoadOptions();	
 				LoadRecord();	
 			}
@@ -111,10 +115,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			cboSupplier.SelectedIndex = 0;
 			cboSupplier_SelectedIndexChanged(null, null);
 
+            bool boIsePurchaseOrder = bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+
 			Branch clsBranch = new Branch();
 			cboBranch.DataTextField = "BranchCode";
 			cboBranch.DataValueField = "BranchID";
-			cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable(OnlyIncludeIneSales: boIsePurchaseOrder).DefaultView;
 			cboBranch.DataBind();
 			clsBranch.CommitAndDispose();
             cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));

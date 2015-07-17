@@ -140,7 +140,7 @@ namespace AceSoft.RetailPlus.Reports
             // show label for reporting
             if (clsDetails.Read && !boShowRetailPOSReports) boShowRetailPOSReports = true;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport); 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.StockTransactions); 
 			lnkStockTransaction.Visible = clsDetails.Read;
             if (!clsDetails.Read) divlnkStockTransaction.Style.Add("display", "none");
             // show label for reporting

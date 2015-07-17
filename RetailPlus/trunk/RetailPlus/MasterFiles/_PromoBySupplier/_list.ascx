@@ -93,7 +93,8 @@
 						<colgroup>
 							<col width="4%">
 							<col width="15%">
-							<col width="45%">
+							<col width="30%">
+                            <col width="15%">
 							<col width="15%">
 							<col width="15%">
 							<col width="5%">
@@ -106,6 +107,8 @@
 								<asp:hyperlink id="SortByPromoBySupplierCode" runat="server">Promo Code</asp:hyperlink></th >
 							<th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByPromoBySupplierName" runat="server">Promo Name</asp:hyperlink></th >
+                            <th class="ms-vh2" style="padding-bottom: 4px">
+								<asp:hyperlink id="Hyperlink2" runat="server">Promo Level</asp:hyperlink></th >
 							<th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByStartDate" runat="server">Start Date</asp:hyperlink></th >
 							<th class="ms-vh2" style="padding-bottom: 4px">
@@ -122,7 +125,8 @@
 						<colgroup>
 							<col width="4%">
 							<col width="15%">
-							<col width="45%">
+							<col width="30%">
+                            <col width="15%">
 							<col width="15%">
 							<col width="15%">
 							<col width="5%">
@@ -137,6 +141,9 @@
 							</td>
 							<td class="ms-vb-user">
 								<asp:Label ID="lblPromoBySupplierName" Runat="server"></asp:Label>
+							</td>
+                            <td class="ms-vb-user">
+								<asp:Label ID="lblPromoLevel" Runat="server"></asp:Label>
 							</td>
 							<td class="ms-vb-user">
 								<asp:Label ID="lblStartDate" Runat="server"></asp:Label>

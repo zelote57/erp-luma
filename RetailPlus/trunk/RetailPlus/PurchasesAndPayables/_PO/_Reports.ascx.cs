@@ -27,6 +27,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 else
                     lblReportType.Text = "POReport";
 
+                bool boIsePurchaseOrder = Request.QueryString["isepurchaseorder"] == null ? false : bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+                lblIsePurchaseOrder.Text = boIsePurchaseOrder ? "true" : "false";
+
                 LoadOptions();
                 if (!string.IsNullOrEmpty(Request.QueryString["target"]))
                     GeneratePDF();

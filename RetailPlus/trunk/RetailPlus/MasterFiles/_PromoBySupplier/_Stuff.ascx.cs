@@ -69,11 +69,13 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 
             txtPromoBySupplierValue.Text = "0";
 
-            txtCouponRemarks.Text =  "{DateNow}: Congratulations you qualified for our annual raffle promo brought to you by HOUSEWARE PLAZA SUPERSTORE.";
+            txtCouponRemarks.Text =  "{DateNow}: Congratulations you qualified for our annual raffle promo brought to you by HOUSEWARE PLAZA SUPERSTORE and {SupplierName}.";
             txtCouponRemarks.Text += Environment.NewLine + Environment.NewLine + "Please proceed to our customer service for more info.";
+            txtCouponRemarks.Text += Environment.NewLine + Environment.NewLine + "Products: {ProductGroup}";
             txtCouponRemarks.Text += Environment.NewLine + Environment.NewLine + "Total Amount Puchased: {Amount}";
             txtCouponRemarks.Text += Environment.NewLine + "OR No: {ORNo}";
             txtCouponRemarks.Text += Environment.NewLine + "Customer Name: {CustomerName}";
+            txtCouponRemarks.Text += Environment.NewLine + "Check Ctr: {CheckCounter}";
 		}
 
 		private void LoadList()
@@ -95,11 +97,51 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 			lblPromoBySupplierID.Text = clsDetails.PromoBySupplierID.ToString();
 			txtPromoBySupplierCode.Text = clsDetails.PromoBySupplierCode;
 			txtPromoBySupplierName.Text = clsDetails.PromoBySupplierName;
+            txtPromoLevel.Text = clsDetails.PromoLevel.ToString("G");
 			txtStartDate.Text = clsDetails.StartDate.ToString("yyyy-MM-dd HH:mm");
 			txtEndDate.Text = clsDetails.EndDate.ToString("yyyy-MM-dd HH:mm");
 
 			LoadList();
-
+            
+            switch (clsDetails.PromoLevel)
+            {
+                case PromoLevel.All:
+                    cboContact.Enabled = true; txtContactCode.Enabled = true; imgContactCodeSearch.Enabled = true;
+                    cboProductGroup.Enabled = true; txtProductGroupCode.Enabled = true; imgProductGroupCodeSearch.Enabled = true;
+                    cboSubGroup.Enabled = true; txtSubGroupCode.Enabled = true; imgSubGroupCodeSearch.Enabled = true;
+                    cboProducts.Enabled = true; txtProductCode.Enabled = true; cmdProductCode.Enabled = true;
+                    cboProductVariation.Enabled = true;
+                    break;
+                case PromoLevel.Contact:
+                    cboContact.Enabled = true; txtContactCode.Enabled = true; imgContactCodeSearch.Enabled = true;
+                    break;
+                case PromoLevel.ProductGroup:
+                    cboContact.Enabled = true; txtContactCode.Enabled = true; imgContactCodeSearch.Enabled = true;
+                    cboProductGroup.Enabled = true; txtProductGroupCode.Enabled = true; imgProductGroupCodeSearch.Enabled = true;
+                    break;
+                case PromoLevel.ProductSubGroup:
+                    cboContact.Enabled = true; txtContactCode.Enabled = true; imgContactCodeSearch.Enabled = true;
+                    cboProductGroup.Enabled = true; txtProductGroupCode.Enabled = true; imgProductGroupCodeSearch.Enabled = true;
+                    cboSubGroup.Enabled = true; txtSubGroupCode.Enabled = true; imgSubGroupCodeSearch.Enabled = true;
+                    break;
+                case PromoLevel.Product:
+                    cboContact.Enabled = true; txtContactCode.Enabled = true; imgContactCodeSearch.Enabled = true;
+                    cboProductGroup.Enabled = true; txtProductGroupCode.Enabled = true; imgProductGroupCodeSearch.Enabled = true;
+                    cboSubGroup.Enabled = true; txtSubGroupCode.Enabled = true; imgSubGroupCodeSearch.Enabled = true;
+                    cboProducts.Enabled = true; txtProductCode.Enabled = true; cmdProductCode.Enabled = true;
+                    break;
+                case PromoLevel.Variation:
+                    cboContact.Enabled = true; txtContactCode.Enabled = true; imgContactCodeSearch.Enabled = true;
+                    cboProductGroup.Enabled = true; txtProductGroupCode.Enabled = true; imgProductGroupCodeSearch.Enabled = true;
+                    cboSubGroup.Enabled = true; txtSubGroupCode.Enabled = true; imgSubGroupCodeSearch.Enabled = true;
+                    cboProducts.Enabled = true; txtProductCode.Enabled = true; cmdProductCode.Enabled = true;
+                    cboProductVariation.Enabled = true;
+                    break;
+                case PromoLevel.NotApplicable:
+                    break;
+                default:
+                    break;
+            }
 		}
 
 		private void SaveRecord()
@@ -170,7 +212,7 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 				lblPromoBySupplierValue.Text = Convert.ToDecimal(dr["PromoBySupplierValue"].ToString()).ToString("#,##0.#");
 
                 Label lblCouponRemarks = (Label)e.Item.FindControl("lblCouponRemarks");
-                lblCouponRemarks.Text = dr["CouponRemarks"].ToString();
+                lblCouponRemarks.Text = dr["CouponRemarks"].ToString().Replace("\r\n", "<br>").Replace("\n\n", "<br><br>");
 
 				//For anchor
 //				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");

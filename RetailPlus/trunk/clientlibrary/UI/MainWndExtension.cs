@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Threading;
@@ -690,6 +692,7 @@ namespace AceSoft.RetailPlus.Client.UI
             clsEvent.AddEventLn("      commiting transaction to database...", true, mclsSysConfigDetails.WillWriteSystemLog);
             clsSalesTransactions.CommitAndDispose();
 
+
             /***
              * print the transaction
              ***/
@@ -861,12 +864,186 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             #endregion
 
+            // print all the coupon's
+            #region Printing of coupons
+
+            // print coupon's only for customer's with reward cards as per request of Sir Guy,
+            // sa susunod ilalagay na sya sa selection
+            if (mclsContactDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID &&
+                mclsContactDetails.RewardDetails.ContactID != 0)
+            {
+                Data.PromoBySupplier clsPromoBySupplier = new Data.PromoBySupplier(mConnection, mTransaction);
+                mConnection = clsPromoBySupplier.Connection; mTransaction = clsPromoBySupplier.Transaction;
+
+                try
+                {
+                    clsEvent.AddEventLn("Printing coupon if necessary...", true);
+
+                    Data.PromoBySupplierDetails clsPromoBySupplierDetails = clsPromoBySupplier.getPromoBySupplierID();
+                    if (clsPromoBySupplierDetails.PromoBySupplierID != 0)
+                    {
+                        Data.PromoBySupplierItems clsPromoBySupplierItems = new Data.PromoBySupplierItems(mConnection, mTransaction);
+                        mConnection = clsPromoBySupplierItems.Connection; mTransaction = clsPromoBySupplierItems.Transaction;
+
+                        Data.ProductGroup clsProductGroup = new Data.ProductGroup(mConnection, mTransaction);
+                        mConnection = clsProductGroup.Connection; mTransaction = clsProductGroup.Transaction;
+
+                        Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup(mConnection, mTransaction);
+                        mConnection = clsProductSubGroup.Connection; mTransaction = clsProductSubGroup.Transaction;
+
+                        decimal decPromoBySupplierValue = -1;
+                        decimal decItemAmount = 0;
+                        string strCouponRemarks = "";
+                        var lstItems = mclsSalesTransactionDetails.TransactionItemsList;
+
+                        Int64 ProductGroupID = 0, ProductSubGroupID = 0;
+                        switch (clsPromoBySupplierDetails.PromoLevel)
+                        {
+                            case PromoLevel.All:
+                                lstItems = mclsSalesTransactionDetails.TransactionItemsList;
+                                decPromoBySupplierValue = -1;
+                                decItemAmount = mclsSalesTransactionDetails.TransactionItemsList.Sum(x => x.Amount);
+                                if (clsPromoBySupplierItems.ApplyPromoBySupplierValue(clsPromoBySupplierDetails, 0, 0, 0, 0, 0, out decPromoBySupplierValue, out strCouponRemarks, mclsSalesTransactionDetails.BranchID))
+                                {
+                                    if (decPromoBySupplierValue == 0 || decPromoBySupplierValue <= decItemAmount)
+                                    {
+                                        //print it
+                                        PrintCoupon(lstItems[0], strCouponRemarks);
+                                    }
+                                }
+
+                                break;
+                            case PromoLevel.Contact:
+                                lstItems = mclsSalesTransactionDetails.TransactionItemsList
+                                    .GroupBy(x => new { x.SupplierID, x.SupplierName })
+                                    .Select(data => new Data.SalesTransactionItemDetails() { SupplierID = data.Key.SupplierID, SupplierName = data.Key.SupplierName, ProductGroup = "All", ProductSubGroup = "All", Amount = data.Sum(x => x.Amount) }).ToList();
+
+                                foreach (Data.SalesTransactionItemDetails item in lstItems)
+                                {
+                                    decPromoBySupplierValue = -1;
+                                    decItemAmount = item.Amount;
+                                    if (clsPromoBySupplierItems.ApplyPromoBySupplierValue(clsPromoBySupplierDetails, item.SupplierID, 0, 0, 0, 0, out decPromoBySupplierValue, out strCouponRemarks, mclsSalesTransactionDetails.BranchID))
+                                    {
+                                        if (decPromoBySupplierValue == 0 || decPromoBySupplierValue <= decItemAmount)
+                                        {
+                                            //print it
+                                            PrintCoupon(item, strCouponRemarks);
+                                        }
+                                    }
+                                }
+                                break;
+                            case PromoLevel.ProductGroup:
+                                lstItems = mclsSalesTransactionDetails.TransactionItemsList
+                                    .GroupBy(x => new { x.SupplierID, x.SupplierName, x.ProductGroup })
+                                    .Select(data => new Data.SalesTransactionItemDetails() { SupplierID = data.Key.SupplierID, SupplierName = data.Key.SupplierName, ProductGroup = data.Key.ProductGroup, ProductSubGroup = "All", Amount = data.Sum(x => x.Amount) }).ToList();
+
+                                foreach (Data.SalesTransactionItemDetails item in lstItems)
+                                {
+                                    decPromoBySupplierValue = -1;
+                                    decItemAmount = item.Amount;
+                                    ProductGroupID = clsProductGroup.DetailsByName(item.ProductGroup).ProductGroupID;
+
+                                    if (clsPromoBySupplierItems.ApplyPromoBySupplierValue(clsPromoBySupplierDetails, item.SupplierID, ProductGroupID, 0, 0, 0, out decPromoBySupplierValue, out strCouponRemarks, mclsSalesTransactionDetails.BranchID))
+                                    {
+                                        if (decPromoBySupplierValue == 0 || decPromoBySupplierValue <= decItemAmount)
+                                        {
+                                            //print it
+                                            PrintCoupon(item, strCouponRemarks);
+                                        }
+                                    }
+                                }
+                                break;
+                            case PromoLevel.ProductSubGroup:
+                                lstItems = mclsSalesTransactionDetails.TransactionItemsList
+                                    .GroupBy(x => new { x.SupplierID, x.SupplierName, x.ProductGroup, x.ProductSubGroup })
+                                    .Select(data => new Data.SalesTransactionItemDetails() { SupplierID = data.Key.SupplierID, SupplierName = data.Key.SupplierName, ProductGroup = data.Key.ProductGroup, ProductSubGroup = data.Key.ProductSubGroup, Amount = data.Sum(x => x.Amount) }).ToList();
+
+                                foreach (Data.SalesTransactionItemDetails item in lstItems)
+                                {
+                                    decPromoBySupplierValue = -1;
+                                    decItemAmount = item.Amount;
+
+                                    ProductGroupID = clsProductGroup.DetailsByName(item.ProductGroup).ProductGroupID;
+                                    ProductSubGroupID = clsProductSubGroup.DetailsByName(item.ProductSubGroup).ProductSubGroupID;
+                                    if (clsPromoBySupplierItems.ApplyPromoBySupplierValue(clsPromoBySupplierDetails, item.SupplierID, ProductGroupID, ProductSubGroupID, 0, 0, out decPromoBySupplierValue, out strCouponRemarks, mclsSalesTransactionDetails.BranchID))
+                                    {
+                                        if (decPromoBySupplierValue == 0 || decPromoBySupplierValue <= decItemAmount)
+                                        {
+                                            //print it
+                                            PrintCoupon(item, strCouponRemarks);
+                                        }
+                                    }
+                                }
+                                break;
+                            case PromoLevel.Product:
+                                lstItems = mclsSalesTransactionDetails.TransactionItemsList
+                                    .GroupBy(x => new { x.SupplierID, x.SupplierName, x.ProductGroup, x.ProductSubGroup, x.ProductID })
+                                    .Select(data => new Data.SalesTransactionItemDetails() { SupplierID = data.Key.SupplierID, SupplierName = data.Key.SupplierName, ProductGroup = data.Key.ProductGroup, ProductSubGroup = data.Key.ProductSubGroup, ProductID = data.Key.ProductID, Amount = data.Sum(x => x.Amount) }).ToList();
+
+                                foreach (Data.SalesTransactionItemDetails item in lstItems)
+                                {
+                                    decPromoBySupplierValue = -1;
+                                    decItemAmount = item.Amount;
+
+                                    ProductGroupID = clsProductGroup.DetailsByName(item.ProductGroup).ProductGroupID;
+                                    ProductSubGroupID = clsProductSubGroup.DetailsByName(item.ProductSubGroup).ProductSubGroupID;
+                                    if (clsPromoBySupplierItems.ApplyPromoBySupplierValue(clsPromoBySupplierDetails, item.SupplierID, ProductGroupID, ProductSubGroupID, item.ProductID, 0, out decPromoBySupplierValue, out strCouponRemarks, mclsSalesTransactionDetails.BranchID))
+                                    {
+                                        if (decPromoBySupplierValue == 0 || decPromoBySupplierValue <= decItemAmount)
+                                        {
+                                            //print it
+                                            PrintCoupon(item, strCouponRemarks);
+                                        }
+                                    }
+                                }
+                                break;
+                            case PromoLevel.Variation:
+                                lstItems = mclsSalesTransactionDetails.TransactionItemsList
+                                    .GroupBy(x => new { x.SupplierID, x.SupplierName, x.ProductGroup, x.ProductSubGroup, x.ProductID, x.VariationsMatrixID })
+                                    .Select(data => new Data.SalesTransactionItemDetails() { SupplierID = data.Key.SupplierID, SupplierName = data.Key.SupplierName, ProductGroup = data.Key.ProductGroup, ProductSubGroup = data.Key.ProductSubGroup, ProductID = data.Key.ProductID, VariationsMatrixID = data.Key.VariationsMatrixID, Amount = data.Sum(x => x.Amount) }).ToList();
+
+                                foreach (Data.SalesTransactionItemDetails item in lstItems)
+                                {
+                                    decPromoBySupplierValue = -1;
+                                    decItemAmount = item.Amount;
+
+                                    ProductGroupID = clsProductGroup.DetailsByName(item.ProductGroup).ProductGroupID;
+                                    ProductSubGroupID = clsProductSubGroup.DetailsByName(item.ProductSubGroup).ProductSubGroupID;
+                                    if (clsPromoBySupplierItems.ApplyPromoBySupplierValue(clsPromoBySupplierDetails, item.SupplierID, ProductGroupID, ProductSubGroupID, item.ProductID, item.VariationsMatrixID, out decPromoBySupplierValue, out strCouponRemarks, mclsSalesTransactionDetails.BranchID))
+                                    {
+                                        if (decPromoBySupplierValue == 0 || decPromoBySupplierValue <= decItemAmount)
+                                        {
+                                            //print it
+                                            PrintCoupon(item, strCouponRemarks);
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+
+                    }
+                    clsEvent.AddEventLn("done...", true);
+                }
+                catch (Exception ex)
+                {
+                    clsEvent.AddEventLn("Error printing coupon", true);
+                    clsEvent.AddErrorEventLn(ex);
+                }
+                finally
+                {
+                    clsPromoBySupplier.CommitAndDispose();
+                }
+
+            }
+
+            #endregion
+
             InsertAuditLog(AccessTypes.CloseTransaction, "Close transaction #: " + mclsSalesTransactionDetails.TransactionNo + "... Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
             clsEvent.AddEventLn("Done! Transaction no. " + mclsSalesTransactionDetails.TransactionNo + " has been closed. Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0"), true);
 
         }
-
+        
         public void RemoveFromMergeTable(string MainTableCode)
         {
             Data.MergeTable clsMergeTable = new Data.MergeTable(mConnection, mTransaction);
@@ -2760,9 +2937,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
                     mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
-
-                    //Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(mConnection, mTransaction);
-                    //mConnection = clsSalesTransactionItems.Connection; mTransaction = clsSalesTransactionItems.Transaction;
 
                     // print order slip items in each printer
                     foreach (System.Data.DataRow dr in ItemDataTable.Rows)
@@ -8138,6 +8312,60 @@ namespace AceSoft.RetailPlus.Client.UI
             catch (Exception ex)
             {
                 InsertErrorLogToFile(ex, "ERROR!!! Printing deposit data. Err Description: ");
+                Cursor.Current = Cursors.Default;
+                throw ex;
+            }
+            Cursor.Current = Cursors.Default;
+        }
+
+        #endregion
+
+        #region PrintCoupon
+
+        public delegate void PrintCouponDelegate(Data.SalesTransactionItemDetails clsDetails, string CouponRemarks);
+        public void PrintCoupon(Data.SalesTransactionItemDetails clsDetails, string CouponRemarks)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                msbToPrint.Clear(); // reset the transaction to print in POSPrinter
+                msbToPrint = new StringBuilder(); // reset the transaction to print in POSPrinter
+
+                mclsFilePrinter = new FilePrinter();
+                mclsFilePrinter.FileName = mclsSalesTransactionDetails.TransactionNo + "_cpn_" + clsDetails.ItemNo;
+
+                CouponRemarks = CouponRemarks.Replace("{DateNow}", DateTime.Now.ToString("MMM dd, yyyy"));
+                CouponRemarks = CouponRemarks.Replace("{Amount}", clsDetails.Amount.ToString("#,##0.#0"));
+                CouponRemarks = CouponRemarks.Replace("{TrxAmount}", mclsSalesTransactionDetails.SubTotal.ToString("#,##0.#0"));
+                CouponRemarks = CouponRemarks.Replace("{ORNo}", mclsSalesTransactionDetails.ORNo);
+                CouponRemarks = CouponRemarks.Replace("{CustomerName}", mclsSalesTransactionDetails.CustomerName);
+                CouponRemarks = CouponRemarks.Replace("{CheckCounter}", Int64.Parse(mclsSalesTransactionDetails.TransactionNo).ToString());
+                CouponRemarks = CouponRemarks.Replace("{SupplierName}", clsDetails.SupplierName);
+                CouponRemarks = CouponRemarks.Replace("{ProductGroup}", clsDetails.ProductGroup);
+                CouponRemarks = CouponRemarks.Replace("{ProductSubGroup}", clsDetails.ProductSubGroup);
+
+                msbToPrint.Append(Environment.NewLine);
+                msbToPrint.Append(Environment.NewLine);
+                msbToPrint.Append(CouponRemarks);
+                msbToPrint.Append(Environment.NewLine);
+                msbToPrint.Append(Environment.NewLine);
+
+                this.bgwPOSPrinter.RunWorkerAsync();
+
+                // Wait for the BackgroundWorker to finish the download.
+                while (this.bgwPOSPrinter.IsBusy)
+                {
+                    Application.DoEvents();
+                }
+
+                msbToPrint.Clear(); // reset the transaction to print in POSPrinter
+                msbToPrint = new StringBuilder(); // reset the transaction to print in POSPrinter
+
+                InsertAuditLog(AccessTypes.Disburse, "Print Coupon: " + CouponRemarks + " Trx#: " + mclsSalesTransactionDetails.TransactionNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, "ERROR!!! Printing coupon data. Err Description: ");
                 Cursor.Current = Cursors.Default;
                 throw ex;
             }

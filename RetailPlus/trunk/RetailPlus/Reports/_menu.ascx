@@ -89,7 +89,7 @@
 													Void Items</asp:HyperLink></td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<tr id="divlnkStockTransaction" runat="server" style="display: none">
+									<tr id="divlnkStockTransaction" runat="server">
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkStockTransaction" title="Display Stock Transaction Item Report" runat="server" Visible="False">

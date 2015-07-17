@@ -615,4 +615,15 @@ namespace AceSoft.RetailPlus
         SQLForList,
         SQLForReport
     }
+
+    public enum PromoLevel
+    {
+        All,
+        Contact,
+        ProductGroup,
+        ProductSubGroup,
+        Product,
+        Variation,
+        NotApplicable
+    }
 }

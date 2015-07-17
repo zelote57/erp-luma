@@ -76,13 +76,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		protected void imgAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			Common Common = new Common();
-            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("1", Session.SessionID);					
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID);					
 			Response.Redirect("Default.aspx" + stParam);
 		}
 		protected void cmdAdd_Click(object sender, System.EventArgs e)
 		{
 			Common Common = new Common();
-            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("1", Session.SessionID);			
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID);			
 			Response.Redirect("Default.aspx" + stParam);
 		}
 		
@@ -149,7 +149,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
                 HyperLink lnkPONo = (HyperLink)e.Item.FindControl("lnkPONo");
                 lnkPONo.Text = dr["PONo"].ToString();
-                string stParam = "?task=" + Common.Encrypt("details", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value.ToString(), Session.SessionID);
+                string stParam = "?task=" + Common.Encrypt("details", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value.ToString(), Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID);
                 lnkPONo.NavigateUrl = "Default.aspx" + stParam;
 
                 Label lblPODate = (Label)e.Item.FindControl("lblPODate");
@@ -191,15 +191,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             switch (e.CommandName)
             {
                 case "imgItemDelete":
-                    stParam = "?task=" + Common.Encrypt("cancel", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#cancelsection";
+                    stParam = "?task=" + Common.Encrypt("cancel", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID) + "#cancelsection";	
                     Response.Redirect("Default.aspx" + stParam);
                     break;
                 case "imgItemEdit":
-                    stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#itemsection";	
+                    stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID) + "#itemsection";
                     Response.Redirect("Default.aspx" + stParam);
                     break;
                 case "imgItemPost":
-                    stParam = "?task=" + Common.Encrypt("issuegrn", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "#postsection";	
+                    stParam = "?task=" + Common.Encrypt("issuegrn", Session.SessionID) + "&poid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID) + "#postsection";
                     Response.Redirect("Default.aspx" + stParam);
                     break;
 
@@ -222,7 +222,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 				if (stID!=null)
 				{
 					Common Common = new Common();
-                    string stParam = "?task=" + Common.Encrypt("cancel", Session.SessionID) + "&poid=" + Common.Encrypt(stID, Session.SessionID) + "#cancelsection";	
+                    string stParam = "?task=" + Common.Encrypt("cancel", Session.SessionID) + "&poid=" + Common.Encrypt(stID, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID) + "#cancelsection";	
 					Response.Redirect("Default.aspx" + stParam);
 				}
 			}
@@ -242,7 +242,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 				if (stID!=null)
 				{
 					Common Common = new Common();
-					string stParam = "?task=" + Common.Encrypt("additem",Session.SessionID) + "&poid=" + Common.Encrypt(stID,Session.SessionID) + "#itemsection";	
+                    string stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&poid=" + Common.Encrypt(stID, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID) + "#itemsection";
 					Response.Redirect("Default.aspx" + stParam);
 				}
 			}
@@ -262,7 +262,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 				if (stID!=null)
 				{
 					Common Common = new Common();
-					string stParam = "?task=" + Common.Encrypt("issuegrn",Session.SessionID) + "&poid=" + Common.Encrypt(stID,Session.SessionID) + "#postsection";	
+                    string stParam = "?task=" + Common.Encrypt("issuegrn", Session.SessionID) + "&poid=" + Common.Encrypt(stID, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt("true", Session.SessionID) + "#postsection";	
 					Response.Redirect("Default.aspx" + stParam);
 				}
 			}

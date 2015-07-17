@@ -22,6 +22,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				if (Visible)
 				{
+                    bool boIsePurchaseOrder = Request.QueryString["isepurchaseorder"] == null ? false : bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+                    lblIsePurchaseOrder.Text = boIsePurchaseOrder ? "true" : "false";
+
 					LoadOptions();	
 					LoadRecord();	
 					LoadItems();
@@ -74,11 +77,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		}
 		protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			Response.Redirect("Default.aspx?task=" + Common.Encrypt("list",Session.SessionID));
+            BackToPOList();
 		}
 		protected void cmdCancel_Click(object sender, System.EventArgs e)
 		{
-			Response.Redirect("Default.aspx?task=" + Common.Encrypt("list",Session.SessionID));
+            BackToPOList();
 		}
 		protected void imgDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
@@ -716,7 +719,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
 		private void LoadOptions()
 		{
-			cboProductCode.Items.Clear();
+            cboProductCode.Items.Clear();
 			cboVariation.Items.Clear();
 			cboProductUnit.Items.Clear();
 
@@ -1132,8 +1135,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 				clsPO.IssueGRN(POID, SupplierDRNo, DeliveryDate);
 				clsPO.CommitAndDispose();
 
-				string stParam = "?task=" + Common.Encrypt("list",Session.SessionID) + "&poid=" + Common.Encrypt(POID.ToString(),Session.SessionID);	
-				Response.Redirect("Default.aspx" + stParam);
+                //string stParam = "?task=" + Common.Encrypt("list",Session.SessionID) + "&poid=" + Common.Encrypt(POID.ToString(),Session.SessionID);	
+                //Response.Redirect("Default.aspx" + stParam);
+                BackToPOList();
 			}
 			else
 			{
@@ -1232,7 +1236,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             string stID = lblPOID.Text;
 
             Common Common = new Common();
-            string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&poid=" + Common.Encrypt(stID, Session.SessionID);
+            string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&poid=" + Common.Encrypt(stID, Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt(lblIsePurchaseOrder.Text, Session.SessionID);
             Response.Redirect("Default.aspx" + stParam);
         }
         private void GenerateItemsByRID()
@@ -1898,6 +1902,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 stScript += "</Script>";
                 Response.Write(stScript);
             }
+        }
+
+        private void BackToPOList()
+        {
+            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+            if (boIsePurchaseOrder)
+                Response.Redirect("Default.aspx?task=" + Common.Encrypt("listesales", Session.SessionID));
+            else
+                Response.Redirect("Default.aspx?task=" + Common.Encrypt("list", Session.SessionID));
         }
 
 		#endregion

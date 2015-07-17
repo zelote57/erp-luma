@@ -23,6 +23,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				if (Visible)
 				{
+                    bool boIsePurchaseOrder = Request.QueryString["isepurchaseorder"] == null ? false : bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+                    lblIsePurchaseOrder.Text = boIsePurchaseOrder ? "true" : "false";	
+
                     ManageSecurity();
 					LoadRecord();	
 					LoadItems();
@@ -54,7 +57,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		}
         protected void cmdCancel_Click(object sender, System.EventArgs e)
 		{
-			Response.Redirect("Default.aspx?task=" + Common.Encrypt("list",Session.SessionID));		
+            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+            if (boIsePurchaseOrder)
+                Response.Redirect("Default.aspx?task=" + Common.Encrypt("listesales", Session.SessionID));
+            else
+                Response.Redirect("Default.aspx?task=" + Common.Encrypt("list", Session.SessionID));
 		}
         protected void imgPrint_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {

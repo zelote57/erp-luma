@@ -500,7 +500,7 @@ namespace AceSoft.RetailPlus.Data
         {
             string stSQL = "SELECT " +
                                 "a.ContactID, " +
-                                "SequenceNo, " +
+                                "a.SequenceNo, " +
                                 "ContactCode, " +
                                 "ContactName, " +
                                 "a.ContactGroupID, " +
@@ -509,7 +509,7 @@ namespace AceSoft.RetailPlus.Data
                                 "a.Terms, " +
                                 "a.Address, " +
                                 "a.BusinessName, " +
-                                "a.TelephoneNo, " +
+                                "IFNULL(addon.MobileNo, a.TelephoneNo) TelephoneNo," +
                                 "a.Remarks, " +
                                 "a.Debit, " +
                                 "a.Credit, " +
@@ -527,6 +527,7 @@ namespace AceSoft.RetailPlus.Data
                                 "a.PriceLevel, " +
                                 "isLock " +
                             "FROM tblContacts a " +
+                            "LEFT OUTER JOIN tblContactAddOn addon ON a.ContactID = addon.ContactID " +
                             "INNER JOIN tblContactGroup b ON a.ContactGroupID = b.ContactGroupID " +
                             "INNER JOIN tblDepartments c ON a.DepartmentID = c.DepartmentID " +
                             "INNER JOIN tblPositions d ON a.PositionID = d.PositionID ";
@@ -656,7 +657,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = SQLSelect() + "WHERE ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactRewards WHERE RewardActive = 1 AND RewardCardNo = @RewardCardNo LIMIT 1);";
+                string SQL = SQLSelect() + "WHERE a.ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactRewards WHERE RewardActive = 1 AND RewardCardNo = @RewardCardNo LIMIT 1);";
 
                 cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
 
@@ -681,7 +682,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = SQLSelect() + "WHERE ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
+                string SQL = SQLSelect() + "WHERE a.ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
 
                 // remove the IsCreditAllowed = 1
                 // need to inform the card status in FE

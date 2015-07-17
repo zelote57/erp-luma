@@ -674,9 +674,7 @@ namespace AceSoft.RetailPlus.Data
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                ProductSubGroupDetails Details = setDetails(dt);
-
-				return Details;
+                return setDetails(dt);
 			}
 			catch (Exception ex)
 			{
@@ -698,16 +696,37 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
-				ProductSubGroupDetails Details = setDetails(dt);
 
-				return Details;
+                return setDetails(dt);
 			}
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public ProductSubGroupDetails DetailsByName(string ProductSubGroupName)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE ProductSubGroupName = @ProductSubGroupName;";
+
+                cmd.Parameters.AddWithValue("@ProductSubGroupName", ProductSubGroupName);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return setDetails(dt);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
         private ProductSubGroupDetails setDetails(System.Data.DataTable dt)
         {

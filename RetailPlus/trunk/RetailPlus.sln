@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Net.FtpClient", "Sys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailPlusDataCollector", "RetailPlusDataCollector\RetailPlusDataCollector.csproj", "{2DD8233B-58F5-47D9-BCC8-3F5B9EEFA24E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSapplication", "RetailPlusSMS\SMSapplication.csproj", "{668635D8-4F39-4A78-9929-7DEBB881559C}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -394,6 +396,18 @@ Global
 		{2DD8233B-58F5-47D9-BCC8-3F5B9EEFA24E}.Release|Mixed Platforms.Build.0 = Release|x86
 		{2DD8233B-58F5-47D9-BCC8-3F5B9EEFA24E}.Release|x86.ActiveCfg = Release|x86
 		{2DD8233B-58F5-47D9-BCC8-3F5B9EEFA24E}.Release|x86.Build.0 = Release|x86
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Release|.NET.ActiveCfg = Release|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{668635D8-4F39-4A78-9929-7DEBB881559C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

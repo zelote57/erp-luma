@@ -8983,8 +8983,8 @@ ALTER TABLE tblContactAddOn ADD AttendingPhysician VARCHAR(150) DEFAULT '';
 --			ContactAddNoLTOWnd	- normal information without LTO
 --			ContactAddDetWnd	- with additional information for ContactAddOn table (HP)
 --			ContactAddHCareWnd	- with additional information for HealthCare
-DELETE FROM sysConfig WHERE ConfigName = 'ContactAddWndType';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWndType', 'FE', 'ContactAddNoLTOWnd');
+DELETE FROM sysConfig WHERE ConfigName = 'ContactAddDetWnd';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWndType', 'FE', 'ContactAddDetWnd');
 
 -- 08Jun2015 Added for determining which columns to show in ItemSelectWnd
 --	Default: BcDesc
@@ -8997,7 +8997,7 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWnd
 --			SgPcDesc			- SubGroup, ProductCode, Description					-- For Drugstore, HealthCare, WholeSaler
 --			SgDescMtrx			- SubGroup, Description, Matrix							-- For Drugstore, HealthCare, WholeSaler
 DELETE FROM sysConfig WHERE ConfigName = 'ItemSelectWndColumnType';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnType', 'FE', 'SgPcDesc');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnType', 'FE', 'BcPcDescMtrx');
 
 -- 08Jun2015 Added for determining which columns to filter in ItemSelectWnd
 --	Default: BcDesc
@@ -9007,7 +9007,7 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWnd
 --			SgDesc				- SubGroup, Description									-- For Drugstore, HealthCare, WholeSaler
 --			SgPcDesc			- SubGroup, ProductCode, Description					-- For Drugstore, HealthCare, WholeSaler
 DELETE FROM sysConfig WHERE ConfigName = 'ItemSelectWndColumnSearchType';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnSearchType', 'FE', 'SgPcDesc');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnSearchType', 'FE', 'BcPc');
 
 
 
@@ -9483,10 +9483,6 @@ UPDATE tblTerminalReportHistoryBackup SET BackupOn = NOW();
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.47';
 
-ALTER TABLE tblTransactionItems ADD ReturnTransactionItemsID BIGINT(20) NOT NULL DEFAULT 0 COMMENT 'This is the TransactionItemsID of the Item that is Return';
-ALTER TABLE tblTransactionItems ADD RefReturnTransactionItemsID BIGINT(20) NOT NULL DEFAULT 0 COMMENT 'This is the TransactionItemsID of the Item that is Returned this must be in ReturnStatus';
-
-
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 197;
 DELETE FROM sysAccessGroupRights WHERE TranTypeID = 197;
@@ -9505,9 +9501,10 @@ ALTER TABLE tblTerminal ADD `MultiInstanceEnabled` TINYINT(1) NOT NULL DEFAULT 1
 ALTER TABLE tblTerminal ADD `MaskProductSearch` VARCHAR(1) DEFAULT '*';
 UPDATE tblTerminal SET MaskProductSearch = '*';
 
-ALTER TABLE tblTransactionItems ADD `SupplierID` BIGINT(20) NOT NULL DEFAULT 1;
-ALTER TABLE tblTransactionItems ADD `SupplierCode` VARCHAR(25) DEFAULT '';
-ALTER TABLE tblTransactionItems ADD `SupplierName` VARCHAR(75) DEFAULT '';
+
+ALTER TABLE tblTransactionItems ADD ReturnTransactionItemsID BIGINT(20) NOT NULL DEFAULT 0 COMMENT 'This is the TransactionItemsID of the Item that is Return',
+								ADD RefReturnTransactionItemsID BIGINT(20) NOT NULL DEFAULT 0 COMMENT 'This is the TransactionItemsID of the Item that is Returned this must be in ReturnStatus',
+								ADD `SupplierID` BIGINT(20) NOT NULL DEFAULT 1, ADD `SupplierCode` VARCHAR(25) DEFAULT '', ADD `SupplierName` VARCHAR(75) DEFAULT '';
 
 UPDATE tblTransactionItems 
 INNER JOIN tblProducts ON tblTransactionItems.ProductID = tblProducts.ProductID
@@ -9557,8 +9554,9 @@ CREATE TABLE tblPromoBySupplier (
 	PromoBySupplierName VARCHAR(75) NOT NULL,
 	StartDate DATETIME NOT NULL,
 	EndDate DATETIME NOT NULL,
-	PromoTypeID INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	Status TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	PromoLevel INT(1) UNSIGNED NOT NULL DEFAULT 0,
+	PromoTypeID INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	Status TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	CreatedOn DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	LastModified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (PromoBySupplierID),
@@ -9602,6 +9600,20 @@ INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SE
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 200, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=17;
 
 UPDATE sysAccessTypes SET TypeName = 'Promo''s by Amount' WHERE TypeID = 17;
+
+/*********************************  v_4.0.1.50.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.51';
+
+
+/*********************************  v_4.0.1.51.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.52';
+
+/*********************************  v_4.0.1.52.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.53';
+
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

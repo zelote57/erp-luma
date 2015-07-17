@@ -69,6 +69,7 @@ namespace AceSoft.RetailPlus.Data
 		public string DiscountCode;
 		public string DiscountRemarks;
 		public SalesTransactionItemDetails[] TransactionItems;
+        public System.Collections.Generic.List<SalesTransactionItemDetails> TransactionItemsList;
 		public Int64 WaiterID;
 		public string WaiterName;
 		public decimal ItemsDiscount;
@@ -506,7 +507,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Details
 
-        public static SalesTransactionDetails SetDetails(System.Data.DataTable dt)
+        public static SalesTransactionDetails setDetails(System.Data.DataTable dt)
         {
             SalesTransactionDetails Details = new SalesTransactionDetails();
 
@@ -610,7 +611,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 System.Data.DataTable dt = ListAsDataTable(BranchID, TerminalNo, TransactionNo: TransactionNo );
 
-                SalesTransactionDetails Details = SalesTransactions.SetDetails(dt);
+                SalesTransactionDetails Details = SalesTransactions.setDetails(dt);
 
                 Details.CustomerDetails = new Contacts(base.Connection, base.Transaction).Details(Details.CustomerID);
 
@@ -1549,17 +1550,16 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procTransactionDeleteByDataSource(@DataSource);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = "CALL procTransactionDeleteByDataSource(@DataSource);";
 
                 cmd.Parameters.AddWithValue("@DataSource", DataSource);
 
+                cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -1573,9 +1573,8 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "UPDATE tblTransactions SET " +
-                                "CRNo =	@CRNo " +
-                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                string SQL = "UPDATE tblTransactions SET CRNo =	@CRNo " +
+                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
                                 "AND TransactionID	=	@TransactionID ";
 
                 cmd.Parameters.AddWithValue("CRNo", CRNo);

@@ -20,6 +20,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				if (Visible)
 				{
+                    bool boIsePurchaseOrder = Request.QueryString["isepurchaseorder"] == null ? false : bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+                    lblIsePurchaseOrder.Text = boIsePurchaseOrder ? "true" : "false";
+
 					LoadRecord();	
 					LoadItems();
 				}
@@ -53,12 +56,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
 		protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			Response.Redirect("Default.aspx?task=" + Common.Encrypt("list",Session.SessionID));
+            BackToPOList();
 		}
 		
         protected void cmdCancel_Click(object sender, System.EventArgs e)
 		{
-			Response.Redirect("Default.aspx?task=" + Common.Encrypt("list",Session.SessionID));		
+            BackToPOList();	
 		}
         
         protected void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)
@@ -255,7 +258,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             clsPO.Cancel(POID, DateTime.Now, Remarks, Convert.ToInt64(Session["UID"].ToString()));
             clsPO.CommitAndDispose();
 
-            Response.Redirect("Default.aspx?task=" + Common.Encrypt("list", Session.SessionID));
+            BackToPOList();
+        }
+
+        private void BackToPOList()
+        {
+            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+            if (boIsePurchaseOrder)
+                Response.Redirect("Default.aspx?task=" + Common.Encrypt("listesales", Session.SessionID));
+            else
+                Response.Redirect("Default.aspx?task=" + Common.Encrypt("list", Session.SessionID));
         }
 
 		#endregion

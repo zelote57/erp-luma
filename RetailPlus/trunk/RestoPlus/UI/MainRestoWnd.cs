@@ -80,6 +80,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private DataGridTextBoxColumn RewardPoints;
         private DataGridTextBoxColumn ItemRemarks;
         private DataGridTextBoxColumn ReturnTransactionItemsID;
+        private DataGridTextBoxColumn SupplierID;
+        private DataGridTextBoxColumn SupplierCode;
+        private DataGridTextBoxColumn SupplierName;
 		private DataGridTextBoxColumn PercentageCommision;
 		private DataGridTextBoxColumn OrderSlipPrinted;
         private DataGridTextBoxColumn OrderSlipPrinter1;
@@ -260,6 +263,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.RewardPoints = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ItemRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ReturnTransactionItemsID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PercentageCommision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.OrderSlipPrinted = new System.Windows.Forms.DataGridTextBoxColumn();
             this.OrderSlipPrinter1 = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -1309,7 +1315,34 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ReturnTransactionItemsID.MappingName = "ReturnTransactionItemsID";
             this.ReturnTransactionItemsID.NullText = "";
             this.ReturnTransactionItemsID.ReadOnly = true;
-            this.ReturnTransactionItemsID.Width = 0;       
+            this.ReturnTransactionItemsID.Width = 0;
+            // 
+            // SupplierID
+            // 
+            this.SupplierID.Format = "";
+            this.SupplierID.FormatInfo = null;
+            this.SupplierID.MappingName = "SupplierID";
+            this.SupplierID.NullText = "";
+            this.SupplierID.ReadOnly = true;
+            this.SupplierID.Width = 0;
+            // 
+            // SupplierCode
+            // 
+            this.SupplierCode.Format = "";
+            this.SupplierCode.FormatInfo = null;
+            this.SupplierCode.MappingName = "SupplierCode";
+            this.SupplierCode.NullText = "";
+            this.SupplierCode.ReadOnly = true;
+            this.SupplierCode.Width = 0;
+            // 
+            // SupplierName
+            // 
+            this.SupplierName.Format = "";
+            this.SupplierName.FormatInfo = null;
+            this.SupplierName.MappingName = "SupplierName";
+            this.SupplierName.NullText = "";
+            this.SupplierName.ReadOnly = true;
+            this.SupplierName.Width = 0;   
             // 
             // TransactionItemsID
             // 
@@ -2688,6 +2721,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 //mboIsDiscountAuthorized = false;
 
                 mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
+                mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
                 try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
                 catch { }
                 mclsSalesTransactionDetails.CashierName = lblCashier.Text;
@@ -2799,6 +2833,9 @@ namespace AceSoft.RetailPlus.Client.UI
             ItemDataTable.Columns.Add("ItemRemarks");
             ItemDataTable.Columns.Add("PaxNo");
             ItemDataTable.Columns.Add("ReturnTransactionItemsID");
+            ItemDataTable.Columns.Add("SupplierID");
+            ItemDataTable.Columns.Add("SupplierCode");
+            ItemDataTable.Columns.Add("SupplierName");
 
             this.dgStyle.MappingName = ItemDataTable.TableName;
             dgItems.DataSource = ItemDataTable;
@@ -2957,6 +2994,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
                             clsSalesTransactions.CommitAndDispose();
 
+                            // 10Jul2015 : Update the item list
+                            mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == Details.ItemNo)] = Details;
+
                             clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + " : done", true);
 
                             clsProduct.CommitAndDispose();
@@ -3026,6 +3066,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
                             clsSalesTransactions.CommitAndDispose();
+
+                            // 10Jul2015 : Update the item list
+                            mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == Details.ItemNo)] = Details;
 
                             clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + " : done", true);
 
@@ -3415,6 +3458,9 @@ namespace AceSoft.RetailPlus.Client.UI
             clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
             clsSalesTransactions.CommitAndDispose();
 
+            // 10Jul2015 : Update the item list
+            mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == clsItemDetails.ItemNo)] = clsItemDetails;
+
             clsEvent.AddEventLn("Updating item #:" + clsItemDetails.ItemNo + " : done", true);
 
         }
@@ -3480,6 +3526,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         // ReservedAndCommitItem(clsItemDetails, clsItemDetails.TransactionItemStatus);
 
                         ItemDataTable.Rows.Add(dr);
+                        mclsSalesTransactionDetails.TransactionItemsList.Add(clsItemDetails);
 
                         dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;
                         dgItems.Select(dgItems.CurrentRowIndex);
@@ -3717,6 +3764,9 @@ namespace AceSoft.RetailPlus.Client.UI
                                 clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
                                 clsSalesTransactions.CommitAndDispose();
 
+                                // 10Jul2015 : Update the item list
+                                mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == clsItemDetails.ItemNo)] = clsItemDetails;
+
                                 InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
                                 clsEvent.AddEventLn("Done applying item discount...", true);
@@ -3845,6 +3895,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                     clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
                                     clsSalesTransactions.CommitAndDispose();
+
+                                    // 10Jul2015 : Update the item list
+                                    mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == clsItemDetails.ItemNo)] = clsItemDetails;
 
                                     InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
@@ -5974,6 +6027,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.RewardPoints = clsProductDetails.RewardPoints;
                         clsItemDetails.ItemRemarks = "";
                         clsItemDetails.ReturnTransactionItemsID = 0;
+                        clsItemDetails.SupplierID = clsProductDetails.SupplierID;
+                        clsItemDetails.SupplierCode = clsProductDetails.SupplierCode;
+                        clsItemDetails.SupplierName = clsProductDetails.SupplierName;
 
                         clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
                         clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
@@ -7545,6 +7601,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
                         mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
+                        mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
                         mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
                         mclsSalesTransactionDetails.TransactionStatus = TransactionStatus.CreditPayment;
 
@@ -8944,6 +9001,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 Details.ItemRemarks = dgItems[iRow, 45].ToString();
                 Details.PaxNo = Convert.ToInt32(dgItems[iRow, 46].ToString());
                 Details.ReturnTransactionItemsID = Convert.ToInt64(dgItems[iRow, 47].ToString());
+                Details.SupplierID = Convert.ToInt64(dgItems[iRow, 48].ToString());
+                Details.SupplierCode = dgItems[iRow, 49].ToString();
+                Details.SupplierName = dgItems[iRow, 50].ToString();
 
                 return Details;
             }
@@ -9021,6 +9081,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["ItemRemarks"] = Details.ItemRemarks;
                 dr["PaxNo"] = Details.PaxNo;
                 dr["ReturnTransactionItemsID"] = Details.ReturnTransactionItemsID; //48
+                dr["SupplierID"] = Details.SupplierID; //48
+                dr["SupplierCode"] = Details.SupplierCode; //49
+                dr["SupplierName"] = Details.SupplierName; //50
 
                 // 21May2015 : do an override for 3 digits wighted
                 if (mclsSysConfigDetails.WeightMeasurement.IndexOf(Details.ProductUnitCode.ToUpper()) > -1)
@@ -9154,6 +9217,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 catch { }
 
                 ItemDataTable.Rows.Add(dr);
+                mclsSalesTransactionDetails.TransactionItemsList.Add(Details);
 
                 dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;
                 try
@@ -9954,6 +10018,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsEvent.AddEventLn("[" + lblCashier.Text + "] Creating new transaction.", true);
 
                 mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
+                mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
                 try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
                 catch { }
 
@@ -10040,212 +10105,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             return boRetValue;
         }
-        //private bool CreateTransaction()
-        //{
-        //    Boolean boRetValue = true;
-        //    try
-        //    {
-        //        Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
-        //        mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
-
-        //        DateTime dteTransactionDate = Convert.ToDateTime(lblTransDate.Text);
-
-        //        // Added checking of Cutofftime
-        //        if (mclsTerminalDetails.CheckCutOffTime)
-        //        {
-        //            DateTime dteStartCutOffTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime);
-        //            DateTime dteEndCutOffTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime);
-
-        //            // if StartCutOffTime is greater than EndCutOffTime
-        //            // this means that EndCutOffTime is in the morning.
-        //            // Add 1 more day.
-        //            if (dteStartCutOffTime >= dteEndCutOffTime)
-        //                dteEndCutOffTime = dteEndCutOffTime.AddDays(1);
-
-        //            DateTime dteAllowedStartDateTime; DateTime dteAllowedEndDateTime;
-        //            if (dteTransactionDate < dteEndCutOffTime)
-        //            {
-        //                dteAllowedStartDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime).AddDays(-1).AddMilliseconds(1);
-        //                dteAllowedEndDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime);
-        //            }
-        //            else
-        //            {
-        //                dteAllowedStartDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime).AddMilliseconds(1);
-        //                dteAllowedEndDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime).AddDays(1);
-        //            }
-        //            if (dteTransactionDate < dteAllowedEndDateTime)
-        //            {
-        //                dteStartCutOffTime = dteStartCutOffTime.AddDays(1);
-        //                dteEndCutOffTime = dteEndCutOffTime.AddDays(1);
-        //            }
-
-        //            DateTime dtePreviousStartCutOffTime = dteStartCutOffTime.AddDays(-1);
-        //            DateTime dtePreviousEndCutOffTime = dteEndCutOffTime.AddDays(-1);
-        //            DateTime dtePreviousAllowedStartDateTime = dteAllowedStartDateTime.AddDays(-1);
-        //            DateTime dtePreviousAllowedEndDateTime = dteAllowedEndDateTime.AddDays(-1);
-
-        //            clsEvent.AddEventLn("Checking Transactiondate: '" + dteTransactionDate.ToString("yyyy-MM-dd HH:mm") + "' before creating new transaction if not between cutoff: " + dteStartCutOffTime.ToString("yyyy-MM-dd HH:mm") + " & " + dteEndCutOffTime.ToString("yyyy-MM-dd HH:mm"), true);
-        //            if (dteTransactionDate >= dteStartCutOffTime && dteTransactionDate <= dteEndCutOffTime)
-        //            {
-        //                clsEvent.AddEventLn("Transaction is not allowed, transaction date is within the cutofftime.", true);
-        //                MessageBox.Show("Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                txtBarCode.Text = "";
-        //                return false;
-        //            }
-        //            clsEvent.AddEventLn("Transaction is ok, transaction date is within allowable transaction date.", true);
-
-        //            clsEvent.AddEventLn("Checking Transactiondate: '" + dteTransactionDate.ToString("yyyy-MM-dd HH:mm") + "' before creating new transaction if between selling time: " + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm") + " & " + dteAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm"), true);
-        //            if (dteTransactionDate < dteAllowedStartDateTime && dteTransactionDate > dteAllowedEndDateTime)
-        //            {
-        //                clsEvent.AddEventLn("Transaction is not allowed, transaction date is not within the allowable transaction date.", true);
-        //                MessageBox.Show("Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                txtBarCode.Text = "";
-        //                return false;
-        //            }
-        //            clsEvent.AddEventLn("Transaction is ok, transaction date is within allowable transaction date.", true);
-
-        //            DateTime dteMAXDateLastInitialized = clsTerminalReport.MAXDateLastInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, Constants.C_DATE_MIN_VALUE);
-
-        //            clsEvent.AddEventLn("PreviousStartCutOff".PadRight(15) + ":" + dtePreviousStartCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("PreviousEndCutOff".PadRight(15) + ":" + dtePreviousEndCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("PrevAllowedStartDateTime".PadRight(15) + ":" + dtePreviousAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("PrevAllowedEndDateTime".PadRight(15) + ":" + dtePreviousAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-
-        //            clsEvent.AddEventLn("StartCutOff".PadRight(15) + ":" + dteStartCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("EndCutOff".PadRight(15) + ":" + dteEndCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("AllowedStartDateTime".PadRight(15) + ":" + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("AllowedEndDateTime".PadRight(15) + ":" + dteAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-        //            clsEvent.AddEventLn("MAXDateLastInitialized".PadRight(15) + ":" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss"), true);
-
-        //            clsEvent.AddEventLn("Checking if MAXDateLastInitialized: " + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + " is already initialized.", true);
-        //            if (dteMAXDateLastInitialized >= dteAllowedStartDateTime && dteMAXDateLastInitialized <= dteAllowedEndDateTime)
-        //            {
-        //                clsTerminalReport.CommitAndDispose();
-        //                clsEvent.AddEventLn("Transaction is not allowed, ZRead is already initialized for this date.", true);
-        //                MessageBox.Show("Sorry selling is not permitted this time, ZRead is already initialized for this date.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                txtBarCode.Text = "";
-        //                return false;
-        //            }
-        //            clsEvent.AddEventLn("OK. MAXDateLastInitialized: " + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + " is for previous zreading.", true);
-        //            clsEvent.AddEventLn("Checking Transactiondate: '" + dteMAXDateLastInitialized.AddDays(1).ToString("yyyy-MM-dd HH:mm") + "' < " + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm"), true);
-        //            if (dteMAXDateLastInitialized < dteAllowedStartDateTime)
-        //            {
-        //                if (dteMAXDateLastInitialized >= dtePreviousAllowedStartDateTime && dteMAXDateLastInitialized <= dtePreviousEndCutOffTime)
-        //                {
-        //                    clsEvent.AddEventLn("OK: AllowedStartDateTime [" + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "] is now less than MAXDateLastInitialized [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss") + "].", true);
-        //                }
-        //                else
-        //                {
-        //                    clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2Days delayed. Please restart FE.", true);
-        //                    MessageBox.Show("Transaction is not allowed, transaction date is 2Days delayed. Please restart FE." +
-        //                        Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                    txtBarCode.Text = "";
-        //                    return false;
-        //                }
-        //            }
-        //            if (dteMAXDateLastInitialized > dteTransactionDate)
-        //            {
-        //                clsEvent.AddEventLn("Transaction is not allowed, transaction date is delayed. Please restart FE.", true);
-        //                MessageBox.Show("Transaction is not allowed, transaction date is delayed. Please restart FE." +
-        //                    Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                txtBarCode.Text = "";
-        //                return false;
-        //            }
-        //            clsEvent.AddEventLn("OK to sell...", true);
-        //        }
-        //        else
-        //        {
-        //            // this is to check if the last maxdate is too far from current date. that means they did not zread for at least 2 days which is not allowed.
-        //            // or the system date has been altered.
-        //            DateTime dteMAXDateLastInitialized = clsTerminalReport.MAXDateLastInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, Constants.C_DATE_MIN_VALUE);
-
-        //            if (dteTransactionDate > dteMAXDateLastInitialized.AddDays(2))
-        //            {
-        //                clsTerminalReport.CommitAndDispose();
-        //                if (MessageBox.Show("Transaction date is too far from the last ZReadDate [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + "]. Do you want to continue?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-        //                {
-        //                    clsEvent.AddEventLn("Transaction is not allowed, transaction date is too far from the last ZReadDate [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + "]. Please change the date.", true);
-        //                    MessageBox.Show("Transaction is not allowed, transaction date is too far from the last ZReadDate [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + "]. Please change the date." +
-        //                        Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                    txtBarCode.Text = "";
-        //                    return false;
-        //                }
-        //                clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
-        //                mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
-        //            }
-        //        }
-
-        //        clsEvent.AddEventLn("[" + lblCashier.Text + "] Creating new transaction.", true);
-
-        //        mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
-        //        try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
-        //        catch { }
-
-        //        //mclsSalesTransactionDetails.CustomerID = Convert.ToInt64(lblCustomer.Tag);
-        //        //mclsSalesTransactionDetails.CustomerName = lblCustomer.Text;
-
-        //        mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
-        //        mclsSalesTransactionDetails.CustomerID = mclsContactDetails.ContactID;
-        //        mclsSalesTransactionDetails.CustomerName = mclsContactDetails.ContactName;
-        //        if (mclsSalesTransactionDetails.CustomerDetails.LastCheckInDate == Constants.C_DATE_MIN_VALUE) mclsSalesTransactionDetails.CustomerDetails.LastCheckInDate = dteTransactionDate;
-
-        //        mclsSalesTransactionDetails.AgentID = Convert.ToInt64(lblAgent.Tag);
-        //        mclsSalesTransactionDetails.AgentName = lblAgent.Text;
-        //        mclsSalesTransactionDetails.AgentPositionName = lblAgentPositionDepartment.Text;
-        //        mclsSalesTransactionDetails.AgentDepartmentName = lblAgentPositionDepartment.Tag.ToString();
-        //        mclsSalesTransactionDetails.WaiterID = Convert.ToInt64(lblServedBy.Tag);
-        //        mclsSalesTransactionDetails.WaiterName = lblServedBy.Text.Remove(0, 11);
-        //        mclsSalesTransactionDetails.CreatedByID = Convert.ToInt64(lblCashier.Tag);
-        //        mclsSalesTransactionDetails.CreatedByName = lblCashier.Text;
-        //        mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag);
-        //        mclsSalesTransactionDetails.CashierName = lblCashier.Text;
-        //        mclsSalesTransactionDetails.TransactionDate = dteTransactionDate;
-        //        mclsSalesTransactionDetails.DateSuspended = DateTime.MinValue;
-        //        mclsSalesTransactionDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
-        //        mclsSalesTransactionDetails.BranchID = mclsTerminalDetails.BranchID;
-        //        mclsSalesTransactionDetails.BranchCode = mclsTerminalDetails.BranchDetails.BranchCode;
-        //        mclsSalesTransactionDetails.TransactionStatus = TransactionStatus.Open;
-        //        mclsSalesTransactionDetails.TransactionType = mboIsRefund ? TransactionTypes.POSRefund : TransactionTypes.POSNormal;
-
-        //        Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
-        //        mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
-
-        //        mclsSalesTransactionDetails.TransactionNo = clsSalesTransactions.CreateTransactionNo(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
-        //        // mclsTransactionStream.Create(mclsSalesTransactionDetails);
-
-        //        lblTransNo.Text = mclsSalesTransactionDetails.TransactionNo;
-
-        //        //insert to transaction table 
-        //        mclsSalesTransactionDetails.TransactionID = clsSalesTransactions.Insert(mclsSalesTransactionDetails);
-
-        //        mclsSalesTransactionDetails.RewardCardActive = mclsContactDetails.RewardDetails.RewardActive;
-        //        mclsSalesTransactionDetails.RewardCardNo = mclsContactDetails.RewardDetails.RewardCardNo;
-        //        mclsSalesTransactionDetails.RewardCardExpiry = mclsContactDetails.RewardDetails.ExpiryDate;
-        //        mclsSalesTransactionDetails.RewardPreviousPoints = mclsContactDetails.RewardDetails.RewardPoints;
-
-        //        lblTransNo.Tag = mclsSalesTransactionDetails.TransactionID.ToString();
-                
-        //        // Sep 24, 2014 : update back the LastCheckInDate to transaction date
-        //        Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
-        //        mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
-
-        //        clsContact.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, dteTransactionDate);
-
-        //        mboIsInTransaction = true;
-        //        clsTerminalReport.CommitAndDispose();
-
-        //        InsertAuditLog(AccessTypes.CreateTransaction, "Create transaction #:" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-        //        clsEvent.AddEventLn("Done! Trans #: " + lblTransNo.Text + " has been created.", true);
-
-        //        // Added to put the default transaction charge during creation of transaction
-        //        // this is set during the system setup
-        //        ApplyTransDefaultCharge();
-        //    }
-        //    catch (Exception ex)
-        //    { clsEvent.AddErrorEventLn(ex); boRetValue = false; }
-
-        //    return boRetValue;
-        //}
+        
         private void LoadTransaction(string stTransactionNo, string pstrTerminalNo)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -10352,6 +10212,7 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 clsEvent.AddEventLn("loading items...", true);
                 ItemDataTable.Rows.Clear();
+                mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
 
                 foreach (Data.SalesTransactionItemDetails item in Items)
                 {
@@ -10361,6 +10222,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     dr["ItemNo"] = ItemDataTable.Rows.Count + 1;
 
                     ItemDataTable.Rows.Add(dr);
+                    mclsSalesTransactionDetails.TransactionItemsList.Add(item);
 
                     //dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;
                     //dgItems.Select(dgItems.CurrentRowIndex);

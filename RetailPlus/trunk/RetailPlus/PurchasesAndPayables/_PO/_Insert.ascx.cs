@@ -21,8 +21,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			if (!IsPostBack)
 			{
                 lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
-				if (Visible)
-					LoadOptions();
+                if (Visible)
+                {
+                    bool boIsePurchaseOrder = Request.QueryString["isepurchaseorder"] == null ? false : bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+                    lblIsePurchaseOrder.Text = boIsePurchaseOrder ? "true" : "false";	
+
+                    LoadOptions();
+                }
 			}
 		}
 
@@ -53,14 +58,14 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         protected void imgSaveAddItem_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			Int64 POID = SaveRecord();
-			string stParam = "?task=" + Common.Encrypt("additem",Session.SessionID) + "&poid=" + Common.Encrypt(POID.ToString(),Session.SessionID) + "#itemsection";	
+            string stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&poid=" + Common.Encrypt(POID.ToString(), Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt(lblIsePurchaseOrder.Text, Session.SessionID) + "#itemsection";	
 			Response.Redirect("Default.aspx" + stParam);
 		}
 
         protected void cmdSaveAddItem_Click(object sender, EventArgs e)
 		{
 			Int64 POID = SaveRecord();
-			string stParam = "?task=" + Common.Encrypt("additem",Session.SessionID) + "&poid=" + Common.Encrypt(POID.ToString(),Session.SessionID) + "#itemsection";	
+            string stParam = "?task=" + Common.Encrypt("additem", Session.SessionID) + "&poid=" + Common.Encrypt(POID.ToString(), Session.SessionID) + "&isepurchaseorder=" + Common.Encrypt(lblIsePurchaseOrder.Text, Session.SessionID) + "#itemsection";	
 			Response.Redirect("Default.aspx" + stParam);	
 		}
 
@@ -144,11 +149,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             cboSupplier.DataValueField = "ContactID";
             cboSupplier.DataSource = clsContact.SuppliersAsDataTable(null, 0, "ContactName", SortOption.Ascending).DefaultView;
 			cboSupplier.DataBind();
-			
+
+            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
+
 			Branch clsBranch = new Branch(clsContact.Connection, clsContact.Transaction);
 			cboBranch.DataTextField = "BranchCode";
 			cboBranch.DataValueField = "BranchID";
-			cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable(OnlyIncludeIneSales: boIsePurchaseOrder).DefaultView;
 			cboBranch.DataBind();
             
             clsContact.CommitAndDispose();
@@ -157,12 +164,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             cboSupplier_SelectedIndexChanged(null, null);
 			cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));
 			cboBranch_SelectedIndexChanged(null, null);
-
-            bool boIsePurchaseOrder = bool.TryParse(Common.Decrypt(Request.QueryString["isepurchaseorder"].ToString(), Session.SessionID), out boIsePurchaseOrder);
-            if (boIsePurchaseOrder)
-                lblIsePurchaseOrder.Text = "1";
-            else
-                lblIsePurchaseOrder.Text = "0";
 
 			NewTransaction();
 		}
@@ -213,7 +214,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			clsDetails.Status = POStatus.Open;
 			clsDetails.Remarks = txtRemarks.Text;
 
-            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder);
+            bool boIsePurchaseOrder = bool.TryParse(lblIsePurchaseOrder.Text, out boIsePurchaseOrder) ? boIsePurchaseOrder : false;
             clsDetails.IncludeIneSales = boIsePurchaseOrder;
 
 			Int64 id = clsPO.Insert(clsDetails);

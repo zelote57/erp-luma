@@ -71,6 +71,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private DataGridTextBoxColumn RewardPoints;
         private DataGridTextBoxColumn ItemRemarks;
         private DataGridTextBoxColumn ReturnTransactionItemsID;
+        private DataGridTextBoxColumn SupplierID;
+        private DataGridTextBoxColumn SupplierCode;
+        private DataGridTextBoxColumn SupplierName;
 		private Label lblDescription;
 		private Label lblCategory;
 		private Label lblProperties;
@@ -237,6 +240,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.RewardPoints = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ItemRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ReturnTransactionItemsID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.SupplierName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PaxNo = new System.Windows.Forms.DataGridTextBoxColumn();
             this.grpItems = new System.Windows.Forms.GroupBox();
             this.lblConsignment = new System.Windows.Forms.Label();
@@ -381,7 +387,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.RewardPoints,
             this.ItemRemarks,
             this.PaxNo,
-            this.ReturnTransactionItemsID});
+            this.ReturnTransactionItemsID,
+            this.SupplierID,
+            this.SupplierCode,
+            this.SupplierName});
             this.dgStyle.GridLineColor = System.Drawing.Color.Blue;
             this.dgStyle.GridLineStyle = System.Windows.Forms.DataGridLineStyle.None;
             this.dgStyle.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
@@ -839,7 +848,34 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ReturnTransactionItemsID.MappingName = "ReturnTransactionItemsID";
             this.ReturnTransactionItemsID.NullText = "";
             this.ReturnTransactionItemsID.ReadOnly = true;
-            this.ReturnTransactionItemsID.Width = 0;            
+            this.ReturnTransactionItemsID.Width = 0;
+            // 
+            // SupplierID
+            // 
+            this.SupplierID.Format = "";
+            this.SupplierID.FormatInfo = null;
+            this.SupplierID.MappingName = "SupplierID";
+            this.SupplierID.NullText = "";
+            this.SupplierID.ReadOnly = true;
+            this.SupplierID.Width = 0;
+            // 
+            // SupplierCode
+            // 
+            this.SupplierCode.Format = "";
+            this.SupplierCode.FormatInfo = null;
+            this.SupplierCode.MappingName = "SupplierCode";
+            this.SupplierCode.NullText = "";
+            this.SupplierCode.ReadOnly = true;
+            this.SupplierCode.Width = 0;
+            // 
+            // SupplierName
+            // 
+            this.SupplierName.Format = "";
+            this.SupplierName.FormatInfo = null;
+            this.SupplierName.MappingName = "SupplierName";
+            this.SupplierName.NullText = "";
+            this.SupplierName.ReadOnly = true;
+            this.SupplierName.Width = 0;   
             // 
             // grpItems
             // 
@@ -2232,6 +2268,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				//mboIsDiscountAuthorized = false;
 
 				mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
+                mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
+
 				try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
 				catch { }
 				mclsSalesTransactionDetails.CashierName = lblCashier.Text;
@@ -2343,6 +2381,9 @@ namespace AceSoft.RetailPlus.Client.UI
             ItemDataTable.Columns.Add("ItemRemarks");
             ItemDataTable.Columns.Add("PaxNo");
             ItemDataTable.Columns.Add("ReturnTransactionItemsID");
+            ItemDataTable.Columns.Add("SupplierID");
+            ItemDataTable.Columns.Add("SupplierCode");
+            ItemDataTable.Columns.Add("SupplierName");
 
             this.dgStyle.MappingName = ItemDataTable.TableName;
             dgItems.DataSource = ItemDataTable;
@@ -2493,6 +2534,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
                             clsSalesTransactions.CommitAndDispose();
 
+                            // 10Jul2015 : Update the item list
+                            mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == Details.ItemNo)] = Details;
+
                             clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + " : done", true);
 
                             clsProduct.CommitAndDispose();
@@ -2562,6 +2606,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
                             clsSalesTransactions.CommitAndDispose();
+
+                            // 10Jul2015 : Update the item list
+                            mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == Details.ItemNo)] = Details;
 
                             clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + " : done", true);
 
@@ -2905,6 +2952,9 @@ namespace AceSoft.RetailPlus.Client.UI
             clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
 			clsSalesTransactions.CommitAndDispose();
 
+            // 10Jul2015 : Update the item list
+            mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == clsItemDetails.ItemNo)] = clsItemDetails;
+
             clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + clsItemDetails.ItemNo + " : done", true);
 
 		}
@@ -2969,6 +3019,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						// ReservedAndCommitItem(clsItemDetails, clsItemDetails.TransactionItemStatus);
 
 						ItemDataTable.Rows.Add(dr);
+                        mclsSalesTransactionDetails.TransactionItemsList.Add(clsItemDetails);
 
 						dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;
 						dgItems.Select(dgItems.CurrentRowIndex);
@@ -3205,6 +3256,9 @@ namespace AceSoft.RetailPlus.Client.UI
                                 clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
                                 clsSalesTransactions.CommitAndDispose();
 
+                                // 10Jul2015 : Update the item list
+                                mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == clsItemDetails.ItemNo)] = clsItemDetails;
+
                                 InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
 								clsEvent.AddEventLn("Done applying item discount...", true);
@@ -3331,6 +3385,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                     clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
                                     clsSalesTransactions.CommitAndDispose();
+
+                                    // 10Jul2015 : Update the item list
+                                    mclsSalesTransactionDetails.TransactionItemsList[mclsSalesTransactionDetails.TransactionItemsList.FindIndex(x => x.ItemNo == clsItemDetails.ItemNo)] = clsItemDetails;
 
 									InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
@@ -5315,6 +5372,8 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.ProductCode = clsProductDetails.ProductCode;
                         clsItemDetails.BarCode = clsProductDetails.BarCode;
                         clsItemDetails.Description = clsProductDetails.ProductDesc;
+                        clsItemDetails.ProductGroupID = clsProductDetails.ProductGroupID;
+                        clsItemDetails.ProductSubGroupID = clsProductDetails.ProductSubGroupID;
                         clsItemDetails.ProductGroup = clsProductDetails.ProductGroupName;
                         clsItemDetails.ProductSubGroup = clsProductDetails.ProductSubGroupName;
                         clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
@@ -5345,6 +5404,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.RewardPoints = clsProductDetails.RewardPoints;
                         clsItemDetails.ItemRemarks = "";
                         clsItemDetails.ReturnTransactionItemsID = 0;
+                        clsItemDetails.SupplierID = clsProductDetails.SupplierID;
+                        clsItemDetails.SupplierCode = clsProductDetails.SupplierCode;
+                        clsItemDetails.SupplierName = clsProductDetails.SupplierName;
 
                         clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
                         clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
@@ -5379,9 +5441,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.MatrixPackageID = clsProductPackageDetails.MatrixID;
                         clsItemDetails.VariationsMatrixID = clsProductDetails.MatrixID;
                         clsItemDetails.MatrixDescription = clsProductDetails.MatrixDescription;
-                        clsItemDetails.SupplierID = clsProductDetails.SupplierID;
-                        clsItemDetails.SupplierCode = clsProductDetails.SupplierCode;
-                        clsItemDetails.SupplierName = clsProductDetails.SupplierName;
+                        
 
                         clsItemDetails = ComputeItemTotal(clsItemDetails); // set the grossales, vat, discounts, etc.(Details);
 
@@ -6196,12 +6256,12 @@ namespace AceSoft.RetailPlus.Client.UI
             switch (mclsSysConfigDetails.CreditPaymentType )
             {
                 case CreditPaymentType.Houseware:
-                    GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.EnterCreditPayment); 
+                    loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.EnterCreditPayment); 
                     break;
                 case CreditPaymentType.Normal:
                 case CreditPaymentType.MPC:
                 default:
-                    GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.FE_VerifyCredit);
+                    loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.FE_VerifyCredit);
                     break;
             }
 
@@ -6338,6 +6398,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
                             mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
+                            mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
                             mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
                             mclsSalesTransactionDetails.TransactionStatus = TransactionStatus.CreditPayment;
                             mclsSalesTransactionDetails.CRNo = iCollectionReceiptNo;
@@ -7817,6 +7878,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 Details.ItemRemarks = dgItems[iRow, 45].ToString();
                 Details.PaxNo = Convert.ToInt32(dgItems[iRow, 46].ToString());
                 Details.ReturnTransactionItemsID = Convert.ToInt64(dgItems[iRow, 47].ToString());
+                Details.SupplierID = Convert.ToInt64(dgItems[iRow, 48].ToString());
+                Details.SupplierCode = dgItems[iRow, 49].ToString();
+                Details.SupplierName = dgItems[iRow, 50].ToString();
 
 				return Details;
 			}
@@ -7926,13 +7990,15 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["OrderSlipPrinter4"] = Details.OrderSlipPrinter4; //39
                 dr["OrderSlipPrinter5"] = Details.OrderSlipPrinter5; //40
                 dr["OrderSlipPrinted"] = Details.OrderSlipPrinted.ToString(); //41
-                dr["OrderSlipPrinted"] = Details.OrderSlipPrinted.ToString(); //42
-                dr["PercentageCommision"] = Details.PercentageCommision; //43
-                dr["Commision"] = Details.Amount * (Details.PercentageCommision / 100); //44
-                dr["RewardPoints"] = Details.RewardPoints; //45
-                dr["ItemRemarks"] = Details.ItemRemarks; //46
-                dr["PaxNo"] = Details.PaxNo; //47
-                dr["ReturnTransactionItemsID"] = Details.ReturnTransactionItemsID; //48
+                dr["PercentageCommision"] = Details.PercentageCommision; //42
+                dr["Commision"] = Details.Amount * (Details.PercentageCommision / 100); //43
+                dr["RewardPoints"] = Details.RewardPoints; //44
+                dr["ItemRemarks"] = Details.ItemRemarks; //45
+                dr["PaxNo"] = Details.PaxNo; //46
+                dr["ReturnTransactionItemsID"] = Details.ReturnTransactionItemsID; //47
+                dr["SupplierID"] = Details.SupplierID; //48
+                dr["SupplierCode"] = Details.SupplierCode; //49
+                dr["SupplierName"] = Details.SupplierName; //50
 
                 // 21May2015 : do an override for 3 digits wighted
                 if (mclsSysConfigDetails.WeightMeasurement.IndexOf(Details.ProductUnitCode.ToUpper()) > -1)
@@ -8068,6 +8134,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				catch { }
 
 				ItemDataTable.Rows.Add(dr);
+                mclsSalesTransactionDetails.TransactionItemsList.Add(clsItemDetails);
 
 				dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;
 				try
@@ -8925,6 +8992,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsEvent.AddEventLn("[" + lblCashier.Text + "] Creating new transaction.", true);
 
                 mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
+                mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
                 try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
                 catch { }
 
@@ -9123,8 +9191,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				clsEvent.AddEventLn("loading items...", true);
 				ItemDataTable.Rows.Clear();
-
-				foreach (Data.SalesTransactionItemDetails item in Items)
+                mclsSalesTransactionDetails.TransactionItemsList = new System.Collections.Generic.List<Data.SalesTransactionItemDetails>();
+                foreach (Data.SalesTransactionItemDetails item in Items)
 				{
 					System.Data.DataRow dr = ItemDataTable.NewRow();
 
@@ -9132,6 +9200,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					dr["ItemNo"] = ItemDataTable.Rows.Count + 1;
 
 					ItemDataTable.Rows.Add(dr);
+                    mclsSalesTransactionDetails.TransactionItemsList.Add(item);
                     clsEvent.AddEventLn("Loading item no: " + dr["ItemNo"].ToString() + " Barcode".PadRight(15) + ":" + dr["BarCode"].ToString() + " " + dr["ProductCode"].ToString() + " Price".PadRight(15) + ":" + dr["Price"].ToString(), true);
 
 					//dgItems.CurrentRowIndex = ItemDataTable.Rows.Count;

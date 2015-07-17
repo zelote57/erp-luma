@@ -110,7 +110,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			Branch clsBranch = new Branch(clsContact.Connection, clsContact.Transaction);
 			cboBranch.DataTextField = "BranchCode";
 			cboBranch.DataValueField = "BranchID";
-			cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
 			cboBranch.DataBind();
 			clsContact.CommitAndDispose();
 

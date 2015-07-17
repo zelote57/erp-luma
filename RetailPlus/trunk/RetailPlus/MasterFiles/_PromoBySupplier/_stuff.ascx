@@ -70,6 +70,17 @@
 									<asp:TextBox id="txtPromoBySupplierName" runat="server" accesskey="G" CssClass="ms-long-disabled" MaxLength="75" BorderStyle="Groove" ReadOnly="True"></asp:TextBox>
 								</td>
 							</tr>
+                            <tr>
+								<td class="ms-formspacer"></td>
+							</tr>
+							<tr>
+								<td class="ms-authoringcontrols" style="padding-bottom:2px">
+									<label>Promo&nbsp;Level<font color="blue">:</font></label>
+								</td>
+								<td class="ms-authoringcontrols" width="100%">&nbsp;
+									<asp:TextBox id="txtPromoLevel" runat="server" accesskey="G" CssClass="ms-short-disabled" MaxLength="75" BorderStyle="Groove" ReadOnly="True"></asp:TextBox>
+								</td>
+							</tr>
 							<tr>
 								<td class="ms-formspacer"></td>
 							</tr>
@@ -119,12 +130,16 @@
 							<tr>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%">
-									<asp:dropdownlist id="cboContact" CssClass="ms-long" Width="60%" runat="server"></asp:dropdownlist>
-                                    <asp:textbox id="txtContactCode" accessKey="C" runat="server" CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+									<asp:dropdownlist id="cboContact" CssClass="ms-long" Width="60%" runat="server" 
+                                        Enabled="False"></asp:dropdownlist>
+                                    <asp:textbox id="txtContactCode" accessKey="C" runat="server" 
+                                        CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" 
+                                        Enabled="False" ></asp:textbox>
                                     <asp:imagebutton id="imgContactCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand; width: 16px;" accessKey="P" 
                                         ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
-                                        CausesValidation="False" onclick="imgContactCodeSearch_Click"></asp:imagebutton>
+                                        CausesValidation="False" onclick="imgContactCodeSearch_Click" 
+                                        Enabled="False"></asp:imagebutton>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Contacts' must not be left blank." Display="Dynamic" ControlToValidate="cboContact" ForeColor=" "></asp:requiredfieldvalidator>
 								</td>
 							</tr>
@@ -158,12 +173,17 @@
 							<tr>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%">
-									<asp:dropdownlist id="cboProductGroup" CssClass="ms-long" Width="60%" runat="server" AutoPostBack="True" onselectedindexchanged="cboProductGroup_SelectedIndexChanged"></asp:dropdownlist>
-                                    <asp:textbox id="txtProductGroupCode" accessKey="G" runat="server" CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+									<asp:dropdownlist id="cboProductGroup" CssClass="ms-long" Width="60%" 
+                                        runat="server" AutoPostBack="True" 
+                                        onselectedindexchanged="cboProductGroup_SelectedIndexChanged" Enabled="False"></asp:dropdownlist>
+                                    <asp:textbox id="txtProductGroupCode" accessKey="G" runat="server" 
+                                        CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" 
+                                        Enabled="False" ></asp:textbox>
                                     <asp:imagebutton id="imgProductGroupCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand" accessKey="P" 
                                         ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
-                                        CausesValidation="False" onclick="imgProductGroupCodeSearch_Click"></asp:imagebutton>
+                                        CausesValidation="False" onclick="imgProductGroupCodeSearch_Click" 
+                                        Enabled="False"></asp:imagebutton>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product Group' must not be left blank." Display="Dynamic" ControlToValidate="cboProductGroup" ForeColor=" "></asp:requiredfieldvalidator>
 								</td>
 							</tr>
@@ -178,12 +198,18 @@
 							<tr>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%">
-									<asp:dropdownlist id="cboSubGroup" CssClass="ms-long" Width="60%" runat="server" AutoPostBack="True" onselectedindexchanged="cboProductSubGroup_SelectedIndexChanged"></asp:dropdownlist>
-                                    <asp:textbox id="txtSubGroupCode" accessKey="C" runat="server" CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+									<asp:dropdownlist id="cboSubGroup" CssClass="ms-long" Width="60%" 
+                                        runat="server" AutoPostBack="True" 
+                                        onselectedindexchanged="cboProductSubGroup_SelectedIndexChanged" 
+                                        Enabled="False"></asp:dropdownlist>
+                                    <asp:textbox id="txtSubGroupCode" accessKey="C" runat="server" 
+                                        CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" 
+                                        Enabled="False" ></asp:textbox>
                                     <asp:imagebutton id="imgSubGroupCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand" accessKey="P" 
                                         ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
-                                        CausesValidation="False" onclick="imgSubGroupCodeSearch_Click"></asp:imagebutton>
+                                        CausesValidation="False" onclick="imgSubGroupCodeSearch_Click" 
+                                        Enabled="False"></asp:imagebutton>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Product SubGroup' must not be left blank." Display="Dynamic" ControlToValidate="cboSubGroup" ForeColor=" "></asp:requiredfieldvalidator>
 								</td>
 							</tr>
@@ -198,9 +224,16 @@
 							<tr>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%">
-									<asp:dropdownlist id="cboProducts" CssClass="ms-long" Width="60%" runat="server" AutoPostBack="True" onselectedindexchanged="cboProducts_SelectedIndexChanged"></asp:dropdownlist>
-                                    <asp:textbox id="txtProductCode" accessKey="C" runat="server" CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
-                                    <asp:imagebutton id="cmdProductCode" ToolTip="Execute search" style="CURSOR: hand" accessKey="P" ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" CausesValidation="False" OnClick="cmdProductCode_Click"></asp:imagebutton>
+									<asp:dropdownlist id="cboProducts" CssClass="ms-long" Width="60%" 
+                                        runat="server" AutoPostBack="True" 
+                                        onselectedindexchanged="cboProducts_SelectedIndexChanged" Enabled="False"></asp:dropdownlist>
+                                    <asp:textbox id="txtProductCode" accessKey="C" runat="server" 
+                                        CssClass="ms-short" Width="30%" BorderStyle="Groove" MaxLength="30" 
+                                        Enabled="False" ></asp:textbox>
+                                    <asp:imagebutton id="cmdProductCode" ToolTip="Execute search" 
+                                        style="CURSOR: hand" accessKey="P" 
+                                        ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
+                                        CausesValidation="False" OnClick="cmdProductCode_Click" Enabled="False"></asp:imagebutton>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator6" runat="server" CssClass="ms-error" ErrorMessage="'Product' must not be left blank." Display="Dynamic" ControlToValidate="cboProducts" ForeColor=" "></asp:requiredfieldvalidator>
 								</td>
 							</tr>
@@ -215,7 +248,8 @@
 							<tr>
 								<td class="ms-formspacer" style="HEIGHT: 21px"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%" style="HEIGHT: 21px">
-									<asp:dropdownlist id="cboProductVariation" CssClass="ms-long" runat="server"></asp:dropdownlist>
+									<asp:dropdownlist id="cboProductVariation" CssClass="ms-long" runat="server" 
+                                        Enabled="False"></asp:dropdownlist>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator7" runat="server" CssClass="ms-error" ErrorMessage="'Product Variation' must not be left blank." Display="Dynamic" ControlToValidate="cboProductVariation" ForeColor=" "></asp:requiredfieldvalidator>
 								</td>
 							</tr>
@@ -260,12 +294,17 @@
 							<tr>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%">
-									<asp:TextBox id="txtCouponRemarks" accessKey="G" Width="90%" CssClass="ms-long-required" runat="server" BorderStyle="Groove" MaxLength="3000" TextMode="MultiLine" Rows="10"></asp:TextBox>
+									<asp:TextBox id="txtCouponRemarks" accessKey="G" Width="90%" CssClass="ms-long-required" runat="server" BorderStyle="Groove" MaxLength="3000" TextMode="MultiLine" Rows="15"></asp:TextBox>
                                     <br />
                                     <br /><asp:Label ID="Label1" runat="server" Text="Use the following keywords: this will be changed during the actual print out." Font-Size="8" Font-Italic="True" Font-Overline="False" ForeColor="Red"></asp:Label>
                                     <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label2" runat="server" Text="{DateNow}      = Print the current date in MMM dd, yyyy format." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
                                     <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label3" runat="server" Text="{Amount}       = Print the total amount of products pruchased under the promo." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
-                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label4" runat="server" Text="{TrxAmount}    = Print the total amount of the transaction." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
+                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label4" runat="server" Text="{ORNo}         = Print the total OR number." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
+                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label5" runat="server" Text="{CustomerName} = Print the total customer name." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
+                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label9" runat="server" Text="{SupplierName} = Print the total supplier name." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
+                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label6" runat="server" Text="{CheckCounter} = Print the total check counter." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
+                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label7" runat="server" Text="{ProductGroup} = Print the total product group." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
+                                    <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="Label8" runat="server" Text="{ProductSubGroup} = Print the total product sub group." Font-Size="8" Font-Italic="True" Font-Overline="False"></asp:Label>
 								</td>
 							</tr>
 							<tr>

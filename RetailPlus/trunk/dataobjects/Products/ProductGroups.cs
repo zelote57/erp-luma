@@ -561,34 +561,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-				
-				ProductGroupDetails Details = new ProductGroupDetails();
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
-                    Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
-                    Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
-                    Details.Price = decimal.Parse(dr["Price"].ToString());
-                    Details.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
-                    Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
-                    Details.VAT = decimal.Parse(dr["VAT"].ToString());
-                    Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
-                    Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-                    /*** Added for Financial Information  ***/
-                    /*** March 07, 2009 ***/
-                    Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
-                    Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
-                    Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
-                    Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
-                    Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
 
-                    Details.isLock = bool.Parse(dr["isLock"].ToString());
-                    Details.UnitDetails = new Unit(base.Connection, base.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
-                }
-
-				return Details;
+                return setDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -610,40 +585,65 @@ namespace AceSoft.RetailPlus.Data
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                ProductGroupDetails Details = new ProductGroupDetails();
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
-                    Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
-                    Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
-                    Details.Price = decimal.Parse(dr["Price"].ToString());
-                    Details.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
-                    Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
-                    Details.VAT = decimal.Parse(dr["VAT"].ToString());
-                    Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
-                    Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-                    /*** Added for Financial Information  ***/
-                    /*** March 07, 2009 ***/
-                    Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
-                    Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
-                    Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
-                    Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
-                    Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
-
-                    Details.isLock = bool.Parse(dr["isLock"].ToString());
-                    Details.UnitDetails = new Unit(base.Connection, base.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
-                }
-
-                return Details;
+                return setDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-		
+        public ProductGroupDetails DetailsByName(string ProductGroupName)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE ProductGroupName = @ProductGroupName;";
+
+                cmd.Parameters.AddWithValue("@ProductGroupName", ProductGroupName);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return setDetails(dt);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        private ProductGroupDetails setDetails(System.Data.DataTable dt)
+        {
+            ProductGroupDetails Details = new ProductGroupDetails();
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
+                Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
+                Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
+                Details.Price = decimal.Parse(dr["Price"].ToString());
+                Details.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
+                Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+                Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                /*** Added for Financial Information  ***/
+                /*** March 07, 2009 ***/
+                Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
+                Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
+                Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
+                Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
+                Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
+
+                Details.isLock = bool.Parse(dr["isLock"].ToString());
+                Details.UnitDetails = new Unit(base.Connection, base.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
+            }
+            return Details;
+        }
+
 		#endregion
 
 		#region Streams

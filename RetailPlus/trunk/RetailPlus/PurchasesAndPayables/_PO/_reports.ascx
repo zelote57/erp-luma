@@ -1,6 +1,7 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.PurchasesAndPayables._PO.__Reports" Codebehind="_Reports.ascx.cs" %>
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
+<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">false</asp:label>
 <asp:UpdatePanel id="UpdatePanel1" runat="server">
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">

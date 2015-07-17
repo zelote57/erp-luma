@@ -122,7 +122,13 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 
 		private void LoadOptions()
 		{
-			
+            cboPromoLevel.Items.Clear();
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.All.ToString("G"), PromoLevel.All.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.Contact.ToString("G"), PromoLevel.Contact.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.ProductGroup.ToString("G"), PromoLevel.ProductGroup.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.ProductSubGroup.ToString("G"), PromoLevel.ProductSubGroup.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.Product.ToString("G"), PromoLevel.Product.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.Variation.ToString("G"), PromoLevel.Variation.ToString("d")));
 		}
 
 		private void LoadRecord()
@@ -135,6 +141,7 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 			lblPromoBySupplierID.Text = clsDetails.PromoBySupplierID.ToString();
 			txtPromoBySupplierCode.Text = clsDetails.PromoBySupplierCode;
 			txtPromoBySupplierName.Text = clsDetails.PromoBySupplierName;
+            cboPromoLevel.SelectedIndex = cboPromoLevel.Items.IndexOf(cboPromoLevel.Items.FindByValue(clsDetails.PromoLevel.ToString("d")));
 			txtStartDate.Text = clsDetails.StartDate.ToString("yyyy-MM-dd");
             txtStartTime.Text = clsDetails.StartDate.ToString("HH:mm");
             txtEndDate.Text = clsDetails.EndDate.ToString("yyyy-MM-dd");
@@ -174,6 +181,7 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
             clsDetails.PromoBySupplierID = Convert.ToInt64(lblPromoBySupplierID.Text);
             clsDetails.PromoBySupplierCode = txtPromoBySupplierCode.Text;
             clsDetails.PromoBySupplierName = txtPromoBySupplierName.Text;
+            clsDetails.PromoLevel = (PromoLevel)Enum.Parse(typeof(PromoLevel), cboPromoLevel.SelectedItem.Value);
             clsDetails.StartDate = dteStartDateTime;
             clsDetails.EndDate = dteEndDateTime;
             clsDetails.PromoTypeID = Constants.C_DEF_PROMO_TYPE_ID;

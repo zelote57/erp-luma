@@ -10599,7 +10599,7 @@ delimiter ;
 	
 	Desc: This will recompute the New and Old Grandtotal of TerminalReportHistoryeSales
 
-	CALL procTerminalReportHistoryeSalesGrandTotal(1, '01', '2014-12-31 19:00');
+	CALL procTerminalReportHistoryeSalesGrandTotal(1, '01', '2015-05-30 19:00');
 	
 **************************************************************/
 delimiter GO
@@ -11629,3 +11629,6 @@ GRANT RELOAD ON *.* TO 'POSUser';
 GRANT RELOAD ON *.* TO 'POSAuditUser';
 
 SHOW ENGINE INNODB STATUS\G
+
+
+-- CALL procTerminalReportHistoryeSalesGrandTotal(1, '01', '2015-07-12 19:00');

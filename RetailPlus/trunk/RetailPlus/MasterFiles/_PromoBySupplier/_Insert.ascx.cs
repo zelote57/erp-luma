@@ -27,6 +27,14 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 
 		private void LoadOptions()
 		{
+            cboPromoLevel.Items.Clear();
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.All.ToString("G"), PromoLevel.All.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.Contact.ToString("G"), PromoLevel.Contact.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.ProductGroup.ToString("G"), PromoLevel.ProductGroup.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.ProductSubGroup.ToString("G"), PromoLevel.ProductSubGroup.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.Product.ToString("G"), PromoLevel.Product.ToString("d")));
+            cboPromoLevel.Items.Add(new ListItem(PromoLevel.Variation.ToString("G"), PromoLevel.Variation.ToString("d")));
+
 			txtStartDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             txtStartTime.Text = "00:00";
             txtEndDate.Text = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd");
@@ -89,7 +97,7 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 			clsDetails.StartDate = dteStartDateTime;
 			clsDetails.EndDate = dteEndDateTime;
             clsDetails.PromoTypeID = Constants.C_DEF_PROMO_TYPE_ID;
-
+            clsDetails.PromoLevel = (PromoLevel)Enum.Parse(typeof(PromoLevel), cboPromoLevel.SelectedItem.Value);
 			lngRetValue = clsPromoBySupplier.Insert(clsDetails);
 			
 			clsPromoBySupplier.CommitAndDispose();

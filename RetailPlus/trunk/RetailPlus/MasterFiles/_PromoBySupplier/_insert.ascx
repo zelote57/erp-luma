@@ -106,7 +106,22 @@
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Promo name.' must not be left blank." Display="Dynamic" ControlToValidate="txtPromoBySupplierName" ForeColor=" "></asp:requiredfieldvalidator>
 								</td>
 							</tr>
+                            <tr>
+								<td class="ms-formspacer"></td>
+							</tr>
 							<tr>
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
+									<label>Select&nbsp;Promo Level<font color="red">*</font></label>
+								</td>
+							</tr>
+                            <tr>
+								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-authoringcontrols" width="100%">
+									<asp:dropdownlist id="cboPromoLevel" CssClass="ms-long" runat="server"></asp:dropdownlist>
+									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Promo level' must not be left blank." Display="Dynamic" ControlToValidate="cboPromoLevel" ForeColor=" "></asp:requiredfieldvalidator>
+								</td>
+							</tr>
+                            <tr>
 								<td class="ms-formspacer"></td>
 							</tr>
 						</table>
@@ -116,11 +131,8 @@
 					<td colspan="3" class="ms-sectionline" height="1"></td>
 				</tr>
 				<tr>
-					<td colspan="3" class="ms-sectionline" height="1"></td>
-				</tr>
-				<tr>
 					<td valign="top" style="padding-bottom: 20px">
-						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 2:&nbsp;Date 
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 3:&nbsp;Date 
 							coverage</div>
 						<div class="ms-descriptiontext" style="padding-bottom:	10px">
 							Enter start date of the promo.</div>

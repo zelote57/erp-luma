@@ -6,6 +6,7 @@
 <script type="text/jscript"language="JavaScript" src="../../_Scripts/PurchasesAndPayables.js"></script>
 <script type="text/jscript"language="JavaScript" src="../../_Scripts/ComputeMarginPO.js"></script>
 <script type="text/jscript"language="JavaScript" src="../../_Scripts/dd_tooltip.js"></script>
+<asp:label id="lblIsePurchaseOrder" CssClass="ms-error" runat="server" Visible="false">false</asp:label>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
     <tr>
         <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>

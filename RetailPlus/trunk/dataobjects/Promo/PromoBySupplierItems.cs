@@ -297,102 +297,44 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Modifiers
 
-
-		public bool ApplyPromoBySupplierValue(ContactDetails clsContactDetails, Int64 ProductID, Int64 VariationMatrixID, out PromoTypes PromoBySupplierType, out decimal PromoBySupplierQuantity, out decimal PromoBySupplierValue, out bool InPercent, int BranchID = 0)
+        public bool ApplyPromoBySupplierValue(PromoBySupplierDetails clsPromoBySupplierDetails, Int64 ContactID, Int64 ProductGroupID, Int64 ProductSubGroupID, Int64 ProductID, Int64 VariationMatrixID, out decimal PromoBySupplierValue, out string CouponRemarks, int BranchID = 0)
 		{
-            Int64 ContactID = clsContactDetails.ContactID;
-
             string strSpecialSupplierIDs = "";
 
-            // rewardcardmember
-            // make sure that it is not the default
-            if (clsContactDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID &&
-                clsContactDetails.RewardDetails.RewardActive)
-            {
-                if (!string.IsNullOrEmpty(strSpecialSupplierIDs))
-                    strSpecialSupplierIDs += "," + Constants.PLUSCARDMEMBERSID_STRING;
-                else
-                    strSpecialSupplierIDs = Constants.PLUSCARDMEMBERSID_STRING;
-            }
-
-            // icc card members
-            // make sure that it is not the default
-            if (clsContactDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID && 
-                clsContactDetails.CreditDetails.GuarantorID == Constants.ZERO &&
-                clsContactDetails.CreditDetails.CreditActive)
-            {
-                if (!string.IsNullOrEmpty(strSpecialSupplierIDs))
-                    strSpecialSupplierIDs += "," + Constants.ICCARDMEMBERSID_STRING;
-                else
-                    strSpecialSupplierIDs = Constants.ICCARDMEMBERSID_STRING;
-            }
-
-            // gcc card members
-            // make sure that it is not the default
-            if (clsContactDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID && 
-                clsContactDetails.CreditDetails.GuarantorID != Constants.ZERO &&
-                clsContactDetails.CreditDetails.CreditActive)
-            {
-                if (!string.IsNullOrEmpty(strSpecialSupplierIDs))
-                    strSpecialSupplierIDs += "," + Constants.GCCARDMEMBERSID_STRING;
-                else
-                    strSpecialSupplierIDs = Constants.GCCARDMEMBERSID_STRING;
-            }
-            
-
-            PromoBySupplierType = PromoTypes.NotApplicable;
-            PromoBySupplierQuantity = 0;
             PromoBySupplierValue = 0;
-            InPercent = false;
+            CouponRemarks = "";
 
-            bool boHasPromoBySupplier = false;
+            bool boHasPromoBySupplier = true;
 
             try
             {
-                Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
-                Data.ProductDetails clsProductDetails = clsProduct.Details1(BranchID, ProductID);
+                if (ProductID != 0)
+                {
+                    Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
+                    Data.ProductDetails clsProductDetails = clsProduct.Details1(BranchID, ProductID);
 
-                Int64 ProductSubGroupID = clsProductDetails.ProductSubGroupID;
-                Int64 ProductGroupID = clsProductDetails.ProductGroupID;
+                    ProductSubGroupID = clsProductDetails.ProductSubGroupID;
+                    ProductGroupID = clsProductDetails.ProductGroupID;
+                }
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "SELECT " +
-                                "PromoBySupplierID  " +
-                            "FROM tblPromoBySupplier " +
-                            "WHERE 1=1 " +
-                                "AND Status = 1 " +
-                                "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-                                "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-
-                cmd.CommandText = SQL;
+                string SQL = "";
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
 
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    boHasPromoBySupplier = true;
-                    break;
-                }
-
-                if (boHasPromoBySupplier == false)	//return agad if no PromoBySupplier is affected by date
-                    return boHasPromoBySupplier;
-
-                /*******************************Up to Contact, Group, Sub, Prod and VarM ID only*****************************/
+                /*******************************Up to Contact, Group, Sub, Prod and VarM ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -405,6 +347,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
@@ -417,27 +360,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Sub, Prod and VariationsMatrix ID only*****************************/
+                /*******************************Up to Contact, Sub, Prod and VariationsMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -450,6 +389,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -461,27 +401,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Prod and VariationsMatrix ID only*****************************/
+                /*******************************Up to Contact, Prod and VariationsMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -494,6 +430,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
@@ -504,27 +441,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, VariationsMatrix ID only*****************************/
+                /*******************************Up to Contact, VariationsMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -537,6 +470,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
@@ -546,27 +480,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Group, Sub, Prod ID only*****************************/
+                /*******************************Up to Contact, Group, Sub, Prod ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -579,6 +509,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
@@ -590,27 +521,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Sub, Prod ID only*****************************/
+                /*******************************Up to Contact, Sub, Prod ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -623,6 +550,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -633,27 +561,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Prod ID only*****************************/
+                /*******************************Up to Contact, Prod ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -666,6 +590,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
@@ -675,27 +600,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Group, Sub only*****************************/
+                /*******************************Up to Contact, Group, Sub *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -708,6 +629,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
@@ -718,27 +640,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact, Sub only*****************************/
+                /*******************************Up to Contact, Sub *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -751,6 +669,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
@@ -760,27 +679,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Contact only*****************************/
+                /*******************************Up to Contact *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = @ContactID " : "ContactID IN (@ContactID, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -793,6 +708,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
 
                 cmd.CommandText = SQL;
@@ -801,27 +717,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Group, Sub, Prod and VarM ID only*****************************/
+                /*******************************Up to Group, Sub, Prod and VarM ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -834,6 +746,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -845,27 +758,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Sub, Prod and VariationMatrix ID only*****************************/
+                /*******************************Up to Sub, Prod and VariationMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID =0 " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -878,6 +787,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
@@ -888,27 +798,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Prod and VariationMatrix ID only*****************************/
+                /*******************************Up to Prod and VariationMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -921,6 +827,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
@@ -930,27 +837,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to VariationsMatrix ID only*****************************/
+                /*******************************Up to VariationsMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -963,6 +866,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
                 cmd.CommandText = SQL;
@@ -971,27 +875,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to group, Sub, Prod ID only*****************************/
+                /*******************************Up to group, Sub, Prod ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -1004,6 +904,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -1014,27 +915,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Sub, Prod ID only*****************************/
+                /*******************************Up to Sub, Prod ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -1047,6 +944,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
@@ -1056,27 +954,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to group, Sub, Prod and VariationMatrix ID only*****************************/
+                /*******************************Up to group, Sub, Prod and VariationMatrix ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -1089,6 +983,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
                 cmd.CommandText = SQL;
@@ -1097,27 +992,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to group, Sub ID only*****************************/
+                /*******************************Up to group, Sub ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -1130,6 +1021,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
@@ -1139,27 +1031,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to Sub ID only*****************************/
+                /*******************************Up to Sub ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = @ProductSubGroupID " +
@@ -1172,6 +1060,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
                 cmd.CommandText = SQL;
@@ -1180,27 +1069,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to group ID only*****************************/
+                /*******************************Up to group ID *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = @ProductGroupID " +
                             "AND ProductSubGroupID = 0 " +
@@ -1213,6 +1098,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
                 cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
 
                 cmd.CommandText = SQL;
@@ -1221,27 +1107,23 @@ namespace AceSoft.RetailPlus.Data
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 
-                /*******************************Up to all only*****************************/
+                /*******************************Up to all *****************************/
                 SQL = "SELECT " +
                             "PromoBySupplierItemsID, " +
                             "a.PromoBySupplierID, " +
-                            "PromoBySupplierTypeID, " +
                             "ProductGroupID, " +
                             "ProductSubGroupID, " +
                             "ProductID,  " +
                             "VariationMatrixID, " +
-                            "Quantity,  " +
                             "PromoBySupplierValue,  " +
-                            "InPercent  " +
+                            "CouponRemarks  " +
                         "FROM tblPromoBySupplierItems a  " +
-                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID " +
+                        "INNER JOIN tblPromoBySupplier b ON a.PromoBySupplierID = b.PromoBySupplierID AND a.PromoBySupplierID = @PromoBySupplierID " +
                         "WHERE " + (string.IsNullOrEmpty(strSpecialSupplierIDs) ? "ContactID = 0 " : "ContactID IN (0, " + strSpecialSupplierIDs + ") ") +
                             "AND ProductGroupID = 0 " +
                             "AND ProductSubGroupID = 0 " +
@@ -1254,16 +1136,16 @@ namespace AceSoft.RetailPlus.Data
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.Parameters.AddWithValue("@PromoBySupplierID", clsPromoBySupplierDetails.PromoBySupplierID);
+
                 cmd.CommandText = SQL;
                 dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    PromoBySupplierType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoBySupplierTypeID"].ToString());
-                    PromoBySupplierQuantity = decimal.Parse(dr["Quantity"].ToString());
                     PromoBySupplierValue = decimal.Parse(dr["PromoBySupplierValue"].ToString());
-                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    CouponRemarks = dr["CouponRemarks"].ToString();
                     return boHasPromoBySupplier;
                 }
 

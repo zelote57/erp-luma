@@ -4433,6 +4433,7 @@ create procedure procSavePromoBySupplier(
 	IN intPromoBySupplierID BIGINT(20),
 	IN strPromoBySupplierCode VARCHAR(60),
 	IN strPromoBySupplierName VARCHAR(75),
+	IN intPromoLevel INT(1),
 	IN dteStartDate DATETIME,
 	IN dteEndDate DATETIME,
 	IN intPromoTypeID INT(10),
@@ -4452,6 +4453,7 @@ BEGIN
 		UPDATE tblPromoBySupplier SET
 			PromoBySupplierCode		= strPromoBySupplierCode,
 			PromoBySupplierName		= strPromoBySupplierName,
+			PromoLevel				= intPromoLevel,
 			StartDate				= dteStartDate,
 			EndDate					= dteEndDate,
 			PromoTypeID				= intPromoTypeID,
@@ -4459,8 +4461,8 @@ BEGIN
 			LastModified			= dteLastModified
 		WHERE PromoBySupplierID				= intPromoBySupplierID;
 	ELSE
-		INSERT INTO tblPromoBySupplier(PromoBySupplierID, PromoBySuppliercode, PromoBySupplierName, StartDate, EndDate, PromoTypeID, Status, CreatedOn, LastModified)
-			VALUES(intPromoBySupplierID, strPromoBySuppliercode, strPromoBySupplierName, dteStartDate, dteEndDate, intPromoTypeID, intStatus, dteCreatedOn, dteLastModified);
+		INSERT INTO tblPromoBySupplier(PromoBySupplierID, PromoBySuppliercode, PromoBySupplierName, PromoLevel, StartDate, EndDate, PromoTypeID, Status, CreatedOn, LastModified)
+			VALUES(intPromoBySupplierID, strPromoBySuppliercode, strPromoBySupplierName, intPromoLevel, dteStartDate, dteEndDate, intPromoTypeID, intStatus, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;

@@ -124,6 +124,9 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 				Label lblPromoBySupplierName = (Label) e.Item.FindControl("lblPromoBySupplierName");
 				lblPromoBySupplierName.Text = dr["PromoBySupplierName"].ToString();
 
+                Label lblPromoLevel = (Label)e.Item.FindControl("lblPromoLevel");
+                lblPromoLevel.Text = ((PromoLevel) Enum.Parse(typeof(PromoLevel), dr["PromoLevel"].ToString())).ToString("G");
+
 				Label lblStartDate = (Label) e.Item.FindControl("lblStartDate");
 				lblStartDate.Text = Convert.ToDateTime(dr["StartDate"].ToString()).ToString("MM/dd/yyyy HH:mm:ss");
 				
@@ -340,7 +343,6 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 			lblDataCount.Text = " of " + " " + PageData.PageCount;
 		}
 
-
 		private bool Delete()
 		{
 			bool boRetValue = false;
@@ -367,7 +369,6 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 
 			return boRetValue;
 		}
-
 
 		private void Update()
 		{
@@ -404,6 +405,7 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 			}
 			return null;
 		}
+
 		private bool isChkListSingle()
 		{
 			bool boChkListSingle = true;
@@ -425,7 +427,6 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 			return boChkListSingle;
 		}
 
-
 		private void Stuff()
 		{
 			if (isChkListSingle() == true)
@@ -445,7 +446,6 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 				Response.Write(stScript);	
 			}
 		}
-
 
 		private bool Activate()
 		{
@@ -500,7 +500,6 @@ namespace AceSoft.RetailPlus.MasterFiles._PromoBySupplier
 
 			return boRetValue;
 		}
-
 
 		#endregion
 		

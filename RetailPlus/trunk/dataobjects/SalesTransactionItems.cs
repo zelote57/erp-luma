@@ -85,7 +85,9 @@ namespace AceSoft.RetailPlus.Data
         public Int64 SupplierID;
         public string SupplierCode;
         public string SupplierName;
-        
+
+        public Int64 ProductGroupID; //21
+        public Int64 ProductSubGroupID; //21
     }
 
     public struct SalesTransactionItemColumns

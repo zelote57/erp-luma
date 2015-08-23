@@ -148,6 +148,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CashierReportHistories.cs" />
+    <Compile Include="DBSync.cs" />
     <Compile Include="Promo\PromoBySupplierItems.cs" />
     <Compile Include="Promo\PromoBySupplier.cs" />
     <Compile Include="SalesTransactionItemAttachments.cs" />

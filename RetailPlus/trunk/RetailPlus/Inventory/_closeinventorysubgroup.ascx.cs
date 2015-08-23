@@ -54,8 +54,8 @@ namespace AceSoft.RetailPlus.Inventory
                     imgZeroOutActualQuantity.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
                     cmdCopyPOSToActual.Attributes.Add("onClick", "return confirm_copypostoactual_inventory();");
                     imgCopyPOSToActual.Attributes.Add("onClick", "return confirm_copypostoactual_inventory();");
-                    cmdCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
-                    imgCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
+                    //cmdCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
+                    //imgCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
 				}
         }
 

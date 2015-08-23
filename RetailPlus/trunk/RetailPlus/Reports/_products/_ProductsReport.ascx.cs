@@ -85,7 +85,7 @@ namespace AceSoft.RetailPlus.Reports
             cboContact.SelectedIndex = 0;
 
             ProductGroup clsProductGroup = new ProductGroup(clsBranch.Connection, clsBranch.Transaction);
-            cboProductGroup.DataTextField = "ProductGroupCode";
+            cboProductGroup.DataTextField = "ProductGroupName";
             cboProductGroup.DataValueField = "ProductGroupID";
             cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroupCode.Text, "ProductGroupName").DefaultView;
             cboProductGroup.DataBind();
@@ -496,21 +496,20 @@ namespace AceSoft.RetailPlus.Reports
             try
             {
                 ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-                clsProductSubGroupColumns.ColumnsCodeNameID = true;
+                clsProductSubGroupColumns.ColumnsNameID = true;
 
                 ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
                 clsSearchKeys.ProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
                 clsSearchKeys.ProductSubGroupCode = txtSubGroupCode.Text;
 
                 ProductSubGroup clsSubGroup = new ProductSubGroup();
-                cboSubGroup.DataTextField = "ProductSubGroupCode";
+                cboSubGroup.DataTextField = "ProductSubGroupName";
                 cboSubGroup.DataValueField = "ProductSubGroupID";
                 cboSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0);
                 cboSubGroup.DataBind();
                 cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
                 if (cboSubGroup.Items.Count > 1 && txtSubGroupCode.Text.Trim() != string.Empty) cboSubGroup.SelectedIndex = 1; else cboSubGroup.SelectedIndex = 0;
                 clsSubGroup.CommitAndDispose();
-
             }
             catch { }
         }

@@ -126,7 +126,8 @@ namespace SMSapplication
                 port.DiscardInBuffer();
                 receiveNow.Reset();
                 port.Write(command + "\r");
-           
+
+                Thread.Sleep(60);
                 string input = ReadResponse(port, responseTimeout);
 
                 AuditLog("msg received from port: " + input);
@@ -177,6 +178,8 @@ namespace SMSapplication
                         AuditLog("   actual buffer:" + buffer);
                         if (buffer.Length > 0)
                         {
+                            //if (string.IsNullOrEmpty(buffer.Trim())) // 14Jul2015 Lemu added for LTE
+                            //    throw new ApplicationException("Response received is incomplete.");
                             if (buffer != "\r\n")   // 14Jul2015 Lemu added for LTE
                                 throw new ApplicationException("Response received is incomplete.");
                             else return buffer;

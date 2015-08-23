@@ -126,7 +126,7 @@ namespace AceSoft
 
             return boRetValue;
         }
-        public bool PrintTagPrice(string strProductCode, string strBarcode, string strPrice)
+        public bool PrintTagPrice(string strProductCode, string strBarcode, string strPrice, Int32 NoOfCopies = 1)
         {
             // note:
             // set the vertical offset of printer to 2.00 mm in the Printing Preferences, Stock of RetailPlusTagPricePrinter
@@ -143,33 +143,34 @@ namespace AceSoft
             //TSCLIB_DLL.about();                                           //Show the DLL version
             TSCLIB_DLL.openport("RetailPlusTagPricePrinter");               //Open specified printer driver
             TSCLIB_DLL.setup("60", "20", "4", "10", "0", "0", "0");         //Setup the media size and sensor type info
-            TSCLIB_DLL.sendcommand("OFFSET 0.00");                          //remove the offset
+            TSCLIB_DLL.sendcommand("OFFSET 0");                             //remove the offset
             TSCLIB_DLL.sendcommand("GAP 2 mm,0");                           //put the gap or the divider
-            //TSCLIB_DLL.sendcommand("HOME");                                 //set to next page
+            TSCLIB_DLL.sendcommand("SPEED 6");                              //put speed of the printer
+            //TSCLIB_DLL.sendcommand("HOME");                               //set to next page
             TSCLIB_DLL.clearbuffer();                                       //Clear image buffer
 
             // x        4points  = 0.5 mm
             // y        16points = 1.5 mm  
             // height   16points = 2.0 mm
-            TSCLIB_DLL.windowsfont(4, 16, 16, 0, 0, 0, "ARIAL", strProductCode);  //Draw Product Code
-            TSCLIB_DLL.windowsfont(244, 16, 16, 0, 0, 0, "ARIAL", strProductCode);  //Draw Product Code
+            TSCLIB_DLL.windowsfont(4, 16, 16, 0, 0, 0, "ARIAL", strProductCode);    // Draw Product Code
+            TSCLIB_DLL.windowsfont(244, 16, 16, 0, 0, 0, "ARIAL", strProductCode);  // Draw Product Code
 
             // y        36points = 4 mm   (coz above 16 + 16 + 4 = 36)
             // height   56points = 7.0 mm
-            TSCLIB_DLL.barcode("40", "36", "128", "56", "1", "0", "1", "10", strBarcode); //Drawing barcode
-            TSCLIB_DLL.barcode("275", "36", "128", "56", "1", "0", "1", "10", strBarcode); //Drawing barcode
+            TSCLIB_DLL.barcode("40", "36", "128", "56", "1", "0", "1", "10", strBarcode);  // Drawing barcode
+            TSCLIB_DLL.barcode("275", "36", "128", "56", "1", "0", "1", "10", strBarcode); // Drawing barcode
 
             // y        104points = 11 mm   (coz above 36 + 56 + 8 + 8 = 108)
             // height   24points = 3.0 mm
-            TSCLIB_DLL.windowsfont(60, 108, 24, 0, 2, 0, "ARIAL", "" + strPrice);  //Draw Price ₱
-            TSCLIB_DLL.windowsfont(300, 108, 24, 0, 2, 0, "ARIAL", "" + strPrice);  //Draw Price ₱
+            TSCLIB_DLL.windowsfont(60, 108, 24, 0, 2, 0, "ARIAL", "" + strPrice);   // Draw Price ₱
+            TSCLIB_DLL.windowsfont(300, 108, 24, 0, 2, 0, "ARIAL", "" + strPrice);  // Draw Price ₱
 
             //TSCLIB_DLL.printerfont("100", "250", "3", "0", "1", "1", "Print Font Test");        //Drawing printer font
             //TSCLIB_DLL.windowsfont(100, 300, 24, 0, 0, 0, "ARIAL", "Windows Arial Font Test");  //Draw windows font
             ////TSCLIB_DLL.downloadpcx("C:\\ASP.NET_in_VCsharp_2008\\ASP.NET_in_VCsharp_2008\\UL.PCX", "UL.PCX");                                         //Download PCX file into printer
             //TSCLIB_DLL.downloadpcx("UL.PCX", "UL.PCX");                                         //Download PCX file into printer
             //TSCLIB_DLL.sendcommand("PUTPCX 100,400,\"UL.PCX\"");                                //Drawing PCX graphic
-            TSCLIB_DLL.printlabel("1", "1");                                                    //Print labels
+            TSCLIB_DLL.printlabel(NoOfCopies.ToString(), "1");                                                    //Print labels
             TSCLIB_DLL.closeport();
 
             boRetValue = true;

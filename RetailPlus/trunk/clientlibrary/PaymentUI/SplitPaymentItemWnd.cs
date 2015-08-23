@@ -1089,7 +1089,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else if (mclsSalesTransactionDetails.ChargeType == ChargeTypes.Percentage)
                 {
-                    AmountDue += (OrigAmountDue * mclsSalesTransactionDetails.ChargeAmount / 100);
+                    AmountDue += ((OrigAmountDue / (1 + (TerminalDetails.VAT / 100))) * mclsSalesTransactionDetails.ChargeAmount / 100);
                 }
 
                 if (mclsSalesTransactionDetails.TransDiscountType == DiscountTypes.FixedValue)

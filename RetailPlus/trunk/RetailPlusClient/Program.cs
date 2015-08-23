@@ -49,7 +49,7 @@ namespace AceSoft.RetailPlus.Client
         {
             try
             {
-                Exception ex = (Exception)e.ExceptionObject;
+                Exception ex = (Exception) e.ExceptionObject;
                 
                 Event clsEvent = new Event();
                 clsEvent.AddErrorEventLn(ex);

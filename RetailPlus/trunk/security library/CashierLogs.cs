@@ -288,12 +288,12 @@ namespace AceSoft.RetailPlus.Security
 					"FROM tblCashierLogs a INNER JOIN sysAccessUserDetails b ON a.UID = b.UID " +
 					"WHERE 1=1 ";
 
-                if (LoginDateFrom != DateTime.MinValue)
+                if (LoginDateFrom > Constants.C_DATE_MIN_VALUE)
                 {
                     SQL += " AND LoginDate >= @LoginDateFrom ";
                     cmd.Parameters.AddWithValue("LoginDateFrom", LoginDateFrom);
                 }
-                if (LoginDateTo != DateTime.MinValue)
+                if (LoginDateTo > Constants.C_DATE_MIN_VALUE)
                 {
                     SQL += " AND LoginDate <= @LoginDateTo ";
                     cmd.Parameters.AddWithValue("LoginDateTo", LoginDateTo);

@@ -431,7 +431,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ProductPackage);
             lblProductPackageAccess.Text = Convert.ToInt16(clsDetails.Write).ToString();
 
-            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InvThreshold);
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InvAdjustment);
             lblInvAdjustmentAccess.Text = Convert.ToInt16(clsDetails.Write).ToString();
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ProductsListReport);

@@ -119,7 +119,7 @@ namespace AceSoft.RetailPlus.Inventory
             // show label for reporting
             if (clsDetails.Read && !boShowInventory) boShowInventory = true;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InvThreshold); 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InvAdjustment); 
 			lnkInvAdjustment.Visible = clsDetails.Read;
             if (!clsDetails.Write) divlnkInvAdjustment.Style.Add("display", "none");
             // show label for reporting

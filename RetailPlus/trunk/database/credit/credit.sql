@@ -261,7 +261,7 @@ UPDATE sysCreditConfig SET LastModified = NOW();
 
 /*********************************  v_4.0.1.40.sql END  *******************************************************/ 
 
-UPDATE tblTerminal SET DBVersion = '4.0.1.41';
+-- UPDATE sysCreditConfig SET DBVersion = '4.0.1.41';
 
 -- 21Apr2015 : Fix bug when no items is punched and customer select is done first.
 

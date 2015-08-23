@@ -226,11 +226,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             {
                 case "cmdPrintTagPriceBarCode":
                     TextBox txtTagPriceCount = (TextBox)e.Item.FindControl("txtTagPriceCount");
-                    decimal iCount = decimal.TryParse(txtTagPriceCount.Text, out iCount) ? iCount : 1;
+                    Int32 iCount = Int32.TryParse(txtTagPriceCount.Text, out iCount) ? iCount : 1;
 
                     AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice = new ThermalBarCodePrinter();
-                    for (int iCtr = 0; iCtr < iCount; iCtr++)
-                        clsThermalBarCodeTagPrice.PrintTagPrice(lnkDescription.ToolTip, lnkBarcode.Text, Convert.ToDecimal(lblSellingPrice.Text).ToString("#,##0.#0"));
+                    //for (int iCtr = 0; iCtr < iCount; iCtr++)
+                    clsThermalBarCodeTagPrice.PrintTagPrice(lnkDescription.ToolTip, lnkBarcode.Text, Convert.ToDecimal(lblSellingPrice.Text).ToString("#,##0.#0"), iCount);
 
                     string javaScript = "window.alert('Tag Price has been printed.');";
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.lstItem, this.lstItem.GetType(), "openwindow", javaScript, true);
@@ -380,10 +380,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                     Label lblSellingPrice = (Label)item.FindControl("lblSellingPrice");
                     TextBox txtTagPriceCount = (TextBox)item.FindControl("txtTagPriceCount");
 
-                    decimal iCount = decimal.TryParse(txtTagPriceCount.Text, out iCount) ? iCount : 1;
+                    Int32 iCount = Int32.TryParse(txtTagPriceCount.Text, out iCount) ? iCount : 1;
 
-                    for(int iCtr=0;iCtr < iCount; iCtr++)
-                        clsThermalBarCodeTagPrice.PrintTagPrice(lnkDescription.ToolTip, lnkBarcode.Text, Convert.ToDecimal(lblSellingPrice.Text).ToString("#,##0.#0"));
+                    //for(int iCtr=0;iCtr < iCount; iCtr++)
+                    clsThermalBarCodeTagPrice.PrintTagPrice(lnkDescription.ToolTip, lnkBarcode.Text, Convert.ToDecimal(lblSellingPrice.Text).ToString("#,##0.#0"), iCount);
                 }
 
                 string javaScript = "window.alert('Tag Price has been printed.');";

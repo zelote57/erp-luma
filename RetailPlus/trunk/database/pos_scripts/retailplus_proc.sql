@@ -183,7 +183,7 @@ delimiter ;
 /**************************************************************
 	procGenerateSalesPerItem
 	Lemuel E. Aceron
-	CALL procGenerateSalesPerItem (1, '', '', '', '01', '2014-10-5 00:00', '2014-10-06 23:59');
+	CALL procGenerateSalesPerItem (1, '', '', '', '01', '2015-07-21 08:00', '2015-07-21 20:25');
 	
 	May 15, 2008 - 
 **************************************************************/
@@ -2676,7 +2676,7 @@ BEGIN
 	DECLARE strTransactionNo VARCHAR(30) DEFAULT '';
 	DECLARE lngMatrixVariationCount BIGINT DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strProductDesc VARCHAR(100) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(150) DEFAULT '';
 	DECLARE intUnitID INT DEFAULT 0;
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity, decProductActualQuantity, decMinThreshold, decMaxThreshold DECIMAL(18,3) DEFAULT 0;
@@ -3889,7 +3889,7 @@ GO
 create procedure procProductMovementInsert(
 	IN intProductID BIGINT,
 	IN strProductCode VARCHAR(30),
-	IN strProductDesc VARCHAR(100),
+	IN strProductDesc VARCHAR(150),
 	IN lngMatrixID BIGINT,
 	IN strMatrixDescription VARCHAR(100),
 	IN decQuantityFrom DECIMAL(18,2),
@@ -3974,7 +3974,7 @@ create procedure procProductAddQuantity(
 	)
 BEGIN
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strProductDesc VARCHAR(100) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
@@ -4064,7 +4064,7 @@ create procedure procProductSubtractQuantity(
 	)
 BEGIN
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strProductDesc VARCHAR(100) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
@@ -7350,7 +7350,7 @@ create procedure procProductVaritionMatrixSelect(
 			 IN ProductID bigint,
 			 IN BarCode varchar(30),
 			 IN ProductCode varchar(30),
-			 IN MatrixDescription varchar(60),
+			 IN MatrixDescription varchar(100),
 			 IN SupplierID bigint,
 			 IN ShowActiveAndInactive INT(1),
 			 IN isQuantityGreaterThanZERO TINYINT(1),
@@ -7795,7 +7795,7 @@ END;
 GO
 delimiter ;
 
-CALL procUpdatetblInventorySG();
+-- CALL procUpdatetblInventorySG();
 
 /**************************************************************
 
@@ -8005,7 +8005,7 @@ BEGIN
 	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strDescription VARCHAR(50) DEFAULT '';
+	DECLARE strDescription VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE dtePostingDateFrom, dtePostingDateTo DATETIME;
 	DECLARE strRemarks VARCHAR(100) DEFAULT '';
@@ -8151,7 +8151,7 @@ BEGIN
 	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strDescription VARCHAR(50) DEFAULT '';
+	DECLARE strDescription VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strSupplierCode VARCHAR(150) DEFAULT '';
 	DECLARE dtePostingDateFrom, dtePostingDateTo DATETIME;
@@ -8276,7 +8276,7 @@ BEGIN
 	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strDescription VARCHAR(50) DEFAULT '';
+	DECLARE strDescription VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strSupplierCode VARCHAR(150) DEFAULT '';
 	DECLARE dtePostingDateFrom, dtePostingDateTo DATETIME;
@@ -8676,7 +8676,7 @@ create procedure procProductAddReservedQuantity(
 	)
 BEGIN
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strProductDesc VARCHAR(100) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
@@ -8743,7 +8743,7 @@ create procedure procProductSubtractReservedQuantity(
 	)
 BEGIN
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strProductDesc VARCHAR(100) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(150) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
@@ -10046,7 +10046,7 @@ BEGIN
 							IFNULL(chque.ChequeNo,'''') AS ChequeNo, 
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 						FROM tblTransactions trx
-						LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
+						LEFT OUTER JOIN tblChequePayment chque ON chque.BranchID = trx.BranchID AND chque.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
 						WHERE trx.TransactionStatus = 2 OR trx.TransactionStatus = 13 '; -- 2=SuspendedTransactionStatus		13=SuspendedOpenTransactionStatus
 	ELSEIF boWithTF = 0 THEN
 		SET @SQL := 'SELECT trx.BranchID, trx.TerminalNo,
@@ -10153,7 +10153,13 @@ BEGIN
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 						FROM tblTransactions trx
 						LEFT OUTER JOIN tblTerminalReport tr ON trx.BranchID = tr.BranchID AND trx.TerminalNo = tr.TerminalNo
-						LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
+						LEFT OUTER JOIN tblChequePayment chque ON chque.BranchID = trx.BranchID AND chque.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
+						-- (
+						-- 	SELECT BranchID, TerminalNo, TransactionID, SUM(AMOUNT) AMOUNT, GROUP_CONCAT(ChequeNo) ChequeNo, MAX(ValidityDate) ValidityDate
+						-- 	FROM tblChequePayment chque 
+						-- 	-- WHERE trx.BranchID = chque.BranchID AND trx.TerminalNo = chque.TerminalNo AND trx.TransactionID = chque.TransactionID
+						-- 	GROUP BY BranchID, TerminalNo, TransactionID
+						-- ) chque ON chque.BranchID = trx.BranchID AND chque.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
 						WHERE 1 = 1 ';
 	ELSE
 		SET @SQL := 'SELECT trx.BranchID, trx.TerminalNo,
@@ -10259,7 +10265,7 @@ BEGIN
 							IFNULL(chque.ChequeNo,'''') AS ChequeNo, 
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 					FROM tblTransactions trx 
-					LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
+					LEFT OUTER JOIN tblChequePayment chque ON chque.BranchID = trx.BranchID AND chque.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
 					LEFT OUTER JOIN (SELECT DISTINCT BranchID, TerminalNo, BeginningTransactionNo,
 										CASE 
 											WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
@@ -10688,7 +10694,7 @@ delimiter ;
 /********************************************
 	procTerminalReportHistorySyncTransactionSales
 
-	CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-03-31 20:00');
+	CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2015-07-11 20:00');
 
 	-- this must be run when version 4.0.1.1 is updated
 	-- this should be run up to the last zread to correct the grandtotals.
@@ -11631,4 +11637,4 @@ GRANT RELOAD ON *.* TO 'POSAuditUser';
 SHOW ENGINE INNODB STATUS\G
 
 
--- CALL procTerminalReportHistoryeSalesGrandTotal(1, '01', '2015-07-12 19:00');
+-- CALL procTerminalReportHistoryeSalesGrandTotal(1, '01', '2014-01-01 00:00');

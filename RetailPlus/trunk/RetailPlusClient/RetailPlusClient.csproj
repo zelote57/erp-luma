@@ -228,7 +228,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DBSync.cs" />
     <Compile Include="SingleInstance.cs">
       <SubType>Code</SubType>
     </Compile>

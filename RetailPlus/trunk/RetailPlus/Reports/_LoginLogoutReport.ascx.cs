@@ -94,16 +94,26 @@ namespace AceSoft.RetailPlus.Reports
 
 		private void SetDataSource(ReportDocument Report)
 		{
-			DateTime ActivityDateFrom = Convert.ToDateTime(txtStartTransactionDate.Text + " 00:00");
-			DateTime ActivityDateTo = Convert.ToDateTime(txtEndTransactionDate.Text + " 23:59");
-			
-			System.Data.DataSet ds = new System.Data.DataSet();
+            ReportDataset rptds = new ReportDataset();
 
-			CashierLogs clsCashierLogs = new CashierLogs();
-			ds.Tables.Add(clsCashierLogs.LoginLogoutReport(ActivityDateFrom, ActivityDateTo, null));
-			clsCashierLogs.CommitAndDispose();
+			DateTime ActivityDateFrom = DateTime.TryParse(txtStartTransactionDate.Text + " 00:00", out ActivityDateFrom) ? ActivityDateFrom : Constants.C_DATE_MIN_VALUE;
+            DateTime ActivityDateTo = DateTime.TryParse(txtEndTransactionDate.Text + " 23:59", out ActivityDateTo) ? ActivityDateTo : Constants.C_DATE_MIN_VALUE;
 			
-			Report.SetDataSource(ds); 
+			CashierLogs clsCashierLogs = new CashierLogs();
+			System.Data.DataTable dt  = clsCashierLogs.LoginLogoutReport(ActivityDateFrom, ActivityDateTo, null);
+			clsCashierLogs.CommitAndDispose();
+
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                DataRow drLoginLogout = rptds.LoginLogout.NewRow();
+
+                foreach (DataColumn dc in rptds.LoginLogout.Columns)
+                    drLoginLogout[dc] = dr[dc.ColumnName];
+
+                rptds.LoginLogout.Rows.Add(drLoginLogout);
+            }
+
+            Report.SetDataSource(rptds);
 
 			SetParameters(Report);
 		}

@@ -23,6 +23,15 @@ namespace SMSapplication
     {
         private System.ComponentModel.BackgroundWorker bgwSendSMS = new System.ComponentModel.BackgroundWorker();
 
+        string strMessage = "";
+        string strMobileNo = "";
+
+        Int32 iCount = 0;
+        Int32 iCtr = 1;
+        Int32 iCtrRead = 0;
+        Int32 iCtrNotRead = 0;
+        Int32 iCtrClosedPhone = 0;
+
         #region Constructor
         public SMSapplication()
         {
@@ -111,7 +120,7 @@ namespace SMSapplication
                 if (worksheet == null) //sheetname is null not ""
                 {
                     // return unsuccessfull value
-                    throw new Exception("An invalid quotation has been detected: \n\nErr: No valid sheet in the quotation.\n\n Please upload a valid quotation output from a MACRO or rename the sheet with 'QU_' followed by a name.");
+                    throw new Exception("An invalid excel file has been detected: \n\nErr: No valid sheet in the excel file.\n\n Please upload a valid excel file.");
                 }
                 else
                 {
@@ -151,13 +160,7 @@ namespace SMSapplication
         {
             try
             {
-                string fileName = txtFilePath.Text;
-                System.Data.DataTable dt = importContacts(fileName);
-
                 SetText("Connection Status");
-
-                string strMessage = this.txtMessage.Text;
-                string strMobileNo = this.txtSIM.Text;
 
                 //.............................................. Send SMS ....................................................
                 try
@@ -166,93 +169,73 @@ namespace SMSapplication
 
                     if (strMessage == "rbstest")
                     {
-                        SetText("Message has sent successfully");
+                        ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "OK" });
+                        SetSentMessage(item);
+                        SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent to " + strMobileNo);
                     }
                     else
                     {
-                        if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
+                        try
                         {
-                            SetText("Message has sent successfully");
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Failed to send message");
-                            SetText("Failed to send message");
-                            return;
-                        }
-                        Thread.Sleep(60);
-                    }
+                            try
+                            { objclsSMS.ClosePort(this.port); }
+                            catch { }
+                            Thread.Sleep(60);
+                            try
+                            {
+                                ErrorLog(this.cboPortName.Text + " : opening port");
+                                this.port = objclsSMS.OpenPort(this.cboPortName.Text, Convert.ToInt32(this.cboBaudRate.Text), Convert.ToInt32(this.cboDataBits.Text), Convert.ToInt32(this.txtReadTimeOut.Text), Convert.ToInt32(this.txtWriteTimeOut.Text));
+                                ErrorLog(this.cboPortName.Text + " : port is open");
+                            }
+                            catch{}
+                            try
+                            {
+                                if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
+                                {
+                                    ErrorLog("Message has sent successfully");
+                                    ErrorLog("[0/0]: msg sent to " + strMobileNo);
 
+                                    ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent: Read" });
+                                    SetSentMessage(item);
+                                    SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent to " + strMobileNo);
+                                    iCtrRead++;
+                                }
+                                else
+                                {
+                                    //MessageBox.Show("Failed to send message");
+                                    SetText("Failed to send message");
+                                    SetText("[0/0]: msg failed sent to " + strMobileNo);
+
+                                    ErrorLog("Failed to send message");
+                                    ErrorLog("[0/0]: msg failed sent to " + strMobileNo);
+
+                                    ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent: NotRead" });
+                                    SetSentMessage(item);
+                                    SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent no reply from SMSC to " + strMobileNo);
+                                    iCtrNotRead++;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent: PhoneNoResp" });
+                                SetSentMessage(item);
+                                SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent no reply from SMSC to " + strMobileNo);
+
+                                ErrorLog("[" + iCtr.ToString() + "/" + iCount.ToString() + "]:error msg..." + ex.Message);
+                                iCtrClosedPhone++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorLog("error opening..." + ex.Message);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     ErrorLog(ex.Message);
                     return;
                 }
-
-                Int32 iCount = dt.Rows.Count;
-                Int32 iCtr = 1;
-
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    if (bgwSendSMS.CancellationPending)
-                    { e.Cancel = true; break; }
-                    else
-                    {
-                        strMobileNo = dr[0].ToString().Replace("'", "");
-
-                        SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: sending msg to " + strMobileNo);
-
-                        if (!isValidMobileNo(strMobileNo))
-                        {
-                            SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: sending msg to " + strMobileNo + ". Invalid Mobile no");
-                        }
-                        else
-                        {
-                            if (strMessage == "rbstest")
-                            {
-                                ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "OK" });
-                                SetSentMessage(item);
-                                SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent to " + strMobileNo);
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
-                                    {
-                                        ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "OK" });
-                                        SetSentMessage(item);
-                                        SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent to " + strMobileNo);
-                                    }
-                                    else
-                                    {
-                                        ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent" });
-                                        SetSentMessage(item);
-                                        SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent no reply from SMSC to " + strMobileNo);
-                                    }
-                                    Thread.Sleep(60);
-                                }
-                                catch
-                                {
-                                    ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent" });
-                                    SetSentMessage(item);
-                                    SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent no reply from SMSC to " + strMobileNo);
-                                }
-                            }
-                        }
-                    }
-                    iCtr++;
-
-                    if (bgwSendSMS.CancellationPending)
-                    { e.Cancel = true; break; }
-                }
-
-                if (bgwSendSMS.CancellationPending)
-                { SetText("Sending message cancelled."); }
-                else
-                { SetText("Message successfully sent."); }
-
             }
             catch (Exception ex)
             {
@@ -265,18 +248,8 @@ namespace SMSapplication
         //    try
         //    {
         //        string fileName = txtFilePath.Text;
+        //        System.Data.DataTable dt = importContacts(fileName);
 
-                
-
-
-        //        Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-        //        xlApp.Visible = false;
-        //        Microsoft.Office.Interop.Excel.Workbook wb = xlApp.Workbooks.Open(fileName);
-
-        //        Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = (Microsoft.Office.Interop.Excel._Worksheet) wb.Sheets[1];
-
-        //        Int32 iCount = xlWorksheet.UsedRange.Rows.Count;
-        //        Int32 iCtr = 1;
         //        SetText("Connection Status");
 
         //        string strMessage = this.txtMessage.Text;
@@ -293,16 +266,40 @@ namespace SMSapplication
         //            }
         //            else
         //            {
-        //                if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
+        //                try
+        //                { objclsSMS.ClosePort(this.port); }
+        //                catch { }
+        //                try
         //                {
-        //                    SetText("Message has sent successfully");
+        //                    ErrorLog(this.cboPortName.Text + " : opening port");
+        //                    this.port = objclsSMS.OpenPort(this.cboPortName.Text, Convert.ToInt32(this.cboBaudRate.Text), Convert.ToInt32(this.cboDataBits.Text), Convert.ToInt32(this.txtReadTimeOut.Text), Convert.ToInt32(this.txtWriteTimeOut.Text));
+        //                    ErrorLog(this.cboPortName.Text + " : port is open");
+
+        //                    if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
+        //                    {
+        //                        SetText("Message has sent successfully");
+        //                        SetText("[0/0]: msg failed sent to " + strMobileNo);
+
+        //                        ErrorLog("Message has sent successfully");
+        //                        ErrorLog("[0/0]: msg failed sent to " + strMobileNo);
+        //                    }
+        //                    else
+        //                    {
+        //                        //MessageBox.Show("Failed to send message");
+        //                        SetText("Failed to send message");
+        //                        SetText("[0/0]: msg failed sent to " + strMobileNo);
+
+        //                        ErrorLog("Failed to send message");
+        //                        ErrorLog("[0/0]: msg failed sent to " + strMobileNo);
+        //                        //return;
+        //                    }
         //                }
-        //                else
+        //                catch (Exception ex)
         //                {
-        //                    //MessageBox.Show("Failed to send message");
-        //                    SetText("Failed to send message");
-        //                    return;
+        //                    ErrorLog("error opening..." + ex.Message);
         //                }
+                        
+        //                Thread.Sleep(60);
         //            }
 
         //        }
@@ -312,17 +309,28 @@ namespace SMSapplication
         //            return;
         //        }
 
-        //        foreach (Microsoft.Office.Interop.Excel.Range row in xlWorksheet.UsedRange.Rows)
+        //        Int32 iCount = dt.Rows.Count;
+        //        Int32 iCtr = 1;
+        //        Int32 iCtrRead = 0;
+        //        Int32 iCtrNotRead = 0;
+        //        Int32 iCtrClosedPhone = 0;
+
+        //        foreach (System.Data.DataRow dr in dt.Rows)
         //        {
-        //            foreach (Microsoft.Office.Interop.Excel.Range cell in row.Columns)
+        //            if (bgwSendSMS.CancellationPending)
+        //            { e.Cancel = true; break; }
+        //            else
         //            {
-        //                if (bgwSendSMS.CancellationPending)
-        //                { e.Cancel = true; break; }
+        //                strMobileNo = dr[0].ToString().Replace("'", "");
+
+        //                SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: sending msg to " + strMobileNo);
+
+        //                if (!isValidMobileNo(strMobileNo))
+        //                {
+        //                    SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: sending msg to " + strMobileNo + ". Invalid Mobile no");
+        //                }
         //                else
         //                {
-        //                    strMobileNo = cell.Value.ToString().Replace("'", "");
-        //                    SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: sending msg to " + strMobileNo);
-
         //                    if (strMessage == "rbstest")
         //                    {
         //                        ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "OK" });
@@ -331,31 +339,57 @@ namespace SMSapplication
         //                    }
         //                    else
         //                    {
-        //                        if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
+        //                        //try
+        //                        //{ objclsSMS.ClosePort(this.port); }
+        //                        //catch { }
+        //                        //try
+        //                        //{
+        //                        //    this.port = objclsSMS.OpenPort(this.cboPortName.Text, Convert.ToInt32(this.cboBaudRate.Text), Convert.ToInt32(this.cboDataBits.Text), Convert.ToInt32(this.txtReadTimeOut.Text), Convert.ToInt32(this.txtWriteTimeOut.Text));
+        //                        //}
+        //                        //catch (Exception ex)
+        //                        //{
+        //                        //    ErrorLog("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: error opening..." + ex.Message);
+        //                        //}
+        //                        try
         //                        {
-        //                            ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "OK" });
-        //                            SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent to " + strMobileNo);
+        //                            if (objclsSMS.sendMsg(this.port, strMobileNo, strMessage))
+        //                            {
+        //                                ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent: Read" });
+        //                                SetSentMessage(item);
+        //                                SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent to " + strMobileNo);
+        //                                iCtrRead++;
+        //                            }
+        //                            else
+        //                            {
+        //                                ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent: NotRead" });
+        //                                SetSentMessage(item);
+        //                                SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent no reply from SMSC to " + strMobileNo);
+        //                                iCtrNotRead++;
+        //                            }
         //                        }
-        //                        else
+        //                        catch(Exception ex)
         //                        {
-        //                            ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "failed" });
-        //                            SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sending failed to " + strMobileNo);
+        //                            ListViewItem item = new ListViewItem(new string[] { iCtr.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), strMobileNo, "sent: PhoneNoResp" });
+        //                            SetSentMessage(item);
+        //                            SetText("[" + iCtr.ToString() + "/" + iCount.ToString() + "]: msg sent no reply from SMSC to " + strMobileNo);
+
+        //                            ErrorLog("[" + iCtr.ToString() + "/" + iCount.ToString() + "]:error msg..." + ex.Message);
+        //                            iCtrClosedPhone++;
         //                        }
+        //                        Thread.Sleep(180);
         //                    }
         //                }
-        //                iCtr++;
         //            }
+        //            iCtr++;
 
         //            if (bgwSendSMS.CancellationPending)
         //            { e.Cancel = true; break; }
         //        }
 
-        //        wb.Close();
-
         //        if (bgwSendSMS.CancellationPending)
         //        { SetText("Sending message cancelled."); }
         //        else
-        //        { SetText("Message successfully sent."); }
+        //        { SetText("Msgs Sent. Total Sent: " + iCount.ToString("#,##0") + "   SentRead: " + iCtrRead.ToString("#,##0") + "    SentNotRead: " + iCtrNotRead.ToString("#,##0") + "    SentNoresp: " + iCtrClosedPhone.ToString("#,##0")); }
 
         //    }
         //    catch (Exception ex)
@@ -703,13 +737,51 @@ namespace SMSapplication
             lvwSentMessages.Select();
             btnSendSMS.Text = "Cancel";
 
-            this.bgwSendSMS.RunWorkerAsync();
+            // send from here
+            string fileName = txtFilePath.Text;
+            System.Data.DataTable dt = importContacts(fileName);
 
+            SetText("Connection Status");
+
+            strMessage = this.txtMessage.Text;
+            strMobileNo = this.txtSIM.Text;
+
+            iCount = dt.Rows.Count;
+            iCtr = 0;
+            iCtrRead = 0;
+            iCtrNotRead = 0;
+            iCtrClosedPhone = 0;
+
+            Thread.Sleep(180);
+            this.bgwSendSMS.RunWorkerAsync();
             // Wait for the BackgroundWorker to finish the download.
             while (this.bgwSendSMS.IsBusy)
             {
                 Application.DoEvents();
             }
+            Thread.Sleep(180);
+
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                strMobileNo = dr[0].ToString().Replace("'", "");
+
+                this.bgwSendSMS.RunWorkerAsync();
+
+                // Wait for the BackgroundWorker to finish the download.
+                while (this.bgwSendSMS.IsBusy)
+                {
+                    Application.DoEvents();
+                }
+
+                Thread.Sleep(180);
+                            
+                iCtr++;
+            }
+
+            if (bgwSendSMS.CancellationPending)
+            { SetText("Sending message cancelled."); }
+            else
+            { SetText("Msgs Sent. Total Sent: " + iCount.ToString("#,##0") + "   SentRead: " + iCtrRead.ToString("#,##0") + "    SentNotRead: " + iCtrNotRead.ToString("#,##0") + "    SentNoresp: " + iCtrClosedPhone.ToString("#,##0")); }
 
             cmdExportToFile.Visible = true;
             btnSendSMS.Text = "Send Again";

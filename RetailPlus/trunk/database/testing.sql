@@ -1,167 +1,52 @@
-﻿UPDATE tblTerminalReport SET 
-					BeginningTransactionNo				=  '00000000000000', 
-					EndingTransactionNo					=  '00000000000001', 
-					BeginningORNo						=  '00000000000000', 
-					EndingORNo							=  '00000000000001',
-					OldGrandTotal						=  0,
-					NewGrandTotal						=  0,
-					ActualOldGrandTotal					=  0,
-					ActualNewGrandTotal					=  0,
-					ZReadCount							=  1,
-					NetSales							=  0, 
-					GrossSales							=  0, 
-					TotalDiscount						=  0, 
-					SNRDiscount					  		=  0, 
-					PWDDiscount					  		=  0, 
-					OtherDiscount					  	=  0, 
-					TotalCharge							=  0, 
-					DailySales							=  0, 
-					QuantitySold						=  0, 
-					GroupSales							=  0, 
-					VATExempt   						=  0, 
-					NonVATableAmount					=  0, 
-					VATableAmount						=  0, 
-					VAT									=  0, 
-					EVATableAmount						=  0, 
-					NonEVATableAmount					=  0, 
-					EVAT								=  0, 
-					LocalTax							=  0, 
-					CashSales							=  0, 
-					ChequeSales							=  0, 
-					CreditCardSales						=  0, 
-					CreditSales							=  0, 
-					CreditPayment						=  0, 
-					CreditPaymentCash					=  0, 
-					CreditPaymentCheque					=  0, 
-					CreditPaymentCreditCard				=  0, 
-					CreditPaymentDebit					=  0, 
-					DebitPayment						=  0, 
-					RewardPointsPayment					=  0,
-					RewardConvertedPayment				=  0,
-					CashInDrawer						=  0, 
-					TotalDisburse						=  0, 
-					CashDisburse						=  0, 
-					ChequeDisburse						=  0, 
-					CreditCardDisburse					=  0, 
-					TotalWithhold						=  0, 
-					CashWithhold						=  0, 
-					ChequeWithhold						=  0, 
-					CreditCardWithhold					=  0, 
-					TotalPaidOut						=  0, 
-					CashPaidOut							=  0,
-					ChequePaidOut						=  0,
-					CreditCardPaidOut					=  0,
-					TotalDeposit						=  0, 
-					CashDeposit							=  0, 
-					ChequeDeposit						=  0, 
-					CreditCardDeposit					=  0, 
-					DebitDeposit						=  0, 
-					BeginningBalance					=  0, 
-					VoidSales							=  0, 
-					RefundSales							=  0, 
-					ItemsDiscount						=  0, 
-					SubTotalDiscount					=  0, 
-					NoOfCashTransactions				=  0, 
-					NoOfChequeTransactions				=  0, 
-					NoOfCreditCardTransactions			=  0, 
-					NoOfCreditTransactions				=  0, 
-					NoOfCombinationPaymentTransactions	=  0, 
-					NoOfCreditPaymentTransactions		=  0, 
-					NoOfDebitPaymentTransactions		=  0, 
-					NoOfClosedTransactions				=  0, 
-					NoOfRefundTransactions				=  0, 
-					NoOfVoidTransactions				=  0, 
-					NoOfRewardPointsPayment				=  0,
-					NoOfTotalTransactions				=  0, 
-					NoOfDiscountedTransactions			=  0,
-					NegativeAdjustments					=  0,
-					NoOfNegativeAdjustmentTransactions	=  0,
-					PromotionalItems					=  0,
-					CreditSalesTax						=  0,
-					BatchCounter						=  1,
-					NoOfReprintedTransaction			=  0,
-					TotalReprintedTransaction			=  0, 
-					DateLastInitialized					=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01'),
-					CreatedOn							=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01'),
-					LastModified						=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01');
+﻿
 
-UPDATE tblCashierReport SET 
-			NetSales							=  0, 
-			GrossSales							=  0, 
-			TotalDiscount						=  0,
-			SNRDiscount					  		=  0, 
-			PWDDiscount					  		=  0, 
-			OtherDiscount					  	=  0, 
-			TotalCharge							=  0, 
-			DailySales							=  0, 
-			QuantitySold						=  0, 
-			GroupSales							=  0, 
-			VATExempt   						=  0, 
-			NonVATableAmount					=  0, 
-			VATableAmount						=  0, 
-			VAT									=  0, 
-			EVATableAmount						=  0, 
-			NonEVATableAmount					=  0, 
-			EVAT								=  0, 
-			LocalTax							=  0, 
-			CashSales							=  0, 
-			ChequeSales							=  0, 
-			CreditCardSales						=  0, 
-			CreditSales							=  0, 
-			CreditPayment						=  0, 
-			CreditPaymentCash					=  0, 
-			CreditPaymentCheque					=  0, 
-			CreditPaymentCreditCard				=  0, 
-			CreditPaymentDebit					=  0, 
-			DebitPayment						=  0, 
-			RewardPointsPayment					=  0,
-			RewardConvertedPayment				=  0,
-			CashInDrawer						=  0, 
-			TotalDisburse						=  0, 
-			CashDisburse						=  0, 
-			ChequeDisburse						=  0, 
-			CreditCardDisburse					=  0, 
-			TotalWithhold						=  0, 
-			CashWithhold						=  0, 
-			ChequeWithhold						=  0, 
-			CreditCardWithhold					=  0, 
-			TotalPaidOut						=  0, 
-			CashPaidOut							=  0,
-			ChequePaidOut						=  0,
-			CreditCardPaidOut					=  0,
-			TotalDeposit						=  0, 
-			CashDeposit							=  0, 
-			ChequeDeposit						=  0, 
-			CreditCardDeposit					=  0, 
-			DebitDeposit						=  0, 
-			BeginningBalance					=  0, 
-			VoidSales							=  0, 
-			RefundSales							=  0, 
-			ItemsDiscount						=  0, 
-			SubTotalDiscount					=  0, 
-			NoOfCashTransactions				=  0, 
-			NoOfChequeTransactions				=  0, 
-			NoOfCreditCardTransactions			=  0, 
-			NoOfCreditTransactions				=  0, 
-			NoOfCombinationPaymentTransactions	=  0, 
-			NoOfCreditPaymentTransactions		=  0, 
-			NoOfDebitPaymentTransactions		=  0, 
-			NoOfClosedTransactions				=  0, 
-			NoOfRefundTransactions				=  0, 
-			NoOfVoidTransactions				=  0, 
-			NoOfRewardPointsPayment				=  0,
-			NoOfTotalTransactions				=  0, 
-			NoOfDiscountedTransactions			=  0,
-			NegativeAdjustments					=  0,
-			NoOfNegativeAdjustmentTransactions	=  0,
-			PromotionalItems					=  0,
-			CreditSalesTax						=  0,
-			CashCount							=  0 ,
-			CreatedOn							=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01'),
-			LastModified						=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01');
 
-TRUNCATE TABLE tblTerminalReportHistory;
-TRUNCATE TABLE tblCashierReportHistory;
-TRUNCATE TABLE sysAuditTrail;
-TRUNCATE TABLE tblTransactionItems;
-TRUNCATE TABLE tblTransactions;
+
+SELECT ProductCode, Quantity, ReservedQuantity
+FROM tblProducts prd
+INNER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID
+WHERE ReservedQuantity <> 0;
+
+UPDATE tblProductInventory SET ReservedQuantity = 0 WHERE ReservedQuantity <> 0 AND ProductID > 10;
+
++----------------------------+-----------+------------------+
+| ProductCode                | Quantity  | ReservedQuantity |
++----------------------------+-----------+------------------+
+| Fundador Brandy 1.75L      |    34.000 |           -1.000 |
+| JW Black 1L                |   118.000 |           -1.000 |
+| Cobra Energy Drink 350ml   |    24.000 |            3.000 |
+| BEAR BRAND 33g Swak Pack   |   114.000 |           -1.000 |
+| Sisters Pantyliner 8s      |     0.000 |           -1.000 |
+| Fundador GOLD 700ml        |    36.000 |           -8.000 |
+| Cobra Defense 350ml        |    20.000 |            2.000 |
++----------------------------+-----------+------------------+
+
++-------------------------+---------------+------------------+
+| ProductCode             | Quantity      | ReservedQuantity |
++-------------------------+---------------+------------------+
+| NSM5                    |        21.000 |            4.000 |
+| UAP-PRO - 3             |        17.000 |           -2.000 |
+| DS-2CE15A2N-IRP (3.6mm) |        98.000 |           -7.000 |
+| DS-2CE15A2N-VFIR3       |         0.000 |            1.000 |
+| DS-2CE55A2N-IRP (3.6mm) |        51.000 |           -5.000 |
+| IPC-721                 |        19.000 |            1.000 |
+| IC-M24                  |        35.000 |            5.000 |
+| IC-V80 #50              |       288.000 |           -1.000 |
+| RCA                     |         0.000 |            1.000 |
++-------------------------+---------------+------------------+
+
+SELECT * FROM sysauditlogs where Activity = 'System Login';
+
+select trx.*
+FROM tblTransactions trx
+						LEFT OUTER JOIN tblTerminalReport tr ON trx.BranchID = tr.BranchID AND trx.TerminalNo = tr.TerminalNo
+						LEFT OUTER JOIN (
+							SELECT BranchID, TerminalNo, TransactionID, SUM(AMOUNT) AMOUNT, GROUP_CONCAT(ChequeNo) ChequeNo, MAX(ValidityDate) ValidityDate
+							FROM tblChequePayment 
+							WHERE TransactionID = 391
+							GROUP BY BranchID, TerminalNo, TransactionID
+						) tblChequePayment chque ON chque.BranchID = trx.BranchID AND chque.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
+						where trx.transactionno = 271;
+
+
+

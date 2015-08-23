@@ -774,11 +774,19 @@ namespace AceSoft.RetailPlus.Data
                     "FROM tblSalesPerItem spi " +
                     "INNER JOIN tblProducts prd ON spi.ProductID = prd.ProductID " +
                     "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID " +
-                    "LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
-                                                                       "AND ppph.SupplierID <> prd.SupplierID " +
-                                                                       "AND ppph.PurchasePrice <> 0 " +
-                                                                       "AND ppph.PurchasePrice <> spi.PurchasePrice " +
-                                                                       "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "LEFT OUTER JOIN ( " +
+					"	SELECT ProductID, SupplierID, MIN(PurchasePrice) PurchasePrice " +
+					"	FROM tblProductPurchasePriceHistory ppph WHERE ppph.PurchasePrice <> 0 " +
+                    "                                                   AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+					"	GROUP BY ProductID " +
+					") ppph ON prd.ProductID = ppph.ProductID " +
+                    "                                                   AND ppph.SupplierID <> prd.SupplierID " +
+                    "                                                   AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                    //"LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
+                    //                                                   "AND ppph.SupplierID <> prd.SupplierID " +
+                    //                                                   "AND ppph.PurchasePrice <> 0 " +
+                    //                                                   "AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                    //                                                   "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
                     "LEFT OUTER JOIN tblContacts cntct2 ON ppph.SupplierID = cntct2.ContactID " +
                     "WHERE SessionID = @SessionID ";
 
@@ -856,11 +864,19 @@ namespace AceSoft.RetailPlus.Data
                     "FROM tblSalesPerItem spi " +
                     "INNER JOIN tblProducts prd ON spi.ProductID = prd.ProductID " +
                     "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID " +
-                    "LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
-                                                                       "AND ppph.SupplierID <> prd.SupplierID " +
-                                                                       "AND ppph.PurchasePrice <> 0 " +
-                                                                       "AND ppph.PurchasePrice <> spi.PurchasePrice " +
-                                                                       "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "LEFT OUTER JOIN ( " +
+                    "	SELECT ProductID, SupplierID, MIN(PurchasePrice) PurchasePrice " +
+                    "	FROM tblProductPurchasePriceHistory ppph WHERE ppph.PurchasePrice <> 0 " +
+                    "                                                   AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "	GROUP BY ProductID " +
+                    ") ppph ON prd.ProductID = ppph.ProductID " +
+                    "                                                   AND ppph.SupplierID <> prd.SupplierID " +
+                    "                                                   AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                    //"LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
+                    //                                                   "AND ppph.SupplierID <> prd.SupplierID " +
+                    //                                                   "AND ppph.PurchasePrice <> 0 " +
+                    //                                                   "AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                    //                                                   "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
                     "LEFT OUTER JOIN tblContacts cntct2 ON ppph.SupplierID = cntct2.ContactID " +
                     "WHERE spi.SessionID = @strSessionID ";
 
@@ -943,11 +959,19 @@ namespace AceSoft.RetailPlus.Data
                     "FROM tblSalesPerItem spi " +
                     "INNER JOIN tblProducts prd ON spi.ProductID = prd.ProductID " +
                     "INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID " +
-                    "LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
-                                                                       "AND ppph.SupplierID <> prd.SupplierID " +
-                                                                       "AND ppph.PurchasePrice <> 0 " +
-                                                                       "AND ppph.PurchasePrice <> spi.PurchasePrice " +
-                                                                       "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "LEFT OUTER JOIN ( " +
+                    "	SELECT ProductID, SupplierID, MIN(PurchasePrice) PurchasePrice " +
+                    "	FROM tblProductPurchasePriceHistory ppph WHERE ppph.PurchasePrice <> 0 " +
+                    "                                                   AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
+                    "	GROUP BY ProductID " +
+                    ") ppph ON prd.ProductID = ppph.ProductID " +
+                    "                                                   AND ppph.SupplierID <> prd.SupplierID " +
+                    "                                                   AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                    //"LEFT OUTER JOIN tblProductPurchasePriceHistory ppph ON prd.ProductID = ppph.ProductID " +
+                    //                                                   "AND ppph.SupplierID <> prd.SupplierID " +
+                    //                                                   "AND ppph.PurchasePrice <> 0 " +
+                    //                                                   "AND ppph.PurchasePrice <> spi.PurchasePrice " +
+                    //                                                   "AND PurchaseDate >= DATE_ADD(NOW(), INTERVAL -6 MONTH) " +
                     "LEFT OUTER JOIN tblContacts cntct2 ON ppph.SupplierID = cntct2.ContactID " +
                     "WHERE SessionID = @SessionID ";
 

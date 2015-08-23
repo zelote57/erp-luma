@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using AceSoft.RetailPlus.Client;
 using System.Data;
+using System.IO;
+using System.Xml;
 
 namespace AceSoft.RetailPlus.Monitor
 {
@@ -26,6 +28,8 @@ namespace AceSoft.RetailPlus.Monitor
                 }
 
                 WriteProcessToMonitor("   ok");
+
+                Data.Database clsDatabase = new Data.Database();
             back:
                 WriteProcessToMonitor("Checking connections to server.");
                 if (IPAddress.IsOpen(AceSoft.RetailPlus.DBConnection.ServerIP(), DBConnection.DBPort()) == false)
@@ -36,7 +40,7 @@ namespace AceSoft.RetailPlus.Monitor
                 WriteProcessToMonitor("   ok");
                 WriteProcessToMonitor("Checking connections to database.");
                 
-                Data.Database clsDatabase = new Data.Database();
+                clsDatabase.GetConnection(username: "POSUser", password: "pospwd");
                 try
                 {
                     bool boIsDBAlive = clsDatabase.IsAlive();
@@ -46,6 +50,8 @@ namespace AceSoft.RetailPlus.Monitor
                 {
                     WriteProcessToMonitor("   ERROR connecting to database. Exception: " + ex.ToString());
                 }
+
+                #region Timed-Out Process
                 WriteProcessToMonitor("Checking timed-out process.");
                 System.Data.DataTable dtProcessList = clsDatabase.getProcessList();
                 foreach (DataRow dr in dtProcessList.Rows)
@@ -88,7 +94,7 @@ namespace AceSoft.RetailPlus.Monitor
                 clsDatabase.CommitAndDispose();
 
                 // audit
-                clsDatabase = new Data.Database();
+                //clsDatabase = new Data.Database(clsDatabase.Connection, clsDatabase.Transaction);
                 clsDatabase.GetConnection(username: "POSAuditUser", password: "posauditpwd");
                 try
                 {
@@ -121,8 +127,138 @@ namespace AceSoft.RetailPlus.Monitor
                     }
                 }
                 clsDatabase.CommitAndDispose();
-
                 WriteProcessToMonitor("   done checking...");
+                #endregion
+
+                string strSyncFunction = ""; 
+                try { strSyncFunction = System.Configuration.ConfigurationManager.AppSettings["SyncFunction"].ToString(); }
+                catch { }
+
+                if (strSyncFunction.ToLower().Trim() == "export")
+                {
+                    #region Export Products
+                
+                    //clsDatabase = new Data.Database(clsDatabase.Connection, clsDatabase.Transaction);
+                    clsDatabase.GetConnection(username: "POSUser", password: "pospwd");
+
+                    Data.SysConfig clsSysConfig = new Data.SysConfig(clsDatabase.Connection, clsDatabase.Transaction);
+                    DateTime dteLastSyncDateTime = clsSysConfig.get_ProdLastSyncDateTime();
+                    DateTime dteLastSyncDateTimeTo = dteLastSyncDateTime.AddMinutes(clsSysConfig.get_ProdSyncInterval());
+
+                    if (dteLastSyncDateTimeTo <= DateTime.Now)
+                    {
+                        Data.DBSync clsDBSync = new Data.DBSync(clsDatabase.Connection, clsDatabase.Transaction);
+                        System.Data.DataTable stSyncItems = clsDBSync.ListAsDataTable("tblProducts", dteLastSyncDateTime, dteLastSyncDateTimeTo);
+
+                        if (stSyncItems.Rows.Count > 0)
+                        {
+                            string xmlFileName = @"C:\RetailPlus\RetailPlus\RetailPlus\temp\uploaded\prodsync\prod_" + dteLastSyncDateTime.ToString("yyyyMMddHHmmss") + ".xml";
+
+                            if (!System.IO.File.Exists(xmlFileName))
+                            {
+                                XmlTextWriter writer = new XmlTextWriter(xmlFileName, System.Text.Encoding.UTF8);
+
+                                writer.Formatting = Formatting.Indented;
+                                writer.WriteStartDocument();
+                                writer.WriteComment("This file represents the updated products.");
+                                writer.WriteStartElement("Header");
+                                writer.WriteAttributeString("TableName", stSyncItems.TableName);
+                                writer.WriteAttributeString("LastSyncDateTime", dteLastSyncDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                                writer.WriteAttributeString("LastSyncDateTimeTo", dteLastSyncDateTimeTo.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                                foreach (DataRow dr in stSyncItems.Rows)
+                                {
+                                    writer.WriteStartElement("Details");
+
+                                    foreach (DataColumn dc in dr.Table.Columns)
+                                    {
+                                        if (dc.DataType ==  System.Type.GetType("System.DateTime"))
+                                            writer.WriteAttributeString(dc.ColumnName, DateTime.Parse(dr[dc.ColumnName].ToString()).ToString("yyyy-MM-dd HH:mm:ss"));
+                                        else 
+                                            writer.WriteAttributeString(dc.ColumnName, dr[dc.ColumnName].ToString());
+                                    }
+                                    writer.WriteEndElement();
+                                }
+                                writer.WriteEndElement();
+
+                                //Write the XML to file and close the writer
+                                writer.Flush();
+                                writer.Close();
+                            }
+                        }
+
+                        clsSysConfig = new Data.SysConfig(clsDatabase.Connection, clsDatabase.Transaction);
+                        clsSysConfig.Save(new Data.SysConfigDetails()
+                        {
+                            ConfigName = "ProdLastSyncDateTime",
+                            ConfigValue = dteLastSyncDateTimeTo.ToString("yyyy-MM-dd HH:mm:ss"),
+                            Category = "Sync"
+                        });
+                    }
+                    clsDatabase.CommitAndDispose();
+                
+                    #endregion
+                }
+                else if (strSyncFunction.ToLower().Trim() == "import")
+                {
+                    #region Import Products
+
+                    XmlTextReader xmlReader = new XmlTextReader(@"C:\RetailPlus\RetailPlus\RetailPlus\temp\uploaded\prodsync\prod_20150629183000.xml");
+                    xmlReader.WhitespaceHandling = WhitespaceHandling.None;
+
+                    ////clsDatabase = new Data.Database(clsDatabase.Connection, clsDatabase.Transaction);
+                    clsDatabase.GetConnection(DBName: "poseamirror", username: "POSUser", password: "pospwd");
+                    clsDatabase.SetForeignKey(false);
+
+                    Data.SysConfig clsSysConfig = new Data.SysConfig(clsDatabase.Connection, clsDatabase.Transaction);
+                    DateTime dteLastSyncDateTime = clsSysConfig.get_ProdLastSyncDateTime();
+                    DateTime dteLastSyncDateTimeTo = dteLastSyncDateTime.AddMinutes(clsSysConfig.get_ProdSyncInterval());
+
+                    Data.Products clsProducts = new Data.Products(clsDatabase.Connection, clsDatabase.Transaction);
+                    Data.ProductDetails clsProductDetails = new Data.ProductDetails();
+
+                    string strTableName = "";
+                    DateTime dteXmlLastSyncDateTime = Constants.C_DATE_MIN_VALUE;
+                    DateTime dteXmlLastSyncDateTimeTo = Constants.C_DATE_MIN_VALUE;
+
+                    while (xmlReader.Read())
+                    {
+                        switch (xmlReader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if (xmlReader.Name == "Header")
+                                {
+                                    strTableName = xmlReader.GetAttribute("TableName").ToString();
+                                    dteXmlLastSyncDateTime = DateTime.TryParse(xmlReader.GetAttribute("LastSyncDateTime").ToString(), out dteXmlLastSyncDateTime) ? dteXmlLastSyncDateTime : Constants.C_DATE_MIN_VALUE;
+                                    dteXmlLastSyncDateTimeTo = DateTime.TryParse(xmlReader.GetAttribute("LastSyncDateTimeTo").ToString(), out dteXmlLastSyncDateTimeTo) ? dteXmlLastSyncDateTimeTo : Constants.C_DATE_MIN_VALUE;
+
+                                    if (dteLastSyncDateTime >= dteXmlLastSyncDateTime) break;
+                                }
+                                else if (strTableName == "tblProducts" && xmlReader.Name == "Details")
+                                {
+                                    clsProductDetails = Data.DBSync.setSyncProductDetails(xmlReader);
+                                    clsProducts.Save(clsProductDetails);
+                                }
+                                break;
+                        }
+                    }
+
+                    if (dteLastSyncDateTime < dteXmlLastSyncDateTime)
+                    {
+                        clsSysConfig = new Data.SysConfig(clsDatabase.Connection, clsDatabase.Transaction);
+                        clsSysConfig.Save(new Data.SysConfigDetails()
+                        {
+                            ConfigName = "ProdLastSyncDateTime",
+                            ConfigValue = dteXmlLastSyncDateTimeTo.ToString("yyyy-MM-dd HH:mm:ss"),
+                            Category = "Sync"
+                        });
+                    }
+
+                    clsDatabase.SetForeignKey(true);
+                    clsDatabase.CommitAndDispose();
+
+                    #endregion
+                }
 
                 WriteProcessToMonitor("Waiting for next process...");
 
@@ -147,10 +283,12 @@ namespace AceSoft.RetailPlus.Monitor
             clsEvent.AddEventLn(ProcessToWrite, true);
             Console.WriteLine(ConsoleMonitor() + ProcessToWrite);
         }
+
         private static string ConsoleMonitor()
         {
             return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": ";
         }
+
         #endregion
 
     }

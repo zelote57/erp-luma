@@ -8817,6 +8817,11 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.41';
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.42';
 
+-- Separate the reporting for "SalesTransaction PerItem" and "SalesTransaction PerItem W/out PurchaseDetails"
+-- Create a new modele "Warehouse -> Branch Inventory Transfer", this needs an approval before the transfer
+-- Allow "Set Item As Demo" in Front-End
+-- Allow "Set Inventory Threshold"
+
 DELETE FROM sysAccessGroupRights WHERE TranTypeID = 179;
 DELETE FROM sysAccessRights WHERE TranTypeID = 179;
 DELETE FROM sysAccessTypes WHERE TypeID = 179;
@@ -8963,6 +8968,7 @@ ALTER TABLE tblContacts ADD LeadTimeToDeliver INT(2) NOT NULL DEFAULT 7 COMMENT 
 UPDATE tblTerminal SET DBVersion = '4.0.1.43';
 
 -- do a user logging during override.
+-- This is to set how many percentage will be deducted from the actual inventory. This will reflect in "eInventory" report.
 
 
 DELETE FROM sysConfig WHERE ConfigName = 'InventoryTrustFund';
@@ -8983,8 +8989,8 @@ ALTER TABLE tblContactAddOn ADD AttendingPhysician VARCHAR(150) DEFAULT '';
 --			ContactAddNoLTOWnd	- normal information without LTO
 --			ContactAddDetWnd	- with additional information for ContactAddOn table (HP)
 --			ContactAddHCareWnd	- with additional information for HealthCare
-DELETE FROM sysConfig WHERE ConfigName = 'ContactAddDetWnd';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWndType', 'FE', 'ContactAddDetWnd');
+DELETE FROM sysConfig WHERE ConfigName = 'ContactAddWndType';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWndType', 'FE', 'ContactAddWnd');
 
 -- 08Jun2015 Added for determining which columns to show in ItemSelectWnd
 --	Default: BcDesc
@@ -8997,7 +9003,7 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ContactAddWnd
 --			SgPcDesc			- SubGroup, ProductCode, Description					-- For Drugstore, HealthCare, WholeSaler
 --			SgDescMtrx			- SubGroup, Description, Matrix							-- For Drugstore, HealthCare, WholeSaler
 DELETE FROM sysConfig WHERE ConfigName = 'ItemSelectWndColumnType';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnType', 'FE', 'BcPcDescMtrx');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnType', 'FE', 'PcDescMtrx');
 
 -- 08Jun2015 Added for determining which columns to filter in ItemSelectWnd
 --	Default: BcDesc
@@ -9007,7 +9013,7 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWnd
 --			SgDesc				- SubGroup, Description									-- For Drugstore, HealthCare, WholeSaler
 --			SgPcDesc			- SubGroup, ProductCode, Description					-- For Drugstore, HealthCare, WholeSaler
 DELETE FROM sysConfig WHERE ConfigName = 'ItemSelectWndColumnSearchType';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnSearchType', 'FE', 'BcPc');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ItemSelectWndColumnSearchType', 'FE', 'PcDesc');
 
 
 
@@ -9453,7 +9459,6 @@ ALTER TABLE tblTerminalReport ADD  `eSalesOldGrandTotal` decimal(18,3) NOT NULL 
 ALTER TABLE tblTerminalReport ADD  `eSalesNewGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
 UPDATE tblTerminalReport SET eSalesOldGrandTotal = OldGrandTotal;
 UPDATE tblTerminalReport SET eSalesNewGrandTotal = NewGrandTotal;
--- UPDATE tblTerminalReport SET OldGrandTotal = eSalesOldGrandTotal, NewGrandTotal = eSalesNewGrandTotal;
 
 ALTER TABLE tblTerminalReportHistory ADD  `eSalesOldGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
 ALTER TABLE tblTerminalReportHistory ADD  `eSalesNewGrandTotal` decimal(18,3) NOT NULL DEFAULT '0.000';
@@ -9466,14 +9471,14 @@ ALTER TABLE tblTerminalReportHistoryeSales ADD `eSalesNewGrandTotal` decimal(18,
 UPDATE tblTerminalReportHistoryeSales SET eSalesOldGrandTotal = OldGrandTotal;
 UPDATE tblTerminalReportHistoryeSales SET eSalesNewGrandTotal = NewGrandTotal;
 
-ALTER TABLE tblTerminalReport DROP `ActualOldGrandTotal`;
-ALTER TABLE tblTerminalReport DROP `ActualNewGrandTotal`;
+-- ALTER TABLE tblTerminalReport DROP `ActualOldGrandTotal`;
+-- ALTER TABLE tblTerminalReport DROP `ActualNewGrandTotal`;
 
-ALTER TABLE tblTerminalReportHistory DROP `ActualOldGrandTotal`;
-ALTER TABLE tblTerminalReportHistory DROP `ActualNewGrandTotal`;
+-- ALTER TABLE tblTerminalReportHistory DROP `ActualOldGrandTotal`;
+-- ALTER TABLE tblTerminalReportHistory DROP `ActualNewGrandTotal`;
 
-ALTER TABLE tblTerminalReportHistoryeSales DROP `ActualOldGrandTotal`;
-ALTER TABLE tblTerminalReportHistoryeSales DROP `ActualNewGrandTotal`;
+-- ALTER TABLE tblTerminalReportHistoryeSales DROP `ActualOldGrandTotal`;
+-- ALTER TABLE tblTerminalReportHistoryeSales DROP `ActualNewGrandTotal`;
 
 ALTER TABLE tblTerminalReportHistoryBackup ADD `BackupOn` datetime NOT NULL DEFAULT '0001-01-01 12:00:00';
 UPDATE tblTerminalReportHistoryBackup SET BackupOn = NOW();
@@ -9593,11 +9598,12 @@ CREATE TABLE tblPromoBySupplieritems (
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 200;
 DELETE FROM sysAccessGroupRights WHERE TranTypeID = 200;
-DELETE FROM sysAccessTypes WHERE TypeID = 200;
+DELETE FROM sysAccess1Types WHERE TypeID = 200;
 INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (200, 'Promo''s by Coupons', 1);
 UPDATE sysAccessTypes SET SequenceNo = 4, Category = '04: Backend - MasterFiles' WHERE TypeID = 200;
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) SELECT GroupID, 200, AllowRead, AllowWrite FROM sysAccessGroupRights WHERE TranTypeID=17;
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) SELECT UID, 200, AllowRead, AllowWrite FROM sysAccessRights WHERE TranTypeID=17;
+
 
 UPDATE sysAccessTypes SET TypeName = 'Promo''s by Amount' WHERE TypeID = 17;
 
@@ -9613,6 +9619,73 @@ UPDATE tblTerminal SET DBVersion = '4.0.1.52';
 /*********************************  v_4.0.1.52.sql END  *******************************************************/ 
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.53';
+
+/*********************************  v_4.0.1.53.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.54';
+
+-- 29Jul2015 : For Hatsune
+--			 : BSDDiscountCode is used to determine the Discount which will be use to compute a special Discount
+--			   using the ff formula:
+--					Subtotal / [no of diners] * 10 diners = Total Bill For 10 diners
+--					Total Bill For 10 Diners * 20% = Total Discounted Bill
+--			 : BSDDiscountCodeDinerCount is used to determine the discountable no. of max Diners 
+
+DELETE FROM sysConfig WHERE ConfigName = 'BSDDiscountCode';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BSDDiscountCode',	'FE', 'BSD');
+
+DELETE FROM sysConfig WHERE ConfigName = 'BSDDiscountCodeDinerCount';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BSDDiscountCodeDinerCount',	'FE', '10');
+
+
+/*********************************  v_4.0.1.54.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.55';
+
+
+
+/*********************************  v_4.0.1.55.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.56';
+
+-- 20Aug2015 : rename the deleted_ tables to xxx_ so that it will be at the bottom
+
+RENAME TABLE deleted_tblbranchinventory_old TO xxx_tblbranchinventory_old;
+RENAME TABLE deleted_tblbranchinventorymatrix_old TO xxx_tblbranchinventorymatrix_old;
+RENAME TABLE deleted_tblinvadjustmentitems TO xxx_tblinvadjustmentitems;
+RENAME TABLE deleted_tblmatrixpackage TO xxx_tblmatrixpackage;
+RENAME TABLE deleted_tblmatrixpackagepricehistory TO xxx_tblmatrixpackagepricehistory;
+RENAME TABLE deleted_tblproductbasevariationsmatrix TO xxx_tblproductbasevariationsmatrix;
+RENAME TABLE deleted_tblproductprices TO xxx_tblproductprices;
+RENAME TABLE deleted_tblproducts TO xxx_tblproducts;
+RENAME TABLE deleted_tblreceiptformat TO xxx_tblreceiptformat;
+RENAME TABLE deleted_tblremotebranchinventory TO xxx_tblremotebranchinventory;
+RENAME TABLE deleted_tbltransactionnos TO xxx_tbltransactionnos;
+RENAME TABLE deleted_tblbranchinventory TO xxx_tblbranchinventory;
+
+-- 20Aug2015 : check if there are still un-renamed
+SELECT CONCAT('RENAME TABLE ', TABLE_NAME, ' TO xxx_', RIGHT(TABLE_NAME,LENGTH(TABLE_NAME) - 8),';') FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_SCHEMA IN ('posea', 'posaudit') AND TABLE_NAME LIKE 'deleted_%';
+
+
+DELETE FROM sysConfig WHERE ConfigName = 'ProdLastSyncDateTime';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ProdLastSyncDateTime',	'Sync', '2015-06-29 18:00');
+
+-- ProdSyncInterval : Product Sync Interval This is in minutes
+DELETE FROM sysConfig WHERE ConfigName = 'ProdSyncInterval';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ProdSyncInterval',	'Sync', '30');
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- Notes: Please read

@@ -1095,6 +1095,7 @@ ALTER TABLE tblWBranchTransfer ADD `SubmissionDate` DATETIME NOT NULL DEFAULT '1
 
 ALTER TABLE tblPO ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
 ALTER TABLE tblPODebitMemo ADD IncludeIneSales TINYINT(1) NOT NULL DEFAULT 1;
+UPDATE tblPO SET IncludeIneSales = 0;
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 186;
 DELETE FROM sysAccessGroupRights WHERE TranTypeID = 186;

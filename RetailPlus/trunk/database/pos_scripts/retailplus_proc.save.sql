@@ -2064,6 +2064,7 @@ create procedure procSaveProduct(
 	IN dteDateCreated datetime,
 	IN boDeleted tinyint(1),
 	IN boIncludeInSubtotalDiscount tinyint(1),
+	IN boIsCreditChargeExcluded tinyint(1),
 	IN decMinThreshold decimal(18,2),
 	IN decMaxThreshold decimal(18,2),
 	IN intSupplierID bigint(20),
@@ -2108,9 +2109,10 @@ BEGIN
 			DateCreated				= dteDateCreated,
 			Deleted					= boDeleted,
 			IncludeInSubtotalDiscount		= boIncludeInSubtotalDiscount,
+			IsCreditChargeExcluded	= boIsCreditChargeExcluded,
 			MinThreshold			= decMinThreshold,
 			MaxThreshold			= decMaxThreshold,
-			SupplierID				= intSupplierID,
+			-- SupplierID				= intSupplierID, 20Aug2015 : do not update the supplierID for Sync
 			ChartOfAccountIDPurchase		= intChartOfAccountIDPurchase,
 			ChartOfAccountIDTaxPurchase		= intChartOfAccountIDTaxPurchase,
 			ChartOfAccountIDSold			= intChartOfAccountIDSold,
@@ -2136,7 +2138,7 @@ BEGIN
 		WHERE ProductID				= intProductID;
 	ELSE
 		INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID,
-								BaseUnitID, DateCreated, Deleted, IncludeInSubtotalDiscount,
+								BaseUnitID, DateCreated, Deleted, IncludeInSubtotalDiscount, IsCreditChargeExcluded,
 								MinThreshold, MaxThreshold, SupplierID, ChartOfAccountIDPurchase,
 								ChartOfAccountIDTaxPurchase, ChartOfAccountIDSold, ChartOfAccountIDTaxSold,
 								ChartOfAccountIDInventory, IsItemSold, WillPrintProductComposition,
@@ -2146,7 +2148,7 @@ BEGIN
 								ChartOfAccountIDTaxTransferOut, ChartOfAccountIDInvAdjustment,
 								ChartOfAccountIDTaxInvAdjustment, CreatedOn, LastModified)
 			VALUES(intProductID, strProductcode, strProductDesc, intProductSubGroupID,
-								intBaseUnitID, dteDateCreated, boDeleted, boIncludeInSubtotalDiscount,
+								intBaseUnitID, dteDateCreated, boDeleted, boIncludeInSubtotalDiscount, boIsCreditChargeExcluded,
 								decMinThreshold, decMaxThreshold, intSupplierID, intChartOfAccountIDPurchase,
 								intChartOfAccountIDTaxPurchase, intChartOfAccountIDSold, intChartOfAccountIDTaxSold,
 								intChartOfAccountIDInventory, boIsItemSold, boWillPrintProductComposition,

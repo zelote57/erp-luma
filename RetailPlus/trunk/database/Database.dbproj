@@ -71,9 +71,7 @@
     <Folder Include="acc_scripts\ver 5 below support" />
     <Folder Include="client_update_scripts" />
     <Folder Include="inv_scripts" />
-    <Folder Include="inv_scripts\ver 5 below support" />
     <Folder Include="pos_scripts" />
-    <Folder Include="pos_scripts\ver 5 below support" />
     <Folder Include="sales_scripts" />
     <Folder Include="Properties" />
     <Folder Include="credit" />
@@ -88,11 +86,7 @@
     <NotInBuild Include="client_update_scripts\abot_makati_20090911.sql" />
     <NotInBuild Include="client_update_scripts\abot_san_juan_20090911.sql" />
     <NotInBuild Include="client_update_scripts\abotpasay_20090422.sql" />
-    <NotInBuild Include="client_update_scripts\accounts_proc.sql" />
     <NotInBuild Include="client_update_scripts\adding_new_terminal.sql" />
-    <NotInBuild Include="client_update_scripts\aplaya_fix_20090121.sql" />
-    <NotInBuild Include="client_update_scripts\aplaya_fix_20090213.sql" />
-    <NotInBuild Include="client_update_scripts\aplaya_update_20090318.sql" />
     <NotInBuild Include="client_update_scripts\dodo_20090118_fix.sql" />
     <NotInBuild Include="client_update_scripts\dodo_20090322_update.sql" />
     <NotInBuild Include="client_update_scripts\GenericsProduct.sql" />
@@ -108,11 +102,6 @@
     <NotInBuild Include="client_update_scripts\muranggamot_20090403_update.sql" />
     <NotInBuild Include="client_update_scripts\procListForPayment.sql" />
     <NotInBuild Include="client_update_scripts\procSyncQuantityProductHistory.sql" />
-    <NotInBuild Include="client_update_scripts\producthistorycheck.sql" />
-    <NotInBuild Include="client_update_scripts\producthistoryprocedure.sql" />
-    <NotInBuild Include="client_update_scripts\producthistoryprocedure_with_update.sql" />
-    <NotInBuild Include="client_update_scripts\sample_items_grocery.sql" />
-    <NotInBuild Include="client_update_scripts\sample_items_pharma.sql" />
     <NotInBuild Include="client_update_scripts\sample_procedure.sql" />
     <NotInBuild Include="client_update_scripts\sync_quantitybyMatrix.sql" />
     <NotInBuild Include="client_update_scripts\tgp_20090511_update.sql" />
@@ -120,52 +109,12 @@
     <NotInBuild Include="inv_scripts\inventory.sql" />
     <NotInBuild Include="inv_scripts\inventory_access.sql" />
     <NotInBuild Include="inv_scripts\inventory_proc.sql" />
-    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.1.sql" />
-    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.2.sql" />
-    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.3.sql" />
-    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.4.sql" />
     <NotInBuild Include="pos_scripts\CONSTANTS.sql" />
     <NotInBuild Include="pos_scripts\RetailPlus.sql" />
     <NotInBuild Include="pos_scripts\retailplus_access.sql" />
     <NotInBuild Include="pos_scripts\retailplus_event.sql" />
     <NotInBuild Include="pos_scripts\retailplus_proc.sql" />
     <NotInBuild Include="pos_scripts\retailplus_trigger.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\Rebirth Transaction.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20071123.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20071210.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080130.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080207.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080213.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080218.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080313.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080426.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081128_packer.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081201_cashcount.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081209_OSprinter.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081218_OSPrinted.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081226_TotalStockReport.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\update_20090111_erp.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.24.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.25.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.26.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.27.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.28.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.0.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.1.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.2.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.3.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.4.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.5.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.6.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.7.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.8.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.81.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.9.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\V_2.0.1.1.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.1.2.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.1.3.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\V_2.0.1.4.sql" />
-    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.1.5.sql" />
     <NotInBuild Include="sales_scripts\sales.sql" />
     <NotInBuild Include="sales_scripts\sales_access.sql" />
     <NotInBuild Include="sales_scripts\sales_proc.sql" />
@@ -194,9 +143,6 @@
     <NotInBuild Include="client_update_scripts\hw_plaza.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
-    <NotInBuild Include="pos_scripts\Optimize Tables.sql">
-      <SubType>NotInBuild</SubType>
-    </NotInBuild>
     <NotInBuild Include="client_update_scripts\houseware_plaza.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
@@ -204,9 +150,6 @@
       <SubType>NotInBuild</SubType>
     </NotInBuild>
     <NotInBuild Include="pos_scripts\x_prod.sql">
-      <SubType>NotInBuild</SubType>
-    </NotInBuild>
-    <NotInBuild Include="mgla.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
     <NotInBuild Include="pos_scripts\x_trx.sql">
@@ -227,9 +170,6 @@
     <NotInBuild Include="tmp3.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
-    <NotInBuild Include="pos_scripts\RandomUsers.sql">
-      <SubType>NotInBuild</SubType>
-    </NotInBuild>
     <NotInBuild Include="client_update_scripts\hw_plaza_main.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
@@ -246,6 +186,15 @@
       <SubType>NotInBuild</SubType>
     </NotInBuild>
     <NotInBuild Include="client_update_scripts\hw_plaza_main.clear.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="RandomUsers.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Optimize Tables.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="pos_scripts\mgla.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
   </ItemGroup>

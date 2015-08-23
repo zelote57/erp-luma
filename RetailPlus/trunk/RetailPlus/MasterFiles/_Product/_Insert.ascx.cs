@@ -129,6 +129,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             cboProductSubGroup.DataBind();
             cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
             clsProductSubGroup.CommitAndDispose();
+
+            cboProductSubGroup_SelectedIndexChanged(null, null);
 		}
 		protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
 		{

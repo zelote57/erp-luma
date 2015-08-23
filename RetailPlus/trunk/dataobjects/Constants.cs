@@ -200,6 +200,11 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_ITEMSELECTWND_COLUMNTYPE = "ItemSelectWndColumnType";
         public const string SYS_CONFIG_ITEMSELECTWND_COLUMN_SEARCH_TYPE = "ItemSelectWndColumnSearchType";
 
+        public const string SYS_CONFIG_BSD_DISCOUNT_CODE = "BSDDiscountCode";
+        public const string SYS_CONFIG_BSD_DISCOUNT_CODE_DINER_COUNT = "BSDDiscountCodeDinerCount";
+
+        public const string SYS_CONFIG_PROD_LAST_SYNC_DATETIME = "ProdLastSyncDateTime";
+        public const string SYS_CONFIG_PROD_SYNC_INTERVAL = "ProdSyncInterval";
 
         /// <summary>
         /// GLA Files

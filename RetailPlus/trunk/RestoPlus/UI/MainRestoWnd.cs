@@ -2008,7 +2008,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void MainRestoWnd_Activated(object sender, System.EventArgs e)
 		{
-			txtBarCode.Focus();
+            if (mboLocked) this.panLocked.Focus(); else this.txtBarCode.Focus();
 		}
 		private void MainRestoWnd_Load(object sender, System.EventArgs e)
 		{
@@ -4226,7 +4226,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 Details = getCurrentRowItemDetails();
 
                                 dgItems.UnSelect(x);
-                                if (Details.TransactionItemStatus != TransactionItemStatus.Void)
+                                if (Details.TransactionItemStatus == TransactionItemStatus.Valid)
                                 {
                                     clsProductPackageDetails = clsProductPackage.Details(Details.ProductPackageID);
 
@@ -10987,11 +10987,12 @@ namespace AceSoft.RetailPlus.Client.UI
 					cmdSubGroup.Tag = dr[Data.ProductSubGroupColumnNames.ProductSubGroupID].ToString();
 					cmdSubGroup.Click += new System.EventHandler(cmdSubGroup_Click);
 
-                    try { cmdSubGroup.Image = new Bitmap(Application.StartupPath + "/images/subgroups/" + dr[Data.ProductSubGroupColumnNames.ImagePath].ToString()); }
-					catch { }
-                    //try { cmdSubGroup.Image = new Bitmap(Application.StartupPath + "/images/subgroups/subgroup" + iCtr.ToString() + ".gif"); }
-                    //catch { }
-
+                    if (!string.IsNullOrEmpty(dr[Data.ProductSubGroupColumnNames.ImagePath].ToString()))
+                    {
+                        try { cmdSubGroup.Image = new Bitmap(Application.StartupPath + "/images/subgroups/" + dr[Data.ProductSubGroupColumnNames.ImagePath].ToString()); }
+					    catch { }
+                    }
+                    
 					tblLayoutGroup.Controls.Add(cmdSubGroup, iCol, iRow);
 
 					iCol++; iCtr++;
@@ -11217,6 +11218,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
 					clsSalesTransactions.UpdatePaxNo(mclsSalesTransactionDetails.TransactionID, iNoOfPax);
 					clsSalesTransactions.CommitAndDispose();
+
+                    ComputeSubTotal(); setTotalDetails();
 				}
 			}
 			catch (Exception ex) { throw ex; }
@@ -11242,6 +11245,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
 					clsSalesTransactions.UpdatePaxNo(mclsSalesTransactionDetails.TransactionID, iNoOfPax);
 					clsSalesTransactions.CommitAndDispose();
+
+                    ComputeSubTotal(); setTotalDetails();
 				}
 			}
 			catch (Exception ex) { throw ex; }
@@ -11280,6 +11285,8 @@ namespace AceSoft.RetailPlus.Client.UI
                         Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
                         clsSalesTransactions.UpdatePaxNo(mclsSalesTransactionDetails.TransactionID, iNoOfPax);
                         clsSalesTransactions.CommitAndDispose();
+
+                        ComputeSubTotal(); setTotalDetails();
                     }
                     catch (Exception ex) { throw ex; }
                     finally { txtBarCode.Focus(); }

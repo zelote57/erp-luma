@@ -93,6 +93,13 @@ namespace AceSoft.RetailPlus.Data
         public ItemSelectWndColumnType ItemSelectWndColumnType;
 
         public ItemSelectWndColumnSearchType ItemSelectWndColumnSearchType;
+
+        public string BSDDiscountCode;
+
+        public Int32 BSDDiscountCodeDinerCount;
+
+        public DateTime ProdLastSyncDateTime;
+        public double ProdSyncInterval;
     }
     public class SysConfig : POSConnection
     {
@@ -449,6 +456,50 @@ namespace AceSoft.RetailPlus.Data
             return clsItemSelectWndColumnType;
         }
 
+        public string get_BSDDiscountCode()
+        {
+            string strRetValue = "BSD";
+            try
+            {
+                strRetValue = get_Sysconfig(Constants.SYS_CONFIG_BSD_DISCOUNT_CODE);
+            }
+            catch { }
+            return strRetValue;
+        }
+
+        public Int32 get_BSDDiscountCodeDinerCount()
+        {
+            Int32 intRetValue = 0;
+            try
+            {
+                intRetValue = Int32.Parse(get_Sysconfig(Constants.SYS_CONFIG_BSD_DISCOUNT_CODE_DINER_COUNT));
+            }
+            catch { }
+            return intRetValue;
+        }
+
+        public DateTime get_ProdLastSyncDateTime()
+        {
+            DateTime dteRetValue = Constants.C_DATE_MIN_VALUE;
+            try
+            {
+                dteRetValue = DateTime.TryParse(get_Sysconfig(Constants.SYS_CONFIG_PROD_LAST_SYNC_DATETIME), out dteRetValue) ? dteRetValue : Constants.C_DATE_MIN_VALUE;
+            }
+            catch { }
+            return dteRetValue;
+        }
+
+        public Double get_ProdSyncInterval()
+        {
+            Double intRetValue = 10;
+            try
+            {
+                intRetValue = Double.TryParse(get_Sysconfig(Constants.SYS_CONFIG_PROD_SYNC_INTERVAL), out intRetValue) ? intRetValue : 10;
+            }
+            catch { }
+            return intRetValue;
+        }
+
         public string get_BECompanyCode()
         {
             return get_Sysconfig(Constants.SYS_CONFIG_BE_COMPANY_CODE);
@@ -541,6 +592,10 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.ContactAddWndType = get_CONTACT_ADDWND_TYPE();
             clsSysConfigDetails.ItemSelectWndColumnType = get_ITEMSELECTWND_COLUMN_TYPE();
             clsSysConfigDetails.ItemSelectWndColumnSearchType = get_ITEMSELECTWND_COLUMN_SEARCH_TYPE();
+            clsSysConfigDetails.BSDDiscountCode = get_BSDDiscountCode();
+            clsSysConfigDetails.BSDDiscountCodeDinerCount = get_BSDDiscountCodeDinerCount();
+            clsSysConfigDetails.ProdLastSyncDateTime = get_ProdLastSyncDateTime();
+            clsSysConfigDetails.ProdSyncInterval = get_ProdSyncInterval();
 
             return clsSysConfigDetails;
         }

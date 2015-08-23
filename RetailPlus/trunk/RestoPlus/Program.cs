@@ -274,14 +274,14 @@ namespace AceSoft.RetailPlus.Client
                 clsEvent.AddEventLn("Running Main Window.", true);
 
                 MainRestoWnd appmain = new MainRestoWnd();
-                appmain.Text = " RetailPlus ™";
+                appmain.Text = " RestoPlus ™";
                 /********************************
                  * Added December 21, 2008
                  * Enable 2 windows in one computer
                  * *****************************/
                 try
                 {
-                    if (System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"].ToLower() == "true")
+                    if (clsTerminalDetails.MultiInstanceEnabled)
                     { Application.Run(appmain); }
                     else
                     { SingleInstance.Run(appmain); }

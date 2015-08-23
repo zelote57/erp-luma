@@ -3504,7 +3504,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             Details = getCurrentRowItemDetails();
 
                             dgItems.UnSelect(x);
-                            if (Details.TransactionItemStatus != TransactionItemStatus.Void)
+                            if (Details.TransactionItemStatus == TransactionItemStatus.Valid)
                             {
                                 clsProductPackageDetails = clsProductPackage.Details(Details.ProductPackageID);
 

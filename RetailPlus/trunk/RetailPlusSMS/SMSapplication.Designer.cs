@@ -405,13 +405,13 @@ namespace SMSapplication
             // 
             this.colSentTo.Text = "Sent To";
             this.colSentTo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colSentTo.Width = 140;
+            this.colSentTo.Width = 114;
             // 
             // colStatus
             // 
             this.colStatus.Text = "Status";
             this.colStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colStatus.Width = 78;
+            this.colStatus.Width = 106;
             // 
             // cmdLookFile
             // 

@@ -124,14 +124,17 @@ namespace AceSoft.RetailPlus.Reports
         private ReportDocument getReportDocument()
         {
             ReportDocument rpt = new ReportDocument();
+            rpt.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperLegal;
+            rpt.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Landscape;
 
-            if (lblType.Text == "invcount")
+            switch (lblType.Text)
             {
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventoryCount.rpt"));
-            }
-            else
-            {
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventory.rpt"));
+                case "invcount":
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventoryCount.rpt"));
+                    break;
+                default:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventory.rpt"));
+                    break;
             }
 
             return rpt;
